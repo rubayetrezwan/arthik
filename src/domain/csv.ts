@@ -411,6 +411,36 @@ function brokenQuoteRecords(
 }
 
 /**
+ * Whether a record has swallowed one or more rows that start with a date. This is a third way
+ * a quote goes wrong, and PapaParse reports nothing for it: a stray quote opens a field, and the
+ * next quote that stands just before a delimiter or a line end closes it, as in
+ *
+ *     2026-10-02,"Eid shopping,-7
+ *     2026-10-03,Monitor 24",-8
+ *
+ * where the quote after 24 is the one that is taken for the end of the field. The record is the
+ * date 2026-10-02, a description with a line break in it, and the amount -8: the -7 and the
+ * row of 2026-10-03 are gone and nothing says so. A real note with a line break in it does not
+ * begin its second line with a date and a delimiter, which is what a row looks like.
+ *
+ * It finds the rows by their dates, and only when the date is first on its line, so a row
+ * whose date is further along is not found.
+ */
+function swallowsDatedRow(cells: readonly string[], delimiter: string): boolean {
+  return cells.some(
+    (cell) =>
+      cell.includes('\n') &&
+      cell
+        .split('\n')
+        .slice(1)
+        .some((line) => {
+          const end = line.indexOf(delimiter)
+          return end !== -1 && parseDate(line.slice(0, end).trim()) !== null
+        }),
+  )
+}
+
+/**
  * Reads transactions from CSV text.
  *
  * The file needs `date`, `description` and either a signed `amount` or a `debit`/`credit`
@@ -424,10 +454,13 @@ function brokenQuoteRecords(
  * reported by one `bad_quotes` error giving the row it starts in and how many further lines it
  * swallowed (`skippedRows`). A quote that never closes swallows everything after it; a stray
  * quote closed by accident by a later one swallows only the lines in between, and the rows
- * after that import as usual. Their row numbers count the merged record as one row, the way a
- * spreadsheet shows it. Only when the file cannot be used anyway (a missing column, too many
- * rows) is a broken quote not mentioned, as the visitor must fix the file first and will see
- * it then. A broken quote in the header is reported alone, because the header cannot be read.
+ * after that import as usual. A stray quote that a later quote closes at the end of a field
+ * looks fine to PapaParse, so it is found another way: a line inside a quoted cell that starts
+ * with a date and a delimiter is a row that was swallowed. The row numbers after a merged record
+ * count it as one row, the way a spreadsheet shows it. Only when the file cannot be used anyway
+ * (a missing column, too many rows) is a broken quote not mentioned, as the visitor must fix
+ * the file first and will see it then. A broken quote in the header is reported alone, because
+ * the header cannot be read.
  *
  * Each imported transaction has the id `row-<n>`, where n is its spreadsheet row.
  */
@@ -467,11 +500,19 @@ export function parseTransactionsCsv(text: string, defaultCurrency: CurrencyCode
   for (let index = headerIndex + 1; index < records.length; index++) {
     const cells = records[index]
     // A broken record is reported, not read.
-    if (cells !== undefined && !brokenQuotes.has(index) && !isBlank(cells)) {
-      dataRows.push({ row: index + 1, cells })
+    if (cells === undefined || brokenQuotes.has(index) || isBlank(cells)) continue
+    if (swallowsDatedRow(cells, delimiter)) {
+      brokenQuotes.set(index, {
+        row: index + 1,
+        code: 'bad_quotes',
+        skippedRows: linesSwallowed(cells, delimiter),
+      })
+      continue
     }
+    dataRows.push({ row: index + 1, cells })
   }
-  const quoteErrors = [...brokenQuotes.values()]
+  // PapaParse's complaints came first, so the ones found just now are out of row order.
+  const quoteErrors = [...brokenQuotes.values()].sort((a, b) => a.row - b.row)
   if (dataRows.length === 0) {
     // If the only data rows are broken, the file has rows; they just cannot be read.
     return quoteErrors.length > 0

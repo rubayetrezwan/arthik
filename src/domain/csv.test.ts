@@ -1203,6 +1203,145 @@ describe('parseTransactionsCsv: a runaway quote that a later quote closes by acc
   })
 })
 
+describe('parseTransactionsCsv: a stray quote that a later quote closes at the end of a field', () => {
+  // PapaParse sees nothing wrong here: the quote on row 3 opens a field, and the quote after
+  // Monitor 24 closes it because a comma follows. The field is Eid shopping,-7 then a line
+  // break then 2026-10-03,Monitor 24, so row 4 is inside it and the amount of the record is -8.
+  const runaway = file(
+    'date,description,amount',
+    '2026-10-01,a,-5', // row 2
+    '2026-10-02,"Eid shopping,-7', // row 3: the stray quote
+    '2026-10-03,Monitor 24",-8', // swallowed; the quote at the end of Monitor 24 closes the field
+    '2026-10-04,e,-9', // row 4
+  )
+
+  it('does not import the merged record, and reports it with the line it swallowed', () => {
+    const { transactions, errors } = parseTransactionsCsv(runaway, 'BDT')
+    expect(transactions.map((t) => [t.id, t.date, t.description, t.amount])).toEqual([
+      ['row-2', '2026-10-01', 'a', -5],
+      ['row-4', '2026-10-04', 'e', -9],
+    ])
+    expect(errors).toEqual<CsvError[]>([{ row: 3, code: 'bad_quotes', skippedRows: 1 }])
+  })
+
+  it('does the same when the quoted cell is the last column', () => {
+    const { transactions, errors } = parseTransactionsCsv(
+      file(
+        'date,amount,description',
+        '2026-10-01,-5,a',
+        '2026-10-02,-7,"Eid shopping',
+        '2026-10-03,-8,Monitor 24"',
+        '2026-10-04,-9,e',
+      ),
+      'BDT',
+    )
+    expect(transactions.map((t) => [t.id, t.amount])).toEqual([
+      ['row-2', -5],
+      ['row-4', -9],
+    ])
+    expect(errors).toEqual<CsvError[]>([{ row: 3, code: 'bad_quotes', skippedRows: 1 }])
+  })
+
+  it('counts every line the quote swallowed', () => {
+    const { transactions, errors } = parseTransactionsCsv(
+      file(
+        'date,description,amount',
+        '2026-10-01,a,-5',
+        '2026-10-02,"Eid shopping,-7',
+        '2026-10-03,Shirt,-8',
+        '',
+        '2026-10-04,Monitor 24",-9',
+        '2026-10-05,e,-10',
+      ),
+      'BDT',
+    )
+    expect(transactions.map((t) => [t.id, t.amount])).toEqual([
+      ['row-2', -5],
+      ['row-4', -10],
+    ])
+    expect(errors).toEqual<CsvError[]>([{ row: 3, code: 'bad_quotes', skippedRows: 2 }])
+  })
+
+  it('recognises a swallowed row whose date has a time or spaces in front of it', () => {
+    for (const swallowed of ['2026-10-03 14:03,Monitor 24"', '  31/10/2026,Monitor 24"']) {
+      const { transactions, errors } = parseTransactionsCsv(
+        file('date,description,amount', '2026-10-02,"Eid shopping,-7', `${swallowed},-8`, '2026-10-04,e,-9'),
+        'BDT',
+      )
+      expect(transactions.map((t) => t.id), swallowed).toEqual(['row-3'])
+      expect(errors, swallowed).toEqual<CsvError[]>([{ row: 2, code: 'bad_quotes', skippedRows: 1 }])
+    }
+  })
+
+  it('finds it in a semicolon file and with Windows line endings', () => {
+    const semicolon = file(
+      'date;description;amount',
+      '2026-10-01;a;-5',
+      '2026-10-02;"Eid shopping;-7',
+      '2026-10-03;Monitor 24";-8',
+      '2026-10-04;e;-9',
+    )
+    const crlf = runaway.replaceAll('\n', '\r\n')
+    for (const [name, text] of [['semicolon', semicolon], ['crlf', crlf]] as const) {
+      const { transactions, errors } = parseTransactionsCsv(text, 'BDT')
+      expect(transactions.map((t) => t.id), name).toEqual(['row-2', 'row-4'])
+      expect(errors, name).toEqual<CsvError[]>([{ row: 3, code: 'bad_quotes', skippedRows: 1 }])
+    }
+  })
+
+  it('reports each such record at its own row, in row order with the other errors', () => {
+    const { transactions, errors } = parseTransactionsCsv(
+      file(
+        'date,description,amount',
+        '2026-10-01,"One,-7', // row 2
+        '2026-10-02,Monitor 24",-8',
+        '2026-10-03,Bad amount,abc', // row 3
+        '2026-10-04,"Two,-7', // row 4
+        '2026-10-05,Phone 5",-8',
+        '2026-10-06,Good,-20', // row 5
+      ),
+      'BDT',
+    )
+    expect(transactions.map((t) => t.id)).toEqual(['row-5'])
+    expect(errors).toEqual<CsvError[]>([
+      { row: 2, code: 'bad_quotes', skippedRows: 1 },
+      { row: 3, code: 'bad_amount', column: 'amount', value: 'abc' },
+      { row: 4, code: 'bad_quotes', skippedRows: 1 },
+    ])
+  })
+
+  it('reports the quote alone when the only data row is the merged one', () => {
+    const { transactions, errors } = parseTransactionsCsv(
+      file('date,description,amount', '2026-10-02,"Eid shopping,-7', '2026-10-03,Monitor 24",-8'),
+      'BDT',
+    )
+    expect(transactions).toEqual([])
+    expect(errors).toEqual<CsvError[]>([{ row: 2, code: 'bad_quotes', skippedRows: 1 }])
+  })
+
+  describe('leaves a real multi-line quoted cell alone', () => {
+    it.each([
+      ['two plain lines', 'Eid shopping\nat the new market'],
+      ['a second line that starts with a number', 'Eid shopping\n12 items, 3 bags'],
+      ['a second line that is only a date', 'Eid shopping\n2026-10-03'],
+      ['a date with no delimiter after it', 'Eid shopping\n2026-10-03 at the market'],
+      ['a date later in the second line', 'Eid shopping\npaid on 2026-10-03, in cash'],
+      ['a second line that starts with an unreal date', 'Eid shopping\n2026-02-30,Monitor 24'],
+      ['three lines', 'Eid shopping\nline two\nline three'],
+    ])('%s', (_name, description) => {
+      const { transactions, errors } = parseTransactionsCsv(
+        file('date,description,amount', `2026-10-02,"${description}",-7`, '2026-10-04,e,-9'),
+        'BDT',
+      )
+      expect(errors).toEqual([])
+      expect(transactions.map((t) => [t.id, t.description, t.amount])).toEqual([
+        ['row-2', description, -7],
+        ['row-3', 'e', -9],
+      ])
+    })
+  })
+})
+
 describe('parseTransactionsCsv: whole-file problems', () => {
   it('reports an empty file', () => {
     expect(parseTransactionsCsv('', 'BDT')).toEqual({
