@@ -1,0 +1,9 @@
+{
+  "app.name": "Arthik",
+  "nav.home": "Home",
+  "nav.score": "Your score",
+  "nav.howItWorks": "How the score works",
+  "nav.about": "About",
+  "language.label": "Language",
+  "currency.label": "Currency"
+}
