@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import { buildDataset, type Persona } from '../../../scripts/samples/engine'
 import { generateAll, serialise } from '../../../scripts/samples/generate'
+import { groupOf } from '../../domain/categories'
 import { categorize } from '../../domain/categorize'
 import { computeMeasures } from '../../domain/measures'
 import { completeMonths, monthOf } from '../../domain/period'
@@ -14,6 +15,9 @@ import rahimFile from './rahim.json?raw'
 import tanvirFile from './tanvir.json?raw'
 
 const MAY_TO_OCT = ['2026-05', '2026-06', '2026-07', '2026-08', '2026-09', '2026-10']
+
+/** Eid-ul-Adha 2026 falls on or about this day. */
+const EID_ADHA = '2026-05-27'
 
 const COMMITTED_FILES: Record<PersonId, string> = {
   nusrat: nusratFile,
@@ -70,6 +74,18 @@ function everyMonth(id: PersonId, category: CategoryId): boolean {
   return MAY_TO_OCT.every((month) =>
     inCategory(id, category).some((transaction) => monthOf(transaction.date) === month),
   )
+}
+
+/** What one wallet took in and paid out in a month, from the lines that name it. */
+function walletFlow(id: PersonId, wallet: RegExp, month: string) {
+  const lines = SAMPLES[id].transactions.filter(
+    (transaction) => monthOf(transaction.date) === month && wallet.test(transaction.description),
+  )
+  const sum = (selected: Transaction[]) => total(selected)
+  return {
+    received: sum(lines.filter((line) => line.amount > 0)),
+    paid: -sum(lines.filter((line) => line.amount < 0)),
+  }
 }
 
 /** Lines in one month whose description mentions the merchant. */
@@ -233,11 +249,48 @@ describe('Nusrat, student in Dhaka', () => {
     expect(SAMPLES.nusrat.emergencySavings).toEqual({ amount: 15_000, currency: 'BDT' })
   })
 
-  it('spends most on Foodpanda, her biggest want, with several orders a month', () => {
+  it('spends most on Foodpanda among her wants, with several orders a month', () => {
     expect(largestWant('nusrat')).toBe('eating_out')
     for (const month of MAY_TO_OCT) {
       expect(paidTo('nusrat', 'eating_out', /foodpanda/i, month).length, month).toBeGreaterThan(4)
     }
+  })
+
+  it('has each wallet pay out about what it takes in, month by month', () => {
+    // Pocket money lands in bKash and tuition in Nagad. Neither wallet only receives or only pays.
+    for (const wallet of [/bkash/i, /nagad/i]) {
+      for (const month of MAY_TO_OCT) {
+        const { received, paid } = walletFlow('nusrat', wallet, month)
+        expect(received, `${String(wallet)} ${month}`).toBeGreaterThan(0)
+        expect(paid / received, `${String(wallet)} ${month}`).toBeGreaterThan(0.85)
+        expect(paid / received, `${String(wallet)} ${month}`).toBeLessThan(1.15)
+      }
+    }
+  })
+
+  it('goes home to Barishal for Eid-ul-Adha and spends nothing that only works in Dhaka', () => {
+    const tickets = inCategory('nusrat', 'transport').filter((line) => /bus ticket/i.test(line.description))
+    const there = tickets.find((line) => /dhaka-barishal/i.test(line.description))
+    const back = tickets.find((line) => /barishal-dhaka/i.test(line.description))
+    expect(tickets).toHaveLength(2)
+    // Bought a few days before Eid, and the way back bought after it.
+    expect(there && there.date >= '2026-05-20' && there.date < EID_ADHA).toBe(true)
+    expect(back && back.date > EID_ADHA && back.date <= '2026-05-31').toBe(true)
+
+    // Rides, the metro and shops in Mirpur: none while she is in Barishal.
+    const dhakaOnly = /pathao|mrt|foodpanda|chaldal|shwapno|lazz|bella|daraz/i
+    const whileAway = SAMPLES.nusrat.transactions.filter(
+      (line) => line.date >= '2026-05-23' && line.date <= '2026-05-30',
+    )
+    expect(whileAway.length).toBeGreaterThan(0)
+    expect(whileAway.filter((line) => dhakaOnly.test(line.description))).toEqual([])
+    // ...and she does use them in Dhaka either side of the trip.
+    const inDhaka = (from: string, to: string) =>
+      SAMPLES.nusrat.transactions.filter(
+        (line) => line.date >= from && line.date <= to && dhakaOnly.test(line.description),
+      )
+    expect(inDhaka('2026-05-01', '2026-05-22').length).toBeGreaterThan(5)
+    expect(inDhaka('2026-06-01', '2026-06-30').length).toBeGreaterThan(5)
   })
 
   it('pays about 18.50 taka per 1,000 she takes out as cash, as a separate charge', () => {
@@ -275,6 +328,7 @@ describe('Tanvir, freelance developer in Dhaka', () => {
   it('has uneven spending: its swings are over a quarter of its average', () => {
     expect(analyse('tanvir').measures.spendingCV).toBeGreaterThan(0.25)
   })
+
 })
 
 describe('Farhana, office worker in Dhaka', () => {

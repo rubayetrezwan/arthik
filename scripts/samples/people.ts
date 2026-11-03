@@ -12,45 +12,54 @@ const BKASH_CASH_OUT_RATE = 0.0185
 /** An online remittance service takes well under 1% on a few hundred dollars. */
 const REMITTANCE_FEE_RATE = 0.007
 
+/** Eid-ul-Adha 2026 falls on or about Wednesday 27 May. Nusrat is at her family's home in Barishal. */
+const NUSRAT_AT_HOME = ['2026-05-23', '2026-05-30'] as const
+
 export const NUSRAT: Persona = {
-  // University student sharing a mess in Mirpur. About 23,000 taka comes in: 15,000
-  // family allowance and 8,000 from two tuition students.
+  // University student sharing a mess in Mirpur. About 23,000 taka comes in: 15,000 pocket
+  // money from her father, into bKash, and 8,000 from two tuition students, into Nagad. Each
+  // wallet pays out about what it takes in, so neither one only receives or only pays.
+  //
+  // Eid-ul-Adha: Eid clothes from Aarong on 20 May, a bus home to Barishal on 23 May (ticket
+  // bought on the 21st), back in Dhaka on 30 May (ticket bought on the 28th). While she is
+  // away she uses nothing that only works in Dhaka: no rides, no MRT, no Foodpanda.
   id: 'nusrat',
-  seed: 1101,
+  seed: 1088,
   currency: 'BDT',
   emergencySavings: 15_000,
   monthly: [
     {
       day: 1,
       category: 'family_support_in',
-      description: 'Family allowance from Abbu - bKash Received 01711xxxxxx',
+      description: 'bKash Received Money 01711xxxxxx - Pocket money',
       amount: 15_000,
     },
     {
       day: 2,
       category: 'rent',
-      description: 'bKash Payment - Mess seat rent, Mirpur 10',
+      description: 'bKash Send Money 01819xxxxxx - Mess rent',
       amount: -5_500,
     },
     {
       day: 6,
       category: 'savings_deposit',
-      description: 'DPS Instalment - Dutch-Bangla Bank (Student DPS)',
+      description: 'Nagad Payment - DPS Instalment, Dutch-Bangla Bank A/C xx3321',
       amount: -500,
     },
     {
       day: 10,
       jitterDays: 2,
       category: 'side_income',
-      description: 'Nagad Received 01811xxxxxx - Tuition fee (Class 9 Math)',
+      description: 'Nagad Received 01811xxxxxx - Tuition fee',
       amount: 4_500,
     },
     {
+      // A 30-day data pack at its fixed price.
       day: 12,
       jitterDays: 3,
       category: 'mobile_internet',
-      description: 'Robi Internet Pack 30GB - Mobile Recharge 01812xxxxxx',
-      amount: [-399, -299],
+      description: 'Nagad Mobile Recharge - Robi 30GB 30 Days Pack 01812xxxxxx',
+      amount: -499,
     },
     {
       day: 15,
@@ -61,53 +70,97 @@ export const NUSRAT: Persona = {
     {
       day: 'last',
       category: 'side_income',
-      description: 'Nagad Received 01911xxxxxx - Tuition fee (Class 7)',
+      description: 'Nagad Received 01911xxxxxx - Tuition',
       amount: 3_500,
     },
     {
       day: 20,
       inMonths: [7, 10],
       category: 'education',
-      description: 'University semester exam fee - bKash Payment',
-      amount: [-1_800, -1_200],
+      description: 'University Exam Fee, Semester Final - bKash Payment',
+      amount: -1_500,
     },
     {
       day: 12,
       inMonths: [9],
       category: 'healthcare',
-      description: 'Dental clinic, Mirpur 10 - bKash Payment',
-      amount: [-3_600, -2_800],
+      description: 'Smile Dental Care, Mirpur 10 - Nagad Payment',
+      amount: [-2_500, -1_500],
+      roundTo: 500,
+    },
+    {
+      day: 20,
+      inMonths: [5],
+      category: 'shopping',
+      description: 'AARONG, Mirpur - bKash Payment',
+      amount: [-2_800, -1_800],
+      roundTo: 50,
+    },
+    {
+      day: 21,
+      inMonths: [5],
+      category: 'transport',
+      description: 'Shohoz.com Bus Ticket Dhaka-Barishal - Nagad Payment',
+      amount: -1_150,
+    },
+    {
+      day: 26,
+      inMonths: [5],
+      category: 'gifts',
+      description: 'bKash Send Money 01715xxxxxx - Eid salami',
+      amount: -1_000,
+    },
+    {
+      // Cash for Eid at home, from the bKash agent near her family's house.
+      day: 24,
+      inMonths: [5],
+      category: 'cash_withdrawal',
+      description: 'bKash Cash Out - Agent 01734xxxxxx',
+      amount: -1_000,
+      charge: { description: 'bKash Cash Out Charge', rate: BKASH_CASH_OUT_RATE },
+    },
+    {
+      day: 28,
+      inMonths: [5],
+      category: 'transport',
+      description: 'Shohoz.com Bus Ticket Barishal-Dhaka - Nagad Payment',
+      amount: -1_000,
     },
   ],
   scattered: [
     {
       perMonth: [10, 13],
+      skipBetween: NUSRAT_AT_HOME,
       category: 'eating_out',
       description: 'Foodpanda Order #FP{ref} - bKash Payment',
       amount: [-600, -200],
     },
     {
       perMonth: [1, 2],
+      skipBetween: NUSRAT_AT_HOME,
       category: 'groceries',
-      description: 'Chaldal.com Order #{ref} - bKash Payment',
+      description: 'Chaldal.com Order #{ref} - Nagad Payment',
       amount: [-1_800, -600],
     },
     {
       perMonth: [2, 3],
+      skipBetween: NUSRAT_AT_HOME,
       category: 'groceries',
-      description: 'bKash Payment - Shwapno Mirpur 10',
+      description: 'Nagad Payment - Shwapno Mirpur 10',
       amount: [-900, -250],
     },
     {
       perMonth: [4, 7],
+      skipBetween: NUSRAT_AT_HOME,
       category: 'transport',
-      description: 'Pathao Ride #{ref} - bKash Payment',
+      description: 'Pathao Ride #{ref} - Nagad Payment',
       amount: [-260, -90],
     },
     {
       perMonth: [2, 3],
+      skipBetween: NUSRAT_AT_HOME,
       category: 'transport',
-      description: 'MRT Rapid Pass Recharge - Mirpur 10 Station',
+      description: 'Nagad Payment - MRT Rapid Pass Recharge, Mirpur 10 Station',
       amount: [-500, -300],
       roundTo: 100,
     },
@@ -115,42 +168,31 @@ export const NUSRAT: Persona = {
       perMonth: [2, 3],
       category: 'cash_withdrawal',
       description: 'bKash Cash Out - Agent 01712xxxxxx',
-      amount: [-3_000, -1_000],
+      amount: [-2_000, -500],
       roundTo: 500,
       charge: { description: 'bKash Cash Out Charge', rate: BKASH_CASH_OUT_RATE },
     },
     {
-      perMonth: [0, 1],
+      perMonth: [1, 1],
+      skipBetween: NUSRAT_AT_HOME,
       category: 'shopping',
-      description: 'Daraz Bangladesh Order #{ref} - bKash Payment',
+      description: 'Daraz Bangladesh Order #{ref} - Nagad Payment',
       amount: [-1_400, -350],
     },
     {
       perMonth: [0, 1],
+      skipBetween: NUSRAT_AT_HOME,
       category: 'healthcare',
       description: 'Lazz Pharma, Mirpur 10 - bKash Payment',
       amount: [-700, -150],
     },
     {
       perMonth: [0, 1],
+      skipBetween: NUSRAT_AT_HOME,
       category: 'personal_care',
       description: 'Bella Beauty Parlour, Mirpur 1 - bKash Payment',
       amount: [-900, -300],
-    },
-    {
-      // Eid-ul-Adha is at the end of May: a bus home to Barishal and new clothes.
-      perMonth: [1, 1],
-      inMonths: [5],
-      category: 'transport',
-      description: 'Bus ticket Dhaka-Barishal - bKash Payment',
-      amount: [-1_000, -800],
-    },
-    {
-      perMonth: [1, 1],
-      inMonths: [5],
-      category: 'shopping',
-      description: 'Aarong Mirpur (Eid) - bKash Payment',
-      amount: [-2_800, -1_800],
+      roundTo: 50,
     },
   ],
 }
