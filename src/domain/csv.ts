@@ -396,8 +396,8 @@ export function parseTransactionsCsv(text: string, defaultCurrency: CurrencyCode
 
   // Blank lines are kept here and skipped below, so each record's position in the list is
   // its row in a spreadsheet. A quoted line break stays inside its record, as in a spreadsheet.
-  // Papa's own complaints (such as an unclosed quote) are not read: they come with no
-  // useful row, and the cells they leave behind fail the checks below.
+  // Papa's own complaints are not read. The one that matters is an unclosed quote, which
+  // makes the rest of the file one cell; that row then usually fails the checks below.
   const records = Papa.parse<string[]>(content, {
     delimiter: detectDelimiter(content),
     skipEmptyLines: false,
