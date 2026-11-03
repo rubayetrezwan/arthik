@@ -2314,6 +2314,50 @@ describe('parseTransactionsCsv: whole-file problems', () => {
       expect(errors).toEqual<CsvError[]>([{ row: 1, code: 'direction_column', column: shown }])
     })
 
+    // Spaces and underscores around the slash and between words do not matter, and the pair is
+    // as likely to be written the other way round (R34). The error names the header as written.
+    it.each([
+      ['Dr / Cr', 'Dr / Cr'],
+      ['dr /cr', 'dr /cr'],
+      ['DR/ CR', 'DR/ CR'],
+      ['Dr  /  Cr', 'Dr  /  Cr'],
+      ['dr _ cr', 'dr _ cr'],
+      ['Dr_/_Cr', 'Dr_/_Cr'],
+      ['cr/dr', 'cr/dr'],
+      ['CR/DR', 'CR/DR'],
+      ['Cr / Dr', 'Cr / Dr'],
+      ['cr_dr', 'cr_dr'],
+      ['CRDR', 'CRDR'],
+      ['Debit / Credit', 'Debit / Credit'],
+      ['DEBIT /CREDIT', 'DEBIT /CREDIT'],
+      ['Credit/Debit', 'Credit/Debit'],
+      ['Credit / Debit', 'Credit / Debit'],
+      ['Debit_Credit', 'Debit_Credit'],
+      ['transaction_type', 'transaction_type'],
+      ['Transaction_Type', 'Transaction_Type'],
+      ['TRANSACTION  TYPE', 'TRANSACTION  TYPE'],
+      ['txn type', 'txn type'],
+      ['Txn Type', 'Txn Type'],
+      ['txn_type', 'txn_type'],
+      ['  TXN_TYPE ', 'TXN_TYPE'],
+    ])('also recognises the header %j and names it as written, %j', (header, shown) => {
+      const { transactions, errors } = parseTransactionsCsv(
+        file(`date,description,amount,${header}`, ...rows),
+        'BDT',
+      )
+      expect(transactions).toEqual([])
+      expect(errors).toEqual<CsvError[]>([{ row: 1, code: 'direction_column', column: shown }])
+    })
+
+    it('does not import 500 as money in when the file has a Dr / Cr column', () => {
+      const { transactions, errors } = parseTransactionsCsv(
+        file('Date,Description,Amount,Dr / Cr', '2026-10-01,Shwapno,500,Dr', '2026-10-02,Salary,55000,Cr'),
+        'BDT',
+      )
+      expect(transactions).toEqual([])
+      expect(errors).toEqual<CsvError[]>([{ row: 1, code: 'direction_column', column: 'Dr / Cr' }])
+    })
+
     it('finds the column wherever it is', () => {
       const { errors } = parseTransactionsCsv(
         file('Type,Date,Description,Amount', 'DR,2026-10-01,Shwapno,500'),
@@ -2373,6 +2417,28 @@ describe('parseTransactionsCsv: whole-file problems', () => {
           'date,description,amount,currency,category,balance,type of account,types',
           '2026-10-01,Shwapno,-500,,,1000,Savings,x',
         ),
+        'BDT',
+      )
+      expect(errors).toEqual([])
+      expect(transactions).toHaveLength(1)
+    })
+
+    it('leaves alone more columns that merely resemble it', () => {
+      const names = [
+        'transaction types',
+        'transaction_type_code',
+        'txn',
+        'txn types',
+        'type_of_account',
+        'debit card',
+        'credit_card',
+        'dr',
+        'cr',
+        'dr/cr/x',
+        'debit/credit/x',
+      ]
+      const { transactions, errors } = parseTransactionsCsv(
+        file(`date,description,amount,${names.join(',')}`, `2026-10-01,Shwapno,-500,${names.map(() => 'x').join(',')}`),
         'BDT',
       )
       expect(errors).toEqual([])

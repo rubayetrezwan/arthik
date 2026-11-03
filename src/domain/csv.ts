@@ -125,15 +125,34 @@ interface Columns {
 
 // Headers that say which way the money went. Next to a single `amount` column, they leave it open
 // whether the amount carries its own sign or is a size to be signed by this column. Compared
-// after `nameKey`, so case and spaces do not matter.
+// after `directionKey`, so case, spaces and underscores do not matter, and either order of a pair.
 const DIRECTION_COLUMNS: ReadonlySet<string> = new Set([
   'type',
-  'dr/cr',
-  'drcr',
-  'dr_cr',
   'transaction type',
+  'txn type',
+  'dr/cr',
+  'cr/dr',
+  'drcr',
+  'crdr',
+  'dr cr',
+  'cr dr',
   'debit/credit',
+  'credit/debit',
+  'debit credit',
+  'credit debit',
 ])
+
+/**
+ * A header name for comparing with `DIRECTION_COLUMNS`: lower case, an underscore as a space,
+ * spaces gone around a slash and runs of them made one (`Dr / Cr` is `dr/cr`,
+ * `Transaction_Type` is `transaction type`).
+ */
+function directionKey(text: string): string {
+  return nameKey(text)
+    .replace(/[\s_]*\/[\s_]*/g, '/')
+    .replace(/[\s_]+/g, ' ')
+    .trim()
+}
 
 // The header names the reader looks for, each with the column it stands for. If one column is
 // named twice (or debit and withdrawal are both there, two names for the same column), the
@@ -202,8 +221,8 @@ function readHeader(
   })
   if (signed) {
     // A signed amount next to a column that says debit or credit: the sign may be in either.
-    names.forEach((name, index) => {
-      if (DIRECTION_COLUMNS.has(name)) {
+    cells.forEach((cell, index) => {
+      if (DIRECTION_COLUMNS.has(directionKey(cell))) {
         errors.push({ row, code: 'direction_column', column: (cells[index] ?? '').trim() })
       }
     })
