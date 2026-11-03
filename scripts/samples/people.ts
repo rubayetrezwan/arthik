@@ -12,7 +12,7 @@ const BKASH_CASH_OUT_RATE = 0.0185
 /** An online remittance service takes well under 1% on a few hundred dollars. */
 const REMITTANCE_FEE_RATE = 0.007
 
-/** Eid-ul-Adha 2026 falls on or about Wednesday 27 May. Nusrat is at her family's home in Barishal. */
+/** The days Nusrat is at her family's home in Barishal for Eid-ul-Adha (about 27 May 2026). */
 const NUSRAT_AT_HOME = ['2026-05-23', '2026-05-30'] as const
 
 export const NUSRAT: Persona = {
@@ -477,7 +477,7 @@ export const FARHANA: Persona = {
       amount: -990,
     },
     {
-      // Two loans from a cousin, paid into bKash. Borrowed money is not income.
+      // Two loans from Shila Apa, paid into bKash. Borrowed money is not income.
       day: 9,
       inMonths: [7],
       category: 'loan_received',
