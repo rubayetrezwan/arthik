@@ -8,7 +8,7 @@ import Papa, { type ParseError } from 'papaparse'
 import { CATEGORIES, categoriesFor } from './categories'
 import { categorize } from './categorize'
 import { CATEGORY_LABELS_EN } from './categoryLabels'
-import { parseAmount, readDateCell } from './csvCells'
+import { isWrittenZero, parseAmount, readDateCell } from './csvCells'
 import { CURRENCY_CODES, type CategoryId, type CurrencyCode, type Transaction } from './types'
 
 export type CsvErrorCode =
@@ -293,7 +293,8 @@ function readAmount(
   }
 
   if (debit !== 0 && credit !== 0) {
-    // Both filled is unusual. Round to cents so 4000.1 - 640.2 is not 3359.8999999999996.
+    // Both columns carry an amount, as when a refund and a fee are one line. Round to cents so
+    // 4000.1 - 640.2 is not 3359.8999999999996.
     return Math.round((credit - debit) * 100) / 100
   }
   return credit - debit
@@ -362,7 +363,9 @@ type RowOutcome =
  * Even then, in a debit and credit file the empty credit cell is what gets pushed off the end,
  * so 18,000 in the debit column makes a row with a debit of 18, a credit of 000 and nothing
  * extra. A row that runs past the named columns and fills both money columns is therefore not
- * trusted either. (Both filled is unusual anyway.)
+ * trusted either. A cell that writes a zero (`0`, `0.00`) is not filled for this: banks fill the
+ * column a payment does not use with 0.00, and a row that does so is not a split amount. The 000
+ * of a split 18,000 is not a written zero (see `isWrittenZero`), so that row is still caught.
  */
 function hasExtraCells(
   cells: readonly string[],
@@ -372,12 +375,12 @@ function hasExtraCells(
   const extra = cells.slice(columns.width)
   if (extra.some((cell) => cell.trim() !== '')) return true
   if (cells.length > columns.length && !trailingCellsOk) return true
-  return (
-    extra.length > 0 &&
-    columns.amount.kind === 'split' &&
-    cellText(cells, columns.amount.debit) !== '' &&
-    cellText(cells, columns.amount.credit) !== ''
-  )
+  if (extra.length === 0 || columns.amount.kind !== 'split') return false
+  const isFilled = (column: Column): boolean => {
+    const text = cellText(cells, column)
+    return text !== '' && !isWrittenZero(text)
+  }
+  return isFilled(columns.amount.debit) && isFilled(columns.amount.credit)
 }
 
 /**

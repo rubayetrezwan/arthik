@@ -1432,6 +1432,126 @@ describe('parseTransactionsCsv: rows with more cells than the header', () => {
     expect(transactions.map((t) => t.amount)).toEqual([-18000, 55000])
   })
 
+  // Many banks write 0.00 in the column a payment does not use, and some end every line with a
+  // delimiter as well. A written zero is not a number in that column, so it does not make the
+  // row look like a split 18,000 (a debit of 18 beside a credit of 000).
+  describe('a written zero in the unused debit or credit column (R32)', () => {
+    const BALANCE = 'Date,Description,Debit,Credit,Balance'
+
+    it('imports rows that write 0.00 in the unused column and end with a delimiter', () => {
+      const { transactions, errors } = parseTransactionsCsv(
+        file(
+          BALANCE,
+          '2026-10-01,Rent,800.00,0.00,5000.00,',
+          '2026-10-02,Salary,0.00,900.00,5900.00,',
+          '2026-10-03,Shop,100.00,0.00,5800.00,',
+        ),
+        'BDT',
+      )
+      expect(errors).toEqual([])
+      expect(transactions.map((t) => [t.id, t.amount])).toEqual([
+        ['row-2', -800],
+        ['row-3', 900],
+        ['row-4', -100],
+      ])
+    })
+
+    it('imports them when the header ends with a delimiter too', () => {
+      const { transactions, errors } = parseTransactionsCsv(
+        file(
+          'Date,Description,Debit,Credit,Balance,',
+          '2026-10-01,Rent,800.00,0.00,5000.00,',
+          '2026-10-02,Salary,0.00,900.00,5900.00,',
+        ),
+        'BDT',
+      )
+      expect(errors).toEqual([])
+      expect(transactions.map((t) => t.amount)).toEqual([-800, 900])
+    })
+
+    it('imports them under a header padded with empty cells and rows padded the same way', () => {
+      const { transactions, errors } = parseTransactionsCsv(
+        file('Date,Description,Debit,Credit,,', '2026-10-01,Rent,800,0,,', '2026-10-02,Salary,0,900,,'),
+        'BDT',
+      )
+      expect(errors).toEqual([])
+      expect(transactions.map((t) => t.amount)).toEqual([-800, 900])
+    })
+
+    it('still imports them when there is no trailing delimiter at all', () => {
+      const { transactions, errors } = parseTransactionsCsv(
+        file(BALANCE, '2026-10-01,Rent,800.00,0.00,5000.00', '2026-10-02,Salary,0.00,900.00,5900.00'),
+        'BDT',
+      )
+      expect(errors).toEqual([])
+      expect(transactions.map((t) => t.amount)).toEqual([-800, 900])
+    })
+
+    it.each(['0', '0.0', '0.00', ' 0.00 ', '-0.00', '(0.00)', '৳0.00', '0.00 ৳', '০', '০.০০'])(
+      'treats %j as a zero, not as a number in that column',
+      (zero) => {
+        const { transactions, errors } = parseTransactionsCsv(
+          file(SPLIT, `2026-10-01,Rent,800,"${zero}",`, `2026-10-02,Salary,"${zero}",900,`),
+          'BDT',
+        )
+        expect(errors).toEqual([])
+        expect(transactions.map((t) => t.amount)).toEqual([-800, 900])
+      },
+    )
+
+    it('skips a row that writes a zero in both columns, as it does without the trailing delimiter', () => {
+      const { transactions, errors } = parseTransactionsCsv(
+        file(BALANCE, '2026-10-01,Rent,800.00,0.00,5000.00,', '2026-10-02,Enquiry,0.00,0.00,5000.00,'),
+        'BDT',
+      )
+      expect(errors).toEqual([])
+      expect(transactions.map((t) => t.id)).toEqual(['row-2'])
+    })
+
+    it('still reports a row that fills both columns with real amounts', () => {
+      const { transactions, errors } = parseTransactionsCsv(
+        file(BALANCE, '2026-10-01,Rent,800.00,0.00,5000.00,', '2026-10-02,Refund and fee,100.00,350.00,5250.00,'),
+        'BDT',
+      )
+      expect(transactions.map((t) => t.id)).toEqual(['row-2'])
+      expect(errors).toEqual<CsvError[]>([{ row: 3, code: 'extra_cells' }])
+    })
+
+    // What is left of 18,000 once the comma cuts it in two is a debit of 18 and a credit of 000
+    // (or 000.00 for 18,000.00, or 00 for 18,00). Those are not written zeros: a zero is a single
+    // 0, with or without a decimal part, and never more than one digit before the point.
+    it.each(['000', '000.00', '00', '00.00', '0000'])(
+      'does not take %j for a zero: it is what a split thousands group leaves',
+      (leftover) => {
+        const row = `2026-10-01,House rent,18,${leftover},`
+        const { transactions, errors } = parseTransactionsCsv(file(SPLIT, row), 'BDT')
+        expect(transactions, row).toEqual([])
+        expect(errors, row).toEqual<CsvError[]>([{ row: 2, code: 'extra_cells' }])
+      },
+    )
+
+    it('does not take 0,00 or 0.000 for a zero either', () => {
+      // 0,00 is cut in two by its comma, so the row is longer than its columns with a non-empty
+      // extra cell. 0.000 is not a number the reader accepts, so it is reported on its own.
+      const shifted = parseTransactionsCsv(file(SPLIT, '2026-10-01,Rent,800,0,00'), 'BDT')
+      expect(shifted.errors).toEqual<CsvError[]>([{ row: 2, code: 'extra_cells' }])
+      const odd = parseTransactionsCsv(file(SPLIT, '2026-10-01,Rent,800,0.000'), 'BDT')
+      expect(odd.transactions).toEqual([])
+      expect(odd.errors).toEqual<CsvError[]>([
+        { row: 2, code: 'bad_amount', column: 'credit', value: '0.000' },
+      ])
+    })
+
+    it('still catches a split thousands group in a file whose other rows write zeros', () => {
+      const { transactions, errors } = parseTransactionsCsv(
+        file(BALANCE, '2026-10-01,House rent,18,000,,', '2026-10-02,Salary,0.00,900.00,5900.00,'),
+        'BDT',
+      )
+      expect(transactions.map((t) => t.id)).toEqual(['row-3'])
+      expect(errors).toEqual<CsvError[]>([{ row: 2, code: 'extra_cells' }])
+    })
+  })
+
   it('counts a header padded with empty cells as only as wide as its last name', () => {
     // Spreadsheets pad every line to the widest one. The shifted row is as long as the padded
     // header, but the cell under the empty header is not empty.

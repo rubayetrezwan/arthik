@@ -121,14 +121,11 @@ const NUMBER = new RegExp(String.raw`^(\d+|${groups(',')}|${groups(' ')})(\.\d+)
 const POINT_AND_THREE_DIGITS = /^\d{1,3}\.\d{3}$/
 
 /**
- * Reads an amount such as `1,234.50`, `1 234.50`, `(640)`, `৳ 1,240`, `১,২৪০` or `-$5`.
- * Brackets mean negative. Spaces around the number, and between it and a currency sign, a sign
- * or a bracket, are ignored; a space inside the number must separate thousands the way a comma
- * would. Returns null for anything else, including an empty cell, and for a cell that could
- * be read two ways with different values, such as 12,50, 12 50 or 1.500, and for one too large
- * to be kept to the cent (over about 90 trillion).
+ * The digits of an amount cell with its currency sign, sign, brackets and the space around them
+ * taken off, and whether the cell said negative. Null when it said so twice, as (-640) does.
+ * What is left is not checked to be a number.
  */
-export function parseAmount(text: string): number | null {
+function stripAmount(text: string): { unsigned: string; negative: boolean } | null {
   const cleaned = toAsciiDigits(text)
     .replace(/[৳$£€]/g, '')
     // The minus sign that word processors and some banks write.
@@ -144,8 +141,21 @@ export function parseAmount(text: string): number | null {
   const sign = /^[+-]/.exec(unwrapped)?.[0] ?? ''
   // (-640) says negative twice.
   if (bracketed && sign) return null
+  return { unsigned: unwrapped.slice(sign.length), negative: sign === '-' || bracketed !== null }
+}
 
-  const unsigned = unwrapped.slice(sign.length)
+/**
+ * Reads an amount such as `1,234.50`, `1 234.50`, `(640)`, `৳ 1,240`, `১,২৪০` or `-$5`.
+ * Brackets mean negative. Spaces around the number, and between it and a currency sign, a sign
+ * or a bracket, are ignored; a space inside the number must separate thousands the way a comma
+ * would. Returns null for anything else, including an empty cell, and for a cell that could
+ * be read two ways with different values, such as 12,50, 12 50 or 1.500, and for one too large
+ * to be kept to the cent (over about 90 trillion).
+ */
+export function parseAmount(text: string): number | null {
+  const stripped = stripAmount(text)
+  if (stripped === null) return null
+  const { unsigned, negative } = stripped
   if (POINT_AND_THREE_DIGITS.test(unsigned)) return null
   const parts = NUMBER.exec(unsigned)
   if (!parts) return null
@@ -154,5 +164,20 @@ export function parseAmount(text: string): number | null {
   // Money is added up in cents, which is only exact up to Number.MAX_SAFE_INTEGER. A larger
   // amount would have digits that were rounded away, so it is not read.
   if (!Number.isFinite(value) || Math.round(value * 100) > Number.MAX_SAFE_INTEGER) return null
-  return sign === '-' || bracketed ? -value : value
+  return negative ? -value : value
+}
+
+// One 0 before the point, then any number of zeros after it. More than one zero before the
+// point is not a way anybody writes zero, but it is what is left of 18,000 once a comma has cut
+// it in two (000), or of 18,000.00 (000.00).
+const WRITTEN_ZERO = /^0(\.0+)?$/
+
+/**
+ * Whether a cell writes a zero amount: `0`, `0.0` or `0.00`, in the same ways `parseAmount`
+ * allows around a number (a currency sign, a sign, brackets, spaces, Bengali digits). `00` and
+ * `000` are not, and neither is an empty cell or anything that is not a number.
+ */
+export function isWrittenZero(text: string): boolean {
+  const stripped = stripAmount(text)
+  return stripped !== null && WRITTEN_ZERO.test(stripped.unsigned)
 }
