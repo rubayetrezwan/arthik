@@ -210,7 +210,7 @@ export const TANVIR: Persona = {
     {
       day: 1,
       category: 'rent',
-      description: 'BEFTN Transfer - Flat rent, Road 27 Dhanmondi',
+      description: 'BEFTN Transfer to Md Anwar Hossain - Flat rent',
       amount: -28_000,
     },
     {
@@ -422,7 +422,7 @@ export const FARHANA: Persona = {
     {
       day: 5,
       category: 'rent',
-      description: 'BEFTN Transfer - House rent, Flat 4C Mirpur 12',
+      description: 'BEFTN Transfer to Rokeya Begum - House rent',
       amount: -22_000,
     },
     {
