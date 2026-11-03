@@ -55,7 +55,7 @@ const SPENDING_GROUPS: ReadonlySet<Group> = new Set<Group>([
 ])
 
 /** Spending stability needs at least this many months to mean anything. */
-const MIN_MONTHS_FOR_CV = 3
+export const MIN_MONTHS_FOR_CV = 3
 
 function emptyMonth(month: string): MonthTotals {
   return { month, income: 0, spending: 0, essentials: 0, wants: 0, debt: 0 }
