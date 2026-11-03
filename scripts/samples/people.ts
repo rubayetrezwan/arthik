@@ -24,6 +24,7 @@ export const NUSRAT: Persona = {
   // bought on the 21st), back in Dhaka on 30 May (ticket bought on the 28th). While she is
   // away she uses nothing that only works in Dhaka: no rides, no MRT, no Foodpanda.
   id: 'nusrat',
+  // Picked from a scan of seeds: the one where each wallet pays out closest to what it takes in.
   seed: 1088,
   currency: 'BDT',
   emergencySavings: 15_000,
@@ -377,6 +378,8 @@ export const FARHANA: Persona = {
   // the 19th. She buys Eid clothes at Aarong, sends 15,000 to her mother for a qurbani share
   // and gives salami on the 25th and 26th. That is more than the bonus.
   id: 'farhana',
+  // Picked from a scan of seeds: the bKash wallet is never overdrawn and ends the period with
+  // little left in it.
   seed: 3349,
   currency: 'BDT',
   emergencySavings: 5_000,
@@ -574,6 +577,7 @@ export const ARIF: Persona = {
   // lot of takeaway and shopping, a new laptop and, in August, a flight home that the family
   // pays for. On Eid-ul-Adha (27 May) he has dinner out with friends.
   id: 'arif',
+  // Picked from a scan of seeds: his income covers his spending and the 25 pounds he saves.
   seed: 4070,
   currency: 'GBP',
   emergencySavings: 320,
