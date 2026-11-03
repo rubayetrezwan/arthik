@@ -17,6 +17,7 @@ function plain(text: string): string {
 }
 
 const MINUS = '\u2212'
+const EM_DASH = '\u2014'
 
 describe('formatMoney', () => {
   it('groups English taka in lakhs with the symbol in front', () => {
@@ -48,8 +49,8 @@ describe('formatMoney', () => {
     expect(plain(formatMoney(13.2, 'SGD', 'en'))).toBe('SGD 13.20')
   })
 
-  it('shows one unit of each of the 11 currencies differently in English and Bengali', () => {
-    for (const l of ['en', 'bn'] as const) {
+  it('shows one unit of each of the 11 currencies differently in every language', () => {
+    for (const l of LOCALE_CODES) {
       const shown = CURRENCY_CODES.map((code) => formatMoney(1, code, l))
 
       expect(new Set(shown).size, `${l}: ${shown.join(' | ')}`).toBe(CURRENCY_CODES.length)
@@ -135,6 +136,26 @@ describe('formatMoney', () => {
         expect(text, `${code} ${l}`).not.toMatch(/NaN|undefined/)
       }
     }
+  })
+})
+
+describe('a value that is not a finite number', () => {
+  it.each([NaN, Infinity, -Infinity])('shows an em dash for %s in every language', (value) => {
+    for (const l of LOCALE_CODES) {
+      expect(formatMoney(value, 'BDT', l), `money in ${l}`).toBe(EM_DASH)
+      expect(formatMoney(value, 'USD', l, { signed: true }), `signed money in ${l}`).toBe(EM_DASH)
+      expect(formatPercent(value, l), `percent in ${l}`).toBe(EM_DASH)
+      expect(formatNumber(value, l, 1), `number in ${l}`).toBe(EM_DASH)
+      expect(formatPoints(value, l), `points in ${l}`).toBe(EM_DASH)
+      expect(formatWeight(value, l), `weight in ${l}`).toBe(EM_DASH)
+    }
+  })
+
+  it('still formats zero', () => {
+    expect(formatMoney(0, 'BDT', 'en')).toBe('৳0')
+    expect(formatPercent(0, 'en')).toBe('0%')
+    expect(formatNumber(0, 'en', 1)).toBe('0.0')
+    expect(formatPoints(0, 'en')).toBe('0.00')
   })
 })
 

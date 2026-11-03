@@ -1,5 +1,6 @@
 // Number, money and date formatting for every screen. All functions return display
-// strings. A minus is always U+2212 (the true minus sign), never a hyphen.
+// strings. A minus is always U+2212 (the true minus sign), never a hyphen, and a number
+// that is NaN or infinite is shown as an em dash.
 //
 // What was verified about `Intl` (spec 7.3), and what this file does about it:
 // - `en-BD` has no lakh grouping, so English taka use `en-IN` grouping.
@@ -12,6 +13,9 @@ import type { CurrencyCode } from '../domain/types'
 import { LOCALES, type LocaleCode } from './locales'
 
 const MINUS = '\u2212'
+
+/** Shown instead of NaN or infinity, so "NaN" and "\u221e" can never reach the screen. */
+const NO_VALUE = '\u2014'
 
 /** Taka and yen are shown in whole units. Every other currency shows two decimals. */
 const WHOLE_UNIT_CURRENCIES: ReadonlySet<CurrencyCode> = new Set(['BDT', 'JPY'])
@@ -58,6 +62,8 @@ export function formatMoney(
   locale: LocaleCode,
   opts: { signed?: boolean } = {},
 ): string {
+  if (!Number.isFinite(amount)) return NO_VALUE
+
   const decimals = WHOLE_UNIT_CURRENCIES.has(currency) ? 0 : 2
   const options: Intl.NumberFormatOptions = {
     style: 'currency',
@@ -79,6 +85,8 @@ export function formatMoney(
 }
 
 function formatPercentage(ratio: number, locale: LocaleCode, maximumFractionDigits: number) {
+  if (!Number.isFinite(ratio)) return NO_VALUE
+
   const format = numberFormat(LOCALES[locale].intl, {
     style: 'percent',
     maximumFractionDigits,
@@ -94,6 +102,8 @@ export function formatPercent(ratio: number, locale: LocaleCode): string {
 
 /** A plain number with a fixed count of decimals, for example months of savings. */
 export function formatNumber(n: number, locale: LocaleCode, decimals = 0): string {
+  if (!Number.isFinite(n)) return NO_VALUE
+
   const format = numberFormat(LOCALES[locale].intl, {
     minimumFractionDigits: decimals,
     maximumFractionDigits: decimals,
