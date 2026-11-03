@@ -1423,6 +1423,142 @@ describe('parseTransactionsCsv: rows with more cells than the header', () => {
     })
   })
 
+  // Summary lines at the end of an export (Closing balance,5000) are not transactions and do not
+  // have the exporter's trailing delimiter. They have no readable date, so they are left out
+  // when the rows are compared; they still get their own error, as they always did (R33b).
+  describe('a footer line in a file that ends every row with an empty cell (R33b)', () => {
+    it('imports the transactions and reports only the footer line', () => {
+      const { transactions, errors } = parseTransactionsCsv(
+        file(
+          THREE,
+          '2026-10-01,Rent,-500,', // row 2
+          '2026-10-02,Tea,-12,', // row 3
+          'Closing balance,5000', // row 4
+        ),
+        'BDT',
+      )
+      expect(transactions.map((t) => [t.id, t.amount])).toEqual([
+        ['row-2', -500],
+        ['row-3', -12],
+      ])
+      expect(errors).toEqual<CsvError[]>([
+        { row: 4, code: 'bad_date', column: 'date', value: 'Closing balance' },
+        { row: 4, code: 'bad_amount', column: 'amount', value: '' },
+      ])
+    })
+
+    it('does so wherever the footer, or a heading, stands', () => {
+      const { transactions, errors } = parseTransactionsCsv(
+        file(
+          THREE,
+          'Opening balance,5000', // row 2: first, but not a dated row
+          '2026-10-01,Rent,-500,', // row 3
+          'Total,-512', // row 4: a footer with a comma in the middle of the data
+          '2026-10-02,Tea,-12,', // row 5
+          ',Page 1 of 1', // row 6: no date at all
+        ),
+        'BDT',
+      )
+      expect(transactions.map((t) => [t.id, t.amount])).toEqual([
+        ['row-3', -500],
+        ['row-5', -12],
+      ])
+      expect(errors.map((e) => [e.row, e.code])).toEqual([
+        [2, 'bad_date'],
+        [2, 'bad_amount'],
+        [4, 'bad_date'],
+        [4, 'bad_amount'],
+        [6, 'bad_date'],
+        [6, 'bad_amount'],
+      ])
+    })
+
+    it('leaves out a footer of any length, and still gives it its own error', () => {
+      const { transactions, errors } = parseTransactionsCsv(
+        file(THREE, '2026-10-01,Rent,-500,', '2026-10-02,Tea,-12,', 'Closing balance,5000,,,,'),
+        'BDT',
+      )
+      expect(transactions.map((t) => t.id)).toEqual(['row-2', 'row-3'])
+      expect(errors).toEqual<CsvError[]>([
+        { row: 4, code: 'bad_date', column: 'date', value: 'Closing balance' },
+        { row: 4, code: 'bad_amount', column: 'amount', value: '' },
+      ])
+    })
+
+    it('still reports a footer that has something in a cell past the header as extra_cells', () => {
+      const { transactions, errors } = parseTransactionsCsv(
+        file(THREE, '2026-10-01,Rent,-500,', '2026-10-02,Tea,-12,', 'Total,1,2,3'),
+        'BDT',
+      )
+      expect(transactions.map((t) => t.id)).toEqual(['row-2', 'row-3'])
+      expect(errors).toEqual<CsvError[]>([{ row: 4, code: 'extra_cells' }])
+    })
+
+    it('works in a semicolon file', () => {
+      const { transactions, errors } = parseTransactionsCsv(
+        file('date;description;amount', '01.10.2026;Miete;-500;', '02.10.2026;Tee;-12;', 'Summe;-512'),
+        'EUR',
+      )
+      expect(transactions.map((t) => t.amount)).toEqual([-500, -12])
+      expect(errors.map((e) => [e.row, e.code])).toEqual([
+        [4, 'bad_date'],
+        [4, 'bad_amount'],
+      ])
+    })
+
+    it('still compares the rows that have a date: one that differs leaves none of them trusted', () => {
+      const { transactions, errors } = parseTransactionsCsv(
+        file(
+          THREE,
+          '2026-10-01,Rent,-500,', // row 2
+          '2026-10-02,Tea,-12', // row 3: dated, and without the trailing cell
+          '2026-10-03,Bus,-30,', // row 4
+          'Closing balance,5000', // row 5
+        ),
+        'BDT',
+      )
+      expect(transactions.map((t) => t.id)).toEqual(['row-3'])
+      expect(errors.map((e) => [e.row, e.code])).toEqual([
+        [2, 'extra_cells'],
+        [4, 'extra_cells'],
+        [5, 'bad_date'],
+        [5, 'bad_amount'],
+      ])
+    })
+
+    it('does not let a footer hide a shifted dated row', () => {
+      const { transactions, errors } = parseTransactionsCsv(
+        file(
+          'date,description,amount,balance',
+          '2026-10-01,Tea,-12,100,', // row 2
+          '2026-10-02,Rent,-18,500,,', // row 3: shifted, and a cell longer than the others
+          'Closing balance,5000', // row 4
+        ),
+        'BDT',
+      )
+      expect(transactions).toEqual([])
+      expect(errors.map((e) => [e.row, e.code])).toEqual([
+        [2, 'extra_cells'],
+        [3, 'extra_cells'],
+        [4, 'bad_date'],
+        [4, 'bad_amount'],
+      ])
+    })
+
+    it('compares every row when none of them has a readable date', () => {
+      // The visitor's problem is the date format, so that is what each row says.
+      const { transactions, errors } = parseTransactionsCsv(
+        file(THREE, 'Oct 1 2026,Rent,-500,', 'Oct 2 2026,Tea,-12,'),
+        'BDT',
+      )
+      expect(transactions).toEqual([])
+      expect(errors).toEqual<CsvError[]>([
+        { row: 2, code: 'bad_date', column: 'date', value: 'Oct 1 2026' },
+        { row: 3, code: 'bad_date', column: 'date', value: 'Oct 2 2026' },
+      ])
+    })
+  })
+
   describe('rows of different lengths', () => {
     it('reports every row longer than the header when only some end with an empty cell', () => {
       const { transactions, errors } = parseTransactionsCsv(

@@ -390,14 +390,25 @@ function hasExtraCells(
  * Some exporters write a delimiter at the end of every line. One row
  * that differs, in length or in what its extra cells hold, and the extra cells can no longer be
  * told from a shifted row, so none are allowed.
+ *
+ * Only the rows with a readable date are compared. A summary line at the end of an export
+ * (Closing balance,5000) is not a transaction, is not written by the exporter that adds the
+ * delimiter, and would otherwise spoil the comparison for every row above it. It is not
+ * trusted for that: it has no date, so it gets its own error (a bad date) when it is read. If
+ * no row has a readable date, every row is compared, so that a file in a date style the reader
+ * does not know says so on each row and not that its rows have extra cells.
  */
 function hasTrailingCells(
   rows: readonly { cells: readonly string[] }[],
   columns: Columns,
 ): boolean {
-  const [first] = rows
+  const dated = rows.filter(
+    ({ cells }) => readDateCell(cellText(cells, columns.date)).date !== null,
+  )
+  const compared = dated.length > 0 ? dated : rows
+  const [first] = compared
   if (first === undefined || first.cells.length <= columns.width) return false
-  return rows.every(
+  return compared.every(
     ({ cells }) =>
       cells.length === first.cells.length &&
       cells.slice(columns.width).every((cell) => cell.trim() === ''),
@@ -593,7 +604,9 @@ function swallowsDatedRow(cells: readonly string[], delimiter: string): boolean 
  * A row with more cells than the header is not imported (`extra_cells`), because an unquoted comma
  * in an amount shifts every cell after it. The one exception is a file in which every row has the
  * same length, longer than the header, with nothing in the extra cells: that is a trailing delimiter
- * that the exporter writes on every line, and the rows import.
+ * that the exporter writes on every line, and the rows import. The header is as long as its last
+ * name, and a line without a readable date (a closing balance, say) is not counted when the rows
+ * are compared, but is still reported for its own cells.
  *
  * Each imported transaction has the id `row-<n>`, where n is its spreadsheet row.
  */
