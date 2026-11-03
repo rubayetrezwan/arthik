@@ -17,7 +17,7 @@ export const LOCALES: Record<LocaleCode, LocaleInfo> = {
   bn: { nativeName: 'বাংলা', intl: 'bn-BD', dir: 'ltr' },
   hi: { nativeName: 'हिन्दी', intl: 'hi-IN', dir: 'ltr' },
   ar: { nativeName: 'العربية', intl: 'ar', dir: 'rtl' },
-  zh: { nativeName: '简体中文', intl: 'zh-Hans', dir: 'ltr' },
+  zh: { nativeName: '简体中文', intl: 'zh-CN', dir: 'ltr' },
   es: { nativeName: 'Español', intl: 'es', dir: 'ltr' },
   fr: { nativeName: 'Français', intl: 'fr', dir: 'ltr' },
 }

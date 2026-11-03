@@ -24,6 +24,18 @@ describe('LOCALES', () => {
     expect(rtl).toEqual(['ar'])
   })
 
+  it('gives each language the Intl tag the spec calls for', () => {
+    expect(Object.fromEntries(LOCALE_CODES.map((l) => [l, LOCALES[l].intl]))).toEqual({
+      en: 'en',
+      bn: 'bn-BD',
+      hi: 'hi-IN',
+      ar: 'ar',
+      zh: 'zh-CN',
+      es: 'es',
+      fr: 'fr',
+    })
+  })
+
   it('gives every language an Intl tag the runtime knows', () => {
     for (const l of LOCALE_CODES) {
       expect(Intl.NumberFormat.supportedLocalesOf(LOCALES[l].intl), l).toHaveLength(1)
