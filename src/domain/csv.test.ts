@@ -1343,11 +1343,83 @@ describe('parseTransactionsCsv: rows with more cells than the header', () => {
 
     it('still catches a shifted amount under a padded header, whatever the file ends with', () => {
       const { transactions, errors } = parseTransactionsCsv(
-        file('date,description,amount,,', '2026-10-01,Rent,-18,500,,', '2026-10-02,Tea,-12,,,'),
+        file('date,description,amount,,', '2026-10-01,Rent,-18,500,,', '2026-10-02,Tea,-12'),
         'BDT',
       )
       expect(transactions.map((t) => t.id)).toEqual(['row-3'])
       expect(errors).toEqual<CsvError[]>([{ row: 2, code: 'extra_cells' }])
+    })
+  })
+
+  // The padding of a header does not count as columns (R33a), so it cannot make room for a
+  // shifted row either: a row is longer than the header once it is longer than the last name.
+  describe('a header that ends with empty cells (R33a)', () => {
+    it('does not let the padding hide a shifted row among unpadded rows', () => {
+      const { transactions, errors } = parseTransactionsCsv(
+        file(
+          'date,description,amount,balance,',
+          '2026-10-01,Tea,-12,100', // row 2
+          '2026-10-02,Rent,-18,500,', // row 3: the empty balance is pushed off the end
+          '2026-10-03,Bus,-5,95', // row 4
+        ),
+        'BDT',
+      )
+      expect(transactions.map((t) => [t.id, t.amount])).toEqual([
+        ['row-2', -12],
+        ['row-4', -5],
+      ])
+      expect(errors).toEqual<CsvError[]>([{ row: 3, code: 'extra_cells' }])
+    })
+
+    it('counts the padding no matter how many cells it is', () => {
+      const { transactions, errors } = parseTransactionsCsv(
+        file(
+          'date,description,amount,balance,,,',
+          '2026-10-01,Tea,-12,100', // row 2
+          '2026-10-02,Rent,-18,500,,,', // row 3: as long as the header, padding and all
+          '2026-10-03,Bus,-5,95', // row 4
+        ),
+        'BDT',
+      )
+      expect(transactions.map((t) => t.id)).toEqual(['row-2', 'row-4'])
+      expect(errors).toEqual<CsvError[]>([{ row: 3, code: 'extra_cells' }])
+    })
+
+    it('imports rows that are all padded to the same length, however far', () => {
+      for (const [header, pad] of [
+        ['date,description,amount,balance,', ','],
+        ['date,description,amount,balance,,,', ',,,'],
+        ['date,description,amount,balance,,,', ','],
+        ['date,description,amount,balance,', ',,,'],
+      ] as const) {
+        const { transactions, errors } = parseTransactionsCsv(
+          file(header, `2026-10-01,Tea,-12,100${pad}`, `2026-10-02,Bus,-5,95${pad}`),
+          'BDT',
+        )
+        expect(errors, header + pad).toEqual([])
+        expect(transactions.map((t) => t.amount), header + pad).toEqual([-12, -5])
+      }
+    })
+
+    it('imports unpadded rows under a padded header', () => {
+      const { transactions, errors } = parseTransactionsCsv(
+        file('date,description,amount,balance,', '2026-10-01,Tea,-12,100', '2026-10-02,Bus,-5,95'),
+        'BDT',
+      )
+      expect(errors).toEqual([])
+      expect(transactions.map((t) => t.amount)).toEqual([-12, -5])
+    })
+
+    it('reports a padded row beside a shifted one, since the file no longer pads every row alike', () => {
+      const { transactions, errors } = parseTransactionsCsv(
+        file('date,description,amount,,', '2026-10-01,Rent,-18,500,,', '2026-10-02,Tea,-12,,,'),
+        'BDT',
+      )
+      expect(transactions).toEqual([])
+      expect(errors).toEqual<CsvError[]>([
+        { row: 2, code: 'extra_cells' },
+        { row: 3, code: 'extra_cells' },
+      ])
     })
   })
 
@@ -1556,7 +1628,7 @@ describe('parseTransactionsCsv: rows with more cells than the header', () => {
     // Spreadsheets pad every line to the widest one. The shifted row is as long as the padded
     // header, but the cell under the empty header is not empty.
     const { transactions, errors } = parseTransactionsCsv(
-      file('date,description,amount,,', '2026-10-01,Salary credit,55,000,', '2026-10-02,Rent,-18000,,'),
+      file('date,description,amount,,', '2026-10-01,Salary credit,55,000,', '2026-10-02,Rent,-18000'),
       'BDT',
     )
     expect(transactions.map((t) => [t.id, t.amount])).toEqual([['row-3', -18000]])

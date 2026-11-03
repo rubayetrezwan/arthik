@@ -115,13 +115,12 @@ interface Columns {
   currency: Column | null
   category: Column | null
   /**
-   * How many cells a row may fill: up to the last header with a name. Spreadsheets pad every
+   * How many cells the header has: up to the last header with a name. Spreadsheets pad every
    * line with empty cells to the widest one, so a header can end in empty cells that are
-   * padding and not columns.
+   * padding and not columns. They do not count here, so a row is longer than the header once
+   * it is longer than this, however many cells the header line has.
    */
   width: number
-  /** How many cells the header line has, padding included. */
-  length: number
 }
 
 // Headers that say which way the money went. Next to a single `amount` column, they leave it open
@@ -220,7 +219,6 @@ function readHeader(
       currency: find('currency'),
       category: find('category'),
       width: lastNamed + 1,
-      length: cells.length,
     },
   }
 }
@@ -357,6 +355,8 @@ type RowOutcome =
  * - A row longer than the header is one too, even when the extra cells are empty: the cell
  *   that was last, if it was empty, is what gets pushed off the end (-18,500 beside a balance
  *   column becomes -18, 500 and an empty cell), and an empty cell is all that is left to see.
+ *   The header is as long as its last name: empty cells after that are padding, and make no
+ *   room (date,description,amount,balance, over a row of -18,500, is still a shifted row).
  *   The one exception is `trailingCellsOk`: a file whose every row ends with the same empty
  *   cells has a trailing delimiter that its exporter adds, and not a shift.
  *
@@ -374,7 +374,7 @@ function hasExtraCells(
 ): boolean {
   const extra = cells.slice(columns.width)
   if (extra.some((cell) => cell.trim() !== '')) return true
-  if (cells.length > columns.length && !trailingCellsOk) return true
+  if (cells.length > columns.width && !trailingCellsOk) return true
   if (extra.length === 0 || columns.amount.kind !== 'split') return false
   const isFilled = (column: Column): boolean => {
     const text = cellText(cells, column)
@@ -385,8 +385,9 @@ function hasExtraCells(
 
 /**
  * Whether the file ends every row with empty cells that the header has no column for. That
- * is so when all the rows are the same length, longer than the header, and nothing is in any
- * cell past the header. Some exporters write a delimiter at the end of every line. One row
+ * is so when all the rows are the same length, longer than the header (as long as its last name;
+ * empty cells after that are padding), and nothing is in any cell past the header's last name.
+ * Some exporters write a delimiter at the end of every line. One row
  * that differs, in length or in what its extra cells hold, and the extra cells can no longer be
  * told from a shifted row, so none are allowed.
  */
@@ -395,11 +396,11 @@ function hasTrailingCells(
   columns: Columns,
 ): boolean {
   const [first] = rows
-  if (first === undefined || first.cells.length <= columns.length) return false
+  if (first === undefined || first.cells.length <= columns.width) return false
   return rows.every(
     ({ cells }) =>
       cells.length === first.cells.length &&
-      cells.slice(columns.length).every((cell) => cell.trim() === ''),
+      cells.slice(columns.width).every((cell) => cell.trim() === ''),
   )
 }
 
