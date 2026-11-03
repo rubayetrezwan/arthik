@@ -101,3 +101,35 @@ export const fixtureA: Dataset = {
     tx('2026-03-31', 'cash_withdrawal', -2_000),
   ],
 }
+
+/**
+ * A student on a family allowance plus tutoring, in the spirit of the Nusrat
+ * sample: three complete months (August to October 2026), all in BDT, no debt.
+ *
+ * Every month: allowance 15,000 and tutoring 8,000 in, then rent 7,000,
+ * groceries 3,900, transport 1,500, mobile and internet 600, eating out 6,000,
+ * shopping 2,000 and 262 of cash-out fees.
+ *
+ * Hand-checked numbers:
+ * - average income 23,000 a month
+ * - average essentials exactly 13,262 a month (7,000 + 3,900 + 1,500 + 600 + 262)
+ * - average wants 8,000 a month, so spending is 21,262 a month and never varies
+ * - emergency savings 15,900, which is about 1.2 months of essentials
+ * - sub-scores: savings rate 60, emergency savings 44, debt 100, needs vs. wants 57,
+ *   stability 100, which total 69.55 and round to 70
+ */
+export const nusratLike: Dataset = {
+  key: 'mine',
+  emergencySavings: { amount: 15_900, currency: 'BDT' },
+  transactions: ['2026-08', '2026-09', '2026-10'].flatMap((month) => [
+    tx(`${month}-01`, 'family_support_in', 15_000),
+    tx(`${month}-02`, 'rent', -7_000),
+    tx(`${month}-05`, 'side_income', 8_000),
+    tx(`${month}-06`, 'groceries', -3_900),
+    tx(`${month}-09`, 'transport', -1_500),
+    tx(`${month}-10`, 'mobile_internet', -600),
+    tx(`${month}-12`, 'eating_out', -6_000),
+    tx(`${month}-20`, 'shopping', -2_000),
+    tx(`${month}-28`, 'fees', -262),
+  ]),
+}

@@ -1,0 +1,148 @@
+// Picks practical tips from a person's own numbers (spec 5.5). A tip is an id and
+// the numbers to fill into its text; the wording lives in the translations, so no
+// number is ever typed into prose. Money is in BDT; the screen converts it.
+// Pure: no React, no DOM.
+
+import { CATEGORIES } from './categories'
+import type { Measures } from './measures'
+import { topReasons } from './reasons'
+import type { MeasureId, ScoreResult } from './score'
+import type { CategoryId, Dataset } from './types'
+
+export type TipId =
+  | 'start_dps'
+  | 'cut_biggest_want'
+  | 'avoid_cash_fees'
+  | 'debt_highest_interest'
+  | 'steady_spending'
+  | 'sort_uncategorised'
+  | 'check_unrecognised'
+  | 'keep_going'
+
+export interface Tip {
+  id: TipId
+  /**
+   * Money is in BDT. A `month` is `YYYY-MM`. A `pct` is a ratio, 0 to 1. A
+   * `category` is a category id.
+   */
+  values: Record<string, number | string>
+}
+
+const MAX_TIPS = 4
+
+/** A measure's tip is offered when its sub-score is below this. */
+const START_DPS_BELOW = 80
+const AVOID_CASH_FEES_BELOW = 80
+const CUT_BIGGEST_WANT_BELOW = 80
+const DEBT_HIGHEST_INTEREST_BELOW = 70
+const STEADY_SPENDING_BELOW = 60
+
+/** The emergency buffer worth aiming for, in months of essentials. */
+const DPS_TARGET_MONTHS = 3
+/** The suggested monthly deposit is this share of average income (1 in 20 is 5%). */
+const DPS_INCOME_DIVISOR = 20
+/** ...rounded to the nearest multiple of this, and never less than one. */
+const DPS_STEP = 500
+
+/** Fees are worth a tip from 1 in this many of average monthly income (1%). */
+const FEES_INCOME_DIVISOR = 100
+
+const UNCATEGORISED_FROM = 0.1
+
+/** `value` rounded to the nearest `step`, halves up, but never below one `step`. */
+function roundedStep(value: number, step: number): number {
+  return Math.max(step, Math.floor(value / step + 0.5) * step)
+}
+
+/** Money to the paisa, which clears the float noise left by dividing and multiplying. */
+function toPaisa(amount: number): number {
+  return Math.round(amount * 100) / 100
+}
+
+function startDps(m: Measures, subScore: number): Tip | null {
+  if (subScore >= START_DPS_BELOW || m.bufferMonths === null) return null
+
+  const averageEssentials = m.essentials / m.months.length
+  // 3 x essentials less what is saved. Savings are known only as months of buffer here,
+  // which also keeps them in taka whatever currency they were entered in.
+  const gap = toPaisa((DPS_TARGET_MONTHS - m.bufferMonths) * averageEssentials)
+  if (gap <= 0) return null
+
+  // Divide rather than multiply by 0.05, which is not exact in binary.
+  const monthly = roundedStep(m.income / (DPS_INCOME_DIVISOR * m.months.length), DPS_STEP)
+  return { id: 'start_dps', values: { monthly, months: Math.ceil(gap / monthly) } }
+}
+
+function avoidCashFees(m: Measures, subScore: number): Tip | null {
+  if (subScore >= AVOID_CASH_FEES_BELOW) return null
+
+  const fees = m.categoryMonthlyAvg.fees ?? 0
+  const averageIncome = m.income / m.months.length
+  if (fees <= 0 || fees * FEES_INCOME_DIVISOR < averageIncome) return null
+  return { id: 'avoid_cash_fees', values: { amount: fees } }
+}
+
+function cutBiggestWant(m: Measures, subScore: number): Tip | null {
+  if (subScore >= CUT_BIGGEST_WANT_BELOW) return null
+
+  // Walk the category table so that equal amounts always resolve the same way.
+  let biggest: { category: CategoryId; amount: number } | null = null
+  for (const { id, group } of CATEGORIES) {
+    const amount = m.categoryMonthlyAvg[id] ?? 0
+    if (group === 'want' && amount > (biggest?.amount ?? 0)) biggest = { category: id, amount }
+  }
+  return biggest && { id: 'cut_biggest_want', values: biggest }
+}
+
+function debtHighestInterest(m: Measures, subScore: number): Tip | null {
+  if (subScore >= DEBT_HIGHEST_INTEREST_BELOW || m.debtRatio === null) return null
+  return { id: 'debt_highest_interest', values: { pct: m.debtRatio } }
+}
+
+function steadySpending(m: Measures, subScore: number): Tip | null {
+  if (subScore >= STEADY_SPENDING_BELOW) return null
+
+  let highest: { month: string; spending: number } | null = null
+  for (const { month, spending } of m.monthly) {
+    if (highest === null || spending > highest.spending) highest = { month, spending }
+  }
+  return highest && { id: 'steady_spending', values: { month: highest.month } }
+}
+
+/** The tip each measure can lead to, given its sub-score. */
+const TIP_FOR_MEASURE: Record<MeasureId, (m: Measures, subScore: number) => Tip | null> = {
+  savingsRate: avoidCashFees,
+  emergencySavings: startDps,
+  debtPayments: debtHighestInterest,
+  needsWants: cutBiggestWant,
+  stability: steadySpending,
+}
+
+/**
+ * One to four tips. First come the tips for the measures with the most to gain,
+ * in the order of the reasons, then the two data checks, cut off at four. If none
+ * applies the person is told to keep going.
+ *
+ * `_ds` is part of the signature so a rule can reach the raw transactions; every
+ * rule so far gets what it needs from the measures.
+ */
+export function pickTips(_ds: Dataset, m: Measures, r: ScoreResult): Tip[] {
+  const subScores = new Map(r.lines.map((line) => [line.id, line.subScore]))
+
+  const tips: Tip[] = []
+  for (const reason of topReasons(r)) {
+    const subScore = subScores.get(reason.measure) ?? null
+    if (reason.kind !== 'improve' || subScore === null) continue
+    const tip = TIP_FOR_MEASURE[reason.measure](m, subScore)
+    if (tip) tips.push(tip)
+  }
+
+  if (m.uncategorisedShare >= UNCATEGORISED_FROM) {
+    tips.push({ id: 'sort_uncategorised', values: { pct: m.uncategorisedShare } })
+  }
+  if (m.unrecognisedIncomeCount > 0) {
+    tips.push({ id: 'check_unrecognised', values: { count: m.unrecognisedIncomeCount } })
+  }
+
+  return tips.length > 0 ? tips.slice(0, MAX_TIPS) : [{ id: 'keep_going', values: {} }]
+}
