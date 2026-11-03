@@ -68,9 +68,16 @@ export function parseDate(text: string): string | null {
 // silently wrong, so it is not a number here.
 const NUMBER = /^(\d+|\d{1,3}(?:,\d{3})+|\d{1,2}(?:,\d{2})+,\d{3})(\.\d+)?$/
 
+// 1.500 reads as 1500 where a point groups thousands and as 1.5 where it is the decimal mark,
+// and the cell does not say which. Only a short whole number can be followed by a group, so
+// 1234.567 is plainly a decimal, and a comma group before the point (1,234.567) says the point
+// is the decimal mark.
+const POINT_AND_THREE_DIGITS = /^\d{1,3}\.\d{3}$/
+
 /**
  * Reads an amount such as `1,234.50`, `(640)`, `৳ 1,240`, `১,২৪০` or `-$5`. Brackets mean
- * negative. Returns null for anything else, including an empty cell.
+ * negative. Returns null for anything else, including an empty cell, and for a cell that could
+ * be read two ways with different values, such as 12,50 or 1.500.
  */
 export function parseAmount(text: string): number | null {
   const cleaned = toAsciiDigits(text)
@@ -84,7 +91,9 @@ export function parseAmount(text: string): number | null {
   // (-640) says negative twice.
   if (bracketed && sign) return null
 
-  const parts = NUMBER.exec(unwrapped.slice(sign.length))
+  const unsigned = unwrapped.slice(sign.length)
+  if (POINT_AND_THREE_DIGITS.test(unsigned)) return null
+  const parts = NUMBER.exec(unsigned)
   if (!parts) return null
   const [, whole = '', fraction = ''] = parts
   const value = Number(whole.replaceAll(',', '') + fraction)

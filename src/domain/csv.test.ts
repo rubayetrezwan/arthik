@@ -427,6 +427,67 @@ describe('parseTransactionsCsv: amounts', () => {
     ])
   })
 
+  // 1.500 is 1500 where a point groups thousands (Germany, Italy, Indonesia) and 1.5 where a
+  // point is the decimal mark. Nothing in the cell says which, and guessing 1.5 for what the
+  // bank meant as 1500 would be silently wrong.
+  it.each([
+    '1.500',
+    '-1.500',
+    '3.200',
+    '+3.200',
+    '1.234.567',
+    '100.500',
+    '(1.500)',
+    '৳ 1.500',
+    '$1.500',
+    '১.৫০০', // Bengali digits
+    '12.345',
+  ])('rejects the dotted-thousands lookalike "%s"', (cell) => {
+    const { transactions, errors } = parseRow(`2026-10-01,Test,"${cell}",,`)
+    expect(transactions).toEqual([])
+    expect(errors).toEqual<CsvError[]>([
+      { row: 2, code: 'bad_amount', column: 'amount', value: cell },
+    ])
+  })
+
+  it.each([
+    ['1.50', 1.5],
+    ['1.5', 1.5],
+    ['1234.5', 1234.5],
+    ['12.34', 12.34],
+    ['1.5000', 1.5], // four decimals cannot be a thousands group
+    ['1234.567', 1234.567], // the whole part is too long to be a group before a point
+    ['1,234.567', 1234.567], // the comma groups, so the point is the decimal mark
+    ['1,500', 1500],
+    ['1500.00', 1500],
+  ])('still reads %s as %d', (cell, expected) => {
+    expect(amountOf(cell)).toBe(expected)
+  })
+
+  it('rejects dotted thousands in a semicolon file, where the decimal mark is a comma', () => {
+    const { transactions, errors } = parseTransactionsCsv(
+      file('date;description;amount', '01.10.2026;Miete;-1.500', '02.10.2026;Gehalt;3.200'),
+      'EUR',
+    )
+    expect(transactions).toEqual([])
+    expect(errors).toEqual<CsvError[]>([
+      { row: 2, code: 'bad_amount', column: 'amount', value: '-1.500' },
+      { row: 3, code: 'bad_amount', column: 'amount', value: '3.200' },
+    ])
+  })
+
+  it('rejects dotted thousands in the debit and credit columns too', () => {
+    const { transactions, errors } = parseTransactionsCsv(
+      file('date,description,debit,credit', '2026-10-01,Rent,1.500,', '2026-10-02,Pay,,3.200'),
+      'BDT',
+    )
+    expect(transactions).toEqual([])
+    expect(errors).toEqual<CsvError[]>([
+      { row: 2, code: 'bad_amount', column: 'debit', value: '1.500' },
+      { row: 3, code: 'bad_amount', column: 'credit', value: '3.200' },
+    ])
+  })
+
   it('rejects a number too large to hold exactly', () => {
     expect(parseRow(`2026-10-01,Test,${'9'.repeat(400)},,`).errors).toEqual([
       expect.objectContaining({ row: 2, code: 'bad_amount' }),
