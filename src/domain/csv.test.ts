@@ -1556,6 +1556,109 @@ describe('parseTransactionsCsv: whole-file problems', () => {
     })
   })
 
+  describe('an amount column next to a column that says debit or credit', () => {
+    // 500 with DR could be money out (the sign is in the other column) or the file may
+    // mean -500 and DR is just a label. Reading it either way risks the wrong sign on every row.
+    const rows = ['2026-10-01,Shwapno,500,DR', '2026-10-02,Salary,55000,CR']
+
+    it('reports the column and imports nothing', () => {
+      const { transactions, errors } = parseTransactionsCsv(
+        file('date,description,amount,type', ...rows),
+        'BDT',
+      )
+      expect(transactions).toEqual([])
+      expect(errors).toEqual<CsvError[]>([{ row: 1, code: 'direction_column', column: 'type' }])
+    })
+
+    it.each([
+      ['type', 'type'],
+      ['Type', 'Type'],
+      ['TYPE', 'TYPE'],
+      ['  Type  ', 'Type'],
+      ['dr/cr', 'dr/cr'],
+      [' DR/CR ', 'DR/CR'],
+      ['DRCR', 'DRCR'],
+      ['dr_cr', 'dr_cr'],
+      ['Dr_Cr', 'Dr_Cr'],
+      ['transaction type', 'transaction type'],
+      ['Transaction Type', 'Transaction Type'],
+      ['Debit/Credit', 'Debit/Credit'],
+      ['DEBIT/CREDIT', 'DEBIT/CREDIT'],
+    ])('recognises the header %j and names it as written, %j', (header, shown) => {
+      const { transactions, errors } = parseTransactionsCsv(
+        file(`date,description,amount,${header}`, ...rows),
+        'BDT',
+      )
+      expect(transactions).toEqual([])
+      expect(errors).toEqual<CsvError[]>([{ row: 1, code: 'direction_column', column: shown }])
+    })
+
+    it('finds the column wherever it is', () => {
+      const { errors } = parseTransactionsCsv(
+        file('Type,Date,Description,Amount', 'DR,2026-10-01,Shwapno,500'),
+        'BDT',
+      )
+      expect(errors).toEqual<CsvError[]>([{ row: 1, code: 'direction_column', column: 'Type' }])
+    })
+
+    it('reports it with a semicolon file', () => {
+      const { errors } = parseTransactionsCsv(
+        file('date;description;amount;dr/cr', '2026-10-01;Shwapno;500;DR'),
+        'BDT',
+      )
+      expect(errors).toEqual<CsvError[]>([{ row: 1, code: 'direction_column', column: 'dr/cr' }])
+    })
+
+    it('reports it even when the file has no rows, or its rows cannot be read', () => {
+      expect(parseTransactionsCsv('date,description,amount,type', 'BDT').errors).toEqual<CsvError[]>([
+        { row: 1, code: 'direction_column', column: 'type' },
+      ])
+      expect(
+        parseTransactionsCsv(file('date,description,amount,type', '2026-10-01,x,abc,DR'), 'BDT')
+          .errors,
+      ).toEqual<CsvError[]>([{ row: 1, code: 'direction_column', column: 'type' }])
+    })
+
+    it('numbers the header row from the top of the file', () => {
+      const { errors } = parseTransactionsCsv(
+        file('', 'date,description,amount,type', ...rows),
+        'BDT',
+      )
+      expect(errors).toEqual<CsvError[]>([{ row: 2, code: 'direction_column', column: 'type' }])
+    })
+
+    it('reports each such column, after any missing column', () => {
+      const { errors } = parseTransactionsCsv(file('date,amount,type,DR/CR', ...rows), 'BDT')
+      expect(errors).toEqual<CsvError[]>([
+        { row: 1, code: 'missing_column', column: 'description' },
+        { row: 1, code: 'direction_column', column: 'type' },
+        { row: 1, code: 'direction_column', column: 'DR/CR' },
+      ])
+    })
+
+    it('leaves alone a file with debit and credit columns and a type column', () => {
+      // The pair already says which way the money went, so there is no signed amount to doubt.
+      const { transactions, errors } = parseTransactionsCsv(
+        file('date,description,debit,credit,type', '2026-10-01,Shwapno,500,,Card'),
+        'BDT',
+      )
+      expect(errors).toEqual([])
+      expect(transactions.map((t) => t.amount)).toEqual([-500])
+    })
+
+    it('leaves alone other columns that merely resemble it', () => {
+      const { transactions, errors } = parseTransactionsCsv(
+        file(
+          'date,description,amount,currency,category,balance,type of account,types',
+          '2026-10-01,Shwapno,-500,,,1000,Savings,x',
+        ),
+        'BDT',
+      )
+      expect(errors).toEqual([])
+      expect(transactions).toHaveLength(1)
+    })
+  })
+
   it('does not take half a pair for an amount column', () => {
     const { errors } = parseTransactionsCsv(
       file('date,description,debit', '2026-10-01,Test,10'),

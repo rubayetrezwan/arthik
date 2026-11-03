@@ -25,16 +25,22 @@ export type CsvErrorCode =
   | 'extra_cells'
   /** The file writes dates month first (a date such as 10/31/2026), so dates that could be read either way are rejected. */
   | 'month_first_dates'
+  /** The file has an amount column and a column that says debit or credit, so the sign of the amount cannot be told. */
+  | 'direction_column'
 
 export interface CsvError {
   /**
    * Row number as a spreadsheet shows it, so the header is row 1. Row 0 means the file as
-   * a whole (empty, no rows, too many rows, month-first dates). For `bad_quotes` it is the row where the
+   * a whole (empty, no rows, too many rows, month-first dates); a problem with a header is
+   * on the header's row. For `bad_quotes` it is the row where the
    * broken record begins.
    */
   row: number
   code: CsvErrorCode
-  /** The column the problem is in, by its canonical name: `date`, `amount`, `debit`, and so on. */
+  /**
+   * The column the problem is in, by its canonical name: `date`, `amount`, `debit`, and so on.
+   * For `direction_column` it is the header as the file wrote it, trimmed (`DR/CR`).
+   */
   column?: string
   /** What the cell held, trimmed and cut short, so the message can quote it. */
   value?: string
@@ -107,6 +113,18 @@ interface Columns {
   width: number
 }
 
+// Headers that say which way the money went. Next to a single `amount` column, they leave it open
+// whether the amount carries its own sign or is a size to be signed by this column. Compared
+// after `nameKey`, so case and spaces do not matter.
+const DIRECTION_COLUMNS: ReadonlySet<string> = new Set([
+  'type',
+  'dr/cr',
+  'drcr',
+  'dr_cr',
+  'transaction type',
+  'debit/credit',
+])
+
 function readHeader(
   cells: readonly string[],
   row: number,
@@ -132,13 +150,19 @@ function readHeader(
       ? { kind: 'split', debit, credit }
       : null
 
-  if (!date || !description || !amount) {
-    const errors: CsvError[] = []
-    if (!date) errors.push({ row, code: 'missing_column', column: 'date' })
-    if (!description) errors.push({ row, code: 'missing_column', column: 'description' })
-    if (!amount) errors.push({ row, code: 'missing_column', column: 'amount' })
-    return { ok: false, errors }
+  const errors: CsvError[] = []
+  if (!date) errors.push({ row, code: 'missing_column', column: 'date' })
+  if (!description) errors.push({ row, code: 'missing_column', column: 'description' })
+  if (!amount) errors.push({ row, code: 'missing_column', column: 'amount' })
+  if (signed) {
+    // A signed amount next to a column that says debit or credit: the sign may be in either.
+    names.forEach((name, index) => {
+      if (DIRECTION_COLUMNS.has(name)) {
+        errors.push({ row, code: 'direction_column', column: (cells[index] ?? '').trim() })
+      }
+    })
   }
+  if (errors.length > 0 || !date || !description || !amount) return { ok: false, errors }
   const lastNamed = names.findLastIndex((name) => name !== '')
   return {
     ok: true,
