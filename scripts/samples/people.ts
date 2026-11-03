@@ -751,8 +751,13 @@ export const ARIF: Persona = {
 
 export const RAHIM: Persona = {
   // Construction worker in Singapore, living in an employer-provided dormitory, so
-  // there is no rent. Earns 1,500 dollars and sends about 700 home every month. He cooks
-  // in the dorm, spends the same way every month, and puts what is left into savings.
+  // there is no rent. Earns 1,500 dollars and sends about 700 home every month, in two
+  // transfers through Instarem, whose fee is added to what he pays. He cooks in the dorm,
+  // spends the same way every month, and puts what is left into savings.
+  //
+  // Before Eid-ul-Adha (27 May, a public holiday here) his family needs the money earlier,
+  // so the second transfer goes on the 21st and not mid-month. On the day he eats a biryani
+  // in Little India.
   id: 'rahim',
   seed: 5505,
   currency: 'SGD',
@@ -761,10 +766,10 @@ export const RAHIM: Persona = {
     {
       day: 1,
       category: 'family_support_out',
-      description: 'FAST PAYMENT TO INSTAREM - REMITTANCE BANGLADESH',
+      description: 'FAST PAYMENT TO INSTAREM PTE LTD REF IN{ref}',
       amount: [-520, -480],
       roundTo: 10,
-      charge: { description: 'REMITTANCE FEE - INSTAREM', rate: REMITTANCE_FEE_RATE },
+      feeIncluded: REMITTANCE_FEE_RATE,
     },
     {
       day: 10,
@@ -776,11 +781,12 @@ export const RAHIM: Persona = {
     {
       day: 15,
       jitterDays: 2,
+      inMonths: [6, 7, 8, 9, 10],
       category: 'family_support_out',
-      description: 'FAST PAYMENT TO INSTAREM - REMITTANCE BANGLADESH',
+      description: 'FAST PAYMENT TO INSTAREM PTE LTD REF IN{ref}',
       amount: [-220, -180],
       roundTo: 10,
-      charge: { description: 'REMITTANCE FEE - INSTAREM', rate: REMITTANCE_FEE_RATE },
+      feeIncluded: REMITTANCE_FEE_RATE,
     },
     {
       day: 28,
@@ -802,6 +808,22 @@ export const RAHIM: Persona = {
       description: 'NETS CHALLENGER ELECTRONICS FUNAN',
       amount: -189,
     },
+    {
+      day: 21,
+      inMonths: [5],
+      category: 'family_support_out',
+      description: 'FAST PAYMENT TO INSTAREM PTE LTD REF IN{ref}',
+      amount: [-220, -180],
+      roundTo: 10,
+      feeIncluded: REMITTANCE_FEE_RATE,
+    },
+    {
+      day: 27,
+      inMonths: [5],
+      category: 'eating_out',
+      description: 'NETS BIRYANI RESTAURANT LITTLE INDIA',
+      amount: -14,
+    },
   ],
   scattered: [
     {
@@ -819,12 +841,14 @@ export const RAHIM: Persona = {
       category: 'eating_out',
       description: ['NETS KOPITIAM FOODCOURT', 'NETS HAWKER STALL 0217', 'NETS HAWKER STALL 0344'],
       amount: [-6.5, -3.5],
+      roundTo: 0.1,
     },
     {
       perMonth: [1, 2],
       category: 'eating_out',
       description: 'NETS BIRYANI RESTAURANT LITTLE INDIA',
       amount: [-15, -8],
+      roundTo: 0.5,
     },
     {
       perMonth: [3, 5],
@@ -850,6 +874,7 @@ export const RAHIM: Persona = {
       category: 'personal_care',
       description: 'NETS BARBER SHOP LITTLE INDIA',
       amount: [-10, -8],
+      roundTo: 1,
     },
     {
       perMonth: [0, 1],

@@ -544,6 +544,30 @@ describe('Rahim, construction worker in Singapore', () => {
     }
   })
 
+  it('sends two Instarem transfers a month with the fee inside the amount, not as a separate line', () => {
+    const sent = inCategory('rahim', 'family_support_out')
+    expect(sent).toHaveLength(12)
+    for (const month of MAY_TO_OCT) {
+      expect(sent.filter((line) => monthOf(line.date) === month), month).toHaveLength(2)
+    }
+    // Each is a round amount in dollars plus 0.7%, in whole cents.
+    for (const line of sent) {
+      expect(line.description, line.id).toMatch(/^FAST PAYMENT TO INSTAREM PTE LTD REF IN\d{6}$/)
+      const base = -line.amount / 1.007
+      expect(Math.abs(base - 10 * Math.round(base / 10)), line.id).toBeLessThan(0.01)
+    }
+    expect(inCategory('rahim', 'fees')).toHaveLength(0)
+  })
+
+  it('sends the second May transfer before Eid-ul-Adha and has a biryani on the day', () => {
+    const may = inCategory('rahim', 'family_support_out').filter(
+      (line) => monthOf(line.date) === '2026-05',
+    )
+    expect(may.map((line) => line.date)).toEqual(['2026-05-01', '2026-05-21'])
+    const onEid = inCategory('rahim', 'eating_out').filter((line) => line.date === EID_ADHA)
+    expect(onEid.some((line) => /biryani/i.test(line.description))).toBe(true)
+  })
+
   it('spends very steadily and owes nothing', () => {
     expect(subScore('rahim', 'stability')).toBeGreaterThanOrEqual(80)
     expect(analyse('rahim').measures.debtPayments).toBe(0)
