@@ -44,6 +44,15 @@ export const ANCHORS: Record<MeasureId, readonly Anchor[]> = {
 /** Float error below this is noise, not a difference in score. */
 const SNAP = 1e9
 
+/**
+ * `x` to nine decimal places. A value that is exactly on a half can come out a hair
+ * below it, and `Math.floor(x + 0.5)` would then round it the wrong way, so snap
+ * before rounding.
+ */
+export function snapNoise(x: number): number {
+  return Math.round(x * SNAP) / SNAP
+}
+
 /** The score for `x` on the line through `anchors` (x ascending), held flat beyond its ends. */
 export function interpolate(x: number, anchors: readonly Anchor[]): number {
   const first = anchors[0]
@@ -56,7 +65,7 @@ export function interpolate(x: number, anchors: readonly Anchor[]): number {
       const score = y0 + ((x - x0) / (x1 - x0)) * (y1 - y0)
       // A score that is exactly 37.5 can come out as 37.49999999999999, and the
       // sub-score is rounded to a whole number next. Snap so it rounds up as it should.
-      return Math.round(score * SNAP) / SNAP
+      return snapNoise(score)
     }
     x0 = x1
     y0 = y1

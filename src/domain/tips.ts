@@ -3,6 +3,7 @@
 // number is ever typed into prose. Money is in BDT; the screen converts it.
 // Pure: no React, no DOM.
 
+import { snapNoise } from './anchors'
 import { CATEGORIES } from './categories'
 import type { Measures } from './measures'
 import { topReasons } from './reasons'
@@ -49,9 +50,13 @@ const FEES_INCOME_DIVISOR = 100
 
 const UNCATEGORISED_FROM = 0.1
 
-/** `value` rounded to the nearest `step`, halves up, but never below one `step`. */
+/**
+ * `value` rounded to the nearest `step`, halves up, but never below one `step`. The
+ * quotient is snapped first: a converted income that is exactly half way between two
+ * steps can come out a hair short of it, and would round down.
+ */
 function roundedStep(value: number, step: number): number {
-  return Math.max(step, Math.floor(value / step + 0.5) * step)
+  return Math.max(step, Math.floor(snapNoise(value / step) + 0.5) * step)
 }
 
 /** Money to the paisa, which clears the float noise left by dividing and multiplying. */
@@ -118,10 +123,18 @@ const TIP_FOR_MEASURE: Record<MeasureId, (m: Measures, subScore: number) => Tip 
   stability: steadySpending,
 }
 
+function keepGoing(): Tip {
+  return { id: 'keep_going', values: {} }
+}
+
 /**
- * One to four tips. First come the tips for the measures with the most to gain,
- * in the order of the reasons, then the two data checks, cut off at four. If none
- * applies the person is told to keep going.
+ * Two to four tips. First come the tips for the measures with the most to gain,
+ * in the order of the reasons, then the two data checks, cut off at four. A lone
+ * tip is followed by `keep_going` to make two.
+ *
+ * The one exception is when no rule applies: the result is `keep_going` alone. A
+ * person with nothing to fix has nothing to be told, and one encouraging line is
+ * more honest than inventing a second.
  *
  * `_ds` is part of the signature so a rule can reach the raw transactions; every
  * rule so far gets what it needs from the measures.
@@ -144,5 +157,8 @@ export function pickTips(_ds: Dataset, m: Measures, r: ScoreResult): Tip[] {
     tips.push({ id: 'check_unrecognised', values: { count: m.unrecognisedIncomeCount } })
   }
 
-  return tips.length > 0 ? tips.slice(0, MAX_TIPS) : [{ id: 'keep_going', values: {} }]
+  // keep_going is never a rule's own tip, so it cannot appear twice.
+  if (tips.length === 0) return [keepGoing()]
+  if (tips.length === 1) tips.push(keepGoing())
+  return tips.slice(0, MAX_TIPS)
 }

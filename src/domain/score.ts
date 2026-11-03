@@ -100,7 +100,7 @@ const NOT_SCORED_REASON: Record<MeasureId, (m: Measures) => NotScoredReason> = {
 }
 
 /** n / d rounded to the nearest whole number, halves up. Whole numbers only, so no float drift. */
-function roundedDivide(n: number, d: number): number {
+export function roundedDivide(n: number, d: number): number {
   return Math.floor((2 * n + d) / (2 * d))
 }
 

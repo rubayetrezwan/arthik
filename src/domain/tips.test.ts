@@ -89,6 +89,24 @@ describe('start_dps', () => {
     },
   )
 
+  it('rounds a converted income that lands exactly on a half step upwards', () => {
+    // 175 EUR a month, entered as 1 + 174, is 25,000 BDT. 25,000 / 20 = 1,250 is exactly
+    // half way between 1,000 and 1,500. Converting the two parts leaves the three-month
+    // income at 74,999.99999999999, and 74,999.99999999999 / 60 / 500 = 2.4999999999999996.
+    const ds = threeMonths(
+      (month) => [
+        tx(`${month}-01`, 'salary', 1, { currency: 'EUR' }),
+        tx(`${month}-02`, 'salary', 174, { currency: 'EUR' }),
+        tx(`${month}-28`, 'rent', -12_000),
+      ],
+      { amount: 0, currency: 'BDT' },
+    )
+    // The test is only worth anything while the conversion really leaves residue.
+    expect(computeMeasures(ds, fixtureRates).income).not.toBe(75_000)
+    // Gap = 3 x 12,000 = 36,000 -> 24 months at 1,500.
+    expect(tipOf(tipsFor(ds), 'start_dps')?.values).toEqual({ monthly: 1_500, months: 24 })
+  })
+
   it('does not add a month for float noise when the gap is an exact number of months', () => {
     // Gap = 3 x 7,000 - 16,000 = 5,000, exactly 5 months at 1,000. Worked out as
     // (3 - 16,000 / 7,000) x 7,000 in floating point it comes to 5,000.000000000001.
@@ -178,7 +196,10 @@ describe('debt_highest_interest', () => {
       ],
       { amount: 100_000, currency: 'BDT' },
     )
-    expect(tipsFor(indebted)).toEqual([{ id: 'debt_highest_interest', values: { pct: 0.3 } }])
+    expect(tipsFor(indebted)).toEqual([
+      { id: 'debt_highest_interest', values: { pct: 0.3 } },
+      { id: 'keep_going', values: {} },
+    ])
   })
 
   it('is not offered at a sub-score of 70 or more', () => {
@@ -199,7 +220,10 @@ describe('steady_spending', () => {
       ],
       { amount: 100_000, currency: 'BDT' },
     )
-    expect(tipsFor(uneven)).toEqual([{ id: 'steady_spending', values: { month: '2026-02' } }])
+    expect(tipsFor(uneven)).toEqual([
+      { id: 'steady_spending', values: { month: '2026-02' } },
+      { id: 'keep_going', values: {} },
+    ])
   })
 
   it('is offered below a stability sub-score of 60 and not at it', () => {
@@ -208,6 +232,7 @@ describe('steady_spending', () => {
     // Months that spend the same: the earliest is named.
     expect(tipsFor(healthy, { spendingCV: 0.26 })).toEqual([
       { id: 'steady_spending', values: { month: '2026-01' } },
+      { id: 'keep_going', values: {} },
     ])
   })
 })
@@ -215,7 +240,10 @@ describe('steady_spending', () => {
 describe('sort_uncategorised', () => {
   it('appears from 10% of spending being uncategorised', () => {
     const tips = tipsFor(healthy, { uncategorisedShare: 0.1 })
-    expect(tips).toEqual([{ id: 'sort_uncategorised', values: { pct: 0.1 } }])
+    expect(tips).toEqual([
+      { id: 'sort_uncategorised', values: { pct: 0.1 } },
+      { id: 'keep_going', values: {} },
+    ])
     expect(idsOf(tipsFor(healthy, { uncategorisedShare: 0.0999 }))).toEqual(['keep_going'])
   })
 })
@@ -259,8 +287,22 @@ describe('pickTips', () => {
     ])
   })
 
-  it('falls back to keep_going when there is nothing to improve', () => {
+  it('falls back to keep_going alone when there is nothing to improve', () => {
+    // The one case with a single tip: a person with nothing to fix gets one encouraging line.
     expect(tipsFor(healthy)).toEqual([{ id: 'keep_going', values: {} }])
+  })
+
+  it('adds keep_going after a single tip so there are always two', () => {
+    const tips = tipsFor(healthy, { unrecognisedIncomeCount: 2 })
+    expect(tips).toEqual([
+      { id: 'check_unrecognised', values: { count: 2 } },
+      { id: 'keep_going', values: {} },
+    ])
+  })
+
+  it('does not add keep_going when the rules already give two tips', () => {
+    const tips = tipsFor(healthy, { uncategorisedShare: 0.4, unrecognisedIncomeCount: 3 })
+    expect(idsOf(tips)).not.toContain('keep_going')
   })
 
   it('still reports the data checks when no measure needs improving', () => {
@@ -268,12 +310,19 @@ describe('pickTips', () => {
     expect(idsOf(tips)).toEqual(['sort_uncategorised', 'check_unrecognised'])
   })
 
-  it('gives one to four tips for every dataset, even an empty one', () => {
+  it('gives two to four tips for every dataset, or just keep_going when nothing applies', () => {
     for (const ds of [fixtureA, nusratLike, healthy, empty, salaried(23_000, 12_000, 0)]) {
       const tips = tipsFor(ds)
-      expect(tips.length).toBeGreaterThanOrEqual(1)
       expect(tips.length).toBeLessThanOrEqual(4)
+      // A lone tip is only ever the "nothing to fix" line.
+      expect(tips.length >= 2 || idsOf(tips).join() === 'keep_going').toBe(true)
     }
     expect(idsOf(tipsFor(empty))).toEqual(['keep_going'])
+  })
+
+  it('never lists keep_going twice', () => {
+    for (const ds of [fixtureA, nusratLike, healthy, empty, salaried(23_000, 12_000, 0)]) {
+      expect(idsOf(tipsFor(ds)).filter((id) => id === 'keep_going').length).toBeLessThanOrEqual(1)
+    }
   })
 })

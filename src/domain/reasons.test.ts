@@ -62,8 +62,31 @@ describe('topReasons', () => {
       'needsWants',
       'stability',
     ])
-    // Points use the usual weights, not the shares re-weighted after a measure drops out.
-    expect(reasons.map((reason) => reason.pointsAvailableHundredths)).toEqual([1050, 660, 210])
+    // Buffer drops out, so the four scored weights (25 + 20 + 15 + 15 = 75) are scaled to
+    // fill 100%: 25 x 42 x 100 / 75 = 1400, 15 x 44 x 100 / 75 = 880, 15 x 14 x 100 / 75 = 280.
+    expect(reasons.map((reason) => reason.pointsAvailableHundredths)).toEqual([1400, 880, 280])
+  })
+
+  it('agrees with the ledger when a measure drops out', () => {
+    const result = computeScore(measuresWith({ bufferMonths: null }))
+    // What a line has earned plus what it could still add is its whole share of the 100 points
+    // (25 / 75, 15 / 75 and 15 / 75 of 10,000 hundredths), give or take a hundredth of rounding.
+    const wholeShare: Record<string, number> = {
+      savingsRate: 3333,
+      needsWants: 2000,
+      stability: 2000,
+    }
+    const reasons = topReasons(result)
+    expect(reasons).toHaveLength(3)
+    for (const reason of reasons) {
+      const earned = result.lines.find((line) => line.id === reason.measure)?.pointsHundredths
+      const share = wholeShare[reason.measure]
+      expect(earned).toBeDefined()
+      expect(share).toBeDefined()
+      expect(
+        Math.abs((earned ?? 0) + reason.pointsAvailableHundredths - (share ?? 0)),
+      ).toBeLessThanOrEqual(1)
+    }
   })
 
   it('breaks ties in ledger order', () => {
@@ -117,6 +140,30 @@ describe('topReasons', () => {
       'debtPayments',
       'needsWants',
     ])
+  })
+
+  it('weighs strengths the way the ledger does when a measure drops out', () => {
+    // Buffer and stability are not scored, so the weights 25 + 20 + 15 = 60 fill 100%.
+    const result = computeScore(
+      measuresWith({
+        savingsRate: 0.15, // 85
+        bufferMonths: null,
+        debtRatio: 0.1, // 90
+        wantsShare: 0.3, // 80
+        spendingCV: null,
+      }),
+    )
+    expect(result.lines.map((line) => line.subScore)).toEqual([85, null, 90, 80, null])
+
+    const reasons = topReasons(result)
+    expect(reasons.map((reason) => reason.measure)).toEqual([
+      'debtPayments',
+      'savingsRate',
+      'needsWants',
+    ])
+    expect(reasons.map((reason) => reason.kind)).toEqual(['strength', 'strength', 'strength'])
+    // 20 x 10 x 100 / 60 = 333.3, 25 x 15 x 100 / 60 = 625, 15 x 20 x 100 / 60 = 500.
+    expect(reasons.map((reason) => reason.pointsAvailableHundredths)).toEqual([333, 625, 500])
   })
 
   it('has no reasons when nothing was scored', () => {
