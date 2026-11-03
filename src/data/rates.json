@@ -1,0 +1,19 @@
+{
+  "base": "BDT",
+  "date": "2026-11-03",
+  "source": "ExchangeRate-API",
+  "sourceUrl": "https://www.exchangerate-api.com",
+  "perBDT": {
+    "BDT": 1,
+    "USD": 0.008039,
+    "EUR": 0.007179,
+    "JPY": 1.269334,
+    "GBP": 0.005995,
+    "CNY": 0.053602,
+    "CHF": 0.006589,
+    "AUD": 0.01148,
+    "CAD": 0.011242,
+    "HKD": 0.063076,
+    "SGD": 0.010284
+  }
+}
