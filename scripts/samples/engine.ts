@@ -45,6 +45,12 @@ interface ItemBase {
   /** A second line on the same day, as a share of the first (a wallet's cash-out charge). */
   charge?: { description: string; rate: number }
   /**
+   * The other side of a transfer between a person's own accounts: a second line on the same
+   * day with this description and the same amount the opposite way. Both lines take the
+   * item's category, so use it only with `own_transfer`.
+   */
+  mirror?: string
+  /**
    * A provider's fee that is added to the amount paid, as a share of it, so the statement
    * shows one debit and not a payment plus a fee (a remittance service does this).
    */
@@ -142,6 +148,9 @@ function linesOn(
       .replace('{code}', () => random.code(9, CODE_CHARACTERS))
 
     const lines: Line[] = [{ date, description, amount, currency, category: item.category }]
+    if (item.mirror) {
+      lines.push({ date, description: item.mirror, amount: -amount, currency, category: item.category })
+    }
     if (item.charge) {
       lines.push({
         date,

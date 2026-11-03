@@ -537,6 +537,34 @@ describe('the generator', () => {
       expect(transactions.some((line) => line.category === 'fees')).toBe(false)
     })
 
+    it('adds the other side of a transfer between two accounts of one person', () => {
+      const topUp: Persona = {
+        ...persona,
+        monthly: [
+          ...persona.monthly,
+          {
+            day: 2,
+            category: 'own_transfer',
+            description: 'ADD MONEY TO BKASH',
+            mirror: 'BKASH ADD MONEY FROM BANK',
+            amount: [-12_000, -8_000],
+            roundTo: 1_000,
+          },
+        ],
+      }
+      const { transactions } = buildDataset(topUp)
+      const moves = transactions.filter((line) => line.category === 'own_transfer')
+      expect(moves).toHaveLength(12)
+      for (let index = 0; index < moves.length; index += 2) {
+        const [out, back] = [moves[index], moves[index + 1]]
+        expect(out?.description).toBe('ADD MONEY TO BKASH')
+        expect(back?.description).toBe('BKASH ADD MONEY FROM BANK')
+        expect(out?.date).toBe(back?.date)
+        expect((out?.amount ?? 0) + (back?.amount ?? 0)).toBe(0)
+        expect(out?.amount).toBeLessThan(0)
+      }
+    })
+
     it('draws a fresh code for each placeholder on each line', () => {
       const codes: Persona = {
         ...persona,
