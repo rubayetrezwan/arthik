@@ -751,6 +751,180 @@ describe('parseTransactionsCsv: quotes', () => {
   })
 })
 
+describe('parseTransactionsCsv: a runaway quote that a later quote closes by accident', () => {
+  // The stray quote on row 3 opens a field that does not end on its line. The next quote in
+  // the file is the opening quote of a good field on row 5, which the reader takes for the
+  // closing quote, so the lines in between and part of row 5 become one cell. PapaParse says
+  // so with InvalidQuotes, but it still hands back one merged record.
+  const runaway = file(
+    'date,description,amount',
+    '2026-10-01,a,-5', // row 2
+    '2026-10-02,"c,-7', // row 3: the stray quote
+    '2026-10-03,d,-8', // swallowed
+    '2026-10-04,"e",-9', // swallowed; its first quote closes the runaway field
+    '2026-10-05,f,-10', // row 4: a spreadsheet shows the merged cell as one row
+  )
+
+  it('leaves the merged record out, reports it once and imports the rows after it', () => {
+    const { transactions, errors } = parseTransactionsCsv(runaway, 'BDT')
+    expect(transactions.map((t) => [t.id, t.date, t.description, t.amount])).toEqual([
+      ['row-2', '2026-10-01', 'a', -5],
+      ['row-4', '2026-10-05', 'f', -10],
+    ])
+    expect(errors).toEqual<CsvError[]>([{ row: 3, code: 'bad_quotes', skippedRows: 2 }])
+  })
+
+  it('never turns the lost rows into a transaction with another row amount', () => {
+    const { transactions } = parseTransactionsCsv(runaway, 'BDT')
+    expect(transactions.map((t) => t.amount)).not.toContain(-7)
+    expect(transactions.map((t) => t.amount)).not.toContain(-8)
+    expect(transactions.map((t) => t.amount)).not.toContain(-9)
+    expect(transactions.filter((t) => t.description.includes('\n'))).toEqual([])
+  })
+
+  it('reports one error for a record that PapaParse complains about twice', () => {
+    // "Shop"x is a bad quote, and with no later quote the field also never ends.
+    const { transactions, errors } = parseTransactionsCsv(
+      file(
+        'date,description,amount',
+        '2026-10-01,Good,-10',
+        '2026-10-02,"Shop"x,-20', // row 3
+        '2026-10-03,Lost one,-30',
+        '2026-10-04,Lost two,-40',
+      ),
+      'BDT',
+    )
+    expect(transactions.map((t) => t.id)).toEqual(['row-2'])
+    expect(errors).toEqual<CsvError[]>([{ row: 3, code: 'bad_quotes', skippedRows: 2 }])
+  })
+
+  it('reports each broken record at its own row, in row order with the other row errors', () => {
+    const { transactions, errors } = parseTransactionsCsv(
+      file(
+        'date,description,amount',
+        '2026-10-01,Good one,-10', // row 2
+        '2026-10-02,"One,-7', // row 3: broken, and swallows the next line
+        '2026-10-03,"x",-8',
+        '2026-10-04,Bad amount,abc', // row 4
+        '2026-10-05,"Two,-7', // row 5: broken again
+        '2026-10-06,"y",-9',
+        '2026-10-07,Good two,-20', // row 6
+      ),
+      'BDT',
+    )
+    expect(transactions.map((t) => [t.id, t.amount])).toEqual([
+      ['row-2', -10],
+      ['row-6', -20],
+    ])
+    expect(errors).toEqual<CsvError[]>([
+      { row: 3, code: 'bad_quotes', skippedRows: 1 },
+      { row: 4, code: 'bad_amount', column: 'amount', value: 'abc' },
+      { row: 5, code: 'bad_quotes', skippedRows: 1 },
+    ])
+  })
+
+  it('leaves a record out even when its quote swallowed no other line', () => {
+    const { transactions, errors } = parseTransactionsCsv(
+      file('date,description,amount', '2026-10-01,Good,-10', '2026-10-02,"a"b",-5', '2026-10-03,Next,-20'),
+      'BDT',
+    )
+    expect(transactions.map((t) => t.id)).toEqual(['row-2', 'row-4'])
+    expect(errors).toEqual<CsvError[]>([{ row: 3, code: 'bad_quotes', skippedRows: 0 }])
+  })
+
+  it('reports the quote alone when the only data row is broken, not no_rows', () => {
+    const { transactions, errors } = parseTransactionsCsv(
+      file('date,description,amount', '2026-10-01,"a"b",-5'),
+      'BDT',
+    )
+    expect(transactions).toEqual([])
+    expect(errors).toEqual<CsvError[]>([{ row: 2, code: 'bad_quotes', skippedRows: 0 }])
+  })
+
+  it('reports a broken header as the only problem, not as a missing column', () => {
+    const { transactions, errors } = parseTransactionsCsv(
+      file('date,"desc"ription,amount', '2026-10-01,"x",-5', '2026-10-02,y,-6'),
+      'BDT',
+    )
+    expect(transactions).toEqual([])
+    expect(errors).toEqual<CsvError[]>([{ row: 1, code: 'bad_quotes', skippedRows: 1 }])
+  })
+
+  it('does not count blank lines among the lines lost, and still counts them in row numbers', () => {
+    const { transactions, errors } = parseTransactionsCsv(
+      file(
+        'date,description,amount',
+        '2026-10-01,"Runaway,-10', // row 2
+        '',
+        '2026-10-02,Lost,-20',
+        '   ',
+        '2026-10-03,"Shut",-30',
+        '', // row 3
+        '2026-10-04,Good,-40', // row 4
+      ),
+      'BDT',
+    )
+    expect(transactions.map((t) => t.id)).toEqual(['row-4'])
+    expect(errors).toEqual<CsvError[]>([{ row: 2, code: 'bad_quotes', skippedRows: 2 }])
+  })
+
+  it('counts the lines lost the same way with Windows line endings', () => {
+    const lines = [
+      HEADER,
+      '2026-10-01,Good,-10,,',
+      '2026-10-02,"Runaway,-20,,', // row 3
+      'a,b,-1,,',
+      '2026-10-03,"Shut",-30,,',
+      '2026-10-04,Fine,-40,,', // row 4
+    ]
+    const { transactions, errors } = parseTransactionsCsv(lines.join('\r\n'), 'BDT')
+    expect(transactions.map((t) => t.id)).toEqual(['row-2', 'row-4'])
+    expect(errors).toEqual<CsvError[]>([{ row: 3, code: 'bad_quotes', skippedRows: 2 }])
+  })
+
+  it('finds the same problem in a semicolon file, where ;;; is a blank line', () => {
+    const { transactions, errors } = parseTransactionsCsv(
+      file(
+        'date;description;amount',
+        '2026-10-01;Good;-10',
+        '2026-10-02;"Runaway;-20', // row 3
+        ';;;',
+        '2026-10-03;"Shut";-30',
+        '2026-10-04;Fine;-40', // row 4
+      ),
+      'BDT',
+    )
+    expect(transactions.map((t) => t.id)).toEqual(['row-2', 'row-4'])
+    expect(errors).toEqual<CsvError[]>([{ row: 3, code: 'bad_quotes', skippedRows: 1 }])
+  })
+
+  it('reports no broken quote in a well-formed file with quoted commas and escaped quotes', () => {
+    const { transactions, errors } = parseTransactionsCsv(
+      file(
+        'date,description,amount',
+        '2026-10-01,"Shop, ""Best"" Dhaka",-100',
+        '2026-10-02,"Two\nline note",-20',
+        '2026-10-03,"""Quoted"" at the start",-30',
+        '2026-10-04,"Ends with a quote""",-40',
+        '2026-10-05,"",-50',
+        '"2026-10-06","Comma, semicolon; and ""both""",-60',
+        '2026-10-07,"Last row, quoted",-70',
+      ),
+      'BDT',
+    )
+    expect(errors).toEqual([])
+    expect(transactions.map((t) => [t.id, t.description, t.amount])).toEqual([
+      ['row-2', 'Shop, "Best" Dhaka', -100],
+      ['row-3', 'Two\nline note', -20],
+      ['row-4', '"Quoted" at the start', -30],
+      ['row-5', 'Ends with a quote"', -40],
+      ['row-6', '', -50],
+      ['row-7', 'Comma, semicolon; and "both"', -60],
+      ['row-8', 'Last row, quoted', -70],
+    ])
+  })
+})
+
 describe('parseTransactionsCsv: whole-file problems', () => {
   it('reports an empty file', () => {
     expect(parseTransactionsCsv('', 'BDT')).toEqual({

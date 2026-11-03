@@ -4,7 +4,7 @@
 // and the row is left out. It never guesses at a number. Pure: no React, no DOM and no
 // File API. The caller reads the file and passes the text.
 
-import Papa from 'papaparse'
+import Papa, { type ParseError } from 'papaparse'
 import { CATEGORIES, categoriesFor } from './categories'
 import { categorize } from './categorize'
 import { CATEGORY_LABELS_EN } from './categoryLabels'
@@ -25,7 +25,7 @@ export interface CsvError {
   /**
    * Row number as a spreadsheet shows it, so the header is row 1. Row 0 means the file as
    * a whole (empty, no rows, too many rows). For `bad_quotes` it is the row where the
-   * quote that never closes begins.
+   * broken record begins.
    */
   row: number
   code: CsvErrorCode
@@ -33,7 +33,10 @@ export interface CsvError {
   column?: string
   /** What the cell held, trimmed and cut short, so the message can quote it. */
   value?: string
-  /** Only for `bad_quotes`: how many non-blank lines after that row could not be read. */
+  /**
+   * Only for `bad_quotes`: how many non-blank lines after the first one that record ran
+   * over, because its quote swallowed them. 0 when it stayed on its own line.
+   */
   skippedRows?: number
 }
 
@@ -403,17 +406,59 @@ function rejected(error: CsvError): ParseResult {
 }
 
 /**
- * The error for a quoted field that never closes. PapaParse gives up there and puts the
- * rest of the file, from just after the opening quote, into the last cell of the last
- * record. So that cell is what could not be read: its first line is the end of the row that
- * holds the quote, and each non-blank line after it is a row lost. A line of nothing but
- * delimiters is as blank here as it is everywhere else.
+ * How many non-blank lines a record ran over. A quoted cell may hold line breaks, so a
+ * record that took in lines it should not have shows them as line breaks inside its cells:
+ * the first line of the record is where it began, and each non-blank line after that, in any
+ * cell, is one it swallowed. A line of nothing but delimiters is as blank here as it is
+ * everywhere else.
  */
-function unclosedQuoteError(records: readonly (readonly string[])[], delimiter: string): CsvError {
-  const unread = records.at(-1)?.at(-1) ?? ''
-  const following = unread.split(/\r\n|\r|\n/).slice(1)
-  const skippedRows = following.filter((line) => line.replaceAll(delimiter, '').trim() !== '')
-  return { row: records.length, code: 'bad_quotes', skippedRows: skippedRows.length }
+function linesSwallowed(cells: readonly string[], delimiter: string): number {
+  let count = 0
+  for (const cell of cells) {
+    for (const line of cell.split(/\r\n|\r|\n/).slice(1)) {
+      if (line.replaceAll(delimiter, '').trim() !== '') count++
+    }
+  }
+  return count
+}
+
+/**
+ * The records whose quotes PapaParse could not make sense of, keyed by their position in
+ * `records`, each with its `bad_quotes` error. There are two ways a quote goes wrong:
+ *
+ * - `MissingQuotes`: a quote opens and never closes. PapaParse gives up there, so the rest of
+ *   the file is inside the last record.
+ * - `InvalidQuotes`: a quote is followed by something that is not a delimiter or a line end,
+ *   as with a stray quote that a later, good quote then closes by accident. PapaParse carries
+ *   on looking for a closing quote, so the record is still returned, with lines it should not
+ *   have taken in and cells that are not what the file meant.
+ *
+ * Either way the record cannot be trusted: its date, description and amount may be from
+ * different rows. One record can draw several complaints (a bad quote that no later quote
+ * closes draws both kinds), so it gets one error. The position is PapaParse's own `row`,
+ * which is the index into `records` because blank lines are not skipped. The position is
+ * used and not the content, because a line of just `"` looks blank.
+ */
+function brokenQuoteRecords(
+  records: readonly (readonly string[])[],
+  complaints: readonly ParseError[],
+  delimiter: string,
+): Map<number, CsvError> {
+  const broken = new Map<number, CsvError>()
+  for (const complaint of complaints) {
+    if (complaint.type !== 'Quotes') continue
+    // PapaParse always names the row. If it ever did not, the last record is where
+    // PapaParse stops, and a wrongly placed error is better than a silently wrong number.
+    const index = complaint.row ?? records.length - 1
+    if (broken.has(index)) continue
+    const cells = records[index] ?? []
+    broken.set(index, {
+      row: index + 1,
+      code: 'bad_quotes',
+      skippedRows: linesSwallowed(cells, delimiter),
+    })
+  }
+  return broken
 }
 
 /**
@@ -425,11 +470,15 @@ function unclosedQuoteError(records: readonly (readonly string[])[], delimiter: 
  * still import. A file that cannot be used at all (empty, no rows, a missing column, over
  * `MAX_ROWS`) gives no transactions and says why.
  *
- * A quote that never closes hides everything after it, because the rest of the file reads
- * as one cell. The rows before it import. The row it starts in, and every row after, are
- * left out, and one `bad_quotes` error gives that row and how many lines were lost
- * (`skippedRows`). Only when the file cannot be used anyway (a missing column, too many
- * rows) is the quote not mentioned, as the visitor must fix the file first and will see it then.
+ * A broken quote makes PapaParse merge lines into one record, so the cells of that record
+ * may come from different rows and cannot be trusted. Such a record is never imported. It is
+ * reported by one `bad_quotes` error giving the row it starts in and how many further lines it
+ * swallowed (`skippedRows`). A quote that never closes swallows everything after it; a stray
+ * quote closed by accident by a later one swallows only the lines in between, and the rows
+ * after that import as usual. Their row numbers count the merged record as one row, the way a
+ * spreadsheet shows it. Only when the file cannot be used anyway (a missing column, too many
+ * rows) is a broken quote not mentioned, as the visitor must fix the file first and will see
+ * it then. A broken quote in the header is reported alone, because the header cannot be read.
  *
  * Each imported transaction has the id `row-<n>`, where n is its spreadsheet row.
  */
@@ -441,21 +490,21 @@ export function parseTransactionsCsv(text: string, defaultCurrency: CurrencyCode
   // Blank lines are kept here and skipped below, so each record's position in the list is
   // its row in a spreadsheet. A quoted line break stays inside its record, as in a spreadsheet.
   const delimiter = detectDelimiter(content)
-  const parsed = Papa.parse<string[]>(content, { delimiter, skipEmptyLines: false })
+  const { data: records, errors: complaints } = Papa.parse<string[]>(content, {
+    delimiter,
+    skipEmptyLines: false,
+  })
+  const brokenQuotes = brokenQuoteRecords(records, complaints, delimiter)
 
-  // Of Papa's complaints only an unclosed quote matters. Papa stops there, so the record
-  // holding it is the last one, with the rest of the file in its final cell. That record is
-  // set aside and only the records before it are read. It is found by position, not by its
-  // content, because a line of just `"` looks blank.
-  const unclosedQuote = parsed.errors.some((error) => error.code === 'MissingQuotes')
-    ? unclosedQuoteError(parsed.data, delimiter)
-    : null
-  const records = unclosedQuote ? parsed.data.slice(0, -1) : parsed.data
-
-  const headerIndex = records.findIndex((cells) => !isBlank(cells))
+  // The header is the first record with anything in it. A broken record counts as having
+  // something, whatever it looks like.
+  const headerIndex = records.findIndex(
+    (cells, index) => brokenQuotes.has(index) || !isBlank(cells),
+  )
   const header = records[headerIndex]
-  // With nothing readable before an unclosed quote, the quote is in the header itself.
-  if (header === undefined) return rejected(unclosedQuote ?? { row: 0, code: 'empty_file' })
+  if (header === undefined) return rejected({ row: 0, code: 'empty_file' })
+  const brokenHeader = brokenQuotes.get(headerIndex)
+  if (brokenHeader) return rejected(brokenHeader)
 
   const parsedHeader = readHeader(header, headerIndex + 1)
   if (!parsedHeader.ok) return { transactions: [], errors: parsedHeader.errors }
@@ -464,10 +513,18 @@ export function parseTransactionsCsv(text: string, defaultCurrency: CurrencyCode
   const dataRows: { row: number; cells: string[] }[] = []
   for (let index = headerIndex + 1; index < records.length; index++) {
     const cells = records[index]
-    if (cells !== undefined && !isBlank(cells)) dataRows.push({ row: index + 1, cells })
+    // A broken record is reported, not read.
+    if (cells !== undefined && !brokenQuotes.has(index) && !isBlank(cells)) {
+      dataRows.push({ row: index + 1, cells })
+    }
   }
-  // If the quote is in the first data row, the file has rows; they just cannot be read.
-  if (dataRows.length === 0) return rejected(unclosedQuote ?? { row: 0, code: 'no_rows' })
+  const quoteErrors = [...brokenQuotes.values()]
+  if (dataRows.length === 0) {
+    // If the only data rows are broken, the file has rows; they just cannot be read.
+    return quoteErrors.length > 0
+      ? { transactions: [], errors: quoteErrors }
+      : rejected({ row: 0, code: 'no_rows' })
+  }
   if (dataRows.length > MAX_ROWS) return rejected({ row: 0, code: 'too_many_rows' })
 
   const transactions: Transaction[] = []
@@ -477,7 +534,8 @@ export function parseTransactionsCsv(text: string, defaultCurrency: CurrencyCode
     if (outcome.kind === 'transaction') transactions.push(outcome.transaction)
     else if (outcome.kind === 'errors') errors.push(...outcome.errors)
   }
-  // Last, as it is the highest row.
-  if (unclosedQuote) errors.push(unclosedQuote)
+  // Back into row order. The sort is stable, so the errors of one row stay in column order.
+  errors.push(...quoteErrors)
+  errors.sort((a, b) => a.row - b.row)
   return { transactions, errors }
 }
