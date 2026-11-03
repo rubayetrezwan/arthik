@@ -28,8 +28,9 @@ export type Amount = number | readonly [low: number, high: number]
 
 interface ItemBase {
   /**
-   * The statement line. A list means each line takes one of them at random.
-   * `{ref}` becomes a random six-digit reference, as on a real order or receipt.
+   * The statement line. A list means each line takes one of them at random. Three
+   * placeholders stand for the codes a real receipt carries, each drawn fresh per line:
+   * `{ref}` six digits, `{hex}` eight hex digits, `{code}` nine letters and digits.
    */
   description: string | readonly string[]
   /** The category this line must get. The generator stops if the categoriser disagrees. */
@@ -43,6 +44,11 @@ interface ItemBase {
   inMonths?: readonly number[]
   /** A second line on the same day, as a share of the first (a wallet's cash-out charge). */
   charge?: { description: string; rate: number }
+  /**
+   * A provider's fee that is added to the amount paid, as a share of it, so the statement
+   * shows one debit and not a payment plus a fee (a remittance service does this).
+   */
+  feeIncluded?: number
 }
 
 /** One line a month, near a fixed day. */
@@ -57,6 +63,11 @@ export interface MonthlyItem extends ItemBase {
 export interface ScatteredItem extends ItemBase {
   /** How many lines a month, `[fewest, most]`. */
   perMonth: readonly [fewest: number, most: number]
+  /**
+   * No lines from the first date to the last, both included (`YYYY-MM-DD`): a week away
+   * from the city has no ride-hailing or pharmacy in it.
+   */
+  skipBetween?: readonly [from: string, to: string]
 }
 
 export interface Persona {
@@ -84,6 +95,9 @@ function round(value: number, step: number): number {
   return Number((Math.round(value / step) * step).toFixed(2))
 }
 
+const HEX_DIGITS = '0123456789ABCDEF'
+const CODE_CHARACTERS = 'ABCDEFGHJKLMNPQRSTUVWXYZ0123456789'
+
 /** One item's random stream. */
 function randomStream(seed: number) {
   const next = mulberry32(seed)
@@ -92,6 +106,9 @@ function randomStream(seed: number) {
     int: (low: number, high: number) => low + Math.floor(next() * (high - low + 1)),
     pick: <T>(options: readonly T[]): T => options[Math.floor(next() * options.length)] as T,
     between: (low: number, high: number) => low + next() * (high - low),
+    /** `length` characters drawn from `characters`. */
+    code: (length: number, characters: string) =>
+      Array.from({ length }, () => characters[Math.floor(next() * characters.length)]).join(''),
   }
 }
 
@@ -115,10 +132,13 @@ function linesOn(
 
   return days.flatMap((day) => {
     const date = `${YEAR}-${pad2(month)}-${pad2(day)}`
-    const amount = round(random.between(low, high), step)
+    const chosen = round(random.between(low, high), step)
+    const amount = item.feeIncluded ? round(chosen * (1 + item.feeIncluded), 0.01) : chosen
     const description = random
       .pick(wordings)
       .replace('{ref}', () => String(random.int(100_000, 999_999)))
+      .replace('{hex}', () => random.code(8, HEX_DIGITS))
+      .replace('{code}', () => random.code(9, CODE_CHARACTERS))
 
     const lines: Line[] = [{ date, description, amount, currency, category: item.category }]
     if (item.charge) {
@@ -144,10 +164,24 @@ function monthlyLines(item: MonthlyItem, currency: CurrencyCode, random: Random)
   })
 }
 
+/** The days of a month an item may fall on: all of them, less the item's skipped dates. */
+function openDays(item: ScatteredItem, month: number): number[] {
+  const days = Array.from({ length: daysInMonth(YEAR, month) }, (_, index) => index + 1)
+  const skip = item.skipBetween
+  if (!skip) return days
+  const open = days.filter((day) => {
+    const date = `${YEAR}-${pad2(month)}-${pad2(day)}`
+    return date < skip[0] || date > skip[1]
+  })
+  if (open.length === 0) throw new Error(`${String(item.description)}: no open day in month ${month}`)
+  return open
+}
+
 function scatteredLines(item: ScatteredItem, currency: CurrencyCode, random: Random): Line[] {
   return monthsOf(item).flatMap((month) => {
+    const open = openDays(item, month)
     const count = random.int(item.perMonth[0], item.perMonth[1])
-    const days = Array.from({ length: count }, () => random.int(1, daysInMonth(YEAR, month)))
+    const days = Array.from({ length: count }, () => open[random.int(0, open.length - 1)] as number)
     return linesOn(item, currency, month, days, random)
   })
 }

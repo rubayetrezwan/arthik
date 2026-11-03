@@ -422,6 +422,74 @@ describe('the generator', () => {
       }
       expect(() => buildDataset(late)).toThrow(/1 May to 31 October/)
     })
+
+    it('keeps a scattered item out of its skipped dates', () => {
+      const away: Persona = {
+        ...persona,
+        scattered: [
+          {
+            perMonth: [20, 20],
+            category: 'transport',
+            description: 'PATHAO RIDE',
+            amount: -100,
+            skipBetween: ['2026-05-20', '2026-05-31'],
+          },
+        ],
+      }
+      const rides = buildDataset(away).transactions.filter((line) => line.category === 'transport')
+      expect(rides).toHaveLength(120)
+      expect(rides.some((line) => line.date >= '2026-05-20' && line.date <= '2026-05-31')).toBe(false)
+      expect(rides.some((line) => line.date.startsWith('2026-06'))).toBe(true)
+    })
+
+    it('folds a provider fee into one payment when asked to', () => {
+      const remittance: Persona = {
+        ...persona,
+        monthly: [
+          ...persona.monthly,
+          {
+            day: 5,
+            category: 'family_support_out',
+            description: 'FAST PAYMENT TO INSTAREM PTE LTD',
+            amount: -500,
+            feeIncluded: 0.007,
+          },
+        ],
+      }
+      const { transactions } = buildDataset(remittance)
+      const sent = transactions.filter((line) => line.category === 'family_support_out')
+      expect(sent.map((line) => line.amount)).toEqual(Array(6).fill(-503.5))
+      expect(transactions.some((line) => line.category === 'fees')).toBe(false)
+    })
+
+    it('draws a fresh code for each placeholder on each line', () => {
+      const codes: Persona = {
+        ...persona,
+        scattered: [
+          {
+            perMonth: [2, 2],
+            category: 'entertainment',
+            description: 'SPOTIFY {hex} STOCKHOLM',
+            amount: -5.99,
+          },
+          {
+            perMonth: [2, 2],
+            category: 'shopping',
+            description: 'AMAZON.CO.UK*{code} AMZNMKTPLACE',
+            amount: -20,
+          },
+        ],
+      }
+      const { transactions } = buildDataset(codes)
+      const spotify = transactions.filter((line) => line.category === 'entertainment')
+      const amazon = transactions.filter((line) => line.category === 'shopping')
+      for (const line of spotify) expect(line.description).toMatch(/^SPOTIFY [0-9A-F]{8} STOCKHOLM$/)
+      for (const line of amazon) {
+        expect(line.description).toMatch(/^AMAZON\.CO\.UK\*[A-Z0-9]{9} AMZNMKTPLACE$/)
+      }
+      expect(new Set(spotify.map((line) => line.description)).size).toBeGreaterThan(6)
+      expect(new Set(amazon.map((line) => line.description)).size).toBeGreaterThan(6)
+    })
   })
 })
 
