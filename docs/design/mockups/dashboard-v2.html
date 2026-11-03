@@ -1,0 +1,473 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Arthik mockup v2: dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=Noto+Sans+Bengali:wght@400;500;600&family=Tiro+Bangla&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #F4EFE4;
+  --surface: #FBF8F1;
+  --ink: #1E1B16;
+  --ink-2: #5A5347;
+  --rule: #DDD3C0;
+  --control: #8A7D69;
+  --primary: #0E5A43;
+  --primary-ink: #FFFFFF;
+  --red: #9C2A22;
+  --vulnerable: #9A3324;
+  --coping: #7A5209;
+  --healthy: #1F6B45;
+  --zone-v: #E8C4B8;
+  --zone-c: #EAD39C;
+  --zone-h: #C3DCC8;
+  --display: "Newsreader", "Tiro Bangla", Georgia, serif;
+  --body: "IBM Plex Sans", "Noto Sans Bengali", system-ui, sans-serif;
+  --s1: 4px; --s2: 8px; --s3: 12px; --s4: 16px; --s5: 24px; --s6: 32px; --s7: 56px;
+}
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body { margin: 0; background: var(--bg); color: var(--ink); font-family: var(--body); font-size: 16px; line-height: 1.55; }
+.num { font-variant-numeric: tabular-nums lining-nums; }
+a { color: var(--primary); text-underline-offset: 3px; }
+:focus-visible { outline: 3px solid var(--primary); outline-offset: 2px; }
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+.skip { position: absolute; inset-inline-start: var(--s4); top: -60px; background: var(--ink); color: var(--surface); padding: var(--s2) var(--s4); z-index: 100; }
+.skip:focus { top: var(--s2); }
+
+/* mockup-only controls */
+.mock-switch { position: sticky; top: 0; z-index: 50; display: flex; gap: 8px; align-items: center; justify-content: center; flex-wrap: wrap; padding: 6px 16px; background: #111; color: #eee; font: 13px/1.4 system-ui, sans-serif; }
+.mock-switch button { font: inherit; color: #eee; background: #2a2a2a; border: 1px solid #444; border-radius: 4px; padding: 6px 12px; cursor: pointer; min-height: 32px; }
+.mock-switch button[aria-pressed="true"] { background: #eee; color: #111; }
+
+.wrap { max-width: 1160px; margin-inline: auto; padding-inline: var(--s5); }
+
+/* header with the ledger's red double rule */
+.site-header { background: var(--surface); box-shadow: inset 0 -1px 0 var(--red), inset 0 -4px 0 var(--surface), inset 0 -5px 0 var(--red); }
+.site-header .wrap { display: flex; align-items: center; flex-wrap: wrap; gap: var(--s2) var(--s6); min-height: 72px; padding-block: var(--s2) var(--s3); }
+.wordmark { display: inline-flex; align-items: baseline; gap: 10px; text-decoration: none; color: var(--ink); min-height: 44px; align-items: center; }
+.wordmark .en { font-family: var(--display); font-size: 26px; font-weight: 600; }
+.wordmark .bn { font-family: "Tiro Bangla", serif; font-size: 18px; color: var(--red); }
+.site-nav { display: flex; flex-wrap: wrap; gap: 0 var(--s5); }
+.site-nav a { display: inline-flex; align-items: center; min-height: 44px; color: var(--ink-2); text-decoration: none; font-size: 15px; }
+.site-nav a[aria-current="page"] { color: var(--ink); font-weight: 600; box-shadow: inset 0 -2px 0 var(--primary); }
+.prefs { margin-inline-start: auto; display: flex; gap: var(--s2); }
+.field-select { position: relative; }
+.field-select select { appearance: none; font: inherit; font-size: 15px; color: var(--ink); background: var(--surface); border: 1px solid var(--control); border-radius: 3px; padding-block: 0; padding-inline: 12px 34px; min-height: 44px; cursor: pointer; }
+.field-select::after { content: ""; position: absolute; inset-inline-end: 12px; top: 50%; width: 7px; height: 7px; border-inline-end: 1.5px solid var(--ink-2); border-bottom: 1.5px solid var(--ink-2); transform: translateY(-70%) rotate(45deg); pointer-events: none; }
+
+/* sample bar */
+.sample-bar { border-bottom: 1px solid var(--rule); }
+.sample-bar .wrap { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s2) var(--s4); padding-block: var(--s3); }
+.sample-bar .lead { font-family: var(--display); font-style: italic; color: var(--ink-2); }
+.people { display: flex; flex-wrap: wrap; gap: 0; border: 1px solid var(--control); border-radius: 3px; overflow: hidden; }
+.people button { font: inherit; font-size: 15px; color: var(--ink); background: var(--surface); border: 0; border-inline-start: 1px solid var(--rule); min-height: 44px; padding-inline: 16px; cursor: pointer; }
+.people button:first-child { border-inline-start: 0; }
+.people button[aria-pressed="true"] { background: var(--ink); color: var(--surface); }
+.btn-quiet { margin-inline-start: auto; display: inline-flex; align-items: center; min-height: 44px; padding-inline: 16px; border: 1px solid var(--primary); border-radius: 3px; color: var(--primary); font-weight: 500; text-decoration: none; font-size: 15px; }
+
+/* page head */
+.page-head { padding-block: var(--s6) var(--s4); }
+.kicker { font-family: var(--display); font-style: italic; color: var(--ink-2); margin: 0 0 var(--s1); font-size: 17px; }
+.page-head h1 { font-family: var(--display); font-weight: 500; font-size: clamp(28px, 4vw, 38px); line-height: 1.15; margin: 0; max-width: 22ch; }
+.page-head .period { margin: var(--s2) 0 0; color: var(--ink-2); }
+
+/* score + ledger */
+.score-area { display: grid; grid-template-columns: minmax(300px, 360px) 1fr; gap: var(--s5); align-items: start; }
+.sheet { background: var(--surface); border: 1px solid var(--rule); border-radius: 3px; padding: var(--s5); }
+.sheet h2, .section h2 { font-family: var(--display); font-weight: 500; font-size: 22px; line-height: 1.25; margin: 0; }
+.sheet .note, .section .note { color: var(--ink-2); font-size: 15px; margin: var(--s1) 0 0; }
+
+.score-figure { display: flex; align-items: baseline; gap: var(--s2); margin-block: var(--s4) var(--s3); }
+.score-figure .big { font-family: var(--display); font-size: 104px; line-height: .9; font-weight: 500; letter-spacing: -0.02em; border-bottom: 4px double var(--ink); padding-bottom: 6px; }
+.score-figure .of { font-size: 18px; color: var(--ink-2); }
+.stamp { display: inline-block; font-family: var(--display); font-size: 19px; font-weight: 600; color: var(--coping); border: 1.5px solid currentColor; border-radius: 2px; padding: 0 10px; transform: rotate(-1.5deg); margin-inline-end: var(--s2); }
+[dir="rtl"] .stamp { transform: rotate(1.5deg); }
+.band-explain { display: inline; color: var(--ink-2); font-size: 15px; }
+.bandscale { margin-top: var(--s5); }
+.bandscale .track { position: relative; display: grid; grid-template-columns: 40fr 40fr 20fr; height: 14px; }
+.bandscale .track span:nth-child(1) { background: var(--zone-v); }
+.bandscale .track span:nth-child(2) { background: var(--zone-c); box-shadow: inset 1px 0 0 var(--ink), inset -1px 0 0 var(--ink); }
+.bandscale .track span:nth-child(3) { background: var(--zone-h); }
+.bandscale .marker { position: absolute; top: -7px; width: 3px; height: 28px; background: var(--ink); inset-inline-start: calc(67% - 1.5px); }
+.bandscale .names { display: grid; grid-template-columns: 40fr 40fr 20fr; margin-top: var(--s2); font-size: 14px; line-height: 1.3; }
+.bandscale .names span { padding-inline-start: 4px; }
+.bandscale .names b { display: block; font-weight: 600; }
+.bandscale .names small { color: var(--ink-2); font-size: 14px; }
+.summary { font-family: var(--display); font-size: 18px; line-height: 1.55; margin: var(--s5) 0 0; padding-top: var(--s4); border-top: 1px solid var(--rule); }
+.summary-note { font-size: 14px; color: var(--ink-2); margin: var(--s2) 0 0; }
+
+/* the ledger */
+.ledger { width: 100%; border-collapse: collapse; margin-top: var(--s4); }
+.ledger th { font-family: var(--display); font-style: italic; font-weight: 400; font-size: 15px; color: var(--ink-2); text-align: start; padding: var(--s2) var(--s2); border-bottom: 1px solid var(--ink); }
+.ledger td { padding: var(--s3) var(--s2); border-bottom: 1px solid var(--rule); vertical-align: top; }
+.ledger .r { text-align: end; }
+.ledger .m-name { font-weight: 600; }
+.ledger .m-value { display: block; color: var(--ink-2); font-size: 15px; font-weight: 400; }
+.ledger .score-cell { min-width: 170px; }
+.ledger .score-line { display: flex; justify-content: space-between; gap: var(--s2); font-size: 15px; margin-bottom: 6px; }
+.ledger .score-line b { font-weight: 600; }
+.ledger .score-line span { color: var(--ink-2); }
+.bullet { position: relative; height: 12px; display: grid; grid-template-columns: 40fr 40fr 20fr; }
+.bullet span:nth-child(1) { background: var(--zone-v); }
+.bullet span:nth-child(2) { background: var(--zone-c); box-shadow: inset 1px 0 0 var(--ink), inset -1px 0 0 var(--ink); }
+.bullet span:nth-child(3) { background: var(--zone-h); }
+.bullet .fill { position: absolute; top: 4px; height: 4px; inset-inline-start: 0; background: var(--ink); }
+.ledger .pts { font-family: var(--display); font-size: 20px; }
+.ledger .weight { color: var(--ink-2); }
+.ledger tfoot td { border-bottom: 0; padding-top: var(--s3); }
+.ledger .total-label { font-family: var(--display); font-style: italic; color: var(--ink-2); }
+.ledger .total { font-family: var(--display); font-size: 20px; border-top: 1px solid var(--ink); }
+.ledger .final td { padding-top: var(--s1); }
+.ledger .final .total-label { font-style: normal; color: var(--ink); font-weight: 600; font-family: var(--body); }
+.ledger .final .grand { font-family: var(--display); font-size: 28px; font-weight: 600; border-bottom: 4px double var(--ink); }
+.ledger-foot { font-size: 14px; color: var(--ink-2); margin: var(--s3) 0 0; }
+
+/* explore sections: ruled, not boxed */
+.divider { margin-block: var(--s7) var(--s5); border: 0; border-top: 1px solid var(--red); position: relative; }
+.divider-title { font-family: var(--display); font-size: 28px; font-weight: 500; margin: 0 0 var(--s4); }
+.section { padding-block: var(--s5); border-top: 1px solid var(--rule); }
+.section:first-of-type { border-top: 0; }
+
+.reasons { list-style: none; margin: var(--s4) 0 0; padding: 0; counter-reset: r; }
+.reasons > li { counter-increment: r; display: grid; grid-template-columns: 40px 1fr 1fr; gap: var(--s2) var(--s5); padding-block: var(--s4); border-top: 1px solid var(--rule); }
+.reasons > li::before { content: counter(r); font-family: var(--display); font-size: 30px; line-height: 1; color: var(--red); }
+.reasons h3 { font-size: 16px; margin: 0; font-weight: 600; }
+.reasons p { margin: var(--s1) 0 0; }
+.worth { display: block; margin-top: var(--s2); font-size: 14px; font-weight: 600; color: var(--primary); }
+.help { border-inline-start: 2px solid var(--rule); padding-inline-start: var(--s4); }
+.help .lbl { font-family: var(--display); font-style: italic; color: var(--ink-2); display: block; font-size: 15px; }
+
+.whatif { display: grid; grid-template-columns: 1fr 240px; gap: var(--s5); align-items: center; margin-top: var(--s4); }
+.slider { margin-bottom: var(--s4); }
+.slider label { display: flex; justify-content: space-between; gap: var(--s3); font-weight: 500; }
+.slider output { font-weight: 600; }
+.slider input[type=range] { width: 100%; height: 44px; margin: 0; accent-color: var(--primary); cursor: pointer; }
+.slider .ends { display: flex; justify-content: space-between; font-size: 14px; color: var(--ink-2); margin-top: -6px; }
+.result { text-align: center; padding: var(--s5) var(--s4); background: var(--surface); border: 1px solid var(--rule); border-radius: 3px; }
+.result .from-to { font-family: var(--display); font-size: 44px; line-height: 1.1; }
+.result .from-to .from { color: var(--ink-2); font-size: 30px; }
+.result .arrow { display: inline-block; color: var(--ink-2); font-size: 28px; }
+[dir="rtl"] .result .arrow { transform: scaleX(-1); }
+.result .delta { display: inline-block; margin-top: var(--s2); font-weight: 600; color: var(--healthy); border: 1.5px solid currentColor; border-radius: 2px; padding: 0 8px; font-size: 15px; }
+.result p { font-size: 14px; color: var(--ink-2); margin: var(--s3) 0 0; }
+
+.charts { display: grid; grid-template-columns: 1fr 1fr; gap: var(--s6); }
+.chart-head { display: flex; justify-content: space-between; align-items: baseline; gap: var(--s3); flex-wrap: wrap; }
+.linkbtn { font: inherit; font-size: 15px; color: var(--primary); background: none; border: 0; text-decoration: underline; text-underline-offset: 3px; cursor: pointer; min-height: 44px; padding: 0; }
+.legend { display: flex; gap: var(--s4); flex-wrap: wrap; font-size: 14px; color: var(--ink-2); margin: var(--s2) 0 var(--s3); }
+.key { display: inline-block; width: 14px; height: 12px; margin-inline-end: 6px; vertical-align: -1px; }
+.key.inc { border: 2px solid var(--ink); border-bottom: 0; }
+.key.spd { background: var(--ink); }
+.key.need { background: var(--ink); }
+.key.want { background: repeating-linear-gradient(135deg, var(--ink) 0 2px, transparent 2px 5px); border: 1px solid var(--ink); }
+.monthly { display: grid; grid-template-columns: auto 1fr; gap: var(--s2); }
+.yaxis { display: flex; flex-direction: column; justify-content: space-between; height: 190px; font-size: 13px; color: var(--ink-2); text-align: end; margin-top: -8px; padding-bottom: 0; }
+.months { display: grid; grid-template-columns: repeat(6, 1fr); gap: 8px; height: 180px; align-items: end; border-bottom: 1px solid var(--ink); background-image: linear-gradient(to bottom, var(--rule) 1px, transparent 1px); background-size: 100% 33.333%; }
+.month { display: flex; gap: 3px; align-items: end; justify-content: center; height: 100%; }
+.month i { display: block; width: 38%; max-width: 20px; }
+.month .inc { border: 2px solid var(--ink); border-bottom: 0; }
+.month .spd { background: var(--ink); }
+.mlabels { display: grid; grid-template-columns: repeat(6, 1fr); gap: 8px; font-size: 14px; color: var(--ink-2); text-align: center; padding-top: 6px; grid-column: 2; }
+.cats { list-style: none; margin: 0; padding: 0; }
+.cats li { display: grid; grid-template-columns: 170px 1fr 76px; gap: var(--s3); align-items: center; padding-block: 5px; font-size: 15px; }
+.cats .b { height: 12px; background: var(--ink); }
+.cats .b.want { background: repeating-linear-gradient(135deg, var(--ink) 0 2px, transparent 2px 5px); border: 1px solid var(--ink); }
+.cats .amt { text-align: end; }
+
+.tx { width: 100%; border-collapse: collapse; margin-top: var(--s3); font-size: 15px; }
+.tx th { font-family: var(--display); font-style: italic; font-weight: 400; color: var(--ink-2); text-align: start; padding: var(--s2); border-bottom: 1px solid var(--ink); }
+.tx td { padding: var(--s2); border-bottom: 1px solid var(--rule); vertical-align: middle; }
+.tx .amt { text-align: end; white-space: nowrap; }
+.tx .in { color: var(--healthy); font-weight: 600; }
+.cat-btn { font: inherit; font-size: 14px; color: var(--ink); background: var(--surface); border: 1px solid var(--control); border-radius: 3px; min-height: 36px; padding-inline: 10px 28px; position: relative; cursor: pointer; text-align: start; }
+.cat-btn::after { content: ""; position: absolute; inset-inline-end: 10px; top: 50%; width: 6px; height: 6px; border-inline-end: 1.5px solid var(--ink-2); border-bottom: 1.5px solid var(--ink-2); transform: translateY(-70%) rotate(45deg); }
+
+.disclaimer { margin: var(--s6) 0 var(--s3); padding: var(--s3) var(--s4); border-inline-start: 3px solid var(--red); background: var(--surface); color: var(--ink-2); }
+.site-footer { font-size: 14px; color: var(--ink-2); padding: var(--s3) 0 var(--s7); display: flex; gap: var(--s2) var(--s5); flex-wrap: wrap; justify-content: space-between; }
+
+@media (max-width: 980px) {
+  .score-area, .whatif, .charts { grid-template-columns: 1fr; }
+  .reasons > li { grid-template-columns: 34px 1fr; }
+  .reasons .help { grid-column: 2; }
+}
+@media (max-width: 640px) {
+  .wrap { padding-inline: var(--s4); }
+  .sheet { padding: var(--s4); }
+  .prefs { margin-inline-start: 0; width: 100%; }
+  .prefs .field-select { flex: 1; }
+  .prefs select { width: 100%; }
+  .btn-quiet { margin-inline-start: 0; }
+  .score-figure .big { font-size: 88px; }
+  .bandscale .names { font-size: 13px; }
+  /* ledger becomes stacked rows */
+  .ledger thead { display: none; }
+  .ledger tbody tr { display: grid; grid-template-columns: 1fr auto; gap: var(--s1) var(--s3); padding-block: var(--s3); border-bottom: 1px solid var(--rule); }
+  .ledger tbody td { border: 0; padding: 0; }
+  .ledger .score-cell { grid-column: 1 / -1; min-width: 0; }
+  .ledger .weight { display: none; }
+  .ledger .pts { grid-column: 2; grid-row: 1; }
+  .ledger tfoot tr { display: flex; justify-content: space-between; }
+  .ledger tfoot td.sp { display: none; }
+  .cats li { grid-template-columns: 120px 1fr 70px; font-size: 14px; }
+  .tx thead { display: none; }
+  .tx tr { display: grid; grid-template-columns: 1fr auto; gap: 4px var(--s3); padding-block: var(--s3); border-bottom: 1px solid var(--rule); }
+  .tx td { border: 0; padding: 0; }
+  .tx .d { grid-column: 1; font-size: 14px; color: var(--ink-2); }
+  .tx .desc { grid-column: 1; }
+  .tx .c { grid-column: 1; }
+  .tx .amt { grid-column: 2; grid-row: 1 / span 2; align-self: start; }
+}
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to main content</a>
+
+<div class="mock-switch" role="group" aria-label="Mockup controls">
+  <span>Mockup v2 · Direction A · Layout check:</span>
+  <button type="button" data-dir="ltr" aria-pressed="true">Left to right</button>
+  <button type="button" data-dir="rtl" aria-pressed="false">Right to left (Arabic)</button>
+</div>
+
+<header class="site-header">
+  <div class="wrap">
+    <a class="wordmark" href="#"><span class="en">Arthik</span><span class="bn" lang="bn">আর্থিক</span></a>
+    <nav class="site-nav" aria-label="Main">
+      <a href="#" aria-current="page">Your score</a>
+      <a href="#">How the score works</a>
+      <a href="#">About</a>
+    </nav>
+    <div class="prefs">
+      <div class="field-select">
+        <label class="sr-only" for="lang">Language</label>
+        <select id="lang">
+          <option>English</option><option lang="bn">বাংলা</option><option lang="hi">हिन्दी</option>
+          <option lang="ar">العربية</option><option lang="zh-Hans">简体中文</option><option lang="es">Español</option><option lang="fr">Français</option>
+        </select>
+      </div>
+      <div class="field-select">
+        <label class="sr-only" for="cur">Currency</label>
+        <select id="cur">
+          <option>৳ BDT</option><option>$ USD</option><option>€ EUR</option><option>¥ JPY</option><option>£ GBP</option>
+          <option>¥ CNY</option><option>CHF</option><option>A$ AUD</option><option>C$ CAD</option><option>HK$ HKD</option><option>S$ SGD</option>
+        </select>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="sample-bar">
+  <div class="wrap">
+    <span class="lead" id="people-label">Try a sample person</span>
+    <div class="people" role="group" aria-labelledby="people-label">
+      <button type="button" aria-pressed="true">Nusrat</button>
+      <button type="button" aria-pressed="false">Tanvir</button>
+      <button type="button" aria-pressed="false">Farhana</button>
+      <button type="button" aria-pressed="false">Arif</button>
+      <button type="button" aria-pressed="false">Rahim</button>
+    </div>
+    <a class="btn-quiet" href="#">Use your own transactions</a>
+  </div>
+</div>
+
+<main id="main" class="wrap">
+  <div class="page-head">
+    <p class="kicker">Sample: Nusrat, university student in Dhaka</p>
+    <h1>Getting by, with room to build emergency savings</h1>
+    <p class="period num">Using 6 complete months: May–Oct 2026</p>
+  </div>
+
+  <div class="score-area">
+    <section class="sheet" aria-labelledby="score-h">
+      <h2 id="score-h">Financial health score</h2>
+      <div class="score-figure num"><span class="big">67</span><span class="of">out of 100</span></div>
+      <p style="margin:0"><span class="stamp">Coping</span><span class="band-explain">Managing day to day, but exposed in one or two areas.</span></p>
+      <div class="bandscale">
+        <div class="track" aria-hidden="true"><span></span><span></span><span></span><div class="marker"></div></div>
+        <div class="names num">
+          <span><b>Vulnerable</b><small>0–39</small></span>
+          <span><b>Coping</b><small>40–79</small></span>
+          <span><b>Healthy</b><small>80–100</small></span>
+        </div>
+      </div>
+      <p class="summary">You live within your means and carry no debt, which is a solid base. The weak spot is emergency savings: yours would last about 1.2 months if your income stopped. Eating out and delivery is the easiest place to find money for it.</p>
+      <p class="summary-note">Summary written with Claude. The score itself comes from the formulas in <a href="#">How the score works</a>.</p>
+    </section>
+
+    <section class="sheet" aria-labelledby="ledger-h">
+      <h2 id="ledger-h">How 67 adds up</h2>
+      <p class="note">Each measure is scored out of 100. Some count for more than others.</p>
+      <table class="ledger num">
+        <thead>
+          <tr><th scope="col">Measure</th><th scope="col">Score</th><th scope="col" class="r">Counts for</th><th scope="col" class="r">Points</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row" class="m-name" style="font-family:var(--body);font-style:normal;color:var(--ink);border:0;padding:var(--s3) var(--s2)">Savings rate<span class="m-value">You kept 7% of your income</span></th>
+            <td class="score-cell"><div class="score-line"><b>58 / 100</b><span>Coping</span></div><div class="bullet" aria-hidden="true"><span></span><span></span><span></span><div class="fill" style="width:58%"></div></div></td>
+            <td class="r weight">25%</td>
+            <td class="r pts">14.50</td>
+          </tr>
+          <tr>
+            <th scope="row" class="m-name" style="font-family:var(--body);font-style:normal;color:var(--ink);border:0;padding:var(--s3) var(--s2)">Emergency savings<span class="m-value">Would cover 1.2 months of essentials</span></th>
+            <td class="score-cell"><div class="score-line"><b>44 / 100</b><span>Coping</span></div><div class="bullet" aria-hidden="true"><span></span><span></span><span></span><div class="fill" style="width:44%"></div></div></td>
+            <td class="r weight">25%</td>
+            <td class="r pts">11.00</td>
+          </tr>
+          <tr>
+            <th scope="row" class="m-name" style="font-family:var(--body);font-style:normal;color:var(--ink);border:0;padding:var(--s3) var(--s2)">Debt payments<span class="m-value">No loan or card payments</span></th>
+            <td class="score-cell"><div class="score-line"><b>100 / 100</b><span>Healthy</span></div><div class="bullet" aria-hidden="true"><span></span><span></span><span></span><div class="fill" style="width:100%"></div></div></td>
+            <td class="r weight">20%</td>
+            <td class="r pts">20.00</td>
+          </tr>
+          <tr>
+            <th scope="row" class="m-name" style="font-family:var(--body);font-style:normal;color:var(--ink);border:0;padding:var(--s3) var(--s2)">Needs vs. wants<span class="m-value">38% of spending went on wants</span></th>
+            <td class="score-cell"><div class="score-line"><b>56 / 100</b><span>Coping</span></div><div class="bullet" aria-hidden="true"><span></span><span></span><span></span><div class="fill" style="width:56%"></div></div></td>
+            <td class="r weight">15%</td>
+            <td class="r pts">8.40</td>
+          </tr>
+          <tr>
+            <th scope="row" class="m-name" style="font-family:var(--body);font-style:normal;color:var(--ink);border:0;padding:var(--s3) var(--s2)">Spending stability<span class="m-value">Monthly spending varies by about 15%</span></th>
+            <td class="score-cell"><div class="score-line"><b>86 / 100</b><span>Healthy</span></div><div class="bullet" aria-hidden="true"><span></span><span></span><span></span><div class="fill" style="width:86%"></div></div></td>
+            <td class="r weight">15%</td>
+            <td class="r pts">12.90</td>
+          </tr>
+        </tbody>
+        <tfoot>
+          <tr><td class="total-label" colspan="3">Total</td><td class="r total">66.80</td></tr>
+          <tr class="final"><td class="total-label" colspan="3">Score, rounded</td><td class="r"><span class="grand">67</span></td></tr>
+        </tfoot>
+      </table>
+      <p class="ledger-foot">Points = score × how much it counts. Every number traces back to your transactions.</p>
+    </section>
+  </div>
+
+  <hr class="divider">
+  <h2 class="divider-title">Explore your money</h2>
+
+  <section class="section" aria-labelledby="why-h">
+    <h2 id="why-h">Why 67, and what would help</h2>
+    <p class="note">The three measures with the most room to grow, each with one practical step.</p>
+    <ol class="reasons num">
+      <li>
+        <div><h3>Emergency savings</h3><p>Your ৳15,900 in savings would cover about 1.2 months of essentials. Three months scores 80 out of 100; six months scores 100.</p><span class="worth">Worth up to 14 more points</span></div>
+        <div class="help"><span class="lbl">What would help</span>Putting ৳1,000 a month into a Deposit Pension Scheme (DPS) would build this to 3 months in about 2 years.</div>
+      </li>
+      <li>
+        <div><h3>Savings rate</h3><p>You kept ৳1,610 a month, 7% of your income. Keeping 20% or more scores 100.</p><span class="worth">Worth up to 10.5 more points</span></div>
+        <div class="help"><span class="lbl">What would help</span>Cash-out charges cost you about ৳260 a month. Paying shops straight from bKash or Nagad, instead of cashing out first, avoids most of them.</div>
+      </li>
+      <li>
+        <div><h3>Needs vs. wants</h3><p>38% of your spending went on wants. Under 20% scores 100.</p><span class="worth">Worth up to 6.6 more points</span></div>
+        <div class="help"><span class="lbl">What would help</span>Eating out and delivery averaged ৳3,850 a month, the biggest of your wants. Try the first slider below to see what cutting back would do.</div>
+      </li>
+    </ol>
+  </section>
+
+  <section class="section" aria-labelledby="whatif-h">
+    <h2 id="whatif-h">What if…</h2>
+    <p class="note">Try a change and watch the score move. Your data isn't changed.</p>
+    <div class="whatif">
+      <div>
+        <div class="slider">
+          <label for="s1">Cut spending on wants <output for="s1" class="num">20%</output></label>
+          <input id="s1" type="range" min="0" max="50" step="5" value="20" aria-valuetext="20 percent">
+          <div class="ends num" aria-hidden="true"><span>0%</span><span>50%</span></div>
+        </div>
+        <div class="slider">
+          <label for="s2">Extra income each month <output for="s2" class="num">৳0</output></label>
+          <input id="s2" type="range" min="0" max="11500" step="500" value="0" aria-valuetext="0 taka">
+          <div class="ends num" aria-hidden="true"><span>৳0</span><span>৳11,500</span></div>
+        </div>
+        <div class="slider">
+          <label for="s3">Add to emergency savings <output for="s3" class="num">৳0</output></label>
+          <input id="s3" type="range" min="0" max="79500" step="500" value="0" aria-valuetext="0 taka">
+          <div class="ends num" aria-hidden="true"><span>৳0</span><span>৳79,500</span></div>
+        </div>
+      </div>
+      <div class="result">
+        <div class="from-to num" aria-hidden="true"><span class="from">67</span> <span class="arrow">→</span> 75</div>
+        <span class="delta num" aria-hidden="true">+8 points</span>
+        <p class="sr-only" aria-live="polite">Your score would go from 67 to 75, 8 points higher.</p>
+        <p>Still Coping. Healthy starts at 80.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="charts-h">
+    <h2 id="charts-h" class="sr-only">Charts</h2>
+    <div class="charts">
+      <div>
+        <div class="chart-head"><h3 style="font-family:var(--display);font-weight:500;font-size:20px;margin:0">Money in and out, by month</h3><button class="linkbtn" type="button">Show as table</button></div>
+        <div class="legend"><span><i class="key inc"></i>Income</span><span><i class="key spd"></i>Spending</span></div>
+        <div class="monthly num">
+          <div class="yaxis" aria-hidden="true"><span>৳30,000</span><span>৳20,000</span><span>৳10,000</span><span>৳0</span></div>
+          <div class="months" role="img" aria-label="Income and spending by month, May to October 2026. Income ranged from ৳21,000 to ৳25,000 a month. Spending ranged from ৳17,600 to ৳26,300, and went above income in June and September.">
+            <div class="month"><i class="inc" style="height:76.7%"></i><i class="spd" style="height:60.7%"></i></div>
+            <div class="month"><i class="inc" style="height:76.7%"></i><i class="spd" style="height:83%"></i></div>
+            <div class="month"><i class="inc" style="height:70%"></i><i class="spd" style="height:58.7%"></i></div>
+            <div class="month"><i class="inc" style="height:76.7%"></i><i class="spd" style="height:72.7%"></i></div>
+            <div class="month"><i class="inc" style="height:83.3%"></i><i class="spd" style="height:87.7%"></i></div>
+            <div class="month"><i class="inc" style="height:76.7%"></i><i class="spd" style="height:65.1%"></i></div>
+          </div>
+          <div class="mlabels" aria-hidden="true"><span>May</span><span>Jun</span><span>Jul</span><span>Aug</span><span>Sep</span><span>Oct</span></div>
+        </div>
+      </div>
+      <div>
+        <div class="chart-head"><h3 style="font-family:var(--display);font-weight:500;font-size:20px;margin:0">Where the money goes</h3></div>
+        <div class="legend"><span><i class="key need"></i>Need</span><span><i class="key want"></i>Want</span><span>Average per month</span></div>
+        <ul class="cats num">
+          <li><span>Rent &amp; housing</span><span class="b" style="width:100%"></span><span class="amt">৳5,500</span></li>
+          <li><span>Eating out &amp; delivery <span class="sr-only">(want)</span></span><span class="b want" style="width:70%"></span><span class="amt">৳3,850</span></li>
+          <li><span>Groceries</span><span class="b" style="width:58.2%"></span><span class="amt">৳3,200</span></li>
+          <li><span>Shopping <span class="sr-only">(want)</span></span><span class="b want" style="width:38.9%"></span><span class="amt">৳2,140</span></li>
+          <li><span>Transport</span><span class="b" style="width:35.5%"></span><span class="amt">৳1,950</span></li>
+          <li><span>Education</span><span class="b" style="width:27.3%"></span><span class="amt">৳1,502</span></li>
+          <li><span>Entertainment &amp; subscriptions <span class="sr-only">(want)</span></span><span class="b want" style="width:21.5%"></span><span class="amt">৳1,180</span></li>
+          <li><span>Personal care <span class="sr-only">(want)</span></span><span class="b want" style="width:17.4%"></span><span class="amt">৳958</span></li>
+          <li><span>Mobile &amp; internet</span><span class="b" style="width:15.5%"></span><span class="amt">৳850</span></li>
+          <li><span>Fees &amp; charges</span><span class="b" style="width:4.7%"></span><span class="amt">৳260</span></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="tx-h">
+    <h2 id="tx-h">Recent transactions</h2>
+    <p class="note">Categories were matched automatically. Select one to change it.</p>
+    <table class="tx num">
+      <thead><tr><th scope="col">Date</th><th scope="col">Description</th><th scope="col">Category</th><th scope="col" class="amt">Amount</th></tr></thead>
+      <tbody>
+        <tr><td class="d">31 Oct</td><td class="desc">Foodpanda order, Kacchi Bhai</td><td class="c"><button class="cat-btn" type="button">Eating out &amp; delivery</button></td><td class="amt"><bdi>−৳640</bdi></td></tr>
+        <tr><td class="d">30 Oct</td><td class="desc">bKash cash-out charge</td><td class="c"><button class="cat-btn" type="button">Fees &amp; charges</button></td><td class="amt"><bdi>−৳74</bdi></td></tr>
+        <tr><td class="d">29 Oct</td><td class="desc">Pathao ride</td><td class="c"><button class="cat-btn" type="button">Transport</button></td><td class="amt"><bdi>−৳185</bdi></td></tr>
+        <tr><td class="d">28 Oct</td><td class="desc">Tutoring fee via Nagad</td><td class="c"><button class="cat-btn" type="button">Side income</button></td><td class="amt in"><bdi>+৳4,000</bdi></td></tr>
+        <tr><td class="d">27 Oct</td><td class="desc">Chaldal groceries</td><td class="c"><button class="cat-btn" type="button">Groceries</button></td><td class="amt"><bdi>−৳1,240</bdi></td></tr>
+        <tr><td class="d">25 Oct</td><td class="desc">Grameenphone internet pack</td><td class="c"><button class="cat-btn" type="button">Mobile &amp; internet</button></td><td class="amt"><bdi>−৳499</bdi></td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <p class="disclaimer">Arthik is an educational tool. It isn't financial advice and it isn't a credit score. Your data stays in your browser and is never uploaded.</p>
+  <footer class="site-footer num">
+    <span>Exchange rates as of 1 Nov 2026 · source named here</span>
+    <span>Made by Rubayet Rezwan · Built with Claude Code · <a href="#">Source code</a></span>
+  </footer>
+</main>
+
+<script>
+  document.querySelectorAll('.mock-switch button').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      document.documentElement.dir = btn.dataset.dir;
+      document.querySelectorAll('.mock-switch button').forEach(function (b) {
+        b.setAttribute('aria-pressed', String(b === btn));
+      });
+    });
+  });
+</script>
+</body>
+</html>

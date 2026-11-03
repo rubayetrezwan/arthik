@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Arthik mockup: seven-script check</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;600&family=IBM+Plex+Sans+Arabic:wght@400;600&family=IBM+Plex+Sans+Devanagari:wght@400;600&family=Newsreader:opsz,wght@6..72,500&family=Noto+Naskh+Arabic:wght@500;600&family=Noto+Sans+Bengali:wght@400;600&family=Noto+Sans+SC:wght@400;600&family=Noto+Serif+SC:wght@500;600&family=Tiro+Bangla&family=Tiro+Devanagari+Hindi&display=swap" rel="stylesheet">
+<style>
+:root { --bg:#F4EFE4; --surface:#FBF8F1; --ink:#1E1B16; --ink-2:#5A5347; --rule:#DDD3C0; --red:#9C2A22; --coping:#7A5209; --zone-v:#E8C4B8; --zone-c:#EAD39C; --zone-h:#C3DCC8; }
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--ink); font-family: "IBM Plex Sans", sans-serif; }
+.top { padding: 24px; max-width: 1200px; margin: 0 auto; }
+.top h1 { font-family: "Newsreader", serif; font-weight: 500; margin: 0 0 6px; }
+.top p { margin: 0; color: var(--ink-2); }
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 20px; padding: 0 24px 48px; max-width: 1200px; margin: 0 auto; }
+.card { background: var(--surface); border: 1px solid var(--rule); border-radius: 3px; padding: 20px; font-family: var(--body); line-height: var(--lh); }
+.card .lang { font-size: 13px; color: var(--ink-2); font-family: "IBM Plex Sans", sans-serif; direction: ltr; text-align: start; margin: 0 0 10px; border-bottom: 1px solid var(--rule); padding-bottom: 6px; }
+.card h2 { font-family: var(--display); font-weight: 500; font-size: 22px; line-height: var(--lh-head); margin: 0; }
+.big { font-family: var(--display); font-size: 84px; line-height: 1; font-weight: 500; display: inline-block; border-bottom: 4px double var(--ink); padding-bottom: 4px; margin: 14px 0 12px; font-variant-numeric: tabular-nums lining-nums; }
+.stamp { display: inline-block; font-family: var(--display); font-weight: 600; font-size: 18px; color: var(--coping); border: 1.5px solid currentColor; border-radius: 2px; padding: 0 10px; margin-inline-end: 8px; }
+.explain { color: var(--ink-2); font-size: 15px; }
+.track { position: relative; display: grid; grid-template-columns: 40fr 40fr 20fr; height: 12px; margin: 18px 0 16px; }
+.track span:nth-child(1){background:var(--zone-v)} .track span:nth-child(2){background:var(--zone-c);box-shadow:inset 1px 0 0 var(--ink),inset -1px 0 0 var(--ink)} .track span:nth-child(3){background:var(--zone-h)}
+.marker { position: absolute; top: -6px; width: 3px; height: 24px; background: var(--ink); inset-inline-start: calc(67% - 1.5px); }
+.measure { border-top: 1px solid var(--rule); padding-top: 12px; }
+.measure b { display: block; font-weight: 600; }
+.measure span { color: var(--ink-2); font-size: 15px; }
+.line { margin: 12px 0 0; font-size: 15px; }
+.amt { font-variant-numeric: tabular-nums; }
+/* script-specific type: no letter-spacing, taller lines for Indic scripts */
+[data-l="en"], [data-l="es"], [data-l="fr"] { --display: "Newsreader", "Tiro Bangla", serif; --body: "IBM Plex Sans", "Noto Sans Bengali", sans-serif; --lh: 1.55; --lh-head: 1.25; }
+[data-l="bn"] { --display: "Tiro Bangla", serif; --body: "Noto Sans Bengali", sans-serif; --lh: 1.75; --lh-head: 1.4; }
+[data-l="hi"] { --display: "Tiro Devanagari Hindi", serif; --body: "IBM Plex Sans Devanagari", "Noto Sans Bengali", sans-serif; --lh: 1.75; --lh-head: 1.4; }
+[data-l="ar"] { --display: "Noto Naskh Arabic", serif; --body: "IBM Plex Sans Arabic", "Noto Sans Bengali", sans-serif; --lh: 1.7; --lh-head: 1.4; }
+[data-l="zh"] { --display: "Noto Serif SC", serif; --body: "Noto Sans SC", "Noto Sans Bengali", sans-serif; --lh: 1.7; --lh-head: 1.35; }
+</style>
+</head>
+<body>
+<div class="top">
+  <h1>Seven-script check</h1>
+  <p>Draft translations, shown only to check fonts, numbers and right-to-left layout. They'll be reviewed properly during the build.</p>
+</div>
+<div class="grid" id="grid"></div>
+
+<script>
+const L = {
+  en: { name: 'English', locale: 'en', title: 'Financial health score', band: 'Coping', explain: 'Managing day to day, but exposed in one or two areas.', measure: 'Savings rate', value: 'You kept {pct} of your income', line: 'Your {amt} in savings would cover about {n} months of essentials.' },
+  bn: { name: 'Bengali', locale: 'bn-BD', title: 'আর্থিক স্বাস্থ্য স্কোর', band: 'সামলে চলছেন', explain: 'দৈনন্দিন খরচ সামলাচ্ছেন, তবে এক-দুটি দিকে ঝুঁকি আছে।', measure: 'সঞ্চয়ের হার', value: 'আপনি আয়ের {pct} জমিয়েছেন', line: 'আপনার {amt} সঞ্চয় দিয়ে প্রায় {n} মাসের জরুরি খরচ চলবে।' },
+  hi: { name: 'Hindi', locale: 'hi-IN', title: 'वित्तीय स्वास्थ्य स्कोर', band: 'संभल रहे हैं', explain: 'रोज़मर्रा का खर्च संभल रहा है, पर एक-दो मामलों में जोखिम है।', measure: 'बचत दर', value: 'आपने अपनी आय का {pct} बचाया', line: 'आपकी {amt} की बचत से लगभग {n} महीने का ज़रूरी खर्च चल सकता है।' },
+  ar: { name: 'Arabic (right to left)', locale: 'ar', dir: 'rtl', title: 'درجة الصحة المالية', band: 'مستقر نسبيًا', explain: 'تتدبّر أمورك اليومية، لكن هناك جانب أو جانبان يحتاجان إلى انتباه.', measure: 'معدل الادخار', value: 'ادّخرت {pct} من دخلك', line: 'مدخراتك البالغة {amt} تغطي النفقات الأساسية لنحو {n} شهر.' },
+  zh: { name: 'Chinese (Simplified)', locale: 'zh-CN', title: '财务健康评分', band: '尚可应对', explain: '日常开支尚能应付，但有一两个方面存在风险。', measure: '储蓄率', value: '您留存了收入的 {pct}', line: '您的 {amt} 储蓄约可支付 {n} 个月的必要开支。' },
+  es: { name: 'Spanish', locale: 'es', title: 'Puntuación de salud financiera', band: 'Se mantiene', explain: 'Cubres el día a día, pero hay uno o dos puntos débiles.', measure: 'Tasa de ahorro', value: 'Ahorraste el {pct} de tus ingresos', line: 'Tus {amt} de ahorro cubrirían unos {n} meses de gastos esenciales.' },
+  fr: { name: 'French', locale: 'fr', title: 'Score de santé financière', band: 'Tient le coup', explain: 'Le quotidien est géré, mais un ou deux points restent fragiles.', measure: "Taux d'épargne", value: 'Vous avez épargné {pct} de vos revenus', line: "Vos {amt} d'épargne couvriraient environ {n} mois de dépenses essentielles." }
+};
+
+// Taka: always the ৳ sign first in English and Bengali, with lakh grouping (1,00,000).
+function taka(code, locale, amount) {
+  if (code === 'en') return '৳' + new Intl.NumberFormat('en-IN', { maximumFractionDigits: 0 }).format(amount);
+  if (code === 'bn') return '৳' + new Intl.NumberFormat('bn-BD', { maximumFractionDigits: 0 }).format(amount);
+  return new Intl.NumberFormat(locale, { style: 'currency', currency: 'BDT', currencyDisplay: 'narrowSymbol', maximumFractionDigits: 0 }).format(amount);
+}
+function fill(s, vals) { return s.replace(/\{(\w+)\}/g, (_, k) => vals[k]); }
+function esc(s) { return s.replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c])); }
+
+const grid = document.getElementById('grid');
+for (const [code, t] of Object.entries(L)) {
+  const nf = new Intl.NumberFormat(t.locale);
+  const vals = {
+    pct: '<bdi>' + new Intl.NumberFormat(t.locale, { style: 'percent' }).format(0.07) + '</bdi>',
+    amt: '<bdi class="amt">' + taka(code, t.locale, 15900) + '</bdi>',
+    big: '<bdi class="amt">' + taka(code, t.locale, 150000) + '</bdi>',
+    n: new Intl.NumberFormat(t.locale, { minimumFractionDigits: 1, maximumFractionDigits: 1 }).format(1.2)
+  };
+  const card = document.createElement('section');
+  card.className = 'card';
+  card.dataset.l = code;
+  card.lang = t.locale;
+  card.dir = t.dir || 'ltr';
+  card.innerHTML =
+    '<p class="lang">' + esc(t.name) + ' · ' + esc(t.locale) + '</p>' +
+    '<h2>' + esc(t.title) + '</h2>' +
+    '<div class="big">' + nf.format(67) + '</div>' +
+    '<p style="margin:0"><span class="stamp">' + esc(t.band) + '</span><span class="explain">' + esc(t.explain) + '</span></p>' +
+    '<div class="track" aria-hidden="true"><span></span><span></span><span></span><div class="marker"></div></div>' +
+    '<div class="measure"><b>' + esc(t.measure) + '</b><span>' + fill(esc(t.value), vals) + '</span></div>' +
+    '<p class="line">' + fill(esc(t.line), vals) + '</p>' +
+    '<p class="line" style="color:var(--ink-2);font-size:13px;direction:ltr;text-align:start">Large amount check: ' + vals.big + '</p>';
+  grid.appendChild(card);
+}
+</script>
+</body>
+</html>
