@@ -225,6 +225,38 @@ describe('parseTransactionsCsv: dates', () => {
     expect(transactions[0]?.date).toBe(expected)
   })
 
+  it.each([
+    ['31/10/2026 14:03', '2026-10-31'],
+    ['31/10/2026 14:03:22', '2026-10-31'],
+    ['31-10-2026 2:03 PM', '2026-10-31'],
+    ['31.10.2026 02:03 am', '2026-10-31'],
+    ['2026-10-31 14:03:22', '2026-10-31'],
+    ['2026-10-31T14:03:22', '2026-10-31'],
+    ['2026-10-31T14:03:22Z', '2026-10-31'],
+    ['2026-10-31T14:03:22+06:00', '2026-10-31'],
+    // The date is the one written, never moved by the zone: in UTC these would be 30 Oct and 1 Nov.
+    ['2026-10-31T01:00:00+06:00', '2026-10-31'],
+    ['2026-10-31T23:30:00-06:00', '2026-10-31'],
+    ['2026-10-31T14:03:22.123Z', '2026-10-31'],
+    ['2026-10-31 14:03:22+0600', '2026-10-31'],
+    ['2026-10-31T14:03', '2026-10-31'],
+    ['2026-10-31t14:03:22z', '2026-10-31'],
+    ['31/10/2026    14:03', '2026-10-31'],
+    ['1/2/2026 9:05', '2026-02-01'],
+    ['31/10/2026 00:00', '2026-10-31'],
+    ['31/10/2026 23:59:59', '2026-10-31'],
+    ['31/10/2026 12:00 AM', '2026-10-31'],
+    ['31/10/2026 11:59 pm', '2026-10-31'],
+    ['31/10/2026 00:30 AM', '2026-10-31'], // some systems count the 12-hour clock from 0
+    ['31/10/2026 2:03:09 PM', '2026-10-31'],
+    ['২৯/১০/২০২৬ ১৪:০৩', '2026-10-29'],
+    ['29/02/2028 14:03', '2028-02-29'],
+  ])('reads %s as %s, ignoring the time', (cell, expected) => {
+    const { transactions, errors } = parseRow(`${cell},Test,-10,,`)
+    expect(errors).toEqual([])
+    expect(transactions[0]?.date).toBe(expected)
+  })
+
   it('reads dates day first, so 10/31/2026 is not a date', () => {
     const { transactions, errors } = parseRow('10/31/2026,Test,-10,,')
     expect(transactions).toEqual([])
@@ -246,6 +278,28 @@ describe('parseTransactionsCsv: dates', () => {
     '31/10-2026', // separators must match
     'yesterday',
     '',
+    '31/10/2026 25:99', // not a time
+    '31/10/2026 foo', // junk after the date
+    '31/10/2026 14:60',
+    '31/10/2026 14:03:60',
+    '31/10/2026 24:00',
+    '31/10/2026 13:00 PM', // 13 o'clock is not on a 12-hour clock
+    '31/10/2026 14:03 foo',
+    '31/10/2026 14:03:22 UTC',
+    '31/10/2026 14',
+    '31/10/2026 14:3',
+    '31/10/2026 2:03 PM +06:00', // a zone only follows a 24-hour time
+    '31/10/2026 2:03 XM',
+    '31/10/2026T14:03', // T joins an ISO date to its time, not a day-first date
+    '2026-10-31T',
+    '2026-10-31Tfoo',
+    '2026-10-31T25:00:00',
+    '2026-10-31T14:03:22+25:00',
+    '2026-10-31T14:03:22+',
+    '2026-10-31 14:03:22Z extra',
+    '2026-10-31 14:03 PM',
+    '31/04/2026 14:03', // the time does not excuse a date that is not real
+    '2026-02-30 14:03',
   ])('rejects "%s"', (cell) => {
     const { transactions, errors } = parseRow(`${cell},Test,-10,,`)
     expect(transactions).toEqual([])
@@ -548,15 +602,152 @@ describe('parseTransactionsCsv: row numbers and bad rows', () => {
     expect(errors).toEqual<CsvError[]>([{ row: 2, code: 'bad_amount', column: 'amount', value: '' }])
   })
 
-  it('keeps an unclosed quote from flooding an error with the rest of the file', () => {
+})
+
+describe('parseTransactionsCsv: quotes', () => {
+  it('reads a quoted field holding a comma and an escaped quote', () => {
+    const { transactions, errors } = parseTransactionsCsv(
+      file(HEADER, '2026-10-03,"Shop, ""Best"" Dhaka",-100,,', '2026-10-04,Next,-20,,'),
+      'BDT',
+    )
+    expect(errors).toEqual([])
+    expect(transactions.map((t) => [t.id, t.description])).toEqual([
+      ['row-2', 'Shop, "Best" Dhaka'],
+      ['row-3', 'Next'],
+    ])
+  })
+
+  it('imports the rows before an unclosed quote and reports it once, with the rows lost', () => {
+    const { transactions, errors } = parseTransactionsCsv(
+      file(
+        HEADER,
+        '2026-10-01,Good one,-10,,', // row 2
+        '2026-10-02,Good two,-20,,', // row 3
+        '2026-10-03,"Unclosed shop,-30,,', // row 4: the quote that never closes
+        '2026-10-04,Lost one,-40,,', // row 5
+        '2026-10-05,Lost two,-50,,', // row 6
+      ),
+      'BDT',
+    )
+    expect(transactions.map((t) => t.id)).toEqual(['row-2', 'row-3'])
+    expect(errors).toEqual<CsvError[]>([{ row: 4, code: 'bad_quotes', skippedRows: 2 }])
+  })
+
+  it('reports the quote alone when it sits in the first data row', () => {
+    // Not no_rows: the file has rows, they just cannot be read. And no clipped cell value
+    // carrying the rest of the file.
     const { transactions, errors } = parseTransactionsCsv(
       file(HEADER, '2026-10-01,Shop,"-5', '2026-10-02,Other,-6', '2026-10-03,Third,-7'),
       'BDT',
     )
     expect(transactions).toEqual([])
-    expect(errors).toHaveLength(1)
-    expect(errors[0]).toMatchObject({ row: 2, code: 'bad_amount', column: 'amount' })
-    expect(errors[0]?.value?.length).toBeLessThanOrEqual(41)
+    expect(errors).toEqual<CsvError[]>([{ row: 2, code: 'bad_quotes', skippedRows: 2 }])
+  })
+
+  it('says no rows were lost when the quote is on the last line', () => {
+    for (const ending of ['', '\n']) {
+      const { transactions, errors } = parseTransactionsCsv(
+        `${file(HEADER, '2026-10-01,Good,-10,,', '2026-10-02,"Unclosed,-20,,')}${ending}`,
+        'BDT',
+      )
+      expect(transactions.map((t) => t.id), JSON.stringify(ending)).toEqual(['row-2'])
+      expect(errors, JSON.stringify(ending)).toEqual<CsvError[]>([
+        { row: 3, code: 'bad_quotes', skippedRows: 0 },
+      ])
+    }
+  })
+
+  it('does not count blank lines among the rows lost', () => {
+    const { errors } = parseTransactionsCsv(
+      file(
+        HEADER,
+        '2026-10-01,"Unclosed,-10,,',
+        '',
+        '2026-10-02,Lost one,-20,,',
+        '   ',
+        ',,,,',
+        '2026-10-03,Lost two,-30,,',
+        '',
+      ),
+      'BDT',
+    )
+    expect(errors).toEqual<CsvError[]>([{ row: 2, code: 'bad_quotes', skippedRows: 2 }])
+  })
+
+  it('counts the rows lost the same way with Windows line endings', () => {
+    const lines = [HEADER, '2026-10-01,Good,-10,,', '2026-10-02,"Unclosed,-20,,', 'a,b,-1,,', 'c,d,-2,,']
+    const { transactions, errors } = parseTransactionsCsv(lines.join('\r\n'), 'BDT')
+    expect(transactions.map((t) => t.id)).toEqual(['row-2'])
+    expect(errors).toEqual<CsvError[]>([{ row: 3, code: 'bad_quotes', skippedRows: 2 }])
+  })
+
+  it('counts the rows lost in a semicolon file, where ;;;; is a blank row', () => {
+    const { transactions, errors } = parseTransactionsCsv(
+      file(
+        'date;description;amount',
+        '2026-10-01;Good;-10',
+        '2026-10-02;"Unclosed;-20',
+        ';;;',
+        '2026-10-03;Lost, with a comma;-30',
+      ),
+      'BDT',
+    )
+    expect(transactions.map((t) => t.id)).toEqual(['row-2'])
+    expect(errors).toEqual<CsvError[]>([{ row: 3, code: 'bad_quotes', skippedRows: 1 }])
+  })
+
+  it('numbers the row as a spreadsheet does when an earlier cell has a line break', () => {
+    const { transactions, errors } = parseTransactionsCsv(
+      file(
+        HEADER,
+        '2026-10-01,"Two\nline note",-10,,', // row 2, over two lines
+        '2026-10-02,"Unclosed,-20,,', // row 3
+        '2026-10-03,Lost,-30,,',
+      ),
+      'BDT',
+    )
+    expect(transactions.map((t) => t.id)).toEqual(['row-2'])
+    expect(errors).toEqual<CsvError[]>([{ row: 3, code: 'bad_quotes', skippedRows: 1 }])
+  })
+
+  it('still reports bad rows before the quote, then the quote', () => {
+    const { transactions, errors } = parseTransactionsCsv(
+      file(HEADER, '2026-10-01,Bad amount,abc,,', '2026-10-02,Good,-20,,', '2026-10-03,"Unclosed,-30,,'),
+      'BDT',
+    )
+    expect(transactions.map((t) => t.id)).toEqual(['row-3'])
+    expect(errors).toEqual<CsvError[]>([
+      { row: 2, code: 'bad_amount', column: 'amount', value: 'abc' },
+      { row: 4, code: 'bad_quotes', skippedRows: 0 },
+    ])
+  })
+
+  it('reports an unclosed quote in the header as the only problem', () => {
+    const { transactions, errors } = parseTransactionsCsv(
+      file('date,"description,amount', '2026-10-01,Lost,-10', '2026-10-02,Lost,-20'),
+      'BDT',
+    )
+    expect(transactions).toEqual([])
+    expect(errors).toEqual<CsvError[]>([{ row: 1, code: 'bad_quotes', skippedRows: 2 }])
+  })
+
+  it('numbers an unclosed quote in the header from the top of the file', () => {
+    const { errors } = parseTransactionsCsv(file('', 'date,"description,amount', 'x'), 'BDT')
+    expect(errors).toEqual<CsvError[]>([{ row: 2, code: 'bad_quotes', skippedRows: 1 }])
+  })
+
+  it('reports a file that is only a quote as an unclosed quote, not as empty', () => {
+    expect(parseTransactionsCsv('"', 'BDT').errors).toEqual<CsvError[]>([
+      { row: 1, code: 'bad_quotes', skippedRows: 0 },
+    ])
+  })
+
+  it('gives a missing column, not the quote, when the header cannot be used anyway', () => {
+    const { errors } = parseTransactionsCsv(
+      file('date,description', '2026-10-01,"Unclosed', 'x'),
+      'BDT',
+    )
+    expect(errors).toEqual<CsvError[]>([{ row: 1, code: 'missing_column', column: 'amount' }])
   })
 })
 

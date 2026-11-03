@@ -18,12 +18,14 @@ export type CsvErrorCode =
   | 'bad_amount'
   | 'bad_currency'
   | 'bad_category'
+  | 'bad_quotes'
   | 'too_many_rows'
 
 export interface CsvError {
   /**
    * Row number as a spreadsheet shows it, so the header is row 1. Row 0 means the file as
-   * a whole (empty, no rows, too many rows).
+   * a whole (empty, no rows, too many rows). For `bad_quotes` it is the row where the
+   * quote that never closes begins.
    */
   row: number
   code: CsvErrorCode
@@ -31,6 +33,8 @@ export interface CsvError {
   column?: string
   /** What the cell held, trimmed and cut short, so the message can quote it. */
   value?: string
+  /** Only for `bad_quotes`: how many non-blank lines after that row could not be read. */
+  skippedRows?: number
 }
 
 export interface ParseResult {
@@ -61,9 +65,27 @@ function daysInMonth(year: number, month: number): number {
   return [4, 6, 9, 11].includes(month) ? 30 : 31
 }
 
-const ISO_DATE = /^(\d{4})-(\d{1,2})-(\d{1,2})$/
+// A time of day after the date, as exports print it: 14:03, 14:03:22, 2:03 PM or
+// 14:03:22+06:00. It is checked to be a real time and then dropped, because only the date
+// is wanted. A zone is not applied either: the date is the one written, not the one it
+// would be in UTC. Every group is non-capturing, so the date patterns keep their numbering.
+const TIME_OF_DAY = [
+  // 24-hour clock. Seconds may have a fraction, and a zone (Z, +06, +06:00 or +0600) may follow.
+  String.raw`(?:[01]?\d|2[0-3]):[0-5]\d(?::[0-5]\d(?:\.\d+)?)?(?:Z|[+-](?:[01]\d|2[0-3])(?::?[0-5]\d)?)?`,
+  // 12-hour clock. Hour 0 is let through because some systems count AM and PM hours from 0.
+  String.raw`(?:0?\d|1[0-2]):[0-5]\d(?::[0-5]\d(?:\.\d+)?)?\s*[ap]m`,
+].join('|')
+
+// ISO joins its time with a T or a space (the T is also read in lower case, as RFC 3339 allows).
+const ISO_DATE = new RegExp(
+  String.raw`^(\d{4})-(\d{1,2})-(\d{1,2})(?:(?:T|\s+)(?:${TIME_OF_DAY}))?$`,
+  'i',
+)
 // One separator, used twice: 31/10/2026, 31-10-2026 or 31.10.2026, never 31/10-2026.
-const DAY_FIRST_DATE = /^(\d{1,2})([/.-])(\d{1,2})\2(\d{4})$/
+const DAY_FIRST_DATE = new RegExp(
+  String.raw`^(\d{1,2})([/.-])(\d{1,2})\2(\d{4})(?:\s+(?:${TIME_OF_DAY}))?$`,
+  'i',
+)
 
 function datePartsOf(text: string): [year: number, month: number, day: number] | null {
   const iso = ISO_DATE.exec(text)
@@ -80,8 +102,10 @@ function datePartsOf(text: string): [year: number, month: number, day: number] |
 }
 
 /**
- * `YYYY-MM-DD`, or day first as `DD/MM/YYYY`, `DD-MM-YYYY` or `DD.MM.YYYY`. A month-first
- * date such as 10/31/2026 is not a date here. The result is always a real calendar date in
+ * `YYYY-MM-DD`, or day first as `DD/MM/YYYY`, `DD-MM-YYYY` or `DD.MM.YYYY`, optionally
+ * followed by a time of day (`31/10/2026 14:03`, `2026-10-31T14:03:22+06:00`), which is
+ * ignored. A month-first date such as 10/31/2026 is not a date here, and neither is a
+ * date followed by anything that is not a time. The result is always a real calendar date in
  * `YYYY-MM-DD` form, which is what the rest of the domain code expects.
  */
 function parseDate(text: string): string | null {
@@ -379,6 +403,20 @@ function rejected(error: CsvError): ParseResult {
 }
 
 /**
+ * The error for a quoted field that never closes. PapaParse gives up there and puts the
+ * rest of the file, from just after the opening quote, into the last cell of the last
+ * record. So that cell is what could not be read: its first line is the end of the row that
+ * holds the quote, and each non-blank line after it is a row lost. A line of nothing but
+ * delimiters is as blank here as it is everywhere else.
+ */
+function unclosedQuoteError(records: readonly (readonly string[])[], delimiter: string): CsvError {
+  const unread = records.at(-1)?.at(-1) ?? ''
+  const following = unread.split(/\r\n|\r|\n/).slice(1)
+  const skippedRows = following.filter((line) => line.replaceAll(delimiter, '').trim() !== '')
+  return { row: records.length, code: 'bad_quotes', skippedRows: skippedRows.length }
+}
+
+/**
  * Reads transactions from CSV text.
  *
  * The file needs `date`, `description` and either a signed `amount` or a `debit`/`credit`
@@ -386,6 +424,12 @@ function rejected(error: CsvError): ParseResult {
  * cannot be read are left out and reported with their spreadsheet row number, and the rest
  * still import. A file that cannot be used at all (empty, no rows, a missing column, over
  * `MAX_ROWS`) gives no transactions and says why.
+ *
+ * A quote that never closes hides everything after it, because the rest of the file reads
+ * as one cell. The rows before it import. The row it starts in, and every row after, are
+ * left out, and one `bad_quotes` error gives that row and how many lines were lost
+ * (`skippedRows`). Only when the file cannot be used anyway (a missing column, too many
+ * rows) is the quote not mentioned, as the visitor must fix the file first and will see it then.
  *
  * Each imported transaction has the id `row-<n>`, where n is its spreadsheet row.
  */
@@ -396,16 +440,22 @@ export function parseTransactionsCsv(text: string, defaultCurrency: CurrencyCode
 
   // Blank lines are kept here and skipped below, so each record's position in the list is
   // its row in a spreadsheet. A quoted line break stays inside its record, as in a spreadsheet.
-  // Papa's own complaints are not read. The one that matters is an unclosed quote, which
-  // makes the rest of the file one cell; that row then usually fails the checks below.
-  const records = Papa.parse<string[]>(content, {
-    delimiter: detectDelimiter(content),
-    skipEmptyLines: false,
-  }).data
+  const delimiter = detectDelimiter(content)
+  const parsed = Papa.parse<string[]>(content, { delimiter, skipEmptyLines: false })
+
+  // Of Papa's complaints only an unclosed quote matters. Papa stops there, so the record
+  // holding it is the last one, with the rest of the file in its final cell. That record is
+  // set aside and only the records before it are read. It is found by position, not by its
+  // content, because a line of just `"` looks blank.
+  const unclosedQuote = parsed.errors.some((error) => error.code === 'MissingQuotes')
+    ? unclosedQuoteError(parsed.data, delimiter)
+    : null
+  const records = unclosedQuote ? parsed.data.slice(0, -1) : parsed.data
 
   const headerIndex = records.findIndex((cells) => !isBlank(cells))
   const header = records[headerIndex]
-  if (header === undefined) return rejected({ row: 0, code: 'empty_file' })
+  // With nothing readable before an unclosed quote, the quote is in the header itself.
+  if (header === undefined) return rejected(unclosedQuote ?? { row: 0, code: 'empty_file' })
 
   const parsedHeader = readHeader(header, headerIndex + 1)
   if (!parsedHeader.ok) return { transactions: [], errors: parsedHeader.errors }
@@ -416,7 +466,8 @@ export function parseTransactionsCsv(text: string, defaultCurrency: CurrencyCode
     const cells = records[index]
     if (cells !== undefined && !isBlank(cells)) dataRows.push({ row: index + 1, cells })
   }
-  if (dataRows.length === 0) return rejected({ row: 0, code: 'no_rows' })
+  // If the quote is in the first data row, the file has rows; they just cannot be read.
+  if (dataRows.length === 0) return rejected(unclosedQuote ?? { row: 0, code: 'no_rows' })
   if (dataRows.length > MAX_ROWS) return rejected({ row: 0, code: 'too_many_rows' })
 
   const transactions: Transaction[] = []
@@ -426,5 +477,7 @@ export function parseTransactionsCsv(text: string, defaultCurrency: CurrencyCode
     if (outcome.kind === 'transaction') transactions.push(outcome.transaction)
     else if (outcome.kind === 'errors') errors.push(...outcome.errors)
   }
+  // Last, as it is the highest row.
+  if (unclosedQuote) errors.push(unclosedQuote)
   return { transactions, errors }
 }
