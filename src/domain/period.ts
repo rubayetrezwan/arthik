@@ -10,11 +10,16 @@ interface DateParts {
   day: number
 }
 
-/** Number of days in a calendar month. `month` is 1 to 12. */
-function daysInMonth(year: number, month: number): number {
-  // Day 0 of the following month is the last day of this one. UTC avoids any
-  // local-time or daylight-saving shift.
-  return new Date(Date.UTC(year, month, 0)).getUTCDate()
+/**
+ * Number of days in a calendar month. `month` is 1 to 12. Leap years follow the 4, 100 and 400
+ * rule for any year. `Date.UTC` is not used because it reads years 0 to 99 as 1900 to 1999.
+ */
+export function daysInMonth(year: number, month: number): number {
+  if (month === 2) {
+    const leap = (year % 4 === 0 && year % 100 !== 0) || year % 400 === 0
+    return leap ? 29 : 28
+  }
+  return [4, 6, 9, 11].includes(month) ? 30 : 31
 }
 
 function parseDate(date: string): DateParts {
