@@ -37,6 +37,7 @@ import type { CategoryId } from '../domain/types'
 export interface Rule {
   pattern: RegExp
   category: CategoryId
+  /** Which sign of amount the rule applies to: 'in' is money in, 'out' money out. */
   direction: Direction
 }
 
@@ -52,8 +53,9 @@ const outflow = (category: CategoryId, ...patterns: RegExp[]) => rulesFor('out',
 const either = (category: CategoryId, ...patterns: RegExp[]) => rulesFor('any', category, patterns)
 
 // ---------------------------------------------------------------------------
-// Refunds and reversals (money in). First, so a merchant name in the text
-// ("Refund Daraz", "Foodpanda reversal") never turns a refund into spending.
+// Refunds and reversals (money in). First, so a refund that also names an income
+// or transfer keyword ("Tuition fee refund", "Upwork refund") is not read as income.
+// Merchant names cannot clash with it: merchant rules only look at money out.
 // ---------------------------------------------------------------------------
 const refunds = inflow('refund', /\b(?:refund(?:ed|s)?|reversal|reversed|chargeback|cash ?back)\b/i)
 
@@ -70,7 +72,7 @@ const interest = inflow('other_income', /\b(?:interest|dividends?|profit)\b/i)
 // ---------------------------------------------------------------------------
 const feesOnMovingMoney = outflow(
   'fees',
-  /\b(?:cash ?out|cash ?in|atm|withdrawals?|add ?money|send ?money|transfers?|remittance|transaction|card|annual|renewal|late|overdraft|processing|maintenance)(?: (?:service|handling|processing|usage|bank|banking|sms|vat))? (?:fees?|charges?)\b/i,
+  /\b(?:cash ?out|cash ?in|atm|withdrawals?|add ?money|send ?money|transfers?|remittance|transaction|card|annual|renewal|late|overdraft|processing|maintenance)(?: (?:service|handling|processing|payment|usage|bank|banking|sms|vat))? (?:fees?|charges?)\b/i,
   // Taxes and bank charges that name themselves.
   /\b(?:vat|excise duty|stamp duty|bank charges?|account maintenance|sms (?:banking )?(?:alerts?|fees?|charges?))\b/i,
 )
@@ -158,7 +160,8 @@ const loans = outflow(
 const cardBills = outflow(
   'card_payment',
   /\bcredit ?card\b/i,
-  /\bcard (?:bill|payment|repayment|dues?|settlement)\b/i,
+  // Not "card payment": UK banks label every debit-card purchase "card payment to <shop>".
+  /\bcard (?:bill|repayment|dues?|settlement)\b/i,
   /\b(?:barclaycard|amex|american express|mbna|capital one|tesco bank)\b/i,
 )
 
@@ -172,7 +175,7 @@ const buyNowPayLater = outflow(
 // ---------------------------------------------------------------------------
 // Savings and investments (money out), and money coming back from them.
 // ---------------------------------------------------------------------------
-const SAVINGS_PRODUCTS = /\b(?:dps|fdr|(?:fixed|recurring|term) deposit)\b/i
+const SAVINGS_PRODUCTS = /\b(?:dps|fdr|fd|(?:fixed|recurring|term) deposit)\b/i
 
 const savingsAndInvestments = [
   // DPS = deposit pension scheme, FDR = fixed deposit receipt.
@@ -198,6 +201,7 @@ const notIncome = [
     /\bsanchay ?a? ?patr[ao]\b/i,
     /\b(?:maturity|matured|encashment|encashed)\b/i,
   ),
+  // A disbursement, or a friend lending. A repayment received is not income either.
   ...inflow('loan_received', /\bloan\b/i),
 ]
 
@@ -212,7 +216,7 @@ const utilities = outflow(
   /\b(?:desco|dpdc|nesco|wzpdcl|breb|palli bidyut|prepaid meter|electricity|electric bill|power bill)\b|বিদ্যুৎ|বিদ্যুত/i,
   // Bangladesh gas (Titas, Karnaphuli, Bakhrabad, ...) and cooking gas.
   /\b(?:titas|karnaphuli|bakhrabad|jalalabad gas|pashchimanchal|sundarban gas|gas bill|lpg|gas cylinder|cylinder)\b/i,
-  // Water: WASA is Dhaka's, Chattogram's (CWASA) and others.
+  // Water: WASA is the water authority (DWASA in Dhaka, CWASA in Chattogram).
   /\b(?:d?c?wasa|water bill|sewerage)\b/i,
   // UK.
   /\b(?:british gas|edf|e\.?on|octopus energy|ovo|scottish power|sse|npower|utility warehouse)\b/i,
@@ -242,8 +246,8 @@ const rent = outflow(
   /\bcouncil tax\b/i,
 )
 
-// Groceries. Sub-brands that must beat their parent come from here:
-// Foodpanda's pandamart before Foodpanda, Amazon Fresh before Amazon, GrabMart before Grab.
+// Groceries. The grocery arms of bigger brands sit here so they beat the parent brand
+// further down: pandamart (Foodpanda), Amazon Fresh (Amazon) and GrabMart (Grab).
 const groceries = outflow(
   'groceries',
   // Bangladesh.
@@ -263,7 +267,9 @@ const eatingOut = outflow(
   'eating_out',
   /\b(?:pathao|grab|uber)\W*(?:food|eats)\b/i,
   /\b(?:food ?panda|hungry ?naki|foodi|deliveroo|just ?eat)\b/i,
-  /\b(?:kfc|pizza ?hut|burger ?king|starbucks|costa coffee|greggs|wagamama|pret|kopitiam|ya kun|toast box|secret recipe|chillox|pizza inn|kacchi ?bhai)\b|\bmcdonald|\bdomino|\bnando/i,
+  // Domino's and Nando's lose the apostrophe, and card statements may cut the name
+  // short ("DOMINO S"). Plain prefixes would also catch "Dominion Theatre".
+  /\b(?:kfc|pizza ?hut|burger ?king|starbucks|costa coffee|greggs|wagamama|pret|kopitiam|ya kun|toast box|secret recipe|chillox|pizza inn|kacchi ?bhai|dominos?|domino s|nandos?|nando s)\b|\bmcdonald/i,
   /\b(?:restaurants?|caf[eé]|coffee|bakery|pizza|burger|biryani|canteen|food ?court|hawker|takeaway|eatery)\b/i,
 )
 
@@ -324,7 +330,7 @@ const entertainment = outflow(
 const shopping = outflow(
   'shopping',
   // Bangladesh.
-  /\b(?:daraz|aarong|rokomari|pickaboo|startech|ryans|ajkerdeal|othoba|bata|walton)\b/i,
+  /\b(?:daraz|aarong|rokomari|pickaboo|startech|ryans computers|ajkerdeal|othoba|bata)\b/i,
   // Online and global.
   /\b(?:amazon|ebay|etsy|aliexpress|alibaba|temu|shein|lazada|shopee|zalora|qoo10|taobao|apple store)\b/i,
   // UK and Singapore high street.

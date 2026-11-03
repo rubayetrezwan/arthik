@@ -119,6 +119,15 @@ describe('matching', () => {
     expect(categorize("Domino's Pizza", -12).category).toBe('eating_out')
   })
 
+  it('ignores zero-width characters inside a word', () => {
+    // Pasted text, and some Bengali keyboards, leave zero-width joiners and spaces in the middle
+    // of words. Built from code points so no invisible character sits in the source.
+    const zwj = String.fromCodePoint(0x200d)
+    const zwsp = String.fromCodePoint(0x200b)
+    expect(categorize(`বিদ্যু${zwj}ৎ বিল`, -1500).category).toBe('utilities')
+    expect(categorize(`Food${zwsp}panda`, -420).category).toBe('eating_out')
+  })
+
   it('does not match a keyword inside a longer word', () => {
     // "rent" inside "parent", "atm" inside "batman", "emi" inside "chemist" must not fire.
     expect(categorize('Parent teacher meeting', -100).category).toBe('uncategorised_out')
@@ -156,6 +165,30 @@ describe('order of rules', () => {
   it('keeps income and interest ahead of savings withdrawals', () => {
     expect(categorize('Salary credited to savings account', 65000).category).toBe('salary')
     expect(categorize('DPS interest', 800).category).toBe('other_income')
+  })
+
+  it('reads "card payment to" as a purchase, not a card bill', () => {
+    // UK banks label every debit-card purchase this way.
+    expect(categorize('Card payment to Greggs', -3.2).category).toBe('eating_out')
+    expect(categorize('CARD PAYMENT TO THAMES WATER', -30).category).toBe('utilities')
+    expect(categorize('Card payment to Boots', -6.5).category).toBe('healthcare')
+    expect(categorize('Card payment to Tesco', -41).category).toBe('groceries')
+    expect(categorize('Card payment to XYZ Ltd', -41).category).toBe('uncategorised_out')
+    expect(categorize('Credit card bill payment', -9000).category).toBe('card_payment')
+    expect(categorize('Visa card bill', -9000).category).toBe('card_payment')
+  })
+
+  it('keeps a card or loan fee a fee', () => {
+    expect(categorize('Credit card annual fee', -1150).category).toBe('fees')
+    expect(categorize('Credit card late payment fee', -500).category).toBe('fees')
+    expect(categorize('Loan processing fee', -2000).category).toBe('fees')
+  })
+
+  it('does not match a brand prefix inside another name', () => {
+    expect(categorize('Dominion Theatre', -45).category).toBe('entertainment')
+    expect(categorize("Nando's", -14).category).toBe('eating_out')
+    expect(categorize('Walton Road parking', -3).category).toBe('transport')
+    expect(categorize('WALTON-ON-THAMES', -20).category).toBe('uncategorised_out')
   })
 
   it('puts debt rules before merchants', () => {
@@ -390,6 +423,7 @@ table('debt, savings and investments', [
   ['Daraz PayLater', -1200, 'bnpl'],
   ['DPS', -2000, 'savings_deposit'],
   ['Fixed deposit', -100000, 'savings_deposit'],
+  ['FD placement', -500, 'savings_deposit'],
   ['Transfer to savings account', -300, 'savings_deposit'],
   ['Mutual fund', -5000, 'investments'],
   ['Sanchay patra', -50000, 'investments'],
