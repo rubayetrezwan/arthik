@@ -664,6 +664,163 @@ describe('parseTransactionsCsv: row numbers and bad rows', () => {
 
 })
 
+describe('parseTransactionsCsv: rows with more cells than the header', () => {
+  // An amount such as 55,000 that is not in quotes is two cells. Everything after it shifts
+  // one place right, so the row would otherwise import as 55 with the 000 ignored. These rows
+  // use no quotes on purpose; the other tests quote the amount.
+  const THREE = 'date,description,amount'
+  const SPLIT = 'Date,Description,Debit,Credit'
+
+  it('does not import +55 for an unquoted 55,000', () => {
+    const { transactions, errors } = parseTransactionsCsv(
+      file(THREE, '2026-10-01,Salary credit,55,000', '2026-10-02,Rent,-18,000'),
+      'BDT',
+    )
+    expect(transactions).toEqual([])
+    expect(errors).toEqual<CsvError[]>([
+      { row: 2, code: 'extra_cells' },
+      { row: 3, code: 'extra_cells' },
+    ])
+  })
+
+  it('does not import an unquoted decimal comma as the whole number', () => {
+    const { transactions, errors } = parseTransactionsCsv(
+      file(THREE, '2026-10-01,Tea,-12,50'),
+      'BDT',
+    )
+    expect(transactions).toEqual([])
+    expect(errors).toEqual<CsvError[]>([{ row: 2, code: 'extra_cells' }])
+  })
+
+  it('does not import a description with a comma and a number as an amount', () => {
+    const { transactions, errors } = parseTransactionsCsv(
+      file(THREE, '2026-10-01,Flat 5, 300,-100'),
+      'BDT',
+    )
+    expect(transactions).toEqual([])
+    expect(errors).toEqual<CsvError[]>([{ row: 2, code: 'extra_cells' }])
+  })
+
+  it('catches an unquoted credit in a debit and credit file', () => {
+    const { transactions, errors } = parseTransactionsCsv(
+      file(SPLIT, '2026-10-01,Salary credit,,55,000'),
+      'BDT',
+    )
+    expect(transactions).toEqual([])
+    expect(errors).toEqual<CsvError[]>([{ row: 2, code: 'extra_cells' }])
+  })
+
+  it('catches an unquoted debit in a debit and credit file, even with an empty cell after it', () => {
+    // The empty credit cell is pushed off the end, so the extra cell is empty. But the row
+    // now has a debit of 18 and a credit of 000, which is not what the bank wrote.
+    for (const row of ['2026-10-01,House rent,18,000,', '2026-10-01,House rent,18,500,']) {
+      const { transactions, errors } = parseTransactionsCsv(file(SPLIT, row), 'BDT')
+      expect(transactions, row).toEqual([])
+      expect(errors, row).toEqual<CsvError[]>([{ row: 2, code: 'extra_cells' }])
+    }
+  })
+
+  it('catches the shift in a debit, credit and balance file', () => {
+    const { transactions, errors } = parseTransactionsCsv(
+      file('Date,Description,Debit,Credit,Balance', '2026-10-01,House rent,18,000,,1,20,000'),
+      'BDT',
+    )
+    expect(transactions).toEqual([])
+    expect(errors).toEqual<CsvError[]>([{ row: 2, code: 'extra_cells' }])
+  })
+
+  it('catches it in a semicolon file', () => {
+    const { transactions, errors } = parseTransactionsCsv(
+      file('date;description;amount', '01.10.2026;Miete;-1;500', '02.10.2026;Gehalt;55;000'),
+      'BDT',
+    )
+    expect(transactions).toEqual([])
+    expect(errors).toEqual<CsvError[]>([
+      { row: 2, code: 'extra_cells' },
+      { row: 3, code: 'extra_cells' },
+    ])
+  })
+
+  it('reports only extra_cells for a row whose cells cannot be trusted to line up', () => {
+    const { errors } = parseTransactionsCsv(file(THREE, 'nope,Test,abc,x,y'), 'BDT')
+    expect(errors).toEqual<CsvError[]>([{ row: 2, code: 'extra_cells' }])
+  })
+
+  it('checks the row even when its amount reads as zero', () => {
+    const { transactions, errors } = parseTransactionsCsv(file(THREE, '2026-10-01,Enquiry,0,5'), 'BDT')
+    expect(transactions).toEqual([])
+    expect(errors).toEqual<CsvError[]>([{ row: 2, code: 'extra_cells' }])
+  })
+
+  it('imports the other rows and reports in row order', () => {
+    const { transactions, errors } = parseTransactionsCsv(
+      file(
+        THREE,
+        '2026-10-01,Good one,-10', // row 2
+        '2026-10-02,Shifted,-1,500', // row 3
+        '2026-10-03,Bad amount,abc', // row 4
+        '2026-10-04,Good two,-20', // row 5
+      ),
+      'BDT',
+    )
+    expect(transactions.map((t) => [t.id, t.amount])).toEqual([
+      ['row-2', -10],
+      ['row-5', -20],
+    ])
+    expect(errors).toEqual<CsvError[]>([
+      { row: 3, code: 'extra_cells' },
+      { row: 4, code: 'bad_amount', column: 'amount', value: 'abc' },
+    ])
+  })
+
+  it('still reads a quoted amount with a comma in it', () => {
+    const { transactions, errors } = parseTransactionsCsv(
+      file(THREE, '2026-10-01,Salary credit,"55,000"', '2026-10-02,Rent,"-18,000"'),
+      'BDT',
+    )
+    expect(errors).toEqual([])
+    expect(transactions.map((t) => t.amount)).toEqual([55000, -18000])
+  })
+
+  it('allows empty cells after the last column', () => {
+    const { transactions, errors } = parseTransactionsCsv(
+      file(THREE, '2026-10-01,Salary credit,55000,', '2026-10-02,Rent,-18000,,,', '2026-10-03,Tea,-12, ,  ,'),
+      'BDT',
+    )
+    expect(errors).toEqual([])
+    expect(transactions.map((t) => t.amount)).toEqual([55000, -18000, -12])
+  })
+
+  it('allows an empty cell after a debit or credit that fills only one of the two', () => {
+    const { transactions, errors } = parseTransactionsCsv(
+      file(SPLIT, '2026-10-01,House rent,18000,,', '2026-10-02,Salary credit,,55000,'),
+      'BDT',
+    )
+    expect(errors).toEqual([])
+    expect(transactions.map((t) => t.amount)).toEqual([-18000, 55000])
+  })
+
+  it('counts a header padded with empty cells as only as wide as its last name', () => {
+    // Spreadsheets pad every line to the widest one. The shifted row is as long as the padded
+    // header, but the cell under the empty header is not empty.
+    const { transactions, errors } = parseTransactionsCsv(
+      file('date,description,amount,,', '2026-10-01,Salary credit,55,000,', '2026-10-02,Rent,-18000,,'),
+      'BDT',
+    )
+    expect(transactions.map((t) => [t.id, t.amount])).toEqual([['row-3', -18000]])
+    expect(errors).toEqual<CsvError[]>([{ row: 2, code: 'extra_cells' }])
+  })
+
+  it('does not mind extra cells in a blank row', () => {
+    const { transactions, errors } = parseTransactionsCsv(
+      file(THREE, '2026-10-01,Good,-10', ',,,,,'),
+      'BDT',
+    )
+    expect(errors).toEqual([])
+    expect(transactions).toHaveLength(1)
+  })
+})
+
 describe('parseTransactionsCsv: quotes', () => {
   it('reads a quoted field holding a comma and an escaped quote', () => {
     const { transactions, errors } = parseTransactionsCsv(

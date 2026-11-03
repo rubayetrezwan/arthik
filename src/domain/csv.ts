@@ -21,6 +21,8 @@ export type CsvErrorCode =
   | 'bad_category'
   | 'bad_quotes'
   | 'too_many_rows'
+  /** A row has more cells than the header: an unquoted comma in an amount or description shifted its cells. */
+  | 'extra_cells'
 
 export interface CsvError {
   /**
@@ -95,6 +97,12 @@ interface Columns {
   amount: AmountColumns
   currency: Column | null
   category: Column | null
+  /**
+   * How many cells a row may fill: up to the last header with a name. Spreadsheets pad every
+   * line with empty cells to the widest one, so a header can end in empty cells that are
+   * padding and not columns.
+   */
+  width: number
 }
 
 function readHeader(
@@ -129,9 +137,17 @@ function readHeader(
     if (!amount) errors.push({ row, code: 'missing_column', column: 'amount' })
     return { ok: false, errors }
   }
+  const lastNamed = names.findLastIndex((name) => name !== '')
   return {
     ok: true,
-    columns: { date, description, amount, currency: find('currency'), category: find('category') },
+    columns: {
+      date,
+      description,
+      amount,
+      currency: find('currency'),
+      category: find('category'),
+      width: lastNamed + 1,
+    },
   }
 }
 
@@ -244,12 +260,38 @@ type RowOutcome =
   | { kind: 'skipped' }
   | { kind: 'errors'; errors: CsvError[] }
 
+/**
+ * Whether a row runs past the header in a way that means its cells are not where the header
+ * says. A comma inside an unquoted cell, as in 55,000 or "Flat 5, 300", cuts the cell in two and
+ * pushes every cell after it one place right, so an amount can be read as 55 with the 000
+ * left over. Empty cells after the last column are fine; spreadsheets add them.
+ *
+ * One case hides behind those empty cells. In a debit and credit file the empty credit cell is
+ * what gets pushed off the end, so 18,000 in the debit column makes a row with a debit of 18,
+ * a credit of 000 and nothing extra. A row that runs past the header and fills both money
+ * columns is therefore not trusted either. (Both filled is unusual anyway.)
+ */
+function hasExtraCells(cells: readonly string[], columns: Columns): boolean {
+  const extra = cells.slice(columns.width)
+  if (extra.some((cell) => cell.trim() !== '')) return true
+  return (
+    extra.length > 0 &&
+    columns.amount.kind === 'split' &&
+    cellText(cells, columns.amount.debit) !== '' &&
+    cellText(cells, columns.amount.credit) !== ''
+  )
+}
+
 function readRow(
   cells: readonly string[],
   row: number,
   columns: Columns,
   defaultCurrency: CurrencyCode,
 ): RowOutcome {
+  // Nothing in a row that does not line up with the header can be trusted, so it is checked
+  // before anything else, and nothing else about the row is reported.
+  if (hasExtraCells(cells, columns)) return { kind: 'errors', errors: [{ row, code: 'extra_cells' }] }
+
   const amount = readAmount(cells, row, columns.amount)
   // A zero amount, such as a balance enquiry, moves no money. It is not worth importing
   // and not worth an error, whatever else the row holds.
