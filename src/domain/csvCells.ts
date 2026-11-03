@@ -32,8 +32,14 @@ const DAY_FIRST_DATE = new RegExp(
   'i',
 )
 
-/** A real calendar date as `YYYY-MM-DD`, or null. */
+// Dates outside these years are typos (0026 for 2026) or a spreadsheet's stand-in for "no
+// date" (0000, 9999), not transactions, though the calendar would allow them.
+const FIRST_YEAR = 1990
+const LAST_YEAR = 2100
+
+/** A real calendar date as `YYYY-MM-DD` in the years the reader accepts, or null. */
 function buildDate(year: number, month: number, day: number): string | null {
+  if (year < FIRST_YEAR || year > LAST_YEAR) return null
   if (month < 1 || month > 12 || day < 1 || day > daysInMonth(year, month)) return null
   const pad = (value: number, length: number) => String(value).padStart(length, '0')
   return `${pad(year, 4)}-${pad(month, 2)}-${pad(day, 2)}`
@@ -110,7 +116,8 @@ const POINT_AND_THREE_DIGITS = /^\d{1,3}\.\d{3}$/
 /**
  * Reads an amount such as `1,234.50`, `(640)`, `৳ 1,240`, `১,২৪০` or `-$5`. Brackets mean
  * negative. Returns null for anything else, including an empty cell, and for a cell that could
- * be read two ways with different values, such as 12,50 or 1.500.
+ * be read two ways with different values, such as 12,50 or 1.500, and for one too large to be
+ * kept to the cent (over about 90 trillion).
  */
 export function parseAmount(text: string): number | null {
   const cleaned = toAsciiDigits(text)
@@ -130,6 +137,8 @@ export function parseAmount(text: string): number | null {
   if (!parts) return null
   const [, whole = '', fraction = ''] = parts
   const value = Number(whole.replaceAll(',', '') + fraction)
-  if (!Number.isFinite(value)) return null
+  // Money is added up in cents, which is only exact up to Number.MAX_SAFE_INTEGER. A larger
+  // amount would have digits that were rounded away, so it is not read.
+  if (!Number.isFinite(value) || Math.round(value * 100) > Number.MAX_SAFE_INTEGER) return null
   return sign === '-' || bracketed ? -value : value
 }

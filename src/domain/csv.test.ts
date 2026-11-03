@@ -367,6 +367,48 @@ describe('parseTransactionsCsv: dates', () => {
     expect(transactions).toEqual([])
     expect(errors).toEqual<CsvError[]>([{ row: 2, code: 'bad_date', column: 'date', value: cell }])
   })
+
+  // A year outside 1990 to 2100 is a typo, or a spreadsheet's idea of "no date", and a real
+  // calendar date all the same: 0000-02-29 passes the leap year rule.
+  it.each([
+    '0000-02-29',
+    '0000-01-01',
+    '31/10/0026',
+    '31-10-0026',
+    '1989-12-31',
+    '31/12/1989',
+    '2101-01-01',
+    '01/01/2101',
+    '9999-12-31',
+    '0026-10-31T14:03:22+06:00',
+  ])('rejects the year in "%s"', (cell) => {
+    const { transactions, errors } = parseRow(`${cell},Test,-10,,`)
+    expect(transactions).toEqual([])
+    expect(errors).toEqual<CsvError[]>([{ row: 2, code: 'bad_date', column: 'date', value: cell }])
+  })
+
+  it.each([
+    ['1990-01-01', '1990-01-01'],
+    ['01/01/1990', '1990-01-01'],
+    ['2100-12-31', '2100-12-31'],
+    ['31/12/2100', '2100-12-31'],
+    ['29/02/2000', '2000-02-29'],
+  ])('still reads %s, a year at the edge of the range, as %s', (cell, expected) => {
+    const { transactions, errors } = parseRow(`${cell},Test,-10,,`)
+    expect(errors).toEqual([])
+    expect(transactions[0]?.date).toBe(expected)
+  })
+
+  it('does not take a month-first date in an impossible year for a sign of month first', () => {
+    const { transactions, errors } = parseTransactionsCsv(
+      file('date,description,amount', '10/31/0026,Typo,-5', '10/05/2026,Rent,-100'),
+      'BDT',
+    )
+    expect(transactions.map((t) => t.date)).toEqual(['2026-05-10'])
+    expect(errors).toEqual<CsvError[]>([
+      { row: 2, code: 'bad_date', column: 'date', value: '10/31/0026' },
+    ])
+  })
 })
 
 describe('parseTransactionsCsv: month-first dates', () => {
@@ -666,9 +708,51 @@ describe('parseTransactionsCsv: amounts', () => {
     ])
   })
 
-  it('rejects a number too large to hold exactly', () => {
+  it('rejects a number so large that it is not finite', () => {
     expect(parseRow(`2026-10-01,Test,${'9'.repeat(400)},,`).errors).toEqual([
       expect.objectContaining({ row: 2, code: 'bad_amount' }),
+    ])
+  })
+
+  // The domain code keeps money as a number, and a sum of cents is only exact up to
+  // Number.MAX_SAFE_INTEGER. Past that the last digits are made up.
+  it.each([
+    '12345678901234567', // 17 digits: the number rounds to 12345678901234568
+    '90071992547410', // 9007199254741000 cents is above Number.MAX_SAFE_INTEGER
+    '-90071992547410',
+    '(90071992547410)',
+    '90071992547409.99',
+    '1,000,000,000,000,000',
+  ])('rejects "%s", which is more than can be added up to the cent', (cell) => {
+    const { transactions, errors } = parseRow(`2026-10-01,Test,"${cell}",,`)
+    expect(transactions).toEqual([])
+    expect(errors).toEqual<CsvError[]>([
+      { row: 2, code: 'bad_amount', column: 'amount', value: cell },
+    ])
+  })
+
+  it.each([
+    ['90071992547409', 90071992547409], // 9007199254740900 cents: below the limit
+    ['-90071992547409', -90071992547409],
+    ['9,999,999,999.99', 9999999999.99],
+    ['1,00,00,00,000', 1000000000], // a hundred crore
+  ])('still reads %s, an amount that large', (cell, expected) => {
+    expect(amountOf(cell)).toBe(expected)
+  })
+
+  it('rejects an amount that is too large in the debit or credit column', () => {
+    const { transactions, errors } = parseTransactionsCsv(
+      file(
+        'date,description,debit,credit',
+        '2026-10-01,Rent,12345678901234567,',
+        '2026-10-02,Pay,,12345678901234567',
+      ),
+      'BDT',
+    )
+    expect(transactions).toEqual([])
+    expect(errors).toEqual<CsvError[]>([
+      { row: 2, code: 'bad_amount', column: 'debit', value: '12345678901234567' },
+      { row: 3, code: 'bad_amount', column: 'credit', value: '12345678901234567' },
     ])
   })
 
@@ -1656,6 +1740,81 @@ describe('parseTransactionsCsv: whole-file problems', () => {
       )
       expect(errors).toEqual([])
       expect(transactions).toHaveLength(1)
+    })
+  })
+
+  describe('a column name that appears twice', () => {
+    it.each([
+      'date',
+      'description',
+      'amount',
+      'debit',
+      'credit',
+      'withdrawal',
+      'deposit',
+      'currency',
+      'category',
+    ])('reports a repeated %s column and imports nothing', (name) => {
+      const { transactions, errors } = parseTransactionsCsv(
+        file(`date,description,amount,${name},${name}`, '2026-10-01,Shwapno,-500,1,2'),
+        'BDT',
+      )
+      expect(transactions).toEqual([])
+      expect(errors).toEqual<CsvError[]>([{ row: 1, code: 'duplicate_column', column: name }])
+    })
+
+    it('matches names regardless of case and spaces, and names the column in lower case', () => {
+      const { errors } = parseTransactionsCsv(
+        file('Date, Amount ,description,AMOUNT', '2026-10-01,-500,Shwapno,-9'),
+        'BDT',
+      )
+      expect(errors).toEqual<CsvError[]>([{ row: 1, code: 'duplicate_column', column: 'amount' }])
+    })
+
+    it('reports a name once however many times it appears, and each repeated name', () => {
+      const { errors } = parseTransactionsCsv(
+        file(
+          'date,amount,date,description,amount,amount,date',
+          '2026-10-01,-5,2026-10-02,x,-6,-7,2026-10-03',
+        ),
+        'BDT',
+      )
+      expect(errors).toEqual<CsvError[]>([
+        { row: 1, code: 'duplicate_column', column: 'date' },
+        { row: 1, code: 'duplicate_column', column: 'amount' },
+      ])
+    })
+
+    it('reports it with a missing column and a direction column, in that order', () => {
+      const { errors } = parseTransactionsCsv(
+        file('date,amount,amount,type', '2026-10-01,-5,-6,DR'),
+        'BDT',
+      )
+      expect(errors).toEqual<CsvError[]>([
+        { row: 1, code: 'missing_column', column: 'description' },
+        { row: 1, code: 'duplicate_column', column: 'amount' },
+        { row: 1, code: 'direction_column', column: 'type' },
+      ])
+    })
+
+    it('numbers the header row from the top of the file', () => {
+      const { errors } = parseTransactionsCsv(
+        file('', 'date,description,amount,amount', '2026-10-01,x,-5,-6'),
+        'BDT',
+      )
+      expect(errors).toEqual<CsvError[]>([{ row: 2, code: 'duplicate_column', column: 'amount' }])
+    })
+
+    it('does not mind a repeated name the reader does not use', () => {
+      const { transactions, errors } = parseTransactionsCsv(
+        file(
+          'date,description,amount,balance,balance,,,notes,notes',
+          '2026-10-01,Shwapno,-500,1,2,,,a,b',
+        ),
+        'BDT',
+      )
+      expect(errors).toEqual([])
+      expect(transactions.map((t) => t.amount)).toEqual([-500])
     })
   })
 

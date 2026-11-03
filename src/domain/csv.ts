@@ -27,6 +27,8 @@ export type CsvErrorCode =
   | 'month_first_dates'
   /** The file has an amount column and a column that says debit or credit, so the sign of the amount cannot be told. */
   | 'direction_column'
+  /** A header name the reader uses (date, amount, ...) appears twice, so it cannot tell which column is meant. */
+  | 'duplicate_column'
 
 export interface CsvError {
   /**
@@ -125,6 +127,20 @@ const DIRECTION_COLUMNS: ReadonlySet<string> = new Set([
   'debit/credit',
 ])
 
+// The header names the reader looks for. If one appears twice, it cannot tell which column
+// is meant, and reading the first would ignore numbers the file put in the second.
+const READ_COLUMNS: ReadonlySet<string> = new Set([
+  'date',
+  'description',
+  'amount',
+  'debit',
+  'credit',
+  'withdrawal',
+  'deposit',
+  'currency',
+  'category',
+])
+
 function readHeader(
   cells: readonly string[],
   row: number,
@@ -154,6 +170,15 @@ function readHeader(
   if (!date) errors.push({ row, code: 'missing_column', column: 'date' })
   if (!description) errors.push({ row, code: 'missing_column', column: 'description' })
   if (!amount) errors.push({ row, code: 'missing_column', column: 'amount' })
+  const repeated = new Set<string>()
+  const seen = new Set<string>()
+  for (const name of names) {
+    if (READ_COLUMNS.has(name) && seen.has(name) && !repeated.has(name)) {
+      repeated.add(name)
+      errors.push({ row, code: 'duplicate_column', column: name })
+    }
+    seen.add(name)
+  }
   if (signed) {
     // A signed amount next to a column that says debit or credit: the sign may be in either.
     names.forEach((name, index) => {
