@@ -1,0 +1,1497 @@
+{
+  "key": "farhana",
+  "emergencySavings": {
+    "amount": 5000,
+    "currency": "BDT"
+  },
+  "transactions": [
+    {
+      "id": "farhana-0001",
+      "date": "2026-05-01",
+      "description": "Salary - Padma Logistics Ltd (BEFTN Credit)",
+      "amount": 65000,
+      "currency": "BDT",
+      "category": "salary"
+    },
+    {
+      "id": "farhana-0002",
+      "date": "2026-05-01",
+      "description": "bKash Payment - Daraz Bangladesh Order #281800",
+      "amount": -1219,
+      "currency": "BDT",
+      "category": "shopping"
+    },
+    {
+      "id": "farhana-0003",
+      "date": "2026-05-02",
+      "description": "Add Money to bKash 01711xxxxxx - City Bank A/C",
+      "amount": -20000,
+      "currency": "BDT",
+      "category": "own_transfer"
+    },
+    {
+      "id": "farhana-0004",
+      "date": "2026-05-02",
+      "description": "bKash Add Money from City Bank A/C xxxx4821",
+      "amount": 20000,
+      "currency": "BDT",
+      "category": "own_transfer"
+    },
+    {
+      "id": "farhana-0005",
+      "date": "2026-05-03",
+      "description": "bKash Payment - Daraz Bangladesh Order #186937",
+      "amount": -2073,
+      "currency": "BDT",
+      "category": "shopping"
+    },
+    {
+      "id": "farhana-0006",
+      "date": "2026-05-04",
+      "description": "bKash Payment - Aarong Eid Collection, Mirpur",
+      "amount": -3252,
+      "currency": "BDT",
+      "category": "shopping"
+    },
+    {
+      "id": "farhana-0007",
+      "date": "2026-05-05",
+      "description": "BEFTN Transfer - House rent, Flat 4C Mirpur 12",
+      "amount": -22000,
+      "currency": "BDT",
+      "category": "rent"
+    },
+    {
+      "id": "farhana-0008",
+      "date": "2026-05-05",
+      "description": "Pathao Ride #215721 - bKash Payment",
+      "amount": -398,
+      "currency": "BDT",
+      "category": "transport"
+    },
+    {
+      "id": "farhana-0009",
+      "date": "2026-05-07",
+      "description": "Personal Loan EMI - City Bank A/C xxxx4821",
+      "amount": -12000,
+      "currency": "BDT",
+      "category": "loan_emi"
+    },
+    {
+      "id": "farhana-0010",
+      "date": "2026-05-07",
+      "description": "Chaldal.com Order #206977 - bKash Payment",
+      "amount": -1560,
+      "currency": "BDT",
+      "category": "groceries"
+    },
+    {
+      "id": "farhana-0011",
+      "date": "2026-05-07",
+      "description": "Pathao Ride #630451 - bKash Payment",
+      "amount": -370,
+      "currency": "BDT",
+      "category": "transport"
+    },
+    {
+      "id": "farhana-0012",
+      "date": "2026-05-07",
+      "description": "Yellow Beauty Parlour, Mirpur 10 - bKash Payment",
+      "amount": -1224,
+      "currency": "BDT",
+      "category": "personal_care"
+    },
+    {
+      "id": "farhana-0013",
+      "date": "2026-05-09",
+      "description": "Grameenphone Postpaid Bill 01711xxxxxx (bKash Pay Bill)",
+      "amount": -802,
+      "currency": "BDT",
+      "category": "mobile_internet"
+    },
+    {
+      "id": "farhana-0014",
+      "date": "2026-05-11",
+      "description": "Link3 Broadband Bill (bKash Pay Bill)",
+      "amount": -1100,
+      "currency": "BDT",
+      "category": "mobile_internet"
+    },
+    {
+      "id": "farhana-0015",
+      "date": "2026-05-13",
+      "description": "bKash Payment - Shwapno Mirpur 12",
+      "amount": -1042,
+      "currency": "BDT",
+      "category": "groceries"
+    },
+    {
+      "id": "farhana-0016",
+      "date": "2026-05-14",
+      "description": "DESCO Prepaid Meter Recharge (bKash Pay Bill)",
+      "amount": -1787,
+      "currency": "BDT",
+      "category": "utilities"
+    },
+    {
+      "id": "farhana-0017",
+      "date": "2026-05-14",
+      "description": "bKash Payment - Daraz Bangladesh Order #860780",
+      "amount": -1104,
+      "currency": "BDT",
+      "category": "shopping"
+    },
+    {
+      "id": "farhana-0018",
+      "date": "2026-05-17",
+      "description": "Chaldal.com Order #124791 - bKash Payment",
+      "amount": -1680,
+      "currency": "BDT",
+      "category": "groceries"
+    },
+    {
+      "id": "farhana-0019",
+      "date": "2026-05-17",
+      "description": "Pathao Ride #951144 - bKash Payment",
+      "amount": -252,
+      "currency": "BDT",
+      "category": "transport"
+    },
+    {
+      "id": "farhana-0020",
+      "date": "2026-05-17",
+      "description": "Pathao Ride #903700 - bKash Payment",
+      "amount": -323,
+      "currency": "BDT",
+      "category": "transport"
+    },
+    {
+      "id": "farhana-0021",
+      "date": "2026-05-19",
+      "description": "Foodpanda Order #FP394855 - bKash Payment",
+      "amount": -381,
+      "currency": "BDT",
+      "category": "eating_out"
+    },
+    {
+      "id": "farhana-0022",
+      "date": "2026-05-19",
+      "description": "Foodpanda Order #FP360657 - bKash Payment",
+      "amount": -687,
+      "currency": "BDT",
+      "category": "eating_out"
+    },
+    {
+      "id": "farhana-0023",
+      "date": "2026-05-19",
+      "description": "Pathao Ride #238197 - bKash Payment",
+      "amount": -363,
+      "currency": "BDT",
+      "category": "transport"
+    },
+    {
+      "id": "farhana-0024",
+      "date": "2026-05-20",
+      "description": "Credit Card Bill Payment - EBL Visa xx5512",
+      "amount": -11200,
+      "currency": "BDT",
+      "category": "card_payment"
+    },
+    {
+      "id": "farhana-0025",
+      "date": "2026-05-20",
+      "description": "Foodpanda Order #FP576161 - bKash Payment",
+      "amount": -730,
+      "currency": "BDT",
+      "category": "eating_out"
+    },
+    {
+      "id": "farhana-0026",
+      "date": "2026-05-20",
+      "description": "Pathao Ride #997035 - bKash Payment",
+      "amount": -297,
+      "currency": "BDT",
+      "category": "transport"
+    },
+    {
+      "id": "farhana-0027",
+      "date": "2026-05-21",
+      "description": "Netflix Subscription",
+      "amount": -800,
+      "currency": "BDT",
+      "category": "entertainment"
+    },
+    {
+      "id": "farhana-0028",
+      "date": "2026-05-21",
+      "description": "Pathao Ride #173853 - bKash Payment",
+      "amount": -371,
+      "currency": "BDT",
+      "category": "transport"
+    },
+    {
+      "id": "farhana-0029",
+      "date": "2026-05-21",
+      "description": "bKash Send Money 01715xxxxxx - Eid salami",
+      "amount": -1707,
+      "currency": "BDT",
+      "category": "gifts"
+    },
+    {
+      "id": "farhana-0030",
+      "date": "2026-05-24",
+      "description": "bKash Payment - Shwapno Mirpur 12",
+      "amount": -617,
+      "currency": "BDT",
+      "category": "groceries"
+    },
+    {
+      "id": "farhana-0031",
+      "date": "2026-05-24",
+      "description": "Foodpanda Order #FP270466 - bKash Payment",
+      "amount": -653,
+      "currency": "BDT",
+      "category": "eating_out"
+    },
+    {
+      "id": "farhana-0032",
+      "date": "2026-05-25",
+      "description": "Pathao Ride #195575 - bKash Payment",
+      "amount": -352,
+      "currency": "BDT",
+      "category": "transport"
+    },
+    {
+      "id": "farhana-0033",
+      "date": "2026-05-31",
+      "description": "Titas Gas Bill - Mirpur 12 (bKash Pay Bill)",
+      "amount": -990,
+      "currency": "BDT",
+      "category": "utilities"
+    },
+    {
+      "id": "farhana-0034",
+      "date": "2026-05-31",
+      "description": "bKash Payment - Daraz Bangladesh Order #208948",
+      "amount": -760,
+      "currency": "BDT",
+      "category": "shopping"
+    },
+    {
+      "id": "farhana-0035",
+      "date": "2026-06-01",
+      "description": "Salary - Padma Logistics Ltd (BEFTN Credit)",
+      "amount": 65000,
+      "currency": "BDT",
+      "category": "salary"
+    },
+    {
+      "id": "farhana-0036",
+      "date": "2026-06-01",
+      "description": "bKash Payment - Daraz Bangladesh Order #765170",
+      "amount": -2086,
+      "currency": "BDT",
+      "category": "shopping"
+    },
+    {
+      "id": "farhana-0037",
+      "date": "2026-06-01",
+      "description": "Foodpanda Order #FP900471 - bKash Payment",
+      "amount": -531,
+      "currency": "BDT",
+      "category": "eating_out"
+    },
+    {
+      "id": "farhana-0038",
+      "date": "2026-06-01",
+      "description": "Yellow Beauty Parlour, Mirpur 10 - bKash Payment",
+      "amount": -920,
+      "currency": "BDT",
+      "category": "personal_care"
+    },
+    {
+      "id": "farhana-0039",
+      "date": "2026-06-02",
+      "description": "Add Money to bKash 01711xxxxxx - City Bank A/C",
+      "amount": -20000,
+      "currency": "BDT",
+      "category": "own_transfer"
+    },
+    {
+      "id": "farhana-0040",
+      "date": "2026-06-02",
+      "description": "bKash Add Money from City Bank A/C xxxx4821",
+      "amount": 20000,
+      "currency": "BDT",
+      "category": "own_transfer"
+    },
+    {
+      "id": "farhana-0041",
+      "date": "2026-06-02",
+      "description": "Foodpanda Order #FP513356 - bKash Payment",
+      "amount": -572,
+      "currency": "BDT",
+      "category": "eating_out"
+    },
+    {
+      "id": "farhana-0042",
+      "date": "2026-06-03",
+      "description": "bKash Payment - Daraz Bangladesh Order #568424",
+      "amount": -2148,
+      "currency": "BDT",
+      "category": "shopping"
+    },
+    {
+      "id": "farhana-0043",
+      "date": "2026-06-05",
+      "description": "BEFTN Transfer - House rent, Flat 4C Mirpur 12",
+      "amount": -22000,
+      "currency": "BDT",
+      "category": "rent"
+    },
+    {
+      "id": "farhana-0044",
+      "date": "2026-06-05",
+      "description": "Chaldal.com Order #935869 - bKash Payment",
+      "amount": -1632,
+      "currency": "BDT",
+      "category": "groceries"
+    },
+    {
+      "id": "farhana-0045",
+      "date": "2026-06-07",
+      "description": "Personal Loan EMI - City Bank A/C xxxx4821",
+      "amount": -12000,
+      "currency": "BDT",
+      "category": "loan_emi"
+    },
+    {
+      "id": "farhana-0046",
+      "date": "2026-06-09",
+      "description": "Grameenphone Postpaid Bill 01711xxxxxx (bKash Pay Bill)",
+      "amount": -857,
+      "currency": "BDT",
+      "category": "mobile_internet"
+    },
+    {
+      "id": "farhana-0047",
+      "date": "2026-06-10",
+      "description": "bKash Payment - Daraz Bangladesh Order #685062",
+      "amount": -1962,
+      "currency": "BDT",
+      "category": "shopping"
+    },
+    {
+      "id": "farhana-0048",
+      "date": "2026-06-10",
+      "description": "Chaldal.com Order #170815 - bKash Payment",
+      "amount": -1084,
+      "currency": "BDT",
+      "category": "groceries"
+    },
+    {
+      "id": "farhana-0049",
+      "date": "2026-06-11",
+      "description": "Link3 Broadband Bill (bKash Pay Bill)",
+      "amount": -1100,
+      "currency": "BDT",
+      "category": "mobile_internet"
+    },
+    {
+      "id": "farhana-0050",
+      "date": "2026-06-11",
+      "description": "bKash Payment - Shwapno Mirpur 12",
+      "amount": -1214,
+      "currency": "BDT",
+      "category": "groceries"
+    },
+    {
+      "id": "farhana-0051",
+      "date": "2026-06-11",
+      "description": "Pathao Ride #391068 - bKash Payment",
+      "amount": -269,
+      "currency": "BDT",
+      "category": "transport"
+    },
+    {
+      "id": "farhana-0052",
+      "date": "2026-06-12",
+      "description": "Pathao Ride #203134 - bKash Payment",
+      "amount": -273,
+      "currency": "BDT",
+      "category": "transport"
+    },
+    {
+      "id": "farhana-0053",
+      "date": "2026-06-14",
+      "description": "Foodpanda Order #FP962228 - bKash Payment",
+      "amount": -439,
+      "currency": "BDT",
+      "category": "eating_out"
+    },
+    {
+      "id": "farhana-0054",
+      "date": "2026-06-16",
+      "description": "DESCO Prepaid Meter Recharge (bKash Pay Bill)",
+      "amount": -1934,
+      "currency": "BDT",
+      "category": "utilities"
+    },
+    {
+      "id": "farhana-0055",
+      "date": "2026-06-20",
+      "description": "Credit Card Bill Payment - EBL Visa xx5512",
+      "amount": -11500,
+      "currency": "BDT",
+      "category": "card_payment"
+    },
+    {
+      "id": "farhana-0056",
+      "date": "2026-06-20",
+      "description": "bKash Payment - Daraz Bangladesh Order #138003",
+      "amount": -980,
+      "currency": "BDT",
+      "category": "shopping"
+    },
+    {
+      "id": "farhana-0057",
+      "date": "2026-06-20",
+      "description": "Chaldal.com Order #758573 - bKash Payment",
+      "amount": -979,
+      "currency": "BDT",
+      "category": "groceries"
+    },
+    {
+      "id": "farhana-0058",
+      "date": "2026-06-21",
+      "description": "Netflix Subscription",
+      "amount": -800,
+      "currency": "BDT",
+      "category": "entertainment"
+    },
+    {
+      "id": "farhana-0059",
+      "date": "2026-06-21",
+      "description": "bKash Payment - Daraz Bangladesh Order #333018",
+      "amount": -1654,
+      "currency": "BDT",
+      "category": "shopping"
+    },
+    {
+      "id": "farhana-0060",
+      "date": "2026-06-24",
+      "description": "Foodpanda Order #FP187177 - bKash Payment",
+      "amount": -825,
+      "currency": "BDT",
+      "category": "eating_out"
+    },
+    {
+      "id": "farhana-0061",
+      "date": "2026-06-26",
+      "description": "Pathao Ride #178481 - bKash Payment",
+      "amount": -364,
+      "currency": "BDT",
+      "category": "transport"
+    },
+    {
+      "id": "farhana-0062",
+      "date": "2026-06-27",
+      "description": "Pathao Ride #867262 - bKash Payment",
+      "amount": -162,
+      "currency": "BDT",
+      "category": "transport"
+    },
+    {
+      "id": "farhana-0063",
+      "date": "2026-06-27",
+      "description": "Pathao Ride #660883 - bKash Payment",
+      "amount": -342,
+      "currency": "BDT",
+      "category": "transport"
+    },
+    {
+      "id": "farhana-0064",
+      "date": "2026-06-30",
+      "description": "Titas Gas Bill - Mirpur 12 (bKash Pay Bill)",
+      "amount": -990,
+      "currency": "BDT",
+      "category": "utilities"
+    },
+    {
+      "id": "farhana-0065",
+      "date": "2026-07-01",
+      "description": "Salary - Padma Logistics Ltd (BEFTN Credit)",
+      "amount": 65000,
+      "currency": "BDT",
+      "category": "salary"
+    },
+    {
+      "id": "farhana-0066",
+      "date": "2026-07-02",
+      "description": "Add Money to bKash 01711xxxxxx - City Bank A/C",
+      "amount": -20000,
+      "currency": "BDT",
+      "category": "own_transfer"
+    },
+    {
+      "id": "farhana-0067",
+      "date": "2026-07-02",
+      "description": "bKash Add Money from City Bank A/C xxxx4821",
+      "amount": 20000,
+      "currency": "BDT",
+      "category": "own_transfer"
+    },
+    {
+      "id": "farhana-0068",
+      "date": "2026-07-03",
+      "description": "Pathao Ride #694899 - bKash Payment",
+      "amount": -214,
+      "currency": "BDT",
+      "category": "transport"
+    },
+    {
+      "id": "farhana-0069",
+      "date": "2026-07-04",
+      "description": "bKash Payment - Shwapno Mirpur 12",
+      "amount": -636,
+      "currency": "BDT",
+      "category": "groceries"
+    },
+    {
+      "id": "farhana-0070",
+      "date": "2026-07-04",
+      "description": "Pathao Ride #755936 - bKash Payment",
+      "amount": -213,
+      "currency": "BDT",
+      "category": "transport"
+    },
+    {
+      "id": "farhana-0071",
+      "date": "2026-07-05",
+      "description": "BEFTN Transfer - House rent, Flat 4C Mirpur 12",
+      "amount": -22000,
+      "currency": "BDT",
+      "category": "rent"
+    },
+    {
+      "id": "farhana-0072",
+      "date": "2026-07-07",
+      "description": "Personal Loan EMI - City Bank A/C xxxx4821",
+      "amount": -12000,
+      "currency": "BDT",
+      "category": "loan_emi"
+    },
+    {
+      "id": "farhana-0073",
+      "date": "2026-07-08",
+      "description": "Pathao Ride #666052 - bKash Payment",
+      "amount": -303,
+      "currency": "BDT",
+      "category": "transport"
+    },
+    {
+      "id": "farhana-0074",
+      "date": "2026-07-09",
+      "description": "Grameenphone Postpaid Bill 01711xxxxxx (bKash Pay Bill)",
+      "amount": -879,
+      "currency": "BDT",
+      "category": "mobile_internet"
+    },
+    {
+      "id": "farhana-0075",
+      "date": "2026-07-09",
+      "description": "Foodpanda Order #FP624510 - bKash Payment",
+      "amount": -538,
+      "currency": "BDT",
+      "category": "eating_out"
+    },
+    {
+      "id": "farhana-0076",
+      "date": "2026-07-11",
+      "description": "Link3 Broadband Bill (bKash Pay Bill)",
+      "amount": -1100,
+      "currency": "BDT",
+      "category": "mobile_internet"
+    },
+    {
+      "id": "farhana-0077",
+      "date": "2026-07-11",
+      "description": "DESCO Prepaid Meter Recharge (bKash Pay Bill)",
+      "amount": -1466,
+      "currency": "BDT",
+      "category": "utilities"
+    },
+    {
+      "id": "farhana-0078",
+      "date": "2026-07-11",
+      "description": "Pathao Ride #170610 - bKash Payment",
+      "amount": -307,
+      "currency": "BDT",
+      "category": "transport"
+    },
+    {
+      "id": "farhana-0079",
+      "date": "2026-07-13",
+      "description": "bKash Payment - Daraz Bangladesh Order #253652",
+      "amount": -676,
+      "currency": "BDT",
+      "category": "shopping"
+    },
+    {
+      "id": "farhana-0080",
+      "date": "2026-07-13",
+      "description": "Foodpanda Order #FP711314 - bKash Payment",
+      "amount": -584,
+      "currency": "BDT",
+      "category": "eating_out"
+    },
+    {
+      "id": "farhana-0081",
+      "date": "2026-07-17",
+      "description": "Chaldal.com Order #239131 - bKash Payment",
+      "amount": -1546,
+      "currency": "BDT",
+      "category": "groceries"
+    },
+    {
+      "id": "farhana-0082",
+      "date": "2026-07-18",
+      "description": "Credit Card Bill Payment - EBL Visa xx5512",
+      "amount": -13900,
+      "currency": "BDT",
+      "category": "card_payment"
+    },
+    {
+      "id": "farhana-0083",
+      "date": "2026-07-19",
+      "description": "Foodpanda Order #FP256367 - bKash Payment",
+      "amount": -550,
+      "currency": "BDT",
+      "category": "eating_out"
+    },
+    {
+      "id": "farhana-0084",
+      "date": "2026-07-19",
+      "description": "Pathao Ride #879644 - bKash Payment",
+      "amount": -307,
+      "currency": "BDT",
+      "category": "transport"
+    },
+    {
+      "id": "farhana-0085",
+      "date": "2026-07-21",
+      "description": "Netflix Subscription",
+      "amount": -800,
+      "currency": "BDT",
+      "category": "entertainment"
+    },
+    {
+      "id": "farhana-0086",
+      "date": "2026-07-21",
+      "description": "Pathao Ride #109402 - bKash Payment",
+      "amount": -304,
+      "currency": "BDT",
+      "category": "transport"
+    },
+    {
+      "id": "farhana-0087",
+      "date": "2026-07-22",
+      "description": "Chaldal.com Order #742887 - bKash Payment",
+      "amount": -1126,
+      "currency": "BDT",
+      "category": "groceries"
+    },
+    {
+      "id": "farhana-0088",
+      "date": "2026-07-22",
+      "description": "Chaldal.com Order #303686 - bKash Payment",
+      "amount": -1136,
+      "currency": "BDT",
+      "category": "groceries"
+    },
+    {
+      "id": "farhana-0089",
+      "date": "2026-07-22",
+      "description": "bKash Payment - Shwapno Mirpur 12",
+      "amount": -971,
+      "currency": "BDT",
+      "category": "groceries"
+    },
+    {
+      "id": "farhana-0090",
+      "date": "2026-07-22",
+      "description": "Foodpanda Order #FP500909 - bKash Payment",
+      "amount": -708,
+      "currency": "BDT",
+      "category": "eating_out"
+    },
+    {
+      "id": "farhana-0091",
+      "date": "2026-07-23",
+      "description": "bKash Payment - Daraz Bangladesh Order #565592",
+      "amount": -1828,
+      "currency": "BDT",
+      "category": "shopping"
+    },
+    {
+      "id": "farhana-0092",
+      "date": "2026-07-25",
+      "description": "Pathao Ride #373785 - bKash Payment",
+      "amount": -171,
+      "currency": "BDT",
+      "category": "transport"
+    },
+    {
+      "id": "farhana-0093",
+      "date": "2026-07-26",
+      "description": "bKash Payment - Daraz Bangladesh Order #723280",
+      "amount": -1951,
+      "currency": "BDT",
+      "category": "shopping"
+    },
+    {
+      "id": "farhana-0094",
+      "date": "2026-07-27",
+      "description": "Yellow Beauty Parlour, Mirpur 10 - bKash Payment",
+      "amount": -1220,
+      "currency": "BDT",
+      "category": "personal_care"
+    },
+    {
+      "id": "farhana-0095",
+      "date": "2026-07-30",
+      "description": "bKash Payment - Daraz Bangladesh Order #588532",
+      "amount": -1746,
+      "currency": "BDT",
+      "category": "shopping"
+    },
+    {
+      "id": "farhana-0096",
+      "date": "2026-07-31",
+      "description": "Titas Gas Bill - Mirpur 12 (bKash Pay Bill)",
+      "amount": -990,
+      "currency": "BDT",
+      "category": "utilities"
+    },
+    {
+      "id": "farhana-0097",
+      "date": "2026-08-01",
+      "description": "Salary - Padma Logistics Ltd (BEFTN Credit)",
+      "amount": 65000,
+      "currency": "BDT",
+      "category": "salary"
+    },
+    {
+      "id": "farhana-0098",
+      "date": "2026-08-02",
+      "description": "Add Money to bKash 01711xxxxxx - City Bank A/C",
+      "amount": -20000,
+      "currency": "BDT",
+      "category": "own_transfer"
+    },
+    {
+      "id": "farhana-0099",
+      "date": "2026-08-02",
+      "description": "bKash Add Money from City Bank A/C xxxx4821",
+      "amount": 20000,
+      "currency": "BDT",
+      "category": "own_transfer"
+    },
+    {
+      "id": "farhana-0100",
+      "date": "2026-08-03",
+      "description": "bKash Payment - Daraz Bangladesh Order #314349",
+      "amount": -1648,
+      "currency": "BDT",
+      "category": "shopping"
+    },
+    {
+      "id": "farhana-0101",
+      "date": "2026-08-05",
+      "description": "BEFTN Transfer - House rent, Flat 4C Mirpur 12",
+      "amount": -22000,
+      "currency": "BDT",
+      "category": "rent"
+    },
+    {
+      "id": "farhana-0102",
+      "date": "2026-08-05",
+      "description": "Pathao Ride #878570 - bKash Payment",
+      "amount": -381,
+      "currency": "BDT",
+      "category": "transport"
+    },
+    {
+      "id": "farhana-0103",
+      "date": "2026-08-06",
+      "description": "Chaldal.com Order #913078 - bKash Payment",
+      "amount": -1738,
+      "currency": "BDT",
+      "category": "groceries"
+    },
+    {
+      "id": "farhana-0104",
+      "date": "2026-08-07",
+      "description": "Personal Loan EMI - City Bank A/C xxxx4821",
+      "amount": -12000,
+      "currency": "BDT",
+      "category": "loan_emi"
+    },
+    {
+      "id": "farhana-0105",
+      "date": "2026-08-07",
+      "description": "Foodpanda Order #FP251813 - bKash Payment",
+      "amount": -338,
+      "currency": "BDT",
+      "category": "eating_out"
+    },
+    {
+      "id": "farhana-0106",
+      "date": "2026-08-08",
+      "description": "Pathao Ride #918707 - bKash Payment",
+      "amount": -250,
+      "currency": "BDT",
+      "category": "transport"
+    },
+    {
+      "id": "farhana-0107",
+      "date": "2026-08-09",
+      "description": "Grameenphone Postpaid Bill 01711xxxxxx (bKash Pay Bill)",
+      "amount": -924,
+      "currency": "BDT",
+      "category": "mobile_internet"
+    },
+    {
+      "id": "farhana-0108",
+      "date": "2026-08-11",
+      "description": "Link3 Broadband Bill (bKash Pay Bill)",
+      "amount": -1100,
+      "currency": "BDT",
+      "category": "mobile_internet"
+    },
+    {
+      "id": "farhana-0109",
+      "date": "2026-08-11",
+      "description": "bKash Payment - Shwapno Mirpur 12",
+      "amount": -1204,
+      "currency": "BDT",
+      "category": "groceries"
+    },
+    {
+      "id": "farhana-0110",
+      "date": "2026-08-13",
+      "description": "bKash Payment - Shwapno Mirpur 12",
+      "amount": -1075,
+      "currency": "BDT",
+      "category": "groceries"
+    },
+    {
+      "id": "farhana-0111",
+      "date": "2026-08-14",
+      "description": "Foodpanda Order #FP646538 - bKash Payment",
+      "amount": -359,
+      "currency": "BDT",
+      "category": "eating_out"
+    },
+    {
+      "id": "farhana-0112",
+      "date": "2026-08-14",
+      "description": "Pathao Ride #673123 - bKash Payment",
+      "amount": -214,
+      "currency": "BDT",
+      "category": "transport"
+    },
+    {
+      "id": "farhana-0113",
+      "date": "2026-08-15",
+      "description": "DESCO Prepaid Meter Recharge (bKash Pay Bill)",
+      "amount": -2195,
+      "currency": "BDT",
+      "category": "utilities"
+    },
+    {
+      "id": "farhana-0114",
+      "date": "2026-08-19",
+      "description": "Credit Card Bill Payment - EBL Visa xx5512",
+      "amount": -12100,
+      "currency": "BDT",
+      "category": "card_payment"
+    },
+    {
+      "id": "farhana-0115",
+      "date": "2026-08-19",
+      "description": "Chaldal.com Order #145190 - bKash Payment",
+      "amount": -1662,
+      "currency": "BDT",
+      "category": "groceries"
+    },
+    {
+      "id": "farhana-0116",
+      "date": "2026-08-20",
+      "description": "Pathao Ride #252738 - bKash Payment",
+      "amount": -345,
+      "currency": "BDT",
+      "category": "transport"
+    },
+    {
+      "id": "farhana-0117",
+      "date": "2026-08-20",
+      "description": "Yellow Beauty Parlour, Mirpur 10 - bKash Payment",
+      "amount": -1719,
+      "currency": "BDT",
+      "category": "personal_care"
+    },
+    {
+      "id": "farhana-0118",
+      "date": "2026-08-21",
+      "description": "Netflix Subscription",
+      "amount": -800,
+      "currency": "BDT",
+      "category": "entertainment"
+    },
+    {
+      "id": "farhana-0119",
+      "date": "2026-08-21",
+      "description": "Chaldal.com Order #765427 - bKash Payment",
+      "amount": -991,
+      "currency": "BDT",
+      "category": "groceries"
+    },
+    {
+      "id": "farhana-0120",
+      "date": "2026-08-22",
+      "description": "bKash Payment - Daraz Bangladesh Order #189318",
+      "amount": -1277,
+      "currency": "BDT",
+      "category": "shopping"
+    },
+    {
+      "id": "farhana-0121",
+      "date": "2026-08-22",
+      "description": "bKash Payment - Daraz Bangladesh Order #347803",
+      "amount": -2268,
+      "currency": "BDT",
+      "category": "shopping"
+    },
+    {
+      "id": "farhana-0122",
+      "date": "2026-08-22",
+      "description": "Foodpanda Order #FP323346 - bKash Payment",
+      "amount": -837,
+      "currency": "BDT",
+      "category": "eating_out"
+    },
+    {
+      "id": "farhana-0123",
+      "date": "2026-08-24",
+      "description": "Pathao Ride #435576 - bKash Payment",
+      "amount": -186,
+      "currency": "BDT",
+      "category": "transport"
+    },
+    {
+      "id": "farhana-0124",
+      "date": "2026-08-25",
+      "description": "Pathao Ride #683387 - bKash Payment",
+      "amount": -199,
+      "currency": "BDT",
+      "category": "transport"
+    },
+    {
+      "id": "farhana-0125",
+      "date": "2026-08-25",
+      "description": "Pathao Ride #890727 - bKash Payment",
+      "amount": -358,
+      "currency": "BDT",
+      "category": "transport"
+    },
+    {
+      "id": "farhana-0126",
+      "date": "2026-08-28",
+      "description": "Foodpanda Order #FP380037 - bKash Payment",
+      "amount": -640,
+      "currency": "BDT",
+      "category": "eating_out"
+    },
+    {
+      "id": "farhana-0127",
+      "date": "2026-08-31",
+      "description": "Titas Gas Bill - Mirpur 12 (bKash Pay Bill)",
+      "amount": -990,
+      "currency": "BDT",
+      "category": "utilities"
+    },
+    {
+      "id": "farhana-0128",
+      "date": "2026-09-01",
+      "description": "Salary - Padma Logistics Ltd (BEFTN Credit)",
+      "amount": 65000,
+      "currency": "BDT",
+      "category": "salary"
+    },
+    {
+      "id": "farhana-0129",
+      "date": "2026-09-02",
+      "description": "Add Money to bKash 01711xxxxxx - City Bank A/C",
+      "amount": -20000,
+      "currency": "BDT",
+      "category": "own_transfer"
+    },
+    {
+      "id": "farhana-0130",
+      "date": "2026-09-02",
+      "description": "bKash Add Money from City Bank A/C xxxx4821",
+      "amount": 20000,
+      "currency": "BDT",
+      "category": "own_transfer"
+    },
+    {
+      "id": "farhana-0131",
+      "date": "2026-09-04",
+      "description": "Foodpanda Order #FP699462 - bKash Payment",
+      "amount": -722,
+      "currency": "BDT",
+      "category": "eating_out"
+    },
+    {
+      "id": "farhana-0132",
+      "date": "2026-09-04",
+      "description": "Pathao Ride #478528 - bKash Payment",
+      "amount": -375,
+      "currency": "BDT",
+      "category": "transport"
+    },
+    {
+      "id": "farhana-0133",
+      "date": "2026-09-04",
+      "description": "Pathao Ride #664120 - bKash Payment",
+      "amount": -315,
+      "currency": "BDT",
+      "category": "transport"
+    },
+    {
+      "id": "farhana-0134",
+      "date": "2026-09-05",
+      "description": "BEFTN Transfer - House rent, Flat 4C Mirpur 12",
+      "amount": -22000,
+      "currency": "BDT",
+      "category": "rent"
+    },
+    {
+      "id": "farhana-0135",
+      "date": "2026-09-07",
+      "description": "Personal Loan EMI - City Bank A/C xxxx4821",
+      "amount": -12000,
+      "currency": "BDT",
+      "category": "loan_emi"
+    },
+    {
+      "id": "farhana-0136",
+      "date": "2026-09-09",
+      "description": "Grameenphone Postpaid Bill 01711xxxxxx (bKash Pay Bill)",
+      "amount": -840,
+      "currency": "BDT",
+      "category": "mobile_internet"
+    },
+    {
+      "id": "farhana-0137",
+      "date": "2026-09-09",
+      "description": "bKash Payment - Shwapno Mirpur 12",
+      "amount": -518,
+      "currency": "BDT",
+      "category": "groceries"
+    },
+    {
+      "id": "farhana-0138",
+      "date": "2026-09-11",
+      "description": "Link3 Broadband Bill (bKash Pay Bill)",
+      "amount": -1100,
+      "currency": "BDT",
+      "category": "mobile_internet"
+    },
+    {
+      "id": "farhana-0139",
+      "date": "2026-09-13",
+      "description": "DESCO Prepaid Meter Recharge (bKash Pay Bill)",
+      "amount": -2064,
+      "currency": "BDT",
+      "category": "utilities"
+    },
+    {
+      "id": "farhana-0140",
+      "date": "2026-09-16",
+      "description": "bKash Payment - Daraz Bangladesh Order #235025",
+      "amount": -1158,
+      "currency": "BDT",
+      "category": "shopping"
+    },
+    {
+      "id": "farhana-0141",
+      "date": "2026-09-16",
+      "description": "bKash Payment - Shwapno Mirpur 12",
+      "amount": -995,
+      "currency": "BDT",
+      "category": "groceries"
+    },
+    {
+      "id": "farhana-0142",
+      "date": "2026-09-16",
+      "description": "Yellow Beauty Parlour, Mirpur 10 - bKash Payment",
+      "amount": -1330,
+      "currency": "BDT",
+      "category": "personal_care"
+    },
+    {
+      "id": "farhana-0143",
+      "date": "2026-09-17",
+      "description": "Credit Card Bill Payment - EBL Visa xx5512",
+      "amount": -13950,
+      "currency": "BDT",
+      "category": "card_payment"
+    },
+    {
+      "id": "farhana-0144",
+      "date": "2026-09-17",
+      "description": "Chaldal.com Order #733904 - bKash Payment",
+      "amount": -1988,
+      "currency": "BDT",
+      "category": "groceries"
+    },
+    {
+      "id": "farhana-0145",
+      "date": "2026-09-17",
+      "description": "Foodpanda Order #FP269327 - bKash Payment",
+      "amount": -845,
+      "currency": "BDT",
+      "category": "eating_out"
+    },
+    {
+      "id": "farhana-0146",
+      "date": "2026-09-18",
+      "description": "Foodpanda Order #FP554245 - bKash Payment",
+      "amount": -777,
+      "currency": "BDT",
+      "category": "eating_out"
+    },
+    {
+      "id": "farhana-0147",
+      "date": "2026-09-18",
+      "description": "Pathao Ride #544594 - bKash Payment",
+      "amount": -238,
+      "currency": "BDT",
+      "category": "transport"
+    },
+    {
+      "id": "farhana-0148",
+      "date": "2026-09-20",
+      "description": "bKash Payment - Daraz Bangladesh Order #860340",
+      "amount": -991,
+      "currency": "BDT",
+      "category": "shopping"
+    },
+    {
+      "id": "farhana-0149",
+      "date": "2026-09-21",
+      "description": "Netflix Subscription",
+      "amount": -800,
+      "currency": "BDT",
+      "category": "entertainment"
+    },
+    {
+      "id": "farhana-0150",
+      "date": "2026-09-24",
+      "description": "bKash Payment - Daraz Bangladesh Order #949821",
+      "amount": -1298,
+      "currency": "BDT",
+      "category": "shopping"
+    },
+    {
+      "id": "farhana-0151",
+      "date": "2026-09-24",
+      "description": "Pathao Ride #439569 - bKash Payment",
+      "amount": -335,
+      "currency": "BDT",
+      "category": "transport"
+    },
+    {
+      "id": "farhana-0152",
+      "date": "2026-09-26",
+      "description": "Chaldal.com Order #918818 - bKash Payment",
+      "amount": -1520,
+      "currency": "BDT",
+      "category": "groceries"
+    },
+    {
+      "id": "farhana-0153",
+      "date": "2026-09-26",
+      "description": "Pathao Ride #851296 - bKash Payment",
+      "amount": -299,
+      "currency": "BDT",
+      "category": "transport"
+    },
+    {
+      "id": "farhana-0154",
+      "date": "2026-09-29",
+      "description": "Chaldal.com Order #788394 - bKash Payment",
+      "amount": -1256,
+      "currency": "BDT",
+      "category": "groceries"
+    },
+    {
+      "id": "farhana-0155",
+      "date": "2026-09-29",
+      "description": "Pathao Ride #304802 - bKash Payment",
+      "amount": -351,
+      "currency": "BDT",
+      "category": "transport"
+    },
+    {
+      "id": "farhana-0156",
+      "date": "2026-09-29",
+      "description": "bKash Payment - Daraz 9.9 Sale Order #786215",
+      "amount": -5227,
+      "currency": "BDT",
+      "category": "shopping"
+    },
+    {
+      "id": "farhana-0157",
+      "date": "2026-09-30",
+      "description": "Titas Gas Bill - Mirpur 12 (bKash Pay Bill)",
+      "amount": -990,
+      "currency": "BDT",
+      "category": "utilities"
+    },
+    {
+      "id": "farhana-0158",
+      "date": "2026-10-01",
+      "description": "Salary - Padma Logistics Ltd (BEFTN Credit)",
+      "amount": 65000,
+      "currency": "BDT",
+      "category": "salary"
+    },
+    {
+      "id": "farhana-0159",
+      "date": "2026-10-01",
+      "description": "Pathao Ride #829871 - bKash Payment",
+      "amount": -240,
+      "currency": "BDT",
+      "category": "transport"
+    },
+    {
+      "id": "farhana-0160",
+      "date": "2026-10-02",
+      "description": "Add Money to bKash 01711xxxxxx - City Bank A/C",
+      "amount": -20000,
+      "currency": "BDT",
+      "category": "own_transfer"
+    },
+    {
+      "id": "farhana-0161",
+      "date": "2026-10-02",
+      "description": "bKash Add Money from City Bank A/C xxxx4821",
+      "amount": 20000,
+      "currency": "BDT",
+      "category": "own_transfer"
+    },
+    {
+      "id": "farhana-0162",
+      "date": "2026-10-02",
+      "description": "Yellow Beauty Parlour, Mirpur 10 - bKash Payment",
+      "amount": -1548,
+      "currency": "BDT",
+      "category": "personal_care"
+    },
+    {
+      "id": "farhana-0163",
+      "date": "2026-10-03",
+      "description": "Foodpanda Order #FP205433 - bKash Payment",
+      "amount": -461,
+      "currency": "BDT",
+      "category": "eating_out"
+    },
+    {
+      "id": "farhana-0164",
+      "date": "2026-10-04",
+      "description": "bKash Payment - Daraz Bangladesh Order #511355",
+      "amount": -1505,
+      "currency": "BDT",
+      "category": "shopping"
+    },
+    {
+      "id": "farhana-0165",
+      "date": "2026-10-04",
+      "description": "bKash Payment - Shwapno Mirpur 12",
+      "amount": -983,
+      "currency": "BDT",
+      "category": "groceries"
+    },
+    {
+      "id": "farhana-0166",
+      "date": "2026-10-05",
+      "description": "BEFTN Transfer - House rent, Flat 4C Mirpur 12",
+      "amount": -22000,
+      "currency": "BDT",
+      "category": "rent"
+    },
+    {
+      "id": "farhana-0167",
+      "date": "2026-10-06",
+      "description": "Pathao Ride #301039 - bKash Payment",
+      "amount": -269,
+      "currency": "BDT",
+      "category": "transport"
+    },
+    {
+      "id": "farhana-0168",
+      "date": "2026-10-07",
+      "description": "Personal Loan EMI - City Bank A/C xxxx4821",
+      "amount": -12000,
+      "currency": "BDT",
+      "category": "loan_emi"
+    },
+    {
+      "id": "farhana-0169",
+      "date": "2026-10-08",
+      "description": "Chaldal.com Order #382283 - bKash Payment",
+      "amount": -1087,
+      "currency": "BDT",
+      "category": "groceries"
+    },
+    {
+      "id": "farhana-0170",
+      "date": "2026-10-09",
+      "description": "Grameenphone Postpaid Bill 01711xxxxxx (bKash Pay Bill)",
+      "amount": -807,
+      "currency": "BDT",
+      "category": "mobile_internet"
+    },
+    {
+      "id": "farhana-0171",
+      "date": "2026-10-11",
+      "description": "Link3 Broadband Bill (bKash Pay Bill)",
+      "amount": -1100,
+      "currency": "BDT",
+      "category": "mobile_internet"
+    },
+    {
+      "id": "farhana-0172",
+      "date": "2026-10-11",
+      "description": "DESCO Prepaid Meter Recharge (bKash Pay Bill)",
+      "amount": -2100,
+      "currency": "BDT",
+      "category": "utilities"
+    },
+    {
+      "id": "farhana-0173",
+      "date": "2026-10-13",
+      "description": "Foodpanda Order #FP780009 - bKash Payment",
+      "amount": -479,
+      "currency": "BDT",
+      "category": "eating_out"
+    },
+    {
+      "id": "farhana-0174",
+      "date": "2026-10-16",
+      "description": "Credit Card Bill Payment - EBL Visa xx5512",
+      "amount": -14300,
+      "currency": "BDT",
+      "category": "card_payment"
+    },
+    {
+      "id": "farhana-0175",
+      "date": "2026-10-17",
+      "description": "bKash Payment - Daraz Bangladesh Order #495513",
+      "amount": -1686,
+      "currency": "BDT",
+      "category": "shopping"
+    },
+    {
+      "id": "farhana-0176",
+      "date": "2026-10-21",
+      "description": "Netflix Subscription",
+      "amount": -800,
+      "currency": "BDT",
+      "category": "entertainment"
+    },
+    {
+      "id": "farhana-0177",
+      "date": "2026-10-21",
+      "description": "Pathao Ride #398294 - bKash Payment",
+      "amount": -209,
+      "currency": "BDT",
+      "category": "transport"
+    },
+    {
+      "id": "farhana-0178",
+      "date": "2026-10-24",
+      "description": "Pathao Ride #143616 - bKash Payment",
+      "amount": -394,
+      "currency": "BDT",
+      "category": "transport"
+    },
+    {
+      "id": "farhana-0179",
+      "date": "2026-10-25",
+      "description": "Pathao Ride #979085 - bKash Payment",
+      "amount": -270,
+      "currency": "BDT",
+      "category": "transport"
+    },
+    {
+      "id": "farhana-0180",
+      "date": "2026-10-27",
+      "description": "bKash Payment - Daraz Bangladesh Order #186627",
+      "amount": -2062,
+      "currency": "BDT",
+      "category": "shopping"
+    },
+    {
+      "id": "farhana-0181",
+      "date": "2026-10-27",
+      "description": "bKash Payment - Shwapno Mirpur 12",
+      "amount": -1089,
+      "currency": "BDT",
+      "category": "groceries"
+    },
+    {
+      "id": "farhana-0182",
+      "date": "2026-10-28",
+      "description": "Chaldal.com Order #906215 - bKash Payment",
+      "amount": -985,
+      "currency": "BDT",
+      "category": "groceries"
+    },
+    {
+      "id": "farhana-0183",
+      "date": "2026-10-28",
+      "description": "Foodpanda Order #FP834004 - bKash Payment",
+      "amount": -726,
+      "currency": "BDT",
+      "category": "eating_out"
+    },
+    {
+      "id": "farhana-0184",
+      "date": "2026-10-29",
+      "description": "bKash Payment - Daraz Bangladesh Order #941095",
+      "amount": -1637,
+      "currency": "BDT",
+      "category": "shopping"
+    },
+    {
+      "id": "farhana-0185",
+      "date": "2026-10-30",
+      "description": "Chaldal.com Order #604312 - bKash Payment",
+      "amount": -1692,
+      "currency": "BDT",
+      "category": "groceries"
+    },
+    {
+      "id": "farhana-0186",
+      "date": "2026-10-31",
+      "description": "Titas Gas Bill - Mirpur 12 (bKash Pay Bill)",
+      "amount": -990,
+      "currency": "BDT",
+      "category": "utilities"
+    }
+  ]
+}

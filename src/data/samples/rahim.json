@@ -1,0 +1,2137 @@
+{
+  "key": "rahim",
+  "emergencySavings": {
+    "amount": 2600,
+    "currency": "SGD"
+  },
+  "transactions": [
+    {
+      "id": "rahim-0001",
+      "date": "2026-05-01",
+      "description": "FAST PAYMENT TO INSTAREM - REMITTANCE BANGLADESH",
+      "amount": -500,
+      "currency": "SGD",
+      "category": "family_support_out"
+    },
+    {
+      "id": "rahim-0002",
+      "date": "2026-05-01",
+      "description": "REMITTANCE FEE - INSTAREM",
+      "amount": -3.5,
+      "currency": "SGD",
+      "category": "fees"
+    },
+    {
+      "id": "rahim-0003",
+      "date": "2026-05-01",
+      "description": "NETS SHENG SIONG 4417",
+      "amount": -57.96,
+      "currency": "SGD",
+      "category": "groceries"
+    },
+    {
+      "id": "rahim-0004",
+      "date": "2026-05-01",
+      "description": "NETS FAIRPRICE XPRESS 2217",
+      "amount": -40.58,
+      "currency": "SGD",
+      "category": "groceries"
+    },
+    {
+      "id": "rahim-0005",
+      "date": "2026-05-02",
+      "description": "NETS KOPITIAM FOODCOURT",
+      "amount": -4.33,
+      "currency": "SGD",
+      "category": "eating_out"
+    },
+    {
+      "id": "rahim-0006",
+      "date": "2026-05-02",
+      "description": "NETS HAWKER STALL 0217",
+      "amount": -6.38,
+      "currency": "SGD",
+      "category": "eating_out"
+    },
+    {
+      "id": "rahim-0007",
+      "date": "2026-05-02",
+      "description": "NETS HAWKER STALL 0217",
+      "amount": -4.52,
+      "currency": "SGD",
+      "category": "eating_out"
+    },
+    {
+      "id": "rahim-0008",
+      "date": "2026-05-02",
+      "description": "SIMPLYGO MRT BUS",
+      "amount": -1.68,
+      "currency": "SGD",
+      "category": "transport"
+    },
+    {
+      "id": "rahim-0009",
+      "date": "2026-05-03",
+      "description": "NETS KOPITIAM FOODCOURT",
+      "amount": -6.12,
+      "currency": "SGD",
+      "category": "eating_out"
+    },
+    {
+      "id": "rahim-0010",
+      "date": "2026-05-03",
+      "description": "NETS HAWKER STALL 0344",
+      "amount": -5.82,
+      "currency": "SGD",
+      "category": "eating_out"
+    },
+    {
+      "id": "rahim-0011",
+      "date": "2026-05-04",
+      "description": "NETS SHENG SIONG 4417",
+      "amount": -32.44,
+      "currency": "SGD",
+      "category": "groceries"
+    },
+    {
+      "id": "rahim-0012",
+      "date": "2026-05-04",
+      "description": "NETS KOPITIAM FOODCOURT",
+      "amount": -3.68,
+      "currency": "SGD",
+      "category": "eating_out"
+    },
+    {
+      "id": "rahim-0013",
+      "date": "2026-05-04",
+      "description": "NETS HAWKER STALL 0217",
+      "amount": -6.37,
+      "currency": "SGD",
+      "category": "eating_out"
+    },
+    {
+      "id": "rahim-0014",
+      "date": "2026-05-07",
+      "description": "NETS BIRYANI RESTAURANT LITTLE INDIA",
+      "amount": -12.98,
+      "currency": "SGD",
+      "category": "eating_out"
+    },
+    {
+      "id": "rahim-0015",
+      "date": "2026-05-08",
+      "description": "NETS HAWKER STALL 0217",
+      "amount": -6.12,
+      "currency": "SGD",
+      "category": "eating_out"
+    },
+    {
+      "id": "rahim-0016",
+      "date": "2026-05-08",
+      "description": "SIMPLYGO MRT BUS",
+      "amount": -5.41,
+      "currency": "SGD",
+      "category": "transport"
+    },
+    {
+      "id": "rahim-0017",
+      "date": "2026-05-12",
+      "description": "NETS SINGTEL PREPAID TOP UP 9123",
+      "amount": -10,
+      "currency": "SGD",
+      "category": "mobile_internet"
+    },
+    {
+      "id": "rahim-0018",
+      "date": "2026-05-12",
+      "description": "SIMPLYGO MRT BUS",
+      "amount": -5.01,
+      "currency": "SGD",
+      "category": "transport"
+    },
+    {
+      "id": "rahim-0019",
+      "date": "2026-05-13",
+      "description": "NETS FAIRPRICE 8102",
+      "amount": -35.83,
+      "currency": "SGD",
+      "category": "groceries"
+    },
+    {
+      "id": "rahim-0020",
+      "date": "2026-05-13",
+      "description": "NETS KOPITIAM FOODCOURT",
+      "amount": -4.65,
+      "currency": "SGD",
+      "category": "eating_out"
+    },
+    {
+      "id": "rahim-0021",
+      "date": "2026-05-14",
+      "description": "NETS HAWKER STALL 0217",
+      "amount": -6.46,
+      "currency": "SGD",
+      "category": "eating_out"
+    },
+    {
+      "id": "rahim-0022",
+      "date": "2026-05-16",
+      "description": "FAST PAYMENT TO INSTAREM - REMITTANCE BANGLADESH",
+      "amount": -190,
+      "currency": "SGD",
+      "category": "family_support_out"
+    },
+    {
+      "id": "rahim-0023",
+      "date": "2026-05-16",
+      "description": "REMITTANCE FEE - INSTAREM",
+      "amount": -1.33,
+      "currency": "SGD",
+      "category": "fees"
+    },
+    {
+      "id": "rahim-0024",
+      "date": "2026-05-16",
+      "description": "NETS KOPITIAM FOODCOURT",
+      "amount": -4.13,
+      "currency": "SGD",
+      "category": "eating_out"
+    },
+    {
+      "id": "rahim-0025",
+      "date": "2026-05-16",
+      "description": "SHOPEE SINGAPORE 7710",
+      "amount": -12.24,
+      "currency": "SGD",
+      "category": "shopping"
+    },
+    {
+      "id": "rahim-0026",
+      "date": "2026-05-20",
+      "description": "NETS FAIRPRICE XPRESS 2217",
+      "amount": -48.33,
+      "currency": "SGD",
+      "category": "groceries"
+    },
+    {
+      "id": "rahim-0027",
+      "date": "2026-05-20",
+      "description": "NETS HAWKER STALL 0344",
+      "amount": -6.27,
+      "currency": "SGD",
+      "category": "eating_out"
+    },
+    {
+      "id": "rahim-0028",
+      "date": "2026-05-20",
+      "description": "SHOPEE SINGAPORE 7710",
+      "amount": -34.01,
+      "currency": "SGD",
+      "category": "shopping"
+    },
+    {
+      "id": "rahim-0029",
+      "date": "2026-05-22",
+      "description": "NETS FAIRPRICE 8102",
+      "amount": -24.97,
+      "currency": "SGD",
+      "category": "groceries"
+    },
+    {
+      "id": "rahim-0030",
+      "date": "2026-05-22",
+      "description": "NETS HAWKER STALL 0217",
+      "amount": -5.45,
+      "currency": "SGD",
+      "category": "eating_out"
+    },
+    {
+      "id": "rahim-0031",
+      "date": "2026-05-22",
+      "description": "NETS HAWKER STALL 0217",
+      "amount": -4.12,
+      "currency": "SGD",
+      "category": "eating_out"
+    },
+    {
+      "id": "rahim-0032",
+      "date": "2026-05-23",
+      "description": "NETS HAWKER STALL 0217",
+      "amount": -4.39,
+      "currency": "SGD",
+      "category": "eating_out"
+    },
+    {
+      "id": "rahim-0033",
+      "date": "2026-05-24",
+      "description": "NETS HAWKER STALL 0344",
+      "amount": -5.63,
+      "currency": "SGD",
+      "category": "eating_out"
+    },
+    {
+      "id": "rahim-0034",
+      "date": "2026-05-25",
+      "description": "ATM CASH WITHDRAWAL POSB 2231",
+      "amount": -60,
+      "currency": "SGD",
+      "category": "cash_withdrawal"
+    },
+    {
+      "id": "rahim-0035",
+      "date": "2026-05-28",
+      "description": "INWARD GIRO SALARY - LIM & SONS BUILDERS PTE LTD",
+      "amount": 1500,
+      "currency": "SGD",
+      "category": "salary"
+    },
+    {
+      "id": "rahim-0036",
+      "date": "2026-05-28",
+      "description": "SIMPLYGO MRT BUS",
+      "amount": -5.22,
+      "currency": "SGD",
+      "category": "transport"
+    },
+    {
+      "id": "rahim-0037",
+      "date": "2026-05-30",
+      "description": "NETS FAIRPRICE 8102",
+      "amount": -31.46,
+      "currency": "SGD",
+      "category": "groceries"
+    },
+    {
+      "id": "rahim-0038",
+      "date": "2026-05-31",
+      "description": "FAST TRANSFER TO POSB SAVINGS ACCOUNT",
+      "amount": -140,
+      "currency": "SGD",
+      "category": "savings_deposit"
+    },
+    {
+      "id": "rahim-0039",
+      "date": "2026-05-31",
+      "description": "NETS HAWKER STALL 0344",
+      "amount": -5.93,
+      "currency": "SGD",
+      "category": "eating_out"
+    },
+    {
+      "id": "rahim-0040",
+      "date": "2026-05-31",
+      "description": "SIMPLYGO MRT BUS",
+      "amount": -5.38,
+      "currency": "SGD",
+      "category": "transport"
+    },
+    {
+      "id": "rahim-0041",
+      "date": "2026-06-01",
+      "description": "FAST PAYMENT TO INSTAREM - REMITTANCE BANGLADESH",
+      "amount": -480,
+      "currency": "SGD",
+      "category": "family_support_out"
+    },
+    {
+      "id": "rahim-0042",
+      "date": "2026-06-01",
+      "description": "REMITTANCE FEE - INSTAREM",
+      "amount": -3.36,
+      "currency": "SGD",
+      "category": "fees"
+    },
+    {
+      "id": "rahim-0043",
+      "date": "2026-06-01",
+      "description": "NETS HAWKER STALL 0344",
+      "amount": -5.38,
+      "currency": "SGD",
+      "category": "eating_out"
+    },
+    {
+      "id": "rahim-0044",
+      "date": "2026-06-03",
+      "description": "NETS KOPITIAM FOODCOURT",
+      "amount": -4.17,
+      "currency": "SGD",
+      "category": "eating_out"
+    },
+    {
+      "id": "rahim-0045",
+      "date": "2026-06-03",
+      "description": "NETS HAWKER STALL 0344",
+      "amount": -6.11,
+      "currency": "SGD",
+      "category": "eating_out"
+    },
+    {
+      "id": "rahim-0046",
+      "date": "2026-06-03",
+      "description": "NETS HAWKER STALL 0217",
+      "amount": -4.22,
+      "currency": "SGD",
+      "category": "eating_out"
+    },
+    {
+      "id": "rahim-0047",
+      "date": "2026-06-04",
+      "description": "NETS HAWKER STALL 0344",
+      "amount": -5.5,
+      "currency": "SGD",
+      "category": "eating_out"
+    },
+    {
+      "id": "rahim-0048",
+      "date": "2026-06-04",
+      "description": "NETS HAWKER STALL 0344",
+      "amount": -5.92,
+      "currency": "SGD",
+      "category": "eating_out"
+    },
+    {
+      "id": "rahim-0049",
+      "date": "2026-06-04",
+      "description": "NETS HAWKER STALL 0217",
+      "amount": -6.26,
+      "currency": "SGD",
+      "category": "eating_out"
+    },
+    {
+      "id": "rahim-0050",
+      "date": "2026-06-05",
+      "description": "NETS KOPITIAM FOODCOURT",
+      "amount": -6.21,
+      "currency": "SGD",
+      "category": "eating_out"
+    },
+    {
+      "id": "rahim-0051",
+      "date": "2026-06-05",
+      "description": "NETS BIRYANI RESTAURANT LITTLE INDIA",
+      "amount": -11.38,
+      "currency": "SGD",
+      "category": "eating_out"
+    },
+    {
+      "id": "rahim-0052",
+      "date": "2026-06-06",
+      "description": "NETS FAIRPRICE XPRESS 2217",
+      "amount": -22.15,
+      "currency": "SGD",
+      "category": "groceries"
+    },
+    {
+      "id": "rahim-0053",
+      "date": "2026-06-06",
+      "description": "NETS KOPITIAM FOODCOURT",
+      "amount": -5.82,
+      "currency": "SGD",
+      "category": "eating_out"
+    },
+    {
+      "id": "rahim-0054",
+      "date": "2026-06-06",
+      "description": "ATM CASH WITHDRAWAL POSB 2231",
+      "amount": -80,
+      "currency": "SGD",
+      "category": "cash_withdrawal"
+    },
+    {
+      "id": "rahim-0055",
+      "date": "2026-06-07",
+      "description": "NETS FAIRPRICE 8102",
+      "amount": -30.53,
+      "currency": "SGD",
+      "category": "groceries"
+    },
+    {
+      "id": "rahim-0056",
+      "date": "2026-06-07",
+      "description": "NETS HAWKER STALL 0344",
+      "amount": -4.28,
+      "currency": "SGD",
+      "category": "eating_out"
+    },
+    {
+      "id": "rahim-0057",
+      "date": "2026-06-07",
+      "description": "SIMPLYGO MRT BUS",
+      "amount": -3.55,
+      "currency": "SGD",
+      "category": "transport"
+    },
+    {
+      "id": "rahim-0058",
+      "date": "2026-06-09",
+      "description": "NETS FAIRPRICE 8102",
+      "amount": -43.09,
+      "currency": "SGD",
+      "category": "groceries"
+    },
+    {
+      "id": "rahim-0059",
+      "date": "2026-06-09",
+      "description": "NETS KOPITIAM FOODCOURT",
+      "amount": -3.62,
+      "currency": "SGD",
+      "category": "eating_out"
+    },
+    {
+      "id": "rahim-0060",
+      "date": "2026-06-10",
+      "description": "NETS FAIRPRICE 8102",
+      "amount": -51.95,
+      "currency": "SGD",
+      "category": "groceries"
+    },
+    {
+      "id": "rahim-0061",
+      "date": "2026-06-10",
+      "description": "NETS HAWKER STALL 0217",
+      "amount": -4.02,
+      "currency": "SGD",
+      "category": "eating_out"
+    },
+    {
+      "id": "rahim-0062",
+      "date": "2026-06-11",
+      "description": "NETS GUARDIAN PHARMACY",
+      "amount": -24.78,
+      "currency": "SGD",
+      "category": "healthcare"
+    },
+    {
+      "id": "rahim-0063",
+      "date": "2026-06-12",
+      "description": "NETS SINGTEL PREPAID TOP UP 9123",
+      "amount": -10,
+      "currency": "SGD",
+      "category": "mobile_internet"
+    },
+    {
+      "id": "rahim-0064",
+      "date": "2026-06-13",
+      "description": "SIMPLYGO MRT BUS",
+      "amount": -2.56,
+      "currency": "SGD",
+      "category": "transport"
+    },
+    {
+      "id": "rahim-0065",
+      "date": "2026-06-14",
+      "description": "NETS HAWKER STALL 0217",
+      "amount": -6.26,
+      "currency": "SGD",
+      "category": "eating_out"
+    },
+    {
+      "id": "rahim-0066",
+      "date": "2026-06-16",
+      "description": "NETS SHENG SIONG 4417",
+      "amount": -31.22,
+      "currency": "SGD",
+      "category": "groceries"
+    },
+    {
+      "id": "rahim-0067",
+      "date": "2026-06-17",
+      "description": "FAST PAYMENT TO INSTAREM - REMITTANCE BANGLADESH",
+      "amount": -210,
+      "currency": "SGD",
+      "category": "family_support_out"
+    },
+    {
+      "id": "rahim-0068",
+      "date": "2026-06-17",
+      "description": "REMITTANCE FEE - INSTAREM",
+      "amount": -1.47,
+      "currency": "SGD",
+      "category": "fees"
+    },
+    {
+      "id": "rahim-0069",
+      "date": "2026-06-17",
+      "description": "NETS FAIRPRICE XPRESS 2217",
+      "amount": -31.31,
+      "currency": "SGD",
+      "category": "groceries"
+    },
+    {
+      "id": "rahim-0070",
+      "date": "2026-06-17",
+      "description": "NETS HAWKER STALL 0217",
+      "amount": -4.94,
+      "currency": "SGD",
+      "category": "eating_out"
+    },
+    {
+      "id": "rahim-0071",
+      "date": "2026-06-18",
+      "description": "SIMPLYGO MRT BUS",
+      "amount": -5.06,
+      "currency": "SGD",
+      "category": "transport"
+    },
+    {
+      "id": "rahim-0072",
+      "date": "2026-06-19",
+      "description": "NETS KOPITIAM FOODCOURT",
+      "amount": -3.88,
+      "currency": "SGD",
+      "category": "eating_out"
+    },
+    {
+      "id": "rahim-0073",
+      "date": "2026-06-20",
+      "description": "SIMPLYGO MRT BUS",
+      "amount": -4.92,
+      "currency": "SGD",
+      "category": "transport"
+    },
+    {
+      "id": "rahim-0074",
+      "date": "2026-06-22",
+      "description": "NETS HAWKER STALL 0344",
+      "amount": -5.89,
+      "currency": "SGD",
+      "category": "eating_out"
+    },
+    {
+      "id": "rahim-0075",
+      "date": "2026-06-22",
+      "description": "SHOPEE SINGAPORE 7710",
+      "amount": -13.32,
+      "currency": "SGD",
+      "category": "shopping"
+    },
+    {
+      "id": "rahim-0076",
+      "date": "2026-06-23",
+      "description": "NETS KOPITIAM FOODCOURT",
+      "amount": -3.59,
+      "currency": "SGD",
+      "category": "eating_out"
+    },
+    {
+      "id": "rahim-0077",
+      "date": "2026-06-24",
+      "description": "NETS HAWKER STALL 0217",
+      "amount": -4.93,
+      "currency": "SGD",
+      "category": "eating_out"
+    },
+    {
+      "id": "rahim-0078",
+      "date": "2026-06-24",
+      "description": "NETS HAWKER STALL 0217",
+      "amount": -3.56,
+      "currency": "SGD",
+      "category": "eating_out"
+    },
+    {
+      "id": "rahim-0079",
+      "date": "2026-06-25",
+      "description": "NETS HAWKER STALL 0217",
+      "amount": -6.31,
+      "currency": "SGD",
+      "category": "eating_out"
+    },
+    {
+      "id": "rahim-0080",
+      "date": "2026-06-26",
+      "description": "NETS BIRYANI RESTAURANT LITTLE INDIA",
+      "amount": -13.39,
+      "currency": "SGD",
+      "category": "eating_out"
+    },
+    {
+      "id": "rahim-0081",
+      "date": "2026-06-27",
+      "description": "NETS KOPITIAM FOODCOURT",
+      "amount": -4.5,
+      "currency": "SGD",
+      "category": "eating_out"
+    },
+    {
+      "id": "rahim-0082",
+      "date": "2026-06-28",
+      "description": "INWARD GIRO SALARY - LIM & SONS BUILDERS PTE LTD",
+      "amount": 1500,
+      "currency": "SGD",
+      "category": "salary"
+    },
+    {
+      "id": "rahim-0083",
+      "date": "2026-06-28",
+      "description": "SIMPLYGO MRT BUS",
+      "amount": -1.85,
+      "currency": "SGD",
+      "category": "transport"
+    },
+    {
+      "id": "rahim-0084",
+      "date": "2026-06-30",
+      "description": "FAST TRANSFER TO POSB SAVINGS ACCOUNT",
+      "amount": -190,
+      "currency": "SGD",
+      "category": "savings_deposit"
+    },
+    {
+      "id": "rahim-0085",
+      "date": "2026-06-30",
+      "description": "NETS HAWKER STALL 0344",
+      "amount": -6.05,
+      "currency": "SGD",
+      "category": "eating_out"
+    },
+    {
+      "id": "rahim-0086",
+      "date": "2026-07-01",
+      "description": "FAST PAYMENT TO INSTAREM - REMITTANCE BANGLADESH",
+      "amount": -490,
+      "currency": "SGD",
+      "category": "family_support_out"
+    },
+    {
+      "id": "rahim-0087",
+      "date": "2026-07-01",
+      "description": "REMITTANCE FEE - INSTAREM",
+      "amount": -3.43,
+      "currency": "SGD",
+      "category": "fees"
+    },
+    {
+      "id": "rahim-0088",
+      "date": "2026-07-01",
+      "description": "SIMPLYGO MRT BUS",
+      "amount": -5.1,
+      "currency": "SGD",
+      "category": "transport"
+    },
+    {
+      "id": "rahim-0089",
+      "date": "2026-07-03",
+      "description": "NETS KOPITIAM FOODCOURT",
+      "amount": -4.07,
+      "currency": "SGD",
+      "category": "eating_out"
+    },
+    {
+      "id": "rahim-0090",
+      "date": "2026-07-04",
+      "description": "NETS FAIRPRICE 8102",
+      "amount": -24.36,
+      "currency": "SGD",
+      "category": "groceries"
+    },
+    {
+      "id": "rahim-0091",
+      "date": "2026-07-04",
+      "description": "NETS FAIRPRICE 8102",
+      "amount": -58.09,
+      "currency": "SGD",
+      "category": "groceries"
+    },
+    {
+      "id": "rahim-0092",
+      "date": "2026-07-04",
+      "description": "NETS KOPITIAM FOODCOURT",
+      "amount": -4.05,
+      "currency": "SGD",
+      "category": "eating_out"
+    },
+    {
+      "id": "rahim-0093",
+      "date": "2026-07-04",
+      "description": "NETS HAWKER STALL 0344",
+      "amount": -5.23,
+      "currency": "SGD",
+      "category": "eating_out"
+    },
+    {
+      "id": "rahim-0094",
+      "date": "2026-07-04",
+      "description": "ATM CASH WITHDRAWAL POSB 2231",
+      "amount": -60,
+      "currency": "SGD",
+      "category": "cash_withdrawal"
+    },
+    {
+      "id": "rahim-0095",
+      "date": "2026-07-07",
+      "description": "NETS KOPITIAM FOODCOURT",
+      "amount": -5.81,
+      "currency": "SGD",
+      "category": "eating_out"
+    },
+    {
+      "id": "rahim-0096",
+      "date": "2026-07-08",
+      "description": "NETS BIRYANI RESTAURANT LITTLE INDIA",
+      "amount": -12.47,
+      "currency": "SGD",
+      "category": "eating_out"
+    },
+    {
+      "id": "rahim-0097",
+      "date": "2026-07-09",
+      "description": "NETS HAWKER STALL 0217",
+      "amount": -5.31,
+      "currency": "SGD",
+      "category": "eating_out"
+    },
+    {
+      "id": "rahim-0098",
+      "date": "2026-07-09",
+      "description": "SIMPLYGO MRT BUS",
+      "amount": -1.78,
+      "currency": "SGD",
+      "category": "transport"
+    },
+    {
+      "id": "rahim-0099",
+      "date": "2026-07-09",
+      "description": "SHOPEE SINGAPORE 7710",
+      "amount": -34.02,
+      "currency": "SGD",
+      "category": "shopping"
+    },
+    {
+      "id": "rahim-0100",
+      "date": "2026-07-09",
+      "description": "NETS BARBER SHOP LITTLE INDIA",
+      "amount": -8.96,
+      "currency": "SGD",
+      "category": "personal_care"
+    },
+    {
+      "id": "rahim-0101",
+      "date": "2026-07-10",
+      "description": "NETS SHENG SIONG 4417",
+      "amount": -35.15,
+      "currency": "SGD",
+      "category": "groceries"
+    },
+    {
+      "id": "rahim-0102",
+      "date": "2026-07-12",
+      "description": "NETS SINGTEL PREPAID TOP UP 9123",
+      "amount": -10,
+      "currency": "SGD",
+      "category": "mobile_internet"
+    },
+    {
+      "id": "rahim-0103",
+      "date": "2026-07-12",
+      "description": "NETS SHENG SIONG 4417",
+      "amount": -61.08,
+      "currency": "SGD",
+      "category": "groceries"
+    },
+    {
+      "id": "rahim-0104",
+      "date": "2026-07-14",
+      "description": "NETS KOPITIAM FOODCOURT",
+      "amount": -3.55,
+      "currency": "SGD",
+      "category": "eating_out"
+    },
+    {
+      "id": "rahim-0105",
+      "date": "2026-07-15",
+      "description": "NETS KOPITIAM FOODCOURT",
+      "amount": -5.64,
+      "currency": "SGD",
+      "category": "eating_out"
+    },
+    {
+      "id": "rahim-0106",
+      "date": "2026-07-15",
+      "description": "NETS HAWKER STALL 0344",
+      "amount": -5.59,
+      "currency": "SGD",
+      "category": "eating_out"
+    },
+    {
+      "id": "rahim-0107",
+      "date": "2026-07-16",
+      "description": "NETS KOPITIAM FOODCOURT",
+      "amount": -4.2,
+      "currency": "SGD",
+      "category": "eating_out"
+    },
+    {
+      "id": "rahim-0108",
+      "date": "2026-07-16",
+      "description": "SIMPLYGO MRT BUS",
+      "amount": -1.6,
+      "currency": "SGD",
+      "category": "transport"
+    },
+    {
+      "id": "rahim-0109",
+      "date": "2026-07-17",
+      "description": "FAST PAYMENT TO INSTAREM - REMITTANCE BANGLADESH",
+      "amount": -210,
+      "currency": "SGD",
+      "category": "family_support_out"
+    },
+    {
+      "id": "rahim-0110",
+      "date": "2026-07-17",
+      "description": "REMITTANCE FEE - INSTAREM",
+      "amount": -1.47,
+      "currency": "SGD",
+      "category": "fees"
+    },
+    {
+      "id": "rahim-0111",
+      "date": "2026-07-17",
+      "description": "NETS HAWKER STALL 0217",
+      "amount": -5.4,
+      "currency": "SGD",
+      "category": "eating_out"
+    },
+    {
+      "id": "rahim-0112",
+      "date": "2026-07-18",
+      "description": "NETS KOPITIAM FOODCOURT",
+      "amount": -5.6,
+      "currency": "SGD",
+      "category": "eating_out"
+    },
+    {
+      "id": "rahim-0113",
+      "date": "2026-07-19",
+      "description": "SIMPLYGO MRT BUS",
+      "amount": -2.56,
+      "currency": "SGD",
+      "category": "transport"
+    },
+    {
+      "id": "rahim-0114",
+      "date": "2026-07-20",
+      "description": "NETS FAIRPRICE 8102",
+      "amount": -27.35,
+      "currency": "SGD",
+      "category": "groceries"
+    },
+    {
+      "id": "rahim-0115",
+      "date": "2026-07-21",
+      "description": "NETS SHENG SIONG 4417",
+      "amount": -38.24,
+      "currency": "SGD",
+      "category": "groceries"
+    },
+    {
+      "id": "rahim-0116",
+      "date": "2026-07-21",
+      "description": "NETS HAWKER STALL 0344",
+      "amount": -5.93,
+      "currency": "SGD",
+      "category": "eating_out"
+    },
+    {
+      "id": "rahim-0117",
+      "date": "2026-07-23",
+      "description": "NETS FAIRPRICE XPRESS 2217",
+      "amount": -44.66,
+      "currency": "SGD",
+      "category": "groceries"
+    },
+    {
+      "id": "rahim-0118",
+      "date": "2026-07-23",
+      "description": "SIMPLYGO MRT BUS",
+      "amount": -3.94,
+      "currency": "SGD",
+      "category": "transport"
+    },
+    {
+      "id": "rahim-0119",
+      "date": "2026-07-25",
+      "description": "NETS HAWKER STALL 0344",
+      "amount": -6.33,
+      "currency": "SGD",
+      "category": "eating_out"
+    },
+    {
+      "id": "rahim-0120",
+      "date": "2026-07-25",
+      "description": "NETS HAWKER STALL 0217",
+      "amount": -4.02,
+      "currency": "SGD",
+      "category": "eating_out"
+    },
+    {
+      "id": "rahim-0121",
+      "date": "2026-07-26",
+      "description": "NETS HAWKER STALL 0344",
+      "amount": -5.11,
+      "currency": "SGD",
+      "category": "eating_out"
+    },
+    {
+      "id": "rahim-0122",
+      "date": "2026-07-28",
+      "description": "INWARD GIRO SALARY - LIM & SONS BUILDERS PTE LTD",
+      "amount": 1500,
+      "currency": "SGD",
+      "category": "salary"
+    },
+    {
+      "id": "rahim-0123",
+      "date": "2026-07-28",
+      "description": "NETS HAWKER STALL 0344",
+      "amount": -5.63,
+      "currency": "SGD",
+      "category": "eating_out"
+    },
+    {
+      "id": "rahim-0124",
+      "date": "2026-07-28",
+      "description": "ATM CASH WITHDRAWAL POSB 2231",
+      "amount": -60,
+      "currency": "SGD",
+      "category": "cash_withdrawal"
+    },
+    {
+      "id": "rahim-0125",
+      "date": "2026-07-28",
+      "description": "SHOPEE SINGAPORE 7710",
+      "amount": -34.22,
+      "currency": "SGD",
+      "category": "shopping"
+    },
+    {
+      "id": "rahim-0126",
+      "date": "2026-07-29",
+      "description": "NETS FAIRPRICE XPRESS 2217",
+      "amount": -32.69,
+      "currency": "SGD",
+      "category": "groceries"
+    },
+    {
+      "id": "rahim-0127",
+      "date": "2026-07-30",
+      "description": "NETS HAWKER STALL 0344",
+      "amount": -6.34,
+      "currency": "SGD",
+      "category": "eating_out"
+    },
+    {
+      "id": "rahim-0128",
+      "date": "2026-07-31",
+      "description": "FAST TRANSFER TO POSB SAVINGS ACCOUNT",
+      "amount": -150,
+      "currency": "SGD",
+      "category": "savings_deposit"
+    },
+    {
+      "id": "rahim-0129",
+      "date": "2026-07-31",
+      "description": "NETS HAWKER STALL 0344",
+      "amount": -5.63,
+      "currency": "SGD",
+      "category": "eating_out"
+    },
+    {
+      "id": "rahim-0130",
+      "date": "2026-08-01",
+      "description": "FAST PAYMENT TO INSTAREM - REMITTANCE BANGLADESH",
+      "amount": -510,
+      "currency": "SGD",
+      "category": "family_support_out"
+    },
+    {
+      "id": "rahim-0131",
+      "date": "2026-08-01",
+      "description": "REMITTANCE FEE - INSTAREM",
+      "amount": -3.57,
+      "currency": "SGD",
+      "category": "fees"
+    },
+    {
+      "id": "rahim-0132",
+      "date": "2026-08-02",
+      "description": "NETS FAIRPRICE 8102",
+      "amount": -24.77,
+      "currency": "SGD",
+      "category": "groceries"
+    },
+    {
+      "id": "rahim-0133",
+      "date": "2026-08-02",
+      "description": "NETS KOPITIAM FOODCOURT",
+      "amount": -6.29,
+      "currency": "SGD",
+      "category": "eating_out"
+    },
+    {
+      "id": "rahim-0134",
+      "date": "2026-08-07",
+      "description": "NETS SHENG SIONG 4417",
+      "amount": -47.01,
+      "currency": "SGD",
+      "category": "groceries"
+    },
+    {
+      "id": "rahim-0135",
+      "date": "2026-08-07",
+      "description": "NETS BIRYANI RESTAURANT LITTLE INDIA",
+      "amount": -8.78,
+      "currency": "SGD",
+      "category": "eating_out"
+    },
+    {
+      "id": "rahim-0136",
+      "date": "2026-08-08",
+      "description": "NETS FAIRPRICE XPRESS 2217",
+      "amount": -27.9,
+      "currency": "SGD",
+      "category": "groceries"
+    },
+    {
+      "id": "rahim-0137",
+      "date": "2026-08-09",
+      "description": "NETS SINGTEL PREPAID TOP UP 9123",
+      "amount": -10,
+      "currency": "SGD",
+      "category": "mobile_internet"
+    },
+    {
+      "id": "rahim-0138",
+      "date": "2026-08-11",
+      "description": "NETS KOPITIAM FOODCOURT",
+      "amount": -5.5,
+      "currency": "SGD",
+      "category": "eating_out"
+    },
+    {
+      "id": "rahim-0139",
+      "date": "2026-08-11",
+      "description": "NETS HAWKER STALL 0217",
+      "amount": -5.56,
+      "currency": "SGD",
+      "category": "eating_out"
+    },
+    {
+      "id": "rahim-0140",
+      "date": "2026-08-11",
+      "description": "NETS HAWKER STALL 0217",
+      "amount": -4.11,
+      "currency": "SGD",
+      "category": "eating_out"
+    },
+    {
+      "id": "rahim-0141",
+      "date": "2026-08-11",
+      "description": "NETS HAWKER STALL 0344",
+      "amount": -5.9,
+      "currency": "SGD",
+      "category": "eating_out"
+    },
+    {
+      "id": "rahim-0142",
+      "date": "2026-08-13",
+      "description": "FAST PAYMENT TO INSTAREM - REMITTANCE BANGLADESH",
+      "amount": -180,
+      "currency": "SGD",
+      "category": "family_support_out"
+    },
+    {
+      "id": "rahim-0143",
+      "date": "2026-08-13",
+      "description": "REMITTANCE FEE - INSTAREM",
+      "amount": -1.26,
+      "currency": "SGD",
+      "category": "fees"
+    },
+    {
+      "id": "rahim-0144",
+      "date": "2026-08-13",
+      "description": "NETS HAWKER STALL 0217",
+      "amount": -5.12,
+      "currency": "SGD",
+      "category": "eating_out"
+    },
+    {
+      "id": "rahim-0145",
+      "date": "2026-08-13",
+      "description": "NETS HAWKER STALL 0344",
+      "amount": -5.54,
+      "currency": "SGD",
+      "category": "eating_out"
+    },
+    {
+      "id": "rahim-0146",
+      "date": "2026-08-13",
+      "description": "NETS HAWKER STALL 0344",
+      "amount": -4.88,
+      "currency": "SGD",
+      "category": "eating_out"
+    },
+    {
+      "id": "rahim-0147",
+      "date": "2026-08-13",
+      "description": "NETS HAWKER STALL 0217",
+      "amount": -5.01,
+      "currency": "SGD",
+      "category": "eating_out"
+    },
+    {
+      "id": "rahim-0148",
+      "date": "2026-08-13",
+      "description": "SIMPLYGO MRT BUS",
+      "amount": -2.29,
+      "currency": "SGD",
+      "category": "transport"
+    },
+    {
+      "id": "rahim-0149",
+      "date": "2026-08-13",
+      "description": "ATM CASH WITHDRAWAL POSB 2231",
+      "amount": -60,
+      "currency": "SGD",
+      "category": "cash_withdrawal"
+    },
+    {
+      "id": "rahim-0150",
+      "date": "2026-08-14",
+      "description": "NETS KOPITIAM FOODCOURT",
+      "amount": -5.08,
+      "currency": "SGD",
+      "category": "eating_out"
+    },
+    {
+      "id": "rahim-0151",
+      "date": "2026-08-15",
+      "description": "SIMPLYGO MRT BUS",
+      "amount": -4.59,
+      "currency": "SGD",
+      "category": "transport"
+    },
+    {
+      "id": "rahim-0152",
+      "date": "2026-08-16",
+      "description": "NETS HAWKER STALL 0344",
+      "amount": -4.63,
+      "currency": "SGD",
+      "category": "eating_out"
+    },
+    {
+      "id": "rahim-0153",
+      "date": "2026-08-17",
+      "description": "NETS BARBER SHOP LITTLE INDIA",
+      "amount": -8.92,
+      "currency": "SGD",
+      "category": "personal_care"
+    },
+    {
+      "id": "rahim-0154",
+      "date": "2026-08-19",
+      "description": "SHOPEE SINGAPORE 7710",
+      "amount": -33.54,
+      "currency": "SGD",
+      "category": "shopping"
+    },
+    {
+      "id": "rahim-0155",
+      "date": "2026-08-20",
+      "description": "NETS KOPITIAM FOODCOURT",
+      "amount": -6,
+      "currency": "SGD",
+      "category": "eating_out"
+    },
+    {
+      "id": "rahim-0156",
+      "date": "2026-08-20",
+      "description": "SIMPLYGO MRT BUS",
+      "amount": -2.46,
+      "currency": "SGD",
+      "category": "transport"
+    },
+    {
+      "id": "rahim-0157",
+      "date": "2026-08-21",
+      "description": "SIMPLYGO MRT BUS",
+      "amount": -4.16,
+      "currency": "SGD",
+      "category": "transport"
+    },
+    {
+      "id": "rahim-0158",
+      "date": "2026-08-23",
+      "description": "NETS FAIRPRICE 8102",
+      "amount": -56.15,
+      "currency": "SGD",
+      "category": "groceries"
+    },
+    {
+      "id": "rahim-0159",
+      "date": "2026-08-24",
+      "description": "NETS KOPITIAM FOODCOURT",
+      "amount": -5.76,
+      "currency": "SGD",
+      "category": "eating_out"
+    },
+    {
+      "id": "rahim-0160",
+      "date": "2026-08-25",
+      "description": "NETS HAWKER STALL 0217",
+      "amount": -6.35,
+      "currency": "SGD",
+      "category": "eating_out"
+    },
+    {
+      "id": "rahim-0161",
+      "date": "2026-08-25",
+      "description": "NETS HAWKER STALL 0217",
+      "amount": -6.16,
+      "currency": "SGD",
+      "category": "eating_out"
+    },
+    {
+      "id": "rahim-0162",
+      "date": "2026-08-25",
+      "description": "SIMPLYGO MRT BUS",
+      "amount": -2.04,
+      "currency": "SGD",
+      "category": "transport"
+    },
+    {
+      "id": "rahim-0163",
+      "date": "2026-08-26",
+      "description": "ATM CASH WITHDRAWAL POSB 2231",
+      "amount": -70,
+      "currency": "SGD",
+      "category": "cash_withdrawal"
+    },
+    {
+      "id": "rahim-0164",
+      "date": "2026-08-26",
+      "description": "NETS GUARDIAN PHARMACY",
+      "amount": -6.29,
+      "currency": "SGD",
+      "category": "healthcare"
+    },
+    {
+      "id": "rahim-0165",
+      "date": "2026-08-27",
+      "description": "NETS HAWKER STALL 0217",
+      "amount": -5.04,
+      "currency": "SGD",
+      "category": "eating_out"
+    },
+    {
+      "id": "rahim-0166",
+      "date": "2026-08-28",
+      "description": "INWARD GIRO SALARY - LIM & SONS BUILDERS PTE LTD",
+      "amount": 1500,
+      "currency": "SGD",
+      "category": "salary"
+    },
+    {
+      "id": "rahim-0167",
+      "date": "2026-08-28",
+      "description": "NETS FAIRPRICE 8102",
+      "amount": -44.42,
+      "currency": "SGD",
+      "category": "groceries"
+    },
+    {
+      "id": "rahim-0168",
+      "date": "2026-08-28",
+      "description": "NETS KOPITIAM FOODCOURT",
+      "amount": -5.35,
+      "currency": "SGD",
+      "category": "eating_out"
+    },
+    {
+      "id": "rahim-0169",
+      "date": "2026-08-29",
+      "description": "NETS KOPITIAM FOODCOURT",
+      "amount": -4.45,
+      "currency": "SGD",
+      "category": "eating_out"
+    },
+    {
+      "id": "rahim-0170",
+      "date": "2026-08-30",
+      "description": "NETS SHENG SIONG 4417",
+      "amount": -60.56,
+      "currency": "SGD",
+      "category": "groceries"
+    },
+    {
+      "id": "rahim-0171",
+      "date": "2026-08-30",
+      "description": "NETS FAIRPRICE 8102",
+      "amount": -37.98,
+      "currency": "SGD",
+      "category": "groceries"
+    },
+    {
+      "id": "rahim-0172",
+      "date": "2026-08-30",
+      "description": "NETS KOPITIAM FOODCOURT",
+      "amount": -5.11,
+      "currency": "SGD",
+      "category": "eating_out"
+    },
+    {
+      "id": "rahim-0173",
+      "date": "2026-08-31",
+      "description": "FAST TRANSFER TO POSB SAVINGS ACCOUNT",
+      "amount": -190,
+      "currency": "SGD",
+      "category": "savings_deposit"
+    },
+    {
+      "id": "rahim-0174",
+      "date": "2026-08-31",
+      "description": "NETS HAWKER STALL 0217",
+      "amount": -3.97,
+      "currency": "SGD",
+      "category": "eating_out"
+    },
+    {
+      "id": "rahim-0175",
+      "date": "2026-09-01",
+      "description": "FAST PAYMENT TO INSTAREM - REMITTANCE BANGLADESH",
+      "amount": -480,
+      "currency": "SGD",
+      "category": "family_support_out"
+    },
+    {
+      "id": "rahim-0176",
+      "date": "2026-09-01",
+      "description": "REMITTANCE FEE - INSTAREM",
+      "amount": -3.36,
+      "currency": "SGD",
+      "category": "fees"
+    },
+    {
+      "id": "rahim-0177",
+      "date": "2026-09-01",
+      "description": "NETS HAWKER STALL 0344",
+      "amount": -5.79,
+      "currency": "SGD",
+      "category": "eating_out"
+    },
+    {
+      "id": "rahim-0178",
+      "date": "2026-09-01",
+      "description": "NETS KOPITIAM FOODCOURT",
+      "amount": -5.69,
+      "currency": "SGD",
+      "category": "eating_out"
+    },
+    {
+      "id": "rahim-0179",
+      "date": "2026-09-01",
+      "description": "SIMPLYGO MRT BUS",
+      "amount": -5.19,
+      "currency": "SGD",
+      "category": "transport"
+    },
+    {
+      "id": "rahim-0180",
+      "date": "2026-09-02",
+      "description": "NETS HAWKER STALL 0217",
+      "amount": -6,
+      "currency": "SGD",
+      "category": "eating_out"
+    },
+    {
+      "id": "rahim-0181",
+      "date": "2026-09-02",
+      "description": "NETS KOPITIAM FOODCOURT",
+      "amount": -4.88,
+      "currency": "SGD",
+      "category": "eating_out"
+    },
+    {
+      "id": "rahim-0182",
+      "date": "2026-09-03",
+      "description": "SIMPLYGO MRT BUS",
+      "amount": -4.43,
+      "currency": "SGD",
+      "category": "transport"
+    },
+    {
+      "id": "rahim-0183",
+      "date": "2026-09-04",
+      "description": "NETS HAWKER STALL 0217",
+      "amount": -4.54,
+      "currency": "SGD",
+      "category": "eating_out"
+    },
+    {
+      "id": "rahim-0184",
+      "date": "2026-09-04",
+      "description": "NETS BIRYANI RESTAURANT LITTLE INDIA",
+      "amount": -8,
+      "currency": "SGD",
+      "category": "eating_out"
+    },
+    {
+      "id": "rahim-0185",
+      "date": "2026-09-08",
+      "description": "NETS FAIRPRICE 8102",
+      "amount": -56.94,
+      "currency": "SGD",
+      "category": "groceries"
+    },
+    {
+      "id": "rahim-0186",
+      "date": "2026-09-09",
+      "description": "NETS SINGTEL PREPAID TOP UP 9123",
+      "amount": -10,
+      "currency": "SGD",
+      "category": "mobile_internet"
+    },
+    {
+      "id": "rahim-0187",
+      "date": "2026-09-09",
+      "description": "NETS SHENG SIONG 4417",
+      "amount": -35.79,
+      "currency": "SGD",
+      "category": "groceries"
+    },
+    {
+      "id": "rahim-0188",
+      "date": "2026-09-09",
+      "description": "NETS HAWKER STALL 0344",
+      "amount": -4.16,
+      "currency": "SGD",
+      "category": "eating_out"
+    },
+    {
+      "id": "rahim-0189",
+      "date": "2026-09-09",
+      "description": "NETS HAWKER STALL 0217",
+      "amount": -4.19,
+      "currency": "SGD",
+      "category": "eating_out"
+    },
+    {
+      "id": "rahim-0190",
+      "date": "2026-09-09",
+      "description": "SIMPLYGO MRT BUS",
+      "amount": -4.3,
+      "currency": "SGD",
+      "category": "transport"
+    },
+    {
+      "id": "rahim-0191",
+      "date": "2026-09-10",
+      "description": "NETS HAWKER STALL 0344",
+      "amount": -5.54,
+      "currency": "SGD",
+      "category": "eating_out"
+    },
+    {
+      "id": "rahim-0192",
+      "date": "2026-09-11",
+      "description": "NETS FAIRPRICE XPRESS 2217",
+      "amount": -30.27,
+      "currency": "SGD",
+      "category": "groceries"
+    },
+    {
+      "id": "rahim-0193",
+      "date": "2026-09-11",
+      "description": "NETS KOPITIAM FOODCOURT",
+      "amount": -5.61,
+      "currency": "SGD",
+      "category": "eating_out"
+    },
+    {
+      "id": "rahim-0194",
+      "date": "2026-09-12",
+      "description": "NETS CHALLENGER ELECTRONICS FUNAN",
+      "amount": -189,
+      "currency": "SGD",
+      "category": "shopping"
+    },
+    {
+      "id": "rahim-0195",
+      "date": "2026-09-13",
+      "description": "NETS FAIRPRICE 8102",
+      "amount": -31.59,
+      "currency": "SGD",
+      "category": "groceries"
+    },
+    {
+      "id": "rahim-0196",
+      "date": "2026-09-14",
+      "description": "NETS GUARDIAN PHARMACY",
+      "amount": -16.57,
+      "currency": "SGD",
+      "category": "healthcare"
+    },
+    {
+      "id": "rahim-0197",
+      "date": "2026-09-15",
+      "description": "FAST PAYMENT TO INSTAREM - REMITTANCE BANGLADESH",
+      "amount": -190,
+      "currency": "SGD",
+      "category": "family_support_out"
+    },
+    {
+      "id": "rahim-0198",
+      "date": "2026-09-15",
+      "description": "REMITTANCE FEE - INSTAREM",
+      "amount": -1.33,
+      "currency": "SGD",
+      "category": "fees"
+    },
+    {
+      "id": "rahim-0199",
+      "date": "2026-09-15",
+      "description": "NETS HAWKER STALL 0344",
+      "amount": -5.53,
+      "currency": "SGD",
+      "category": "eating_out"
+    },
+    {
+      "id": "rahim-0200",
+      "date": "2026-09-16",
+      "description": "NETS SHENG SIONG 4417",
+      "amount": -29.68,
+      "currency": "SGD",
+      "category": "groceries"
+    },
+    {
+      "id": "rahim-0201",
+      "date": "2026-09-16",
+      "description": "NETS HAWKER STALL 0344",
+      "amount": -3.55,
+      "currency": "SGD",
+      "category": "eating_out"
+    },
+    {
+      "id": "rahim-0202",
+      "date": "2026-09-17",
+      "description": "NETS SHENG SIONG 4417",
+      "amount": -49.16,
+      "currency": "SGD",
+      "category": "groceries"
+    },
+    {
+      "id": "rahim-0203",
+      "date": "2026-09-17",
+      "description": "SIMPLYGO MRT BUS",
+      "amount": -3.38,
+      "currency": "SGD",
+      "category": "transport"
+    },
+    {
+      "id": "rahim-0204",
+      "date": "2026-09-18",
+      "description": "NETS HAWKER STALL 0344",
+      "amount": -5.15,
+      "currency": "SGD",
+      "category": "eating_out"
+    },
+    {
+      "id": "rahim-0205",
+      "date": "2026-09-18",
+      "description": "ATM CASH WITHDRAWAL POSB 2231",
+      "amount": -90,
+      "currency": "SGD",
+      "category": "cash_withdrawal"
+    },
+    {
+      "id": "rahim-0206",
+      "date": "2026-09-19",
+      "description": "NETS KOPITIAM FOODCOURT",
+      "amount": -5.5,
+      "currency": "SGD",
+      "category": "eating_out"
+    },
+    {
+      "id": "rahim-0207",
+      "date": "2026-09-19",
+      "description": "NETS HAWKER STALL 0344",
+      "amount": -5.07,
+      "currency": "SGD",
+      "category": "eating_out"
+    },
+    {
+      "id": "rahim-0208",
+      "date": "2026-09-19",
+      "description": "NETS HAWKER STALL 0344",
+      "amount": -5.8,
+      "currency": "SGD",
+      "category": "eating_out"
+    },
+    {
+      "id": "rahim-0209",
+      "date": "2026-09-21",
+      "description": "NETS HAWKER STALL 0217",
+      "amount": -5.7,
+      "currency": "SGD",
+      "category": "eating_out"
+    },
+    {
+      "id": "rahim-0210",
+      "date": "2026-09-22",
+      "description": "NETS HAWKER STALL 0217",
+      "amount": -4.22,
+      "currency": "SGD",
+      "category": "eating_out"
+    },
+    {
+      "id": "rahim-0211",
+      "date": "2026-09-23",
+      "description": "NETS KOPITIAM FOODCOURT",
+      "amount": -5.92,
+      "currency": "SGD",
+      "category": "eating_out"
+    },
+    {
+      "id": "rahim-0212",
+      "date": "2026-09-25",
+      "description": "NETS FAIRPRICE XPRESS 2217",
+      "amount": -25.09,
+      "currency": "SGD",
+      "category": "groceries"
+    },
+    {
+      "id": "rahim-0213",
+      "date": "2026-09-27",
+      "description": "NETS FAIRPRICE XPRESS 2217",
+      "amount": -24.99,
+      "currency": "SGD",
+      "category": "groceries"
+    },
+    {
+      "id": "rahim-0214",
+      "date": "2026-09-27",
+      "description": "NETS KOPITIAM FOODCOURT",
+      "amount": -4.92,
+      "currency": "SGD",
+      "category": "eating_out"
+    },
+    {
+      "id": "rahim-0215",
+      "date": "2026-09-27",
+      "description": "SHOPEE SINGAPORE 7710",
+      "amount": -13.47,
+      "currency": "SGD",
+      "category": "shopping"
+    },
+    {
+      "id": "rahim-0216",
+      "date": "2026-09-28",
+      "description": "INWARD GIRO SALARY - LIM & SONS BUILDERS PTE LTD",
+      "amount": 1500,
+      "currency": "SGD",
+      "category": "salary"
+    },
+    {
+      "id": "rahim-0217",
+      "date": "2026-09-28",
+      "description": "NETS KOPITIAM FOODCOURT",
+      "amount": -5.64,
+      "currency": "SGD",
+      "category": "eating_out"
+    },
+    {
+      "id": "rahim-0218",
+      "date": "2026-09-29",
+      "description": "NETS HAWKER STALL 0344",
+      "amount": -4.78,
+      "currency": "SGD",
+      "category": "eating_out"
+    },
+    {
+      "id": "rahim-0219",
+      "date": "2026-09-30",
+      "description": "FAST TRANSFER TO POSB SAVINGS ACCOUNT",
+      "amount": -170,
+      "currency": "SGD",
+      "category": "savings_deposit"
+    },
+    {
+      "id": "rahim-0220",
+      "date": "2026-09-30",
+      "description": "NETS HAWKER STALL 0344",
+      "amount": -4.51,
+      "currency": "SGD",
+      "category": "eating_out"
+    },
+    {
+      "id": "rahim-0221",
+      "date": "2026-10-01",
+      "description": "FAST PAYMENT TO INSTAREM - REMITTANCE BANGLADESH",
+      "amount": -490,
+      "currency": "SGD",
+      "category": "family_support_out"
+    },
+    {
+      "id": "rahim-0222",
+      "date": "2026-10-01",
+      "description": "REMITTANCE FEE - INSTAREM",
+      "amount": -3.43,
+      "currency": "SGD",
+      "category": "fees"
+    },
+    {
+      "id": "rahim-0223",
+      "date": "2026-10-01",
+      "description": "NETS FAIRPRICE XPRESS 2217",
+      "amount": -21.75,
+      "currency": "SGD",
+      "category": "groceries"
+    },
+    {
+      "id": "rahim-0224",
+      "date": "2026-10-01",
+      "description": "NETS KOPITIAM FOODCOURT",
+      "amount": -4.86,
+      "currency": "SGD",
+      "category": "eating_out"
+    },
+    {
+      "id": "rahim-0225",
+      "date": "2026-10-01",
+      "description": "NETS HAWKER STALL 0344",
+      "amount": -5.18,
+      "currency": "SGD",
+      "category": "eating_out"
+    },
+    {
+      "id": "rahim-0226",
+      "date": "2026-10-02",
+      "description": "NETS FAIRPRICE XPRESS 2217",
+      "amount": -61.11,
+      "currency": "SGD",
+      "category": "groceries"
+    },
+    {
+      "id": "rahim-0227",
+      "date": "2026-10-02",
+      "description": "NETS HAWKER STALL 0217",
+      "amount": -4.55,
+      "currency": "SGD",
+      "category": "eating_out"
+    },
+    {
+      "id": "rahim-0228",
+      "date": "2026-10-03",
+      "description": "NETS FAIRPRICE 8102",
+      "amount": -35.06,
+      "currency": "SGD",
+      "category": "groceries"
+    },
+    {
+      "id": "rahim-0229",
+      "date": "2026-10-03",
+      "description": "NETS HAWKER STALL 0344",
+      "amount": -5.1,
+      "currency": "SGD",
+      "category": "eating_out"
+    },
+    {
+      "id": "rahim-0230",
+      "date": "2026-10-03",
+      "description": "NETS BIRYANI RESTAURANT LITTLE INDIA",
+      "amount": -10.27,
+      "currency": "SGD",
+      "category": "eating_out"
+    },
+    {
+      "id": "rahim-0231",
+      "date": "2026-10-04",
+      "description": "SIMPLYGO MRT BUS",
+      "amount": -2.13,
+      "currency": "SGD",
+      "category": "transport"
+    },
+    {
+      "id": "rahim-0232",
+      "date": "2026-10-05",
+      "description": "NETS KOPITIAM FOODCOURT",
+      "amount": -5.94,
+      "currency": "SGD",
+      "category": "eating_out"
+    },
+    {
+      "id": "rahim-0233",
+      "date": "2026-10-05",
+      "description": "SIMPLYGO MRT BUS",
+      "amount": -2.89,
+      "currency": "SGD",
+      "category": "transport"
+    },
+    {
+      "id": "rahim-0234",
+      "date": "2026-10-06",
+      "description": "NETS HAWKER STALL 0344",
+      "amount": -4.28,
+      "currency": "SGD",
+      "category": "eating_out"
+    },
+    {
+      "id": "rahim-0235",
+      "date": "2026-10-06",
+      "description": "NETS KOPITIAM FOODCOURT",
+      "amount": -3.9,
+      "currency": "SGD",
+      "category": "eating_out"
+    },
+    {
+      "id": "rahim-0236",
+      "date": "2026-10-08",
+      "description": "NETS FAIRPRICE XPRESS 2217",
+      "amount": -46.08,
+      "currency": "SGD",
+      "category": "groceries"
+    },
+    {
+      "id": "rahim-0237",
+      "date": "2026-10-09",
+      "description": "NETS KOPITIAM FOODCOURT",
+      "amount": -4.69,
+      "currency": "SGD",
+      "category": "eating_out"
+    },
+    {
+      "id": "rahim-0238",
+      "date": "2026-10-11",
+      "description": "NETS HAWKER STALL 0217",
+      "amount": -5.01,
+      "currency": "SGD",
+      "category": "eating_out"
+    },
+    {
+      "id": "rahim-0239",
+      "date": "2026-10-12",
+      "description": "NETS HAWKER STALL 0344",
+      "amount": -3.92,
+      "currency": "SGD",
+      "category": "eating_out"
+    },
+    {
+      "id": "rahim-0240",
+      "date": "2026-10-12",
+      "description": "SHOPEE SINGAPORE 7710",
+      "amount": -33.14,
+      "currency": "SGD",
+      "category": "shopping"
+    },
+    {
+      "id": "rahim-0241",
+      "date": "2026-10-13",
+      "description": "NETS SINGTEL PREPAID TOP UP 9123",
+      "amount": -10,
+      "currency": "SGD",
+      "category": "mobile_internet"
+    },
+    {
+      "id": "rahim-0242",
+      "date": "2026-10-13",
+      "description": "NETS BIRYANI RESTAURANT LITTLE INDIA",
+      "amount": -14.36,
+      "currency": "SGD",
+      "category": "eating_out"
+    },
+    {
+      "id": "rahim-0243",
+      "date": "2026-10-14",
+      "description": "SIMPLYGO MRT BUS",
+      "amount": -4.28,
+      "currency": "SGD",
+      "category": "transport"
+    },
+    {
+      "id": "rahim-0244",
+      "date": "2026-10-15",
+      "description": "FAST PAYMENT TO INSTAREM - REMITTANCE BANGLADESH",
+      "amount": -190,
+      "currency": "SGD",
+      "category": "family_support_out"
+    },
+    {
+      "id": "rahim-0245",
+      "date": "2026-10-15",
+      "description": "REMITTANCE FEE - INSTAREM",
+      "amount": -1.33,
+      "currency": "SGD",
+      "category": "fees"
+    },
+    {
+      "id": "rahim-0246",
+      "date": "2026-10-15",
+      "description": "NETS FAIRPRICE XPRESS 2217",
+      "amount": -55.01,
+      "currency": "SGD",
+      "category": "groceries"
+    },
+    {
+      "id": "rahim-0247",
+      "date": "2026-10-16",
+      "description": "NETS HAWKER STALL 0217",
+      "amount": -5.74,
+      "currency": "SGD",
+      "category": "eating_out"
+    },
+    {
+      "id": "rahim-0248",
+      "date": "2026-10-17",
+      "description": "NETS HAWKER STALL 0217",
+      "amount": -4.4,
+      "currency": "SGD",
+      "category": "eating_out"
+    },
+    {
+      "id": "rahim-0249",
+      "date": "2026-10-17",
+      "description": "NETS KOPITIAM FOODCOURT",
+      "amount": -6.48,
+      "currency": "SGD",
+      "category": "eating_out"
+    },
+    {
+      "id": "rahim-0250",
+      "date": "2026-10-17",
+      "description": "NETS HAWKER STALL 0344",
+      "amount": -4.45,
+      "currency": "SGD",
+      "category": "eating_out"
+    },
+    {
+      "id": "rahim-0251",
+      "date": "2026-10-18",
+      "description": "NETS HAWKER STALL 0344",
+      "amount": -6.4,
+      "currency": "SGD",
+      "category": "eating_out"
+    },
+    {
+      "id": "rahim-0252",
+      "date": "2026-10-19",
+      "description": "NETS SHENG SIONG 4417",
+      "amount": -40.98,
+      "currency": "SGD",
+      "category": "groceries"
+    },
+    {
+      "id": "rahim-0253",
+      "date": "2026-10-20",
+      "description": "NETS SHENG SIONG 4417",
+      "amount": -19.29,
+      "currency": "SGD",
+      "category": "groceries"
+    },
+    {
+      "id": "rahim-0254",
+      "date": "2026-10-20",
+      "description": "NETS KOPITIAM FOODCOURT",
+      "amount": -4.9,
+      "currency": "SGD",
+      "category": "eating_out"
+    },
+    {
+      "id": "rahim-0255",
+      "date": "2026-10-21",
+      "description": "NETS FAIRPRICE 8102",
+      "amount": -54.19,
+      "currency": "SGD",
+      "category": "groceries"
+    },
+    {
+      "id": "rahim-0256",
+      "date": "2026-10-22",
+      "description": "SIMPLYGO MRT BUS",
+      "amount": -3.12,
+      "currency": "SGD",
+      "category": "transport"
+    },
+    {
+      "id": "rahim-0257",
+      "date": "2026-10-23",
+      "description": "NETS HAWKER STALL 0217",
+      "amount": -5.66,
+      "currency": "SGD",
+      "category": "eating_out"
+    },
+    {
+      "id": "rahim-0258",
+      "date": "2026-10-24",
+      "description": "NETS HAWKER STALL 0217",
+      "amount": -3.94,
+      "currency": "SGD",
+      "category": "eating_out"
+    },
+    {
+      "id": "rahim-0259",
+      "date": "2026-10-27",
+      "description": "NETS HAWKER STALL 0217",
+      "amount": -5.77,
+      "currency": "SGD",
+      "category": "eating_out"
+    },
+    {
+      "id": "rahim-0260",
+      "date": "2026-10-27",
+      "description": "ATM CASH WITHDRAWAL POSB 2231",
+      "amount": -90,
+      "currency": "SGD",
+      "category": "cash_withdrawal"
+    },
+    {
+      "id": "rahim-0261",
+      "date": "2026-10-28",
+      "description": "INWARD GIRO SALARY - LIM & SONS BUILDERS PTE LTD",
+      "amount": 1500,
+      "currency": "SGD",
+      "category": "salary"
+    },
+    {
+      "id": "rahim-0262",
+      "date": "2026-10-28",
+      "description": "NETS HAWKER STALL 0217",
+      "amount": -3.54,
+      "currency": "SGD",
+      "category": "eating_out"
+    },
+    {
+      "id": "rahim-0263",
+      "date": "2026-10-30",
+      "description": "NETS KOPITIAM FOODCOURT",
+      "amount": -4.38,
+      "currency": "SGD",
+      "category": "eating_out"
+    },
+    {
+      "id": "rahim-0264",
+      "date": "2026-10-30",
+      "description": "NETS GUARDIAN PHARMACY",
+      "amount": -16.02,
+      "currency": "SGD",
+      "category": "healthcare"
+    },
+    {
+      "id": "rahim-0265",
+      "date": "2026-10-31",
+      "description": "FAST TRANSFER TO POSB SAVINGS ACCOUNT",
+      "amount": -190,
+      "currency": "SGD",
+      "category": "savings_deposit"
+    },
+    {
+      "id": "rahim-0266",
+      "date": "2026-10-31",
+      "description": "NETS KOPITIAM FOODCOURT",
+      "amount": -4.18,
+      "currency": "SGD",
+      "category": "eating_out"
+    }
+  ]
+}

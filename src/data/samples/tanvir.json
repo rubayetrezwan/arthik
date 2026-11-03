@@ -1,0 +1,1897 @@
+{
+  "key": "tanvir",
+  "emergencySavings": {
+    "amount": 110000,
+    "currency": "BDT"
+  },
+  "transactions": [
+    {
+      "id": "tanvir-0001",
+      "date": "2026-05-01",
+      "description": "BEFTN Transfer - Flat rent, Road 27 Dhanmondi",
+      "amount": -28000,
+      "currency": "BDT",
+      "category": "rent"
+    },
+    {
+      "id": "tanvir-0002",
+      "date": "2026-05-02",
+      "description": "Chaldal.com Order #405724 - bKash Payment",
+      "amount": -1878,
+      "currency": "BDT",
+      "category": "groceries"
+    },
+    {
+      "id": "tanvir-0003",
+      "date": "2026-05-02",
+      "description": "Shwapno Dhanmondi 27 - Card Payment",
+      "amount": -1558,
+      "currency": "BDT",
+      "category": "groceries"
+    },
+    {
+      "id": "tanvir-0004",
+      "date": "2026-05-02",
+      "description": "Foodpanda Order #FP355366 - bKash Payment",
+      "amount": -968,
+      "currency": "BDT",
+      "category": "eating_out"
+    },
+    {
+      "id": "tanvir-0005",
+      "date": "2026-05-02",
+      "description": "Pizza Hut Dhanmondi 27 - Card Payment",
+      "amount": -1326,
+      "currency": "BDT",
+      "category": "eating_out"
+    },
+    {
+      "id": "tanvir-0006",
+      "date": "2026-05-03",
+      "description": "Fitness Plus Gym Membership - Dhanmondi",
+      "amount": -2500,
+      "currency": "BDT",
+      "category": "personal_care"
+    },
+    {
+      "id": "tanvir-0007",
+      "date": "2026-05-04",
+      "description": "Pathao Ride #706294 - bKash Payment",
+      "amount": -308,
+      "currency": "BDT",
+      "category": "transport"
+    },
+    {
+      "id": "tanvir-0008",
+      "date": "2026-05-06",
+      "description": "Chaldal.com Order #632697 - bKash Payment",
+      "amount": -1340,
+      "currency": "BDT",
+      "category": "groceries"
+    },
+    {
+      "id": "tanvir-0009",
+      "date": "2026-05-06",
+      "description": "Foodpanda Order #FP214759 - bKash Payment",
+      "amount": -719,
+      "currency": "BDT",
+      "category": "eating_out"
+    },
+    {
+      "id": "tanvir-0010",
+      "date": "2026-05-07",
+      "description": "Pathao Ride #733032 - bKash Payment",
+      "amount": -375,
+      "currency": "BDT",
+      "category": "transport"
+    },
+    {
+      "id": "tanvir-0011",
+      "date": "2026-05-08",
+      "description": "DPS Instalment - BRAC Bank A/C xx5530",
+      "amount": -20000,
+      "currency": "BDT",
+      "category": "savings_deposit"
+    },
+    {
+      "id": "tanvir-0012",
+      "date": "2026-05-08",
+      "description": "Pathao Ride #127603 - bKash Payment",
+      "amount": -128,
+      "currency": "BDT",
+      "category": "transport"
+    },
+    {
+      "id": "tanvir-0013",
+      "date": "2026-05-10",
+      "description": "Titas Gas Bill - Dhanmondi (bKash Pay Bill)",
+      "amount": -990,
+      "currency": "BDT",
+      "category": "utilities"
+    },
+    {
+      "id": "tanvir-0014",
+      "date": "2026-05-12",
+      "description": "Payoneer Payment - Brightfield Labs Invoice 637254",
+      "amount": 695.8,
+      "currency": "USD",
+      "category": "freelance"
+    },
+    {
+      "id": "tanvir-0015",
+      "date": "2026-05-12",
+      "description": "Pathao Ride #720321 - bKash Payment",
+      "amount": -135,
+      "currency": "BDT",
+      "category": "transport"
+    },
+    {
+      "id": "tanvir-0016",
+      "date": "2026-05-13",
+      "description": "DPDC Electricity Bill (bKash Pay Bill)",
+      "amount": -1779,
+      "currency": "BDT",
+      "category": "utilities"
+    },
+    {
+      "id": "tanvir-0017",
+      "date": "2026-05-13",
+      "description": "Chaldal.com Order #600537 - bKash Payment",
+      "amount": -1883,
+      "currency": "BDT",
+      "category": "groceries"
+    },
+    {
+      "id": "tanvir-0018",
+      "date": "2026-05-13",
+      "description": "Foodpanda Order #FP699161 - bKash Payment",
+      "amount": -1024,
+      "currency": "BDT",
+      "category": "eating_out"
+    },
+    {
+      "id": "tanvir-0019",
+      "date": "2026-05-15",
+      "description": "Link3 Broadband Bill (bKash Pay Bill)",
+      "amount": -1500,
+      "currency": "BDT",
+      "category": "mobile_internet"
+    },
+    {
+      "id": "tanvir-0020",
+      "date": "2026-05-16",
+      "description": "Foodpanda Order #FP596400 - bKash Payment",
+      "amount": -641,
+      "currency": "BDT",
+      "category": "eating_out"
+    },
+    {
+      "id": "tanvir-0021",
+      "date": "2026-05-16",
+      "description": "Foodpanda Order #FP661009 - bKash Payment",
+      "amount": -599,
+      "currency": "BDT",
+      "category": "eating_out"
+    },
+    {
+      "id": "tanvir-0022",
+      "date": "2026-05-17",
+      "description": "Pathao Ride #939842 - bKash Payment",
+      "amount": -210,
+      "currency": "BDT",
+      "category": "transport"
+    },
+    {
+      "id": "tanvir-0023",
+      "date": "2026-05-18",
+      "description": "Netflix Subscription",
+      "amount": -800,
+      "currency": "BDT",
+      "category": "entertainment"
+    },
+    {
+      "id": "tanvir-0024",
+      "date": "2026-05-19",
+      "description": "Foodpanda Order #FP158819 - bKash Payment",
+      "amount": -989,
+      "currency": "BDT",
+      "category": "eating_out"
+    },
+    {
+      "id": "tanvir-0025",
+      "date": "2026-05-19",
+      "description": "Pathao Ride #260608 - bKash Payment",
+      "amount": -122,
+      "currency": "BDT",
+      "category": "transport"
+    },
+    {
+      "id": "tanvir-0026",
+      "date": "2026-05-19",
+      "description": "Pathao Ride #442711 - bKash Payment",
+      "amount": -355,
+      "currency": "BDT",
+      "category": "transport"
+    },
+    {
+      "id": "tanvir-0027",
+      "date": "2026-05-20",
+      "description": "Daraz Bangladesh Order #214134 - bKash Payment",
+      "amount": -2653,
+      "currency": "BDT",
+      "category": "shopping"
+    },
+    {
+      "id": "tanvir-0028",
+      "date": "2026-05-21",
+      "description": "Pathao Ride #711700 - bKash Payment",
+      "amount": -331,
+      "currency": "BDT",
+      "category": "transport"
+    },
+    {
+      "id": "tanvir-0029",
+      "date": "2026-05-21",
+      "description": "Gentlemen's Barber Shop, Dhanmondi - bKash Payment",
+      "amount": -567,
+      "currency": "BDT",
+      "category": "personal_care"
+    },
+    {
+      "id": "tanvir-0030",
+      "date": "2026-05-22",
+      "description": "Grameenphone Mobile Recharge 01712xxxxxx",
+      "amount": -797,
+      "currency": "BDT",
+      "category": "mobile_internet"
+    },
+    {
+      "id": "tanvir-0031",
+      "date": "2026-05-23",
+      "description": "Gentlemen's Barber Shop, Dhanmondi - bKash Payment",
+      "amount": -612,
+      "currency": "BDT",
+      "category": "personal_care"
+    },
+    {
+      "id": "tanvir-0032",
+      "date": "2026-05-24",
+      "description": "Chaldal.com Order #477488 - bKash Payment",
+      "amount": -1632,
+      "currency": "BDT",
+      "category": "groceries"
+    },
+    {
+      "id": "tanvir-0033",
+      "date": "2026-05-24",
+      "description": "Foodpanda Order #FP599796 - bKash Payment",
+      "amount": -946,
+      "currency": "BDT",
+      "category": "eating_out"
+    },
+    {
+      "id": "tanvir-0034",
+      "date": "2026-05-25",
+      "description": "Chaldal.com Order #677482 - bKash Payment",
+      "amount": -1833,
+      "currency": "BDT",
+      "category": "groceries"
+    },
+    {
+      "id": "tanvir-0035",
+      "date": "2026-05-25",
+      "description": "Daraz Bangladesh Order #810859 - bKash Payment",
+      "amount": -902,
+      "currency": "BDT",
+      "category": "shopping"
+    },
+    {
+      "id": "tanvir-0036",
+      "date": "2026-05-27",
+      "description": "ATM Cash Withdrawal - BRAC Bank Dhanmondi",
+      "amount": -4000,
+      "currency": "BDT",
+      "category": "cash_withdrawal"
+    },
+    {
+      "id": "tanvir-0037",
+      "date": "2026-05-29",
+      "description": "Shwapno Dhanmondi 27 - Card Payment",
+      "amount": -755,
+      "currency": "BDT",
+      "category": "groceries"
+    },
+    {
+      "id": "tanvir-0038",
+      "date": "2026-05-31",
+      "description": "Payoneer Payment - Orbit Softworks Inc. (monthly retainer)",
+      "amount": 560,
+      "currency": "USD",
+      "category": "freelance"
+    },
+    {
+      "id": "tanvir-0039",
+      "date": "2026-05-31",
+      "description": "Chaldal.com Order #655723 - bKash Payment",
+      "amount": -991,
+      "currency": "BDT",
+      "category": "groceries"
+    },
+    {
+      "id": "tanvir-0040",
+      "date": "2026-05-31",
+      "description": "Pathao Ride #177094 - bKash Payment",
+      "amount": -332,
+      "currency": "BDT",
+      "category": "transport"
+    },
+    {
+      "id": "tanvir-0041",
+      "date": "2026-06-01",
+      "description": "BEFTN Transfer - Flat rent, Road 27 Dhanmondi",
+      "amount": -28000,
+      "currency": "BDT",
+      "category": "rent"
+    },
+    {
+      "id": "tanvir-0042",
+      "date": "2026-06-02",
+      "description": "Foodpanda Order #FP886539 - bKash Payment",
+      "amount": -900,
+      "currency": "BDT",
+      "category": "eating_out"
+    },
+    {
+      "id": "tanvir-0043",
+      "date": "2026-06-03",
+      "description": "Fitness Plus Gym Membership - Dhanmondi",
+      "amount": -2500,
+      "currency": "BDT",
+      "category": "personal_care"
+    },
+    {
+      "id": "tanvir-0044",
+      "date": "2026-06-03",
+      "description": "Shwapno Dhanmondi 27 - Card Payment",
+      "amount": -1248,
+      "currency": "BDT",
+      "category": "groceries"
+    },
+    {
+      "id": "tanvir-0045",
+      "date": "2026-06-03",
+      "description": "Pizza Hut Dhanmondi 27 - Card Payment",
+      "amount": -2745,
+      "currency": "BDT",
+      "category": "eating_out"
+    },
+    {
+      "id": "tanvir-0046",
+      "date": "2026-06-03",
+      "description": "Pathao Ride #538412 - bKash Payment",
+      "amount": -228,
+      "currency": "BDT",
+      "category": "transport"
+    },
+    {
+      "id": "tanvir-0047",
+      "date": "2026-06-03",
+      "description": "Gentlemen's Barber Shop, Dhanmondi - bKash Payment",
+      "amount": -474,
+      "currency": "BDT",
+      "category": "personal_care"
+    },
+    {
+      "id": "tanvir-0048",
+      "date": "2026-06-05",
+      "description": "Foodpanda Order #FP192734 - bKash Payment",
+      "amount": -846,
+      "currency": "BDT",
+      "category": "eating_out"
+    },
+    {
+      "id": "tanvir-0049",
+      "date": "2026-06-06",
+      "description": "Chaldal.com Order #977138 - bKash Payment",
+      "amount": -1734,
+      "currency": "BDT",
+      "category": "groceries"
+    },
+    {
+      "id": "tanvir-0050",
+      "date": "2026-06-08",
+      "description": "DPS Instalment - BRAC Bank A/C xx5530",
+      "amount": -20000,
+      "currency": "BDT",
+      "category": "savings_deposit"
+    },
+    {
+      "id": "tanvir-0051",
+      "date": "2026-06-08",
+      "description": "Shwapno Dhanmondi 27 - Card Payment",
+      "amount": -1504,
+      "currency": "BDT",
+      "category": "groceries"
+    },
+    {
+      "id": "tanvir-0052",
+      "date": "2026-06-09",
+      "description": "Foodpanda Order #FP256339 - bKash Payment",
+      "amount": -553,
+      "currency": "BDT",
+      "category": "eating_out"
+    },
+    {
+      "id": "tanvir-0053",
+      "date": "2026-06-10",
+      "description": "Titas Gas Bill - Dhanmondi (bKash Pay Bill)",
+      "amount": -990,
+      "currency": "BDT",
+      "category": "utilities"
+    },
+    {
+      "id": "tanvir-0054",
+      "date": "2026-06-10",
+      "description": "DPDC Electricity Bill (bKash Pay Bill)",
+      "amount": -2254,
+      "currency": "BDT",
+      "category": "utilities"
+    },
+    {
+      "id": "tanvir-0055",
+      "date": "2026-06-12",
+      "description": "Foodpanda Order #FP196915 - bKash Payment",
+      "amount": -625,
+      "currency": "BDT",
+      "category": "eating_out"
+    },
+    {
+      "id": "tanvir-0056",
+      "date": "2026-06-13",
+      "description": "Foodpanda Order #FP816911 - bKash Payment",
+      "amount": -1006,
+      "currency": "BDT",
+      "category": "eating_out"
+    },
+    {
+      "id": "tanvir-0057",
+      "date": "2026-06-13",
+      "description": "Pathao Ride #912073 - bKash Payment",
+      "amount": -342,
+      "currency": "BDT",
+      "category": "transport"
+    },
+    {
+      "id": "tanvir-0058",
+      "date": "2026-06-14",
+      "description": "Pathao Ride #721364 - bKash Payment",
+      "amount": -279,
+      "currency": "BDT",
+      "category": "transport"
+    },
+    {
+      "id": "tanvir-0059",
+      "date": "2026-06-15",
+      "description": "Link3 Broadband Bill (bKash Pay Bill)",
+      "amount": -1500,
+      "currency": "BDT",
+      "category": "mobile_internet"
+    },
+    {
+      "id": "tanvir-0060",
+      "date": "2026-06-16",
+      "description": "Chaldal.com Order #488107 - bKash Payment",
+      "amount": -1650,
+      "currency": "BDT",
+      "category": "groceries"
+    },
+    {
+      "id": "tanvir-0061",
+      "date": "2026-06-16",
+      "description": "Pathao Ride #407505 - bKash Payment",
+      "amount": -297,
+      "currency": "BDT",
+      "category": "transport"
+    },
+    {
+      "id": "tanvir-0062",
+      "date": "2026-06-17",
+      "description": "Chaldal.com Order #386540 - bKash Payment",
+      "amount": -820,
+      "currency": "BDT",
+      "category": "groceries"
+    },
+    {
+      "id": "tanvir-0063",
+      "date": "2026-06-18",
+      "description": "Netflix Subscription",
+      "amount": -800,
+      "currency": "BDT",
+      "category": "entertainment"
+    },
+    {
+      "id": "tanvir-0064",
+      "date": "2026-06-18",
+      "description": "Grameenphone Mobile Recharge 01712xxxxxx",
+      "amount": -750,
+      "currency": "BDT",
+      "category": "mobile_internet"
+    },
+    {
+      "id": "tanvir-0065",
+      "date": "2026-06-18",
+      "description": "Foodpanda Order #FP151132 - bKash Payment",
+      "amount": -408,
+      "currency": "BDT",
+      "category": "eating_out"
+    },
+    {
+      "id": "tanvir-0066",
+      "date": "2026-06-18",
+      "description": "Pathao Ride #811269 - bKash Payment",
+      "amount": -164,
+      "currency": "BDT",
+      "category": "transport"
+    },
+    {
+      "id": "tanvir-0067",
+      "date": "2026-06-19",
+      "description": "Pathao Ride #507822 - bKash Payment",
+      "amount": -375,
+      "currency": "BDT",
+      "category": "transport"
+    },
+    {
+      "id": "tanvir-0068",
+      "date": "2026-06-19",
+      "description": "ATM Cash Withdrawal - BRAC Bank Dhanmondi",
+      "amount": -5000,
+      "currency": "BDT",
+      "category": "cash_withdrawal"
+    },
+    {
+      "id": "tanvir-0069",
+      "date": "2026-06-21",
+      "description": "Foodpanda Order #FP346038 - bKash Payment",
+      "amount": -540,
+      "currency": "BDT",
+      "category": "eating_out"
+    },
+    {
+      "id": "tanvir-0070",
+      "date": "2026-06-21",
+      "description": "Pathao Ride #339183 - bKash Payment",
+      "amount": -164,
+      "currency": "BDT",
+      "category": "transport"
+    },
+    {
+      "id": "tanvir-0071",
+      "date": "2026-06-23",
+      "description": "Payoneer Payment - Brightfield Labs Invoice 656915",
+      "amount": 280,
+      "currency": "USD",
+      "category": "freelance"
+    },
+    {
+      "id": "tanvir-0072",
+      "date": "2026-06-23",
+      "description": "Daraz Bangladesh Order #231775 - bKash Payment",
+      "amount": -2271,
+      "currency": "BDT",
+      "category": "shopping"
+    },
+    {
+      "id": "tanvir-0073",
+      "date": "2026-06-23",
+      "description": "Daraz Bangladesh Order #986643 - bKash Payment",
+      "amount": -2596,
+      "currency": "BDT",
+      "category": "shopping"
+    },
+    {
+      "id": "tanvir-0074",
+      "date": "2026-06-26",
+      "description": "Foodpanda Order #FP617994 - bKash Payment",
+      "amount": -590,
+      "currency": "BDT",
+      "category": "eating_out"
+    },
+    {
+      "id": "tanvir-0075",
+      "date": "2026-06-26",
+      "description": "Pathao Ride #701422 - bKash Payment",
+      "amount": -437,
+      "currency": "BDT",
+      "category": "transport"
+    },
+    {
+      "id": "tanvir-0076",
+      "date": "2026-06-28",
+      "description": "Chaldal.com Order #620636 - bKash Payment",
+      "amount": -1050,
+      "currency": "BDT",
+      "category": "groceries"
+    },
+    {
+      "id": "tanvir-0077",
+      "date": "2026-06-28",
+      "description": "Pathao Ride #937042 - bKash Payment",
+      "amount": -239,
+      "currency": "BDT",
+      "category": "transport"
+    },
+    {
+      "id": "tanvir-0078",
+      "date": "2026-06-28",
+      "description": "Gentlemen's Barber Shop, Dhanmondi - bKash Payment",
+      "amount": -504,
+      "currency": "BDT",
+      "category": "personal_care"
+    },
+    {
+      "id": "tanvir-0079",
+      "date": "2026-06-30",
+      "description": "Payoneer Payment - Orbit Softworks Inc. (monthly retainer)",
+      "amount": 560,
+      "currency": "USD",
+      "category": "freelance"
+    },
+    {
+      "id": "tanvir-0080",
+      "date": "2026-07-01",
+      "description": "BEFTN Transfer - Flat rent, Road 27 Dhanmondi",
+      "amount": -28000,
+      "currency": "BDT",
+      "category": "rent"
+    },
+    {
+      "id": "tanvir-0081",
+      "date": "2026-07-02",
+      "description": "Shwapno Dhanmondi 27 - Card Payment",
+      "amount": -1455,
+      "currency": "BDT",
+      "category": "groceries"
+    },
+    {
+      "id": "tanvir-0082",
+      "date": "2026-07-02",
+      "description": "Foodpanda Order #FP396613 - bKash Payment",
+      "amount": -1082,
+      "currency": "BDT",
+      "category": "eating_out"
+    },
+    {
+      "id": "tanvir-0083",
+      "date": "2026-07-03",
+      "description": "Fitness Plus Gym Membership - Dhanmondi",
+      "amount": -2500,
+      "currency": "BDT",
+      "category": "personal_care"
+    },
+    {
+      "id": "tanvir-0084",
+      "date": "2026-07-04",
+      "description": "Pizza Hut Dhanmondi 27 - Card Payment",
+      "amount": -1206,
+      "currency": "BDT",
+      "category": "eating_out"
+    },
+    {
+      "id": "tanvir-0085",
+      "date": "2026-07-04",
+      "description": "ATM Cash Withdrawal - BRAC Bank Dhanmondi",
+      "amount": -3000,
+      "currency": "BDT",
+      "category": "cash_withdrawal"
+    },
+    {
+      "id": "tanvir-0086",
+      "date": "2026-07-05",
+      "description": "Chaldal.com Order #399382 - bKash Payment",
+      "amount": -1444,
+      "currency": "BDT",
+      "category": "groceries"
+    },
+    {
+      "id": "tanvir-0087",
+      "date": "2026-07-05",
+      "description": "Pathao Ride #762680 - bKash Payment",
+      "amount": -406,
+      "currency": "BDT",
+      "category": "transport"
+    },
+    {
+      "id": "tanvir-0088",
+      "date": "2026-07-08",
+      "description": "DPS Instalment - BRAC Bank A/C xx5530",
+      "amount": -20000,
+      "currency": "BDT",
+      "category": "savings_deposit"
+    },
+    {
+      "id": "tanvir-0089",
+      "date": "2026-07-08",
+      "description": "Payoneer Payment - Fiverr Order #FO593817",
+      "amount": 627.21,
+      "currency": "USD",
+      "category": "freelance"
+    },
+    {
+      "id": "tanvir-0090",
+      "date": "2026-07-09",
+      "description": "Payoneer Payment - Fiverr Order #FO755051",
+      "amount": 397.21,
+      "currency": "USD",
+      "category": "freelance"
+    },
+    {
+      "id": "tanvir-0091",
+      "date": "2026-07-09",
+      "description": "Pathao Ride #905739 - bKash Payment",
+      "amount": -303,
+      "currency": "BDT",
+      "category": "transport"
+    },
+    {
+      "id": "tanvir-0092",
+      "date": "2026-07-10",
+      "description": "Titas Gas Bill - Dhanmondi (bKash Pay Bill)",
+      "amount": -990,
+      "currency": "BDT",
+      "category": "utilities"
+    },
+    {
+      "id": "tanvir-0093",
+      "date": "2026-07-10",
+      "description": "Chaldal.com Order #434081 - bKash Payment",
+      "amount": -2113,
+      "currency": "BDT",
+      "category": "groceries"
+    },
+    {
+      "id": "tanvir-0094",
+      "date": "2026-07-11",
+      "description": "Pathao Ride #298985 - bKash Payment",
+      "amount": -262,
+      "currency": "BDT",
+      "category": "transport"
+    },
+    {
+      "id": "tanvir-0095",
+      "date": "2026-07-13",
+      "description": "DPDC Electricity Bill (bKash Pay Bill)",
+      "amount": -1765,
+      "currency": "BDT",
+      "category": "utilities"
+    },
+    {
+      "id": "tanvir-0096",
+      "date": "2026-07-13",
+      "description": "Foodpanda Order #FP766308 - bKash Payment",
+      "amount": -987,
+      "currency": "BDT",
+      "category": "eating_out"
+    },
+    {
+      "id": "tanvir-0097",
+      "date": "2026-07-13",
+      "description": "Foodpanda Order #FP142770 - bKash Payment",
+      "amount": -489,
+      "currency": "BDT",
+      "category": "eating_out"
+    },
+    {
+      "id": "tanvir-0098",
+      "date": "2026-07-13",
+      "description": "Pathao Ride #543861 - bKash Payment",
+      "amount": -169,
+      "currency": "BDT",
+      "category": "transport"
+    },
+    {
+      "id": "tanvir-0099",
+      "date": "2026-07-15",
+      "description": "Link3 Broadband Bill (bKash Pay Bill)",
+      "amount": -1500,
+      "currency": "BDT",
+      "category": "mobile_internet"
+    },
+    {
+      "id": "tanvir-0100",
+      "date": "2026-07-17",
+      "description": "Chaldal.com Order #590048 - bKash Payment",
+      "amount": -2218,
+      "currency": "BDT",
+      "category": "groceries"
+    },
+    {
+      "id": "tanvir-0101",
+      "date": "2026-07-17",
+      "description": "Foodpanda Order #FP724535 - bKash Payment",
+      "amount": -587,
+      "currency": "BDT",
+      "category": "eating_out"
+    },
+    {
+      "id": "tanvir-0102",
+      "date": "2026-07-18",
+      "description": "Netflix Subscription",
+      "amount": -800,
+      "currency": "BDT",
+      "category": "entertainment"
+    },
+    {
+      "id": "tanvir-0103",
+      "date": "2026-07-18",
+      "description": "Grameenphone Mobile Recharge 01712xxxxxx",
+      "amount": -777,
+      "currency": "BDT",
+      "category": "mobile_internet"
+    },
+    {
+      "id": "tanvir-0104",
+      "date": "2026-07-19",
+      "description": "Foodpanda Order #FP988995 - bKash Payment",
+      "amount": -663,
+      "currency": "BDT",
+      "category": "eating_out"
+    },
+    {
+      "id": "tanvir-0105",
+      "date": "2026-07-19",
+      "description": "Foodpanda Order #FP922550 - bKash Payment",
+      "amount": -957,
+      "currency": "BDT",
+      "category": "eating_out"
+    },
+    {
+      "id": "tanvir-0106",
+      "date": "2026-07-19",
+      "description": "Pathao Ride #196962 - bKash Payment",
+      "amount": -441,
+      "currency": "BDT",
+      "category": "transport"
+    },
+    {
+      "id": "tanvir-0107",
+      "date": "2026-07-21",
+      "description": "Pathao Ride #137664 - bKash Payment",
+      "amount": -202,
+      "currency": "BDT",
+      "category": "transport"
+    },
+    {
+      "id": "tanvir-0108",
+      "date": "2026-07-22",
+      "description": "Pathao Ride #511209 - bKash Payment",
+      "amount": -245,
+      "currency": "BDT",
+      "category": "transport"
+    },
+    {
+      "id": "tanvir-0109",
+      "date": "2026-07-23",
+      "description": "Chaldal.com Order #913989 - bKash Payment",
+      "amount": -1068,
+      "currency": "BDT",
+      "category": "groceries"
+    },
+    {
+      "id": "tanvir-0110",
+      "date": "2026-07-23",
+      "description": "ATM Cash Withdrawal - BRAC Bank Dhanmondi",
+      "amount": -3000,
+      "currency": "BDT",
+      "category": "cash_withdrawal"
+    },
+    {
+      "id": "tanvir-0111",
+      "date": "2026-07-25",
+      "description": "Foodpanda Order #FP635479 - bKash Payment",
+      "amount": -645,
+      "currency": "BDT",
+      "category": "eating_out"
+    },
+    {
+      "id": "tanvir-0112",
+      "date": "2026-07-27",
+      "description": "Pathao Ride #327710 - bKash Payment",
+      "amount": -311,
+      "currency": "BDT",
+      "category": "transport"
+    },
+    {
+      "id": "tanvir-0113",
+      "date": "2026-07-28",
+      "description": "Foodpanda Order #FP879972 - bKash Payment",
+      "amount": -1023,
+      "currency": "BDT",
+      "category": "eating_out"
+    },
+    {
+      "id": "tanvir-0114",
+      "date": "2026-07-28",
+      "description": "Pathao Ride #842030 - bKash Payment",
+      "amount": -131,
+      "currency": "BDT",
+      "category": "transport"
+    },
+    {
+      "id": "tanvir-0115",
+      "date": "2026-07-29",
+      "description": "Shwapno Dhanmondi 27 - Card Payment",
+      "amount": -1380,
+      "currency": "BDT",
+      "category": "groceries"
+    },
+    {
+      "id": "tanvir-0116",
+      "date": "2026-07-31",
+      "description": "Payoneer Payment - Orbit Softworks Inc. (monthly retainer)",
+      "amount": 560,
+      "currency": "USD",
+      "category": "freelance"
+    },
+    {
+      "id": "tanvir-0117",
+      "date": "2026-07-31",
+      "description": "Chaldal.com Order #101640 - bKash Payment",
+      "amount": -968,
+      "currency": "BDT",
+      "category": "groceries"
+    },
+    {
+      "id": "tanvir-0118",
+      "date": "2026-07-31",
+      "description": "Daraz Bangladesh Order #860760 - bKash Payment",
+      "amount": -2556,
+      "currency": "BDT",
+      "category": "shopping"
+    },
+    {
+      "id": "tanvir-0119",
+      "date": "2026-07-31",
+      "description": "Gentlemen's Barber Shop, Dhanmondi - bKash Payment",
+      "amount": -605,
+      "currency": "BDT",
+      "category": "personal_care"
+    },
+    {
+      "id": "tanvir-0120",
+      "date": "2026-08-01",
+      "description": "BEFTN Transfer - Flat rent, Road 27 Dhanmondi",
+      "amount": -28000,
+      "currency": "BDT",
+      "category": "rent"
+    },
+    {
+      "id": "tanvir-0121",
+      "date": "2026-08-03",
+      "description": "Fitness Plus Gym Membership - Dhanmondi",
+      "amount": -2500,
+      "currency": "BDT",
+      "category": "personal_care"
+    },
+    {
+      "id": "tanvir-0122",
+      "date": "2026-08-06",
+      "description": "Foodpanda Order #FP296859 - bKash Payment",
+      "amount": -519,
+      "currency": "BDT",
+      "category": "eating_out"
+    },
+    {
+      "id": "tanvir-0123",
+      "date": "2026-08-07",
+      "description": "Payoneer Payment - Brightfield Labs Invoice 201014",
+      "amount": 647.6,
+      "currency": "USD",
+      "category": "freelance"
+    },
+    {
+      "id": "tanvir-0124",
+      "date": "2026-08-07",
+      "description": "Pathao Ride #703919 - bKash Payment",
+      "amount": -344,
+      "currency": "BDT",
+      "category": "transport"
+    },
+    {
+      "id": "tanvir-0125",
+      "date": "2026-08-08",
+      "description": "DPS Instalment - BRAC Bank A/C xx5530",
+      "amount": -20000,
+      "currency": "BDT",
+      "category": "savings_deposit"
+    },
+    {
+      "id": "tanvir-0126",
+      "date": "2026-08-08",
+      "description": "Chaldal.com Order #658610 - bKash Payment",
+      "amount": -1715,
+      "currency": "BDT",
+      "category": "groceries"
+    },
+    {
+      "id": "tanvir-0127",
+      "date": "2026-08-08",
+      "description": "Shwapno Dhanmondi 27 - Card Payment",
+      "amount": -871,
+      "currency": "BDT",
+      "category": "groceries"
+    },
+    {
+      "id": "tanvir-0128",
+      "date": "2026-08-08",
+      "description": "Pathao Ride #731493 - bKash Payment",
+      "amount": -245,
+      "currency": "BDT",
+      "category": "transport"
+    },
+    {
+      "id": "tanvir-0129",
+      "date": "2026-08-09",
+      "description": "Payoneer Payment - Upwork Escrow Release (Contract 386298)",
+      "amount": 264.68,
+      "currency": "USD",
+      "category": "freelance"
+    },
+    {
+      "id": "tanvir-0130",
+      "date": "2026-08-09",
+      "description": "Foodpanda Order #FP274938 - bKash Payment",
+      "amount": -426,
+      "currency": "BDT",
+      "category": "eating_out"
+    },
+    {
+      "id": "tanvir-0131",
+      "date": "2026-08-10",
+      "description": "Titas Gas Bill - Dhanmondi (bKash Pay Bill)",
+      "amount": -990,
+      "currency": "BDT",
+      "category": "utilities"
+    },
+    {
+      "id": "tanvir-0132",
+      "date": "2026-08-11",
+      "description": "DPDC Electricity Bill (bKash Pay Bill)",
+      "amount": -2266,
+      "currency": "BDT",
+      "category": "utilities"
+    },
+    {
+      "id": "tanvir-0133",
+      "date": "2026-08-11",
+      "description": "Pathao Ride #318092 - bKash Payment",
+      "amount": -361,
+      "currency": "BDT",
+      "category": "transport"
+    },
+    {
+      "id": "tanvir-0134",
+      "date": "2026-08-13",
+      "description": "Shwapno Dhanmondi 27 - Card Payment",
+      "amount": -538,
+      "currency": "BDT",
+      "category": "groceries"
+    },
+    {
+      "id": "tanvir-0135",
+      "date": "2026-08-13",
+      "description": "Shwapno Dhanmondi 27 - Card Payment",
+      "amount": -855,
+      "currency": "BDT",
+      "category": "groceries"
+    },
+    {
+      "id": "tanvir-0136",
+      "date": "2026-08-13",
+      "description": "Foodpanda Order #FP343839 - bKash Payment",
+      "amount": -452,
+      "currency": "BDT",
+      "category": "eating_out"
+    },
+    {
+      "id": "tanvir-0137",
+      "date": "2026-08-14",
+      "description": "StarTech Computer Ltd - Laptop (Card Payment)",
+      "amount": -78000,
+      "currency": "BDT",
+      "category": "shopping"
+    },
+    {
+      "id": "tanvir-0138",
+      "date": "2026-08-14",
+      "description": "Chillox Dhanmondi - Card Payment",
+      "amount": -1638,
+      "currency": "BDT",
+      "category": "eating_out"
+    },
+    {
+      "id": "tanvir-0139",
+      "date": "2026-08-15",
+      "description": "Link3 Broadband Bill (bKash Pay Bill)",
+      "amount": -1500,
+      "currency": "BDT",
+      "category": "mobile_internet"
+    },
+    {
+      "id": "tanvir-0140",
+      "date": "2026-08-16",
+      "description": "Daraz Bangladesh Order #501631 - bKash Payment",
+      "amount": -1206,
+      "currency": "BDT",
+      "category": "shopping"
+    },
+    {
+      "id": "tanvir-0141",
+      "date": "2026-08-17",
+      "description": "Chaldal.com Order #331392 - bKash Payment",
+      "amount": -955,
+      "currency": "BDT",
+      "category": "groceries"
+    },
+    {
+      "id": "tanvir-0142",
+      "date": "2026-08-18",
+      "description": "Netflix Subscription",
+      "amount": -800,
+      "currency": "BDT",
+      "category": "entertainment"
+    },
+    {
+      "id": "tanvir-0143",
+      "date": "2026-08-18",
+      "description": "Grameenphone Mobile Recharge 01712xxxxxx",
+      "amount": -544,
+      "currency": "BDT",
+      "category": "mobile_internet"
+    },
+    {
+      "id": "tanvir-0144",
+      "date": "2026-08-20",
+      "description": "Foodpanda Order #FP654072 - bKash Payment",
+      "amount": -452,
+      "currency": "BDT",
+      "category": "eating_out"
+    },
+    {
+      "id": "tanvir-0145",
+      "date": "2026-08-20",
+      "description": "Pathao Ride #381056 - bKash Payment",
+      "amount": -191,
+      "currency": "BDT",
+      "category": "transport"
+    },
+    {
+      "id": "tanvir-0146",
+      "date": "2026-08-21",
+      "description": "Chaldal.com Order #888984 - bKash Payment",
+      "amount": -990,
+      "currency": "BDT",
+      "category": "groceries"
+    },
+    {
+      "id": "tanvir-0147",
+      "date": "2026-08-21",
+      "description": "ATM Cash Withdrawal - BRAC Bank Dhanmondi",
+      "amount": -4000,
+      "currency": "BDT",
+      "category": "cash_withdrawal"
+    },
+    {
+      "id": "tanvir-0148",
+      "date": "2026-08-22",
+      "description": "Pathao Ride #313440 - bKash Payment",
+      "amount": -385,
+      "currency": "BDT",
+      "category": "transport"
+    },
+    {
+      "id": "tanvir-0149",
+      "date": "2026-08-23",
+      "description": "Gentlemen's Barber Shop, Dhanmondi - bKash Payment",
+      "amount": -588,
+      "currency": "BDT",
+      "category": "personal_care"
+    },
+    {
+      "id": "tanvir-0150",
+      "date": "2026-08-24",
+      "description": "Pathao Ride #480069 - bKash Payment",
+      "amount": -446,
+      "currency": "BDT",
+      "category": "transport"
+    },
+    {
+      "id": "tanvir-0151",
+      "date": "2026-08-25",
+      "description": "Pathao Ride #354668 - bKash Payment",
+      "amount": -176,
+      "currency": "BDT",
+      "category": "transport"
+    },
+    {
+      "id": "tanvir-0152",
+      "date": "2026-08-27",
+      "description": "Pathao Ride #259412 - bKash Payment",
+      "amount": -175,
+      "currency": "BDT",
+      "category": "transport"
+    },
+    {
+      "id": "tanvir-0153",
+      "date": "2026-08-29",
+      "description": "Chaldal.com Order #282086 - bKash Payment",
+      "amount": -2185,
+      "currency": "BDT",
+      "category": "groceries"
+    },
+    {
+      "id": "tanvir-0154",
+      "date": "2026-08-29",
+      "description": "ATM Cash Withdrawal - BRAC Bank Dhanmondi",
+      "amount": -4000,
+      "currency": "BDT",
+      "category": "cash_withdrawal"
+    },
+    {
+      "id": "tanvir-0155",
+      "date": "2026-08-31",
+      "description": "Payoneer Payment - Orbit Softworks Inc. (monthly retainer)",
+      "amount": 560,
+      "currency": "USD",
+      "category": "freelance"
+    },
+    {
+      "id": "tanvir-0156",
+      "date": "2026-08-31",
+      "description": "Foodpanda Order #FP663934 - bKash Payment",
+      "amount": -563,
+      "currency": "BDT",
+      "category": "eating_out"
+    },
+    {
+      "id": "tanvir-0157",
+      "date": "2026-08-31",
+      "description": "Pathao Ride #850763 - bKash Payment",
+      "amount": -345,
+      "currency": "BDT",
+      "category": "transport"
+    },
+    {
+      "id": "tanvir-0158",
+      "date": "2026-08-31",
+      "description": "Daraz Bangladesh Order #528640 - bKash Payment",
+      "amount": -2086,
+      "currency": "BDT",
+      "category": "shopping"
+    },
+    {
+      "id": "tanvir-0159",
+      "date": "2026-09-01",
+      "description": "BEFTN Transfer - Flat rent, Road 27 Dhanmondi",
+      "amount": -28000,
+      "currency": "BDT",
+      "category": "rent"
+    },
+    {
+      "id": "tanvir-0160",
+      "date": "2026-09-02",
+      "description": "Pathao Ride #632085 - bKash Payment",
+      "amount": -284,
+      "currency": "BDT",
+      "category": "transport"
+    },
+    {
+      "id": "tanvir-0161",
+      "date": "2026-09-02",
+      "description": "Pathao Ride #788908 - bKash Payment",
+      "amount": -449,
+      "currency": "BDT",
+      "category": "transport"
+    },
+    {
+      "id": "tanvir-0162",
+      "date": "2026-09-02",
+      "description": "Daraz Bangladesh Order #692249 - bKash Payment",
+      "amount": -2579,
+      "currency": "BDT",
+      "category": "shopping"
+    },
+    {
+      "id": "tanvir-0163",
+      "date": "2026-09-03",
+      "description": "Fitness Plus Gym Membership - Dhanmondi",
+      "amount": -2500,
+      "currency": "BDT",
+      "category": "personal_care"
+    },
+    {
+      "id": "tanvir-0164",
+      "date": "2026-09-03",
+      "description": "Pathao Ride #366478 - bKash Payment",
+      "amount": -356,
+      "currency": "BDT",
+      "category": "transport"
+    },
+    {
+      "id": "tanvir-0165",
+      "date": "2026-09-03",
+      "description": "Pathao Ride #827699 - bKash Payment",
+      "amount": -331,
+      "currency": "BDT",
+      "category": "transport"
+    },
+    {
+      "id": "tanvir-0166",
+      "date": "2026-09-03",
+      "description": "Pathao Ride #116384 - bKash Payment",
+      "amount": -410,
+      "currency": "BDT",
+      "category": "transport"
+    },
+    {
+      "id": "tanvir-0167",
+      "date": "2026-09-05",
+      "description": "US-Bangla Airlines - Dhaka to Cox's Bazar",
+      "amount": -8800,
+      "currency": "BDT",
+      "category": "travel"
+    },
+    {
+      "id": "tanvir-0168",
+      "date": "2026-09-06",
+      "description": "Foodpanda Order #FP796152 - bKash Payment",
+      "amount": -656,
+      "currency": "BDT",
+      "category": "eating_out"
+    },
+    {
+      "id": "tanvir-0169",
+      "date": "2026-09-08",
+      "description": "DPS Instalment - BRAC Bank A/C xx5530",
+      "amount": -20000,
+      "currency": "BDT",
+      "category": "savings_deposit"
+    },
+    {
+      "id": "tanvir-0170",
+      "date": "2026-09-08",
+      "description": "Pathao Ride #510935 - bKash Payment",
+      "amount": -294,
+      "currency": "BDT",
+      "category": "transport"
+    },
+    {
+      "id": "tanvir-0171",
+      "date": "2026-09-09",
+      "description": "Foodpanda Order #FP382359 - bKash Payment",
+      "amount": -472,
+      "currency": "BDT",
+      "category": "eating_out"
+    },
+    {
+      "id": "tanvir-0172",
+      "date": "2026-09-10",
+      "description": "Titas Gas Bill - Dhanmondi (bKash Pay Bill)",
+      "amount": -990,
+      "currency": "BDT",
+      "category": "utilities"
+    },
+    {
+      "id": "tanvir-0173",
+      "date": "2026-09-11",
+      "description": "DPDC Electricity Bill (bKash Pay Bill)",
+      "amount": -1680,
+      "currency": "BDT",
+      "category": "utilities"
+    },
+    {
+      "id": "tanvir-0174",
+      "date": "2026-09-12",
+      "description": "Foodpanda Order #FP656235 - bKash Payment",
+      "amount": -609,
+      "currency": "BDT",
+      "category": "eating_out"
+    },
+    {
+      "id": "tanvir-0175",
+      "date": "2026-09-13",
+      "description": "Payoneer Payment - Brightfield Labs Invoice 919306",
+      "amount": 675.08,
+      "currency": "USD",
+      "category": "freelance"
+    },
+    {
+      "id": "tanvir-0176",
+      "date": "2026-09-14",
+      "description": "Chaldal.com Order #655768 - bKash Payment",
+      "amount": -967,
+      "currency": "BDT",
+      "category": "groceries"
+    },
+    {
+      "id": "tanvir-0177",
+      "date": "2026-09-15",
+      "description": "Link3 Broadband Bill (bKash Pay Bill)",
+      "amount": -1500,
+      "currency": "BDT",
+      "category": "mobile_internet"
+    },
+    {
+      "id": "tanvir-0178",
+      "date": "2026-09-15",
+      "description": "Payoneer Payment - Upwork Escrow Release (Contract 808549)",
+      "amount": 433.41,
+      "currency": "USD",
+      "category": "freelance"
+    },
+    {
+      "id": "tanvir-0179",
+      "date": "2026-09-17",
+      "description": "Shwapno Dhanmondi 27 - Card Payment",
+      "amount": -1540,
+      "currency": "BDT",
+      "category": "groceries"
+    },
+    {
+      "id": "tanvir-0180",
+      "date": "2026-09-17",
+      "description": "Foodpanda Order #FP955170 - bKash Payment",
+      "amount": -954,
+      "currency": "BDT",
+      "category": "eating_out"
+    },
+    {
+      "id": "tanvir-0181",
+      "date": "2026-09-18",
+      "description": "Netflix Subscription",
+      "amount": -800,
+      "currency": "BDT",
+      "category": "entertainment"
+    },
+    {
+      "id": "tanvir-0182",
+      "date": "2026-09-18",
+      "description": "Hotel booking, Laboni Beach Cox's Bazar - 3 nights",
+      "amount": -21500,
+      "currency": "BDT",
+      "category": "travel"
+    },
+    {
+      "id": "tanvir-0183",
+      "date": "2026-09-18",
+      "description": "Chaldal.com Order #935927 - bKash Payment",
+      "amount": -2108,
+      "currency": "BDT",
+      "category": "groceries"
+    },
+    {
+      "id": "tanvir-0184",
+      "date": "2026-09-18",
+      "description": "ATM Cash Withdrawal - BRAC Bank Dhanmondi",
+      "amount": -8000,
+      "currency": "BDT",
+      "category": "cash_withdrawal"
+    },
+    {
+      "id": "tanvir-0185",
+      "date": "2026-09-20",
+      "description": "Pathao Ride #771735 - bKash Payment",
+      "amount": -187,
+      "currency": "BDT",
+      "category": "transport"
+    },
+    {
+      "id": "tanvir-0186",
+      "date": "2026-09-21",
+      "description": "Grameenphone Mobile Recharge 01712xxxxxx",
+      "amount": -681,
+      "currency": "BDT",
+      "category": "mobile_internet"
+    },
+    {
+      "id": "tanvir-0187",
+      "date": "2026-09-21",
+      "description": "Chaldal.com Order #883396 - bKash Payment",
+      "amount": -1944,
+      "currency": "BDT",
+      "category": "groceries"
+    },
+    {
+      "id": "tanvir-0188",
+      "date": "2026-09-24",
+      "description": "Chaldal.com Order #533456 - bKash Payment",
+      "amount": -1689,
+      "currency": "BDT",
+      "category": "groceries"
+    },
+    {
+      "id": "tanvir-0189",
+      "date": "2026-09-26",
+      "description": "Chaldal.com Order #318871 - bKash Payment",
+      "amount": -2103,
+      "currency": "BDT",
+      "category": "groceries"
+    },
+    {
+      "id": "tanvir-0190",
+      "date": "2026-09-26",
+      "description": "Shwapno Dhanmondi 27 - Card Payment",
+      "amount": -1232,
+      "currency": "BDT",
+      "category": "groceries"
+    },
+    {
+      "id": "tanvir-0191",
+      "date": "2026-09-26",
+      "description": "Foodpanda Order #FP422801 - bKash Payment",
+      "amount": -476,
+      "currency": "BDT",
+      "category": "eating_out"
+    },
+    {
+      "id": "tanvir-0192",
+      "date": "2026-09-26",
+      "description": "Chillox Dhanmondi - Card Payment",
+      "amount": -2516,
+      "currency": "BDT",
+      "category": "eating_out"
+    },
+    {
+      "id": "tanvir-0193",
+      "date": "2026-09-26",
+      "description": "Pizza Hut Dhanmondi 27 - Card Payment",
+      "amount": -2087,
+      "currency": "BDT",
+      "category": "eating_out"
+    },
+    {
+      "id": "tanvir-0194",
+      "date": "2026-09-28",
+      "description": "Chaldal.com Order #185133 - bKash Payment",
+      "amount": -863,
+      "currency": "BDT",
+      "category": "groceries"
+    },
+    {
+      "id": "tanvir-0195",
+      "date": "2026-09-28",
+      "description": "Pathao Ride #130934 - bKash Payment",
+      "amount": -426,
+      "currency": "BDT",
+      "category": "transport"
+    },
+    {
+      "id": "tanvir-0196",
+      "date": "2026-09-28",
+      "description": "Pathao Ride #187460 - bKash Payment",
+      "amount": -222,
+      "currency": "BDT",
+      "category": "transport"
+    },
+    {
+      "id": "tanvir-0197",
+      "date": "2026-09-30",
+      "description": "Payoneer Payment - Orbit Softworks Inc. (monthly retainer)",
+      "amount": 560,
+      "currency": "USD",
+      "category": "freelance"
+    },
+    {
+      "id": "tanvir-0198",
+      "date": "2026-09-30",
+      "description": "ATM Cash Withdrawal - BRAC Bank Dhanmondi",
+      "amount": -8000,
+      "currency": "BDT",
+      "category": "cash_withdrawal"
+    },
+    {
+      "id": "tanvir-0199",
+      "date": "2026-09-30",
+      "description": "Gentlemen's Barber Shop, Dhanmondi - bKash Payment",
+      "amount": -514,
+      "currency": "BDT",
+      "category": "personal_care"
+    },
+    {
+      "id": "tanvir-0200",
+      "date": "2026-10-01",
+      "description": "BEFTN Transfer - Flat rent, Road 27 Dhanmondi",
+      "amount": -28000,
+      "currency": "BDT",
+      "category": "rent"
+    },
+    {
+      "id": "tanvir-0201",
+      "date": "2026-10-01",
+      "description": "Foodpanda Order #FP951746 - bKash Payment",
+      "amount": -451,
+      "currency": "BDT",
+      "category": "eating_out"
+    },
+    {
+      "id": "tanvir-0202",
+      "date": "2026-10-02",
+      "description": "Chaldal.com Order #298820 - bKash Payment",
+      "amount": -1347,
+      "currency": "BDT",
+      "category": "groceries"
+    },
+    {
+      "id": "tanvir-0203",
+      "date": "2026-10-02",
+      "description": "Pathao Ride #555257 - bKash Payment",
+      "amount": -182,
+      "currency": "BDT",
+      "category": "transport"
+    },
+    {
+      "id": "tanvir-0204",
+      "date": "2026-10-03",
+      "description": "Fitness Plus Gym Membership - Dhanmondi",
+      "amount": -2500,
+      "currency": "BDT",
+      "category": "personal_care"
+    },
+    {
+      "id": "tanvir-0205",
+      "date": "2026-10-03",
+      "description": "Foodpanda Order #FP779747 - bKash Payment",
+      "amount": -573,
+      "currency": "BDT",
+      "category": "eating_out"
+    },
+    {
+      "id": "tanvir-0206",
+      "date": "2026-10-05",
+      "description": "Shwapno Dhanmondi 27 - Card Payment",
+      "amount": -648,
+      "currency": "BDT",
+      "category": "groceries"
+    },
+    {
+      "id": "tanvir-0207",
+      "date": "2026-10-05",
+      "description": "Pathao Ride #375992 - bKash Payment",
+      "amount": -436,
+      "currency": "BDT",
+      "category": "transport"
+    },
+    {
+      "id": "tanvir-0208",
+      "date": "2026-10-07",
+      "description": "Shwapno Dhanmondi 27 - Card Payment",
+      "amount": -857,
+      "currency": "BDT",
+      "category": "groceries"
+    },
+    {
+      "id": "tanvir-0209",
+      "date": "2026-10-08",
+      "description": "DPS Instalment - BRAC Bank A/C xx5530",
+      "amount": -20000,
+      "currency": "BDT",
+      "category": "savings_deposit"
+    },
+    {
+      "id": "tanvir-0210",
+      "date": "2026-10-09",
+      "description": "Foodpanda Order #FP179961 - bKash Payment",
+      "amount": -560,
+      "currency": "BDT",
+      "category": "eating_out"
+    },
+    {
+      "id": "tanvir-0211",
+      "date": "2026-10-10",
+      "description": "Titas Gas Bill - Dhanmondi (bKash Pay Bill)",
+      "amount": -990,
+      "currency": "BDT",
+      "category": "utilities"
+    },
+    {
+      "id": "tanvir-0212",
+      "date": "2026-10-10",
+      "description": "Chaldal.com Order #567042 - bKash Payment",
+      "amount": -838,
+      "currency": "BDT",
+      "category": "groceries"
+    },
+    {
+      "id": "tanvir-0213",
+      "date": "2026-10-13",
+      "description": "DPDC Electricity Bill (bKash Pay Bill)",
+      "amount": -1968,
+      "currency": "BDT",
+      "category": "utilities"
+    },
+    {
+      "id": "tanvir-0214",
+      "date": "2026-10-13",
+      "description": "Foodpanda Order #FP142627 - bKash Payment",
+      "amount": -670,
+      "currency": "BDT",
+      "category": "eating_out"
+    },
+    {
+      "id": "tanvir-0215",
+      "date": "2026-10-13",
+      "description": "Chillox Dhanmondi - Card Payment",
+      "amount": -2783,
+      "currency": "BDT",
+      "category": "eating_out"
+    },
+    {
+      "id": "tanvir-0216",
+      "date": "2026-10-13",
+      "description": "ATM Cash Withdrawal - BRAC Bank Dhanmondi",
+      "amount": -5000,
+      "currency": "BDT",
+      "category": "cash_withdrawal"
+    },
+    {
+      "id": "tanvir-0217",
+      "date": "2026-10-14",
+      "description": "Pathao Ride #357617 - bKash Payment",
+      "amount": -445,
+      "currency": "BDT",
+      "category": "transport"
+    },
+    {
+      "id": "tanvir-0218",
+      "date": "2026-10-14",
+      "description": "Pathao Ride #452228 - bKash Payment",
+      "amount": -284,
+      "currency": "BDT",
+      "category": "transport"
+    },
+    {
+      "id": "tanvir-0219",
+      "date": "2026-10-14",
+      "description": "Gentlemen's Barber Shop, Dhanmondi - bKash Payment",
+      "amount": -393,
+      "currency": "BDT",
+      "category": "personal_care"
+    },
+    {
+      "id": "tanvir-0220",
+      "date": "2026-10-15",
+      "description": "Link3 Broadband Bill (bKash Pay Bill)",
+      "amount": -1500,
+      "currency": "BDT",
+      "category": "mobile_internet"
+    },
+    {
+      "id": "tanvir-0221",
+      "date": "2026-10-15",
+      "description": "Chaldal.com Order #261667 - bKash Payment",
+      "amount": -1100,
+      "currency": "BDT",
+      "category": "groceries"
+    },
+    {
+      "id": "tanvir-0222",
+      "date": "2026-10-15",
+      "description": "Pathao Ride #702984 - bKash Payment",
+      "amount": -423,
+      "currency": "BDT",
+      "category": "transport"
+    },
+    {
+      "id": "tanvir-0223",
+      "date": "2026-10-17",
+      "description": "Pathao Ride #950579 - bKash Payment",
+      "amount": -440,
+      "currency": "BDT",
+      "category": "transport"
+    },
+    {
+      "id": "tanvir-0224",
+      "date": "2026-10-18",
+      "description": "Netflix Subscription",
+      "amount": -800,
+      "currency": "BDT",
+      "category": "entertainment"
+    },
+    {
+      "id": "tanvir-0225",
+      "date": "2026-10-18",
+      "description": "Payoneer Payment - Fiverr Order #FO392584",
+      "amount": 503.19,
+      "currency": "USD",
+      "category": "freelance"
+    },
+    {
+      "id": "tanvir-0226",
+      "date": "2026-10-19",
+      "description": "Pathao Ride #732498 - bKash Payment",
+      "amount": -144,
+      "currency": "BDT",
+      "category": "transport"
+    },
+    {
+      "id": "tanvir-0227",
+      "date": "2026-10-20",
+      "description": "Pathao Ride #815764 - bKash Payment",
+      "amount": -254,
+      "currency": "BDT",
+      "category": "transport"
+    },
+    {
+      "id": "tanvir-0228",
+      "date": "2026-10-21",
+      "description": "Grameenphone Mobile Recharge 01712xxxxxx",
+      "amount": -618,
+      "currency": "BDT",
+      "category": "mobile_internet"
+    },
+    {
+      "id": "tanvir-0229",
+      "date": "2026-10-23",
+      "description": "Chaldal.com Order #335885 - bKash Payment",
+      "amount": -1149,
+      "currency": "BDT",
+      "category": "groceries"
+    },
+    {
+      "id": "tanvir-0230",
+      "date": "2026-10-23",
+      "description": "Pathao Ride #913594 - bKash Payment",
+      "amount": -164,
+      "currency": "BDT",
+      "category": "transport"
+    },
+    {
+      "id": "tanvir-0231",
+      "date": "2026-10-25",
+      "description": "Daraz Bangladesh Order #889360 - bKash Payment",
+      "amount": -1949,
+      "currency": "BDT",
+      "category": "shopping"
+    },
+    {
+      "id": "tanvir-0232",
+      "date": "2026-10-26",
+      "description": "Chaldal.com Order #191161 - bKash Payment",
+      "amount": -2023,
+      "currency": "BDT",
+      "category": "groceries"
+    },
+    {
+      "id": "tanvir-0233",
+      "date": "2026-10-29",
+      "description": "Pathao Ride #703998 - bKash Payment",
+      "amount": -284,
+      "currency": "BDT",
+      "category": "transport"
+    },
+    {
+      "id": "tanvir-0234",
+      "date": "2026-10-30",
+      "description": "Pathao Ride #521271 - bKash Payment",
+      "amount": -379,
+      "currency": "BDT",
+      "category": "transport"
+    },
+    {
+      "id": "tanvir-0235",
+      "date": "2026-10-31",
+      "description": "Payoneer Payment - Orbit Softworks Inc. (monthly retainer)",
+      "amount": 560,
+      "currency": "USD",
+      "category": "freelance"
+    },
+    {
+      "id": "tanvir-0236",
+      "date": "2026-10-31",
+      "description": "Foodpanda Order #FP567032 - bKash Payment",
+      "amount": -550,
+      "currency": "BDT",
+      "category": "eating_out"
+    }
+  ]
+}

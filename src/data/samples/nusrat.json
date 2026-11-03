@@ -1,0 +1,1809 @@
+{
+  "key": "nusrat",
+  "emergencySavings": {
+    "amount": 15000,
+    "currency": "BDT"
+  },
+  "transactions": [
+    {
+      "id": "nusrat-0001",
+      "date": "2026-05-01",
+      "description": "Family allowance from Abbu - bKash Received 01711xxxxxx",
+      "amount": 15000,
+      "currency": "BDT",
+      "category": "family_support_in"
+    },
+    {
+      "id": "nusrat-0002",
+      "date": "2026-05-01",
+      "description": "bKash Cash Out - Agent 01712xxxxxx",
+      "amount": -1500,
+      "currency": "BDT",
+      "category": "cash_withdrawal"
+    },
+    {
+      "id": "nusrat-0003",
+      "date": "2026-05-01",
+      "description": "bKash Cash Out Charge",
+      "amount": -27.75,
+      "currency": "BDT",
+      "category": "fees"
+    },
+    {
+      "id": "nusrat-0004",
+      "date": "2026-05-02",
+      "description": "bKash Payment - Mess seat rent, Mirpur 10",
+      "amount": -5500,
+      "currency": "BDT",
+      "category": "rent"
+    },
+    {
+      "id": "nusrat-0005",
+      "date": "2026-05-02",
+      "description": "bKash Cash Out - Agent 01712xxxxxx",
+      "amount": -1500,
+      "currency": "BDT",
+      "category": "cash_withdrawal"
+    },
+    {
+      "id": "nusrat-0006",
+      "date": "2026-05-02",
+      "description": "bKash Cash Out Charge",
+      "amount": -27.75,
+      "currency": "BDT",
+      "category": "fees"
+    },
+    {
+      "id": "nusrat-0007",
+      "date": "2026-05-04",
+      "description": "Foodpanda Order #FP837941 - bKash Payment",
+      "amount": -457,
+      "currency": "BDT",
+      "category": "eating_out"
+    },
+    {
+      "id": "nusrat-0008",
+      "date": "2026-05-04",
+      "description": "Foodpanda Order #FP436672 - bKash Payment",
+      "amount": -488,
+      "currency": "BDT",
+      "category": "eating_out"
+    },
+    {
+      "id": "nusrat-0009",
+      "date": "2026-05-04",
+      "description": "Aarong Mirpur (Eid) - bKash Payment",
+      "amount": -2767,
+      "currency": "BDT",
+      "category": "shopping"
+    },
+    {
+      "id": "nusrat-0010",
+      "date": "2026-05-06",
+      "description": "DPS Instalment - Dutch-Bangla Bank (Student DPS)",
+      "amount": -500,
+      "currency": "BDT",
+      "category": "savings_deposit"
+    },
+    {
+      "id": "nusrat-0011",
+      "date": "2026-05-07",
+      "description": "Pathao Ride #140683 - bKash Payment",
+      "amount": -117,
+      "currency": "BDT",
+      "category": "transport"
+    },
+    {
+      "id": "nusrat-0012",
+      "date": "2026-05-09",
+      "description": "Foodpanda Order #FP775682 - bKash Payment",
+      "amount": -309,
+      "currency": "BDT",
+      "category": "eating_out"
+    },
+    {
+      "id": "nusrat-0013",
+      "date": "2026-05-09",
+      "description": "Foodpanda Order #FP337807 - bKash Payment",
+      "amount": -551,
+      "currency": "BDT",
+      "category": "eating_out"
+    },
+    {
+      "id": "nusrat-0014",
+      "date": "2026-05-09",
+      "description": "bKash Payment - Shwapno Mirpur 10",
+      "amount": -723,
+      "currency": "BDT",
+      "category": "groceries"
+    },
+    {
+      "id": "nusrat-0015",
+      "date": "2026-05-10",
+      "description": "Nagad Received 01811xxxxxx - Tuition fee (Class 9 Math)",
+      "amount": 4500,
+      "currency": "BDT",
+      "category": "side_income"
+    },
+    {
+      "id": "nusrat-0016",
+      "date": "2026-05-10",
+      "description": "Chaldal.com Order #691155 - bKash Payment",
+      "amount": -1283,
+      "currency": "BDT",
+      "category": "groceries"
+    },
+    {
+      "id": "nusrat-0017",
+      "date": "2026-05-11",
+      "description": "Chaldal.com Order #931222 - bKash Payment",
+      "amount": -1530,
+      "currency": "BDT",
+      "category": "groceries"
+    },
+    {
+      "id": "nusrat-0018",
+      "date": "2026-05-12",
+      "description": "Robi Internet Pack 30GB - Mobile Recharge 01812xxxxxx",
+      "amount": -373,
+      "currency": "BDT",
+      "category": "mobile_internet"
+    },
+    {
+      "id": "nusrat-0019",
+      "date": "2026-05-13",
+      "description": "Foodpanda Order #FP222507 - bKash Payment",
+      "amount": -481,
+      "currency": "BDT",
+      "category": "eating_out"
+    },
+    {
+      "id": "nusrat-0020",
+      "date": "2026-05-15",
+      "description": "Spotify Premium Student - bKash Payment",
+      "amount": -129,
+      "currency": "BDT",
+      "category": "entertainment"
+    },
+    {
+      "id": "nusrat-0021",
+      "date": "2026-05-15",
+      "description": "Foodpanda Order #FP739960 - bKash Payment",
+      "amount": -246,
+      "currency": "BDT",
+      "category": "eating_out"
+    },
+    {
+      "id": "nusrat-0022",
+      "date": "2026-05-16",
+      "description": "Foodpanda Order #FP786581 - bKash Payment",
+      "amount": -209,
+      "currency": "BDT",
+      "category": "eating_out"
+    },
+    {
+      "id": "nusrat-0023",
+      "date": "2026-05-16",
+      "description": "Pathao Ride #562267 - bKash Payment",
+      "amount": -238,
+      "currency": "BDT",
+      "category": "transport"
+    },
+    {
+      "id": "nusrat-0024",
+      "date": "2026-05-17",
+      "description": "Foodpanda Order #FP326724 - bKash Payment",
+      "amount": -310,
+      "currency": "BDT",
+      "category": "eating_out"
+    },
+    {
+      "id": "nusrat-0025",
+      "date": "2026-05-17",
+      "description": "Lazz Pharma, Mirpur 10 - bKash Payment",
+      "amount": -349,
+      "currency": "BDT",
+      "category": "healthcare"
+    },
+    {
+      "id": "nusrat-0026",
+      "date": "2026-05-19",
+      "description": "Pathao Ride #319131 - bKash Payment",
+      "amount": -196,
+      "currency": "BDT",
+      "category": "transport"
+    },
+    {
+      "id": "nusrat-0027",
+      "date": "2026-05-19",
+      "description": "Bus ticket Dhaka-Barishal - bKash Payment",
+      "amount": -938,
+      "currency": "BDT",
+      "category": "transport"
+    },
+    {
+      "id": "nusrat-0028",
+      "date": "2026-05-20",
+      "description": "Foodpanda Order #FP161972 - bKash Payment",
+      "amount": -328,
+      "currency": "BDT",
+      "category": "eating_out"
+    },
+    {
+      "id": "nusrat-0029",
+      "date": "2026-05-21",
+      "description": "bKash Payment - Shwapno Mirpur 10",
+      "amount": -561,
+      "currency": "BDT",
+      "category": "groceries"
+    },
+    {
+      "id": "nusrat-0030",
+      "date": "2026-05-22",
+      "description": "MRT Rapid Pass Recharge - Mirpur 10 Station",
+      "amount": -300,
+      "currency": "BDT",
+      "category": "transport"
+    },
+    {
+      "id": "nusrat-0031",
+      "date": "2026-05-25",
+      "description": "MRT Rapid Pass Recharge - Mirpur 10 Station",
+      "amount": -500,
+      "currency": "BDT",
+      "category": "transport"
+    },
+    {
+      "id": "nusrat-0032",
+      "date": "2026-05-27",
+      "description": "Pathao Ride #516357 - bKash Payment",
+      "amount": -200,
+      "currency": "BDT",
+      "category": "transport"
+    },
+    {
+      "id": "nusrat-0033",
+      "date": "2026-05-28",
+      "description": "MRT Rapid Pass Recharge - Mirpur 10 Station",
+      "amount": -400,
+      "currency": "BDT",
+      "category": "transport"
+    },
+    {
+      "id": "nusrat-0034",
+      "date": "2026-05-30",
+      "description": "Foodpanda Order #FP155771 - bKash Payment",
+      "amount": -386,
+      "currency": "BDT",
+      "category": "eating_out"
+    },
+    {
+      "id": "nusrat-0035",
+      "date": "2026-05-30",
+      "description": "Foodpanda Order #FP753603 - bKash Payment",
+      "amount": -239,
+      "currency": "BDT",
+      "category": "eating_out"
+    },
+    {
+      "id": "nusrat-0036",
+      "date": "2026-05-31",
+      "description": "Nagad Received 01911xxxxxx - Tuition fee (Class 7)",
+      "amount": 3500,
+      "currency": "BDT",
+      "category": "side_income"
+    },
+    {
+      "id": "nusrat-0037",
+      "date": "2026-06-01",
+      "description": "Family allowance from Abbu - bKash Received 01711xxxxxx",
+      "amount": 15000,
+      "currency": "BDT",
+      "category": "family_support_in"
+    },
+    {
+      "id": "nusrat-0038",
+      "date": "2026-06-01",
+      "description": "Foodpanda Order #FP783413 - bKash Payment",
+      "amount": -498,
+      "currency": "BDT",
+      "category": "eating_out"
+    },
+    {
+      "id": "nusrat-0039",
+      "date": "2026-06-01",
+      "description": "Foodpanda Order #FP552246 - bKash Payment",
+      "amount": -233,
+      "currency": "BDT",
+      "category": "eating_out"
+    },
+    {
+      "id": "nusrat-0040",
+      "date": "2026-06-02",
+      "description": "bKash Payment - Mess seat rent, Mirpur 10",
+      "amount": -5500,
+      "currency": "BDT",
+      "category": "rent"
+    },
+    {
+      "id": "nusrat-0041",
+      "date": "2026-06-02",
+      "description": "bKash Payment - Shwapno Mirpur 10",
+      "amount": -678,
+      "currency": "BDT",
+      "category": "groceries"
+    },
+    {
+      "id": "nusrat-0042",
+      "date": "2026-06-03",
+      "description": "Chaldal.com Order #759399 - bKash Payment",
+      "amount": -1464,
+      "currency": "BDT",
+      "category": "groceries"
+    },
+    {
+      "id": "nusrat-0043",
+      "date": "2026-06-04",
+      "description": "Foodpanda Order #FP473704 - bKash Payment",
+      "amount": -212,
+      "currency": "BDT",
+      "category": "eating_out"
+    },
+    {
+      "id": "nusrat-0044",
+      "date": "2026-06-04",
+      "description": "Pathao Ride #691299 - bKash Payment",
+      "amount": -240,
+      "currency": "BDT",
+      "category": "transport"
+    },
+    {
+      "id": "nusrat-0045",
+      "date": "2026-06-05",
+      "description": "MRT Rapid Pass Recharge - Mirpur 10 Station",
+      "amount": -400,
+      "currency": "BDT",
+      "category": "transport"
+    },
+    {
+      "id": "nusrat-0046",
+      "date": "2026-06-05",
+      "description": "MRT Rapid Pass Recharge - Mirpur 10 Station",
+      "amount": -400,
+      "currency": "BDT",
+      "category": "transport"
+    },
+    {
+      "id": "nusrat-0047",
+      "date": "2026-06-06",
+      "description": "DPS Instalment - Dutch-Bangla Bank (Student DPS)",
+      "amount": -500,
+      "currency": "BDT",
+      "category": "savings_deposit"
+    },
+    {
+      "id": "nusrat-0048",
+      "date": "2026-06-06",
+      "description": "Pathao Ride #772006 - bKash Payment",
+      "amount": -114,
+      "currency": "BDT",
+      "category": "transport"
+    },
+    {
+      "id": "nusrat-0049",
+      "date": "2026-06-06",
+      "description": "Daraz Bangladesh Order #205084 - bKash Payment",
+      "amount": -1086,
+      "currency": "BDT",
+      "category": "shopping"
+    },
+    {
+      "id": "nusrat-0050",
+      "date": "2026-06-07",
+      "description": "bKash Cash Out - Agent 01712xxxxxx",
+      "amount": -1500,
+      "currency": "BDT",
+      "category": "cash_withdrawal"
+    },
+    {
+      "id": "nusrat-0051",
+      "date": "2026-06-07",
+      "description": "bKash Cash Out Charge",
+      "amount": -27.75,
+      "currency": "BDT",
+      "category": "fees"
+    },
+    {
+      "id": "nusrat-0052",
+      "date": "2026-06-08",
+      "description": "bKash Payment - Shwapno Mirpur 10",
+      "amount": -598,
+      "currency": "BDT",
+      "category": "groceries"
+    },
+    {
+      "id": "nusrat-0053",
+      "date": "2026-06-09",
+      "description": "Nagad Received 01811xxxxxx - Tuition fee (Class 9 Math)",
+      "amount": 4500,
+      "currency": "BDT",
+      "category": "side_income"
+    },
+    {
+      "id": "nusrat-0054",
+      "date": "2026-06-10",
+      "description": "Foodpanda Order #FP819839 - bKash Payment",
+      "amount": -342,
+      "currency": "BDT",
+      "category": "eating_out"
+    },
+    {
+      "id": "nusrat-0055",
+      "date": "2026-06-12",
+      "description": "Robi Internet Pack 30GB - Mobile Recharge 01812xxxxxx",
+      "amount": -323,
+      "currency": "BDT",
+      "category": "mobile_internet"
+    },
+    {
+      "id": "nusrat-0056",
+      "date": "2026-06-12",
+      "description": "Foodpanda Order #FP498405 - bKash Payment",
+      "amount": -455,
+      "currency": "BDT",
+      "category": "eating_out"
+    },
+    {
+      "id": "nusrat-0057",
+      "date": "2026-06-12",
+      "description": "Pathao Ride #492311 - bKash Payment",
+      "amount": -188,
+      "currency": "BDT",
+      "category": "transport"
+    },
+    {
+      "id": "nusrat-0058",
+      "date": "2026-06-12",
+      "description": "MRT Rapid Pass Recharge - Mirpur 10 Station",
+      "amount": -400,
+      "currency": "BDT",
+      "category": "transport"
+    },
+    {
+      "id": "nusrat-0059",
+      "date": "2026-06-13",
+      "description": "Foodpanda Order #FP757083 - bKash Payment",
+      "amount": -480,
+      "currency": "BDT",
+      "category": "eating_out"
+    },
+    {
+      "id": "nusrat-0060",
+      "date": "2026-06-15",
+      "description": "Spotify Premium Student - bKash Payment",
+      "amount": -129,
+      "currency": "BDT",
+      "category": "entertainment"
+    },
+    {
+      "id": "nusrat-0061",
+      "date": "2026-06-19",
+      "description": "bKash Cash Out - Agent 01712xxxxxx",
+      "amount": -1000,
+      "currency": "BDT",
+      "category": "cash_withdrawal"
+    },
+    {
+      "id": "nusrat-0062",
+      "date": "2026-06-19",
+      "description": "bKash Cash Out Charge",
+      "amount": -18.5,
+      "currency": "BDT",
+      "category": "fees"
+    },
+    {
+      "id": "nusrat-0063",
+      "date": "2026-06-21",
+      "description": "Foodpanda Order #FP484137 - bKash Payment",
+      "amount": -326,
+      "currency": "BDT",
+      "category": "eating_out"
+    },
+    {
+      "id": "nusrat-0064",
+      "date": "2026-06-21",
+      "description": "Foodpanda Order #FP398036 - bKash Payment",
+      "amount": -324,
+      "currency": "BDT",
+      "category": "eating_out"
+    },
+    {
+      "id": "nusrat-0065",
+      "date": "2026-06-22",
+      "description": "Pathao Ride #799270 - bKash Payment",
+      "amount": -91,
+      "currency": "BDT",
+      "category": "transport"
+    },
+    {
+      "id": "nusrat-0066",
+      "date": "2026-06-25",
+      "description": "Pathao Ride #770915 - bKash Payment",
+      "amount": -214,
+      "currency": "BDT",
+      "category": "transport"
+    },
+    {
+      "id": "nusrat-0067",
+      "date": "2026-06-26",
+      "description": "Foodpanda Order #FP194329 - bKash Payment",
+      "amount": -257,
+      "currency": "BDT",
+      "category": "eating_out"
+    },
+    {
+      "id": "nusrat-0068",
+      "date": "2026-06-26",
+      "description": "Pathao Ride #534389 - bKash Payment",
+      "amount": -135,
+      "currency": "BDT",
+      "category": "transport"
+    },
+    {
+      "id": "nusrat-0069",
+      "date": "2026-06-27",
+      "description": "Pathao Ride #727241 - bKash Payment",
+      "amount": -225,
+      "currency": "BDT",
+      "category": "transport"
+    },
+    {
+      "id": "nusrat-0070",
+      "date": "2026-06-29",
+      "description": "Foodpanda Order #FP731977 - bKash Payment",
+      "amount": -565,
+      "currency": "BDT",
+      "category": "eating_out"
+    },
+    {
+      "id": "nusrat-0071",
+      "date": "2026-06-30",
+      "description": "Nagad Received 01911xxxxxx - Tuition fee (Class 7)",
+      "amount": 3500,
+      "currency": "BDT",
+      "category": "side_income"
+    },
+    {
+      "id": "nusrat-0072",
+      "date": "2026-06-30",
+      "description": "Foodpanda Order #FP925075 - bKash Payment",
+      "amount": -440,
+      "currency": "BDT",
+      "category": "eating_out"
+    },
+    {
+      "id": "nusrat-0073",
+      "date": "2026-07-01",
+      "description": "Family allowance from Abbu - bKash Received 01711xxxxxx",
+      "amount": 15000,
+      "currency": "BDT",
+      "category": "family_support_in"
+    },
+    {
+      "id": "nusrat-0074",
+      "date": "2026-07-01",
+      "description": "Foodpanda Order #FP715558 - bKash Payment",
+      "amount": -427,
+      "currency": "BDT",
+      "category": "eating_out"
+    },
+    {
+      "id": "nusrat-0075",
+      "date": "2026-07-01",
+      "description": "Foodpanda Order #FP410667 - bKash Payment",
+      "amount": -567,
+      "currency": "BDT",
+      "category": "eating_out"
+    },
+    {
+      "id": "nusrat-0076",
+      "date": "2026-07-02",
+      "description": "bKash Payment - Mess seat rent, Mirpur 10",
+      "amount": -5500,
+      "currency": "BDT",
+      "category": "rent"
+    },
+    {
+      "id": "nusrat-0077",
+      "date": "2026-07-05",
+      "description": "Chaldal.com Order #880944 - bKash Payment",
+      "amount": -1653,
+      "currency": "BDT",
+      "category": "groceries"
+    },
+    {
+      "id": "nusrat-0078",
+      "date": "2026-07-06",
+      "description": "DPS Instalment - Dutch-Bangla Bank (Student DPS)",
+      "amount": -500,
+      "currency": "BDT",
+      "category": "savings_deposit"
+    },
+    {
+      "id": "nusrat-0079",
+      "date": "2026-07-06",
+      "description": "bKash Payment - Shwapno Mirpur 10",
+      "amount": -750,
+      "currency": "BDT",
+      "category": "groceries"
+    },
+    {
+      "id": "nusrat-0080",
+      "date": "2026-07-08",
+      "description": "Pathao Ride #608822 - bKash Payment",
+      "amount": -164,
+      "currency": "BDT",
+      "category": "transport"
+    },
+    {
+      "id": "nusrat-0081",
+      "date": "2026-07-09",
+      "description": "Foodpanda Order #FP943734 - bKash Payment",
+      "amount": -360,
+      "currency": "BDT",
+      "category": "eating_out"
+    },
+    {
+      "id": "nusrat-0082",
+      "date": "2026-07-09",
+      "description": "Foodpanda Order #FP446960 - bKash Payment",
+      "amount": -508,
+      "currency": "BDT",
+      "category": "eating_out"
+    },
+    {
+      "id": "nusrat-0083",
+      "date": "2026-07-10",
+      "description": "Robi Internet Pack 30GB - Mobile Recharge 01812xxxxxx",
+      "amount": -300,
+      "currency": "BDT",
+      "category": "mobile_internet"
+    },
+    {
+      "id": "nusrat-0084",
+      "date": "2026-07-10",
+      "description": "Pathao Ride #574799 - bKash Payment",
+      "amount": -211,
+      "currency": "BDT",
+      "category": "transport"
+    },
+    {
+      "id": "nusrat-0085",
+      "date": "2026-07-11",
+      "description": "Pathao Ride #905804 - bKash Payment",
+      "amount": -211,
+      "currency": "BDT",
+      "category": "transport"
+    },
+    {
+      "id": "nusrat-0086",
+      "date": "2026-07-11",
+      "description": "Lazz Pharma, Mirpur 10 - bKash Payment",
+      "amount": -507,
+      "currency": "BDT",
+      "category": "healthcare"
+    },
+    {
+      "id": "nusrat-0087",
+      "date": "2026-07-12",
+      "description": "Nagad Received 01811xxxxxx - Tuition fee (Class 9 Math)",
+      "amount": 4500,
+      "currency": "BDT",
+      "category": "side_income"
+    },
+    {
+      "id": "nusrat-0088",
+      "date": "2026-07-13",
+      "description": "Foodpanda Order #FP113053 - bKash Payment",
+      "amount": -517,
+      "currency": "BDT",
+      "category": "eating_out"
+    },
+    {
+      "id": "nusrat-0089",
+      "date": "2026-07-13",
+      "description": "bKash Payment - Shwapno Mirpur 10",
+      "amount": -328,
+      "currency": "BDT",
+      "category": "groceries"
+    },
+    {
+      "id": "nusrat-0090",
+      "date": "2026-07-13",
+      "description": "bKash Cash Out - Agent 01712xxxxxx",
+      "amount": -1500,
+      "currency": "BDT",
+      "category": "cash_withdrawal"
+    },
+    {
+      "id": "nusrat-0091",
+      "date": "2026-07-13",
+      "description": "bKash Cash Out Charge",
+      "amount": -27.75,
+      "currency": "BDT",
+      "category": "fees"
+    },
+    {
+      "id": "nusrat-0092",
+      "date": "2026-07-14",
+      "description": "Foodpanda Order #FP219895 - bKash Payment",
+      "amount": -374,
+      "currency": "BDT",
+      "category": "eating_out"
+    },
+    {
+      "id": "nusrat-0093",
+      "date": "2026-07-14",
+      "description": "MRT Rapid Pass Recharge - Mirpur 10 Station",
+      "amount": -400,
+      "currency": "BDT",
+      "category": "transport"
+    },
+    {
+      "id": "nusrat-0094",
+      "date": "2026-07-15",
+      "description": "Spotify Premium Student - bKash Payment",
+      "amount": -129,
+      "currency": "BDT",
+      "category": "entertainment"
+    },
+    {
+      "id": "nusrat-0095",
+      "date": "2026-07-15",
+      "description": "Pathao Ride #525623 - bKash Payment",
+      "amount": -202,
+      "currency": "BDT",
+      "category": "transport"
+    },
+    {
+      "id": "nusrat-0096",
+      "date": "2026-07-20",
+      "description": "University semester exam fee - bKash Payment",
+      "amount": -1480,
+      "currency": "BDT",
+      "category": "education"
+    },
+    {
+      "id": "nusrat-0097",
+      "date": "2026-07-21",
+      "description": "Foodpanda Order #FP561820 - bKash Payment",
+      "amount": -299,
+      "currency": "BDT",
+      "category": "eating_out"
+    },
+    {
+      "id": "nusrat-0098",
+      "date": "2026-07-22",
+      "description": "Foodpanda Order #FP742334 - bKash Payment",
+      "amount": -325,
+      "currency": "BDT",
+      "category": "eating_out"
+    },
+    {
+      "id": "nusrat-0099",
+      "date": "2026-07-23",
+      "description": "Foodpanda Order #FP937204 - bKash Payment",
+      "amount": -273,
+      "currency": "BDT",
+      "category": "eating_out"
+    },
+    {
+      "id": "nusrat-0100",
+      "date": "2026-07-23",
+      "description": "Foodpanda Order #FP573532 - bKash Payment",
+      "amount": -299,
+      "currency": "BDT",
+      "category": "eating_out"
+    },
+    {
+      "id": "nusrat-0101",
+      "date": "2026-07-23",
+      "description": "bKash Cash Out - Agent 01712xxxxxx",
+      "amount": -1500,
+      "currency": "BDT",
+      "category": "cash_withdrawal"
+    },
+    {
+      "id": "nusrat-0102",
+      "date": "2026-07-23",
+      "description": "bKash Cash Out Charge",
+      "amount": -27.75,
+      "currency": "BDT",
+      "category": "fees"
+    },
+    {
+      "id": "nusrat-0103",
+      "date": "2026-07-24",
+      "description": "MRT Rapid Pass Recharge - Mirpur 10 Station",
+      "amount": -300,
+      "currency": "BDT",
+      "category": "transport"
+    },
+    {
+      "id": "nusrat-0104",
+      "date": "2026-07-24",
+      "description": "MRT Rapid Pass Recharge - Mirpur 10 Station",
+      "amount": -300,
+      "currency": "BDT",
+      "category": "transport"
+    },
+    {
+      "id": "nusrat-0105",
+      "date": "2026-07-27",
+      "description": "Foodpanda Order #FP795186 - bKash Payment",
+      "amount": -279,
+      "currency": "BDT",
+      "category": "eating_out"
+    },
+    {
+      "id": "nusrat-0106",
+      "date": "2026-07-31",
+      "description": "Nagad Received 01911xxxxxx - Tuition fee (Class 7)",
+      "amount": 3500,
+      "currency": "BDT",
+      "category": "side_income"
+    },
+    {
+      "id": "nusrat-0107",
+      "date": "2026-07-31",
+      "description": "bKash Payment - Shwapno Mirpur 10",
+      "amount": -441,
+      "currency": "BDT",
+      "category": "groceries"
+    },
+    {
+      "id": "nusrat-0108",
+      "date": "2026-08-01",
+      "description": "Family allowance from Abbu - bKash Received 01711xxxxxx",
+      "amount": 15000,
+      "currency": "BDT",
+      "category": "family_support_in"
+    },
+    {
+      "id": "nusrat-0109",
+      "date": "2026-08-02",
+      "description": "bKash Payment - Mess seat rent, Mirpur 10",
+      "amount": -5500,
+      "currency": "BDT",
+      "category": "rent"
+    },
+    {
+      "id": "nusrat-0110",
+      "date": "2026-08-03",
+      "description": "Pathao Ride #187274 - bKash Payment",
+      "amount": -172,
+      "currency": "BDT",
+      "category": "transport"
+    },
+    {
+      "id": "nusrat-0111",
+      "date": "2026-08-04",
+      "description": "Pathao Ride #310651 - bKash Payment",
+      "amount": -212,
+      "currency": "BDT",
+      "category": "transport"
+    },
+    {
+      "id": "nusrat-0112",
+      "date": "2026-08-05",
+      "description": "Foodpanda Order #FP654775 - bKash Payment",
+      "amount": -580,
+      "currency": "BDT",
+      "category": "eating_out"
+    },
+    {
+      "id": "nusrat-0113",
+      "date": "2026-08-06",
+      "description": "DPS Instalment - Dutch-Bangla Bank (Student DPS)",
+      "amount": -500,
+      "currency": "BDT",
+      "category": "savings_deposit"
+    },
+    {
+      "id": "nusrat-0114",
+      "date": "2026-08-06",
+      "description": "MRT Rapid Pass Recharge - Mirpur 10 Station",
+      "amount": -300,
+      "currency": "BDT",
+      "category": "transport"
+    },
+    {
+      "id": "nusrat-0115",
+      "date": "2026-08-07",
+      "description": "Pathao Ride #776986 - bKash Payment",
+      "amount": -146,
+      "currency": "BDT",
+      "category": "transport"
+    },
+    {
+      "id": "nusrat-0116",
+      "date": "2026-08-07",
+      "description": "Lazz Pharma, Mirpur 10 - bKash Payment",
+      "amount": -396,
+      "currency": "BDT",
+      "category": "healthcare"
+    },
+    {
+      "id": "nusrat-0117",
+      "date": "2026-08-08",
+      "description": "Foodpanda Order #FP593049 - bKash Payment",
+      "amount": -446,
+      "currency": "BDT",
+      "category": "eating_out"
+    },
+    {
+      "id": "nusrat-0118",
+      "date": "2026-08-08",
+      "description": "MRT Rapid Pass Recharge - Mirpur 10 Station",
+      "amount": -400,
+      "currency": "BDT",
+      "category": "transport"
+    },
+    {
+      "id": "nusrat-0119",
+      "date": "2026-08-09",
+      "description": "Foodpanda Order #FP974513 - bKash Payment",
+      "amount": -330,
+      "currency": "BDT",
+      "category": "eating_out"
+    },
+    {
+      "id": "nusrat-0120",
+      "date": "2026-08-11",
+      "description": "Nagad Received 01811xxxxxx - Tuition fee (Class 9 Math)",
+      "amount": 4500,
+      "currency": "BDT",
+      "category": "side_income"
+    },
+    {
+      "id": "nusrat-0121",
+      "date": "2026-08-12",
+      "description": "Pathao Ride #971205 - bKash Payment",
+      "amount": -140,
+      "currency": "BDT",
+      "category": "transport"
+    },
+    {
+      "id": "nusrat-0122",
+      "date": "2026-08-12",
+      "description": "Bella Beauty Parlour, Mirpur 1 - bKash Payment",
+      "amount": -566,
+      "currency": "BDT",
+      "category": "personal_care"
+    },
+    {
+      "id": "nusrat-0123",
+      "date": "2026-08-14",
+      "description": "Robi Internet Pack 30GB - Mobile Recharge 01812xxxxxx",
+      "amount": -367,
+      "currency": "BDT",
+      "category": "mobile_internet"
+    },
+    {
+      "id": "nusrat-0124",
+      "date": "2026-08-14",
+      "description": "MRT Rapid Pass Recharge - Mirpur 10 Station",
+      "amount": -400,
+      "currency": "BDT",
+      "category": "transport"
+    },
+    {
+      "id": "nusrat-0125",
+      "date": "2026-08-15",
+      "description": "Spotify Premium Student - bKash Payment",
+      "amount": -129,
+      "currency": "BDT",
+      "category": "entertainment"
+    },
+    {
+      "id": "nusrat-0126",
+      "date": "2026-08-15",
+      "description": "bKash Cash Out - Agent 01712xxxxxx",
+      "amount": -2000,
+      "currency": "BDT",
+      "category": "cash_withdrawal"
+    },
+    {
+      "id": "nusrat-0127",
+      "date": "2026-08-15",
+      "description": "bKash Cash Out Charge",
+      "amount": -37,
+      "currency": "BDT",
+      "category": "fees"
+    },
+    {
+      "id": "nusrat-0128",
+      "date": "2026-08-16",
+      "description": "Foodpanda Order #FP926523 - bKash Payment",
+      "amount": -534,
+      "currency": "BDT",
+      "category": "eating_out"
+    },
+    {
+      "id": "nusrat-0129",
+      "date": "2026-08-17",
+      "description": "Foodpanda Order #FP253924 - bKash Payment",
+      "amount": -294,
+      "currency": "BDT",
+      "category": "eating_out"
+    },
+    {
+      "id": "nusrat-0130",
+      "date": "2026-08-18",
+      "description": "Foodpanda Order #FP210811 - bKash Payment",
+      "amount": -465,
+      "currency": "BDT",
+      "category": "eating_out"
+    },
+    {
+      "id": "nusrat-0131",
+      "date": "2026-08-18",
+      "description": "Chaldal.com Order #139223 - bKash Payment",
+      "amount": -821,
+      "currency": "BDT",
+      "category": "groceries"
+    },
+    {
+      "id": "nusrat-0132",
+      "date": "2026-08-18",
+      "description": "Daraz Bangladesh Order #676365 - bKash Payment",
+      "amount": -1317,
+      "currency": "BDT",
+      "category": "shopping"
+    },
+    {
+      "id": "nusrat-0133",
+      "date": "2026-08-24",
+      "description": "Foodpanda Order #FP532790 - bKash Payment",
+      "amount": -298,
+      "currency": "BDT",
+      "category": "eating_out"
+    },
+    {
+      "id": "nusrat-0134",
+      "date": "2026-08-26",
+      "description": "Foodpanda Order #FP499530 - bKash Payment",
+      "amount": -260,
+      "currency": "BDT",
+      "category": "eating_out"
+    },
+    {
+      "id": "nusrat-0135",
+      "date": "2026-08-27",
+      "description": "Chaldal.com Order #344299 - bKash Payment",
+      "amount": -1458,
+      "currency": "BDT",
+      "category": "groceries"
+    },
+    {
+      "id": "nusrat-0136",
+      "date": "2026-08-27",
+      "description": "bKash Payment - Shwapno Mirpur 10",
+      "amount": -454,
+      "currency": "BDT",
+      "category": "groceries"
+    },
+    {
+      "id": "nusrat-0137",
+      "date": "2026-08-27",
+      "description": "Pathao Ride #518848 - bKash Payment",
+      "amount": -142,
+      "currency": "BDT",
+      "category": "transport"
+    },
+    {
+      "id": "nusrat-0138",
+      "date": "2026-08-28",
+      "description": "Foodpanda Order #FP114065 - bKash Payment",
+      "amount": -236,
+      "currency": "BDT",
+      "category": "eating_out"
+    },
+    {
+      "id": "nusrat-0139",
+      "date": "2026-08-28",
+      "description": "Foodpanda Order #FP652061 - bKash Payment",
+      "amount": -443,
+      "currency": "BDT",
+      "category": "eating_out"
+    },
+    {
+      "id": "nusrat-0140",
+      "date": "2026-08-28",
+      "description": "Pathao Ride #983636 - bKash Payment",
+      "amount": -120,
+      "currency": "BDT",
+      "category": "transport"
+    },
+    {
+      "id": "nusrat-0141",
+      "date": "2026-08-28",
+      "description": "bKash Cash Out - Agent 01712xxxxxx",
+      "amount": -1000,
+      "currency": "BDT",
+      "category": "cash_withdrawal"
+    },
+    {
+      "id": "nusrat-0142",
+      "date": "2026-08-28",
+      "description": "bKash Cash Out Charge",
+      "amount": -18.5,
+      "currency": "BDT",
+      "category": "fees"
+    },
+    {
+      "id": "nusrat-0143",
+      "date": "2026-08-29",
+      "description": "Foodpanda Order #FP361912 - bKash Payment",
+      "amount": -401,
+      "currency": "BDT",
+      "category": "eating_out"
+    },
+    {
+      "id": "nusrat-0144",
+      "date": "2026-08-30",
+      "description": "Foodpanda Order #FP612478 - bKash Payment",
+      "amount": -501,
+      "currency": "BDT",
+      "category": "eating_out"
+    },
+    {
+      "id": "nusrat-0145",
+      "date": "2026-08-30",
+      "description": "bKash Payment - Shwapno Mirpur 10",
+      "amount": -651,
+      "currency": "BDT",
+      "category": "groceries"
+    },
+    {
+      "id": "nusrat-0146",
+      "date": "2026-08-31",
+      "description": "Nagad Received 01911xxxxxx - Tuition fee (Class 7)",
+      "amount": 3500,
+      "currency": "BDT",
+      "category": "side_income"
+    },
+    {
+      "id": "nusrat-0147",
+      "date": "2026-09-01",
+      "description": "Family allowance from Abbu - bKash Received 01711xxxxxx",
+      "amount": 15000,
+      "currency": "BDT",
+      "category": "family_support_in"
+    },
+    {
+      "id": "nusrat-0148",
+      "date": "2026-09-02",
+      "description": "bKash Payment - Mess seat rent, Mirpur 10",
+      "amount": -5500,
+      "currency": "BDT",
+      "category": "rent"
+    },
+    {
+      "id": "nusrat-0149",
+      "date": "2026-09-02",
+      "description": "Foodpanda Order #FP714863 - bKash Payment",
+      "amount": -457,
+      "currency": "BDT",
+      "category": "eating_out"
+    },
+    {
+      "id": "nusrat-0150",
+      "date": "2026-09-03",
+      "description": "bKash Cash Out - Agent 01712xxxxxx",
+      "amount": -2500,
+      "currency": "BDT",
+      "category": "cash_withdrawal"
+    },
+    {
+      "id": "nusrat-0151",
+      "date": "2026-09-03",
+      "description": "bKash Cash Out Charge",
+      "amount": -46.25,
+      "currency": "BDT",
+      "category": "fees"
+    },
+    {
+      "id": "nusrat-0152",
+      "date": "2026-09-04",
+      "description": "Foodpanda Order #FP753884 - bKash Payment",
+      "amount": -283,
+      "currency": "BDT",
+      "category": "eating_out"
+    },
+    {
+      "id": "nusrat-0153",
+      "date": "2026-09-06",
+      "description": "DPS Instalment - Dutch-Bangla Bank (Student DPS)",
+      "amount": -500,
+      "currency": "BDT",
+      "category": "savings_deposit"
+    },
+    {
+      "id": "nusrat-0154",
+      "date": "2026-09-08",
+      "description": "Foodpanda Order #FP263920 - bKash Payment",
+      "amount": -285,
+      "currency": "BDT",
+      "category": "eating_out"
+    },
+    {
+      "id": "nusrat-0155",
+      "date": "2026-09-08",
+      "description": "Foodpanda Order #FP610613 - bKash Payment",
+      "amount": -517,
+      "currency": "BDT",
+      "category": "eating_out"
+    },
+    {
+      "id": "nusrat-0156",
+      "date": "2026-09-10",
+      "description": "MRT Rapid Pass Recharge - Mirpur 10 Station",
+      "amount": -400,
+      "currency": "BDT",
+      "category": "transport"
+    },
+    {
+      "id": "nusrat-0157",
+      "date": "2026-09-11",
+      "description": "Nagad Received 01811xxxxxx - Tuition fee (Class 9 Math)",
+      "amount": 4500,
+      "currency": "BDT",
+      "category": "side_income"
+    },
+    {
+      "id": "nusrat-0158",
+      "date": "2026-09-11",
+      "description": "Robi Internet Pack 30GB - Mobile Recharge 01812xxxxxx",
+      "amount": -304,
+      "currency": "BDT",
+      "category": "mobile_internet"
+    },
+    {
+      "id": "nusrat-0159",
+      "date": "2026-09-12",
+      "description": "Dental clinic, Mirpur 10 - bKash Payment",
+      "amount": -3233,
+      "currency": "BDT",
+      "category": "healthcare"
+    },
+    {
+      "id": "nusrat-0160",
+      "date": "2026-09-12",
+      "description": "Foodpanda Order #FP909639 - bKash Payment",
+      "amount": -579,
+      "currency": "BDT",
+      "category": "eating_out"
+    },
+    {
+      "id": "nusrat-0161",
+      "date": "2026-09-14",
+      "description": "bKash Payment - Shwapno Mirpur 10",
+      "amount": -445,
+      "currency": "BDT",
+      "category": "groceries"
+    },
+    {
+      "id": "nusrat-0162",
+      "date": "2026-09-14",
+      "description": "Pathao Ride #673126 - bKash Payment",
+      "amount": -161,
+      "currency": "BDT",
+      "category": "transport"
+    },
+    {
+      "id": "nusrat-0163",
+      "date": "2026-09-14",
+      "description": "Pathao Ride #309950 - bKash Payment",
+      "amount": -149,
+      "currency": "BDT",
+      "category": "transport"
+    },
+    {
+      "id": "nusrat-0164",
+      "date": "2026-09-14",
+      "description": "Daraz Bangladesh Order #677191 - bKash Payment",
+      "amount": -971,
+      "currency": "BDT",
+      "category": "shopping"
+    },
+    {
+      "id": "nusrat-0165",
+      "date": "2026-09-15",
+      "description": "Spotify Premium Student - bKash Payment",
+      "amount": -129,
+      "currency": "BDT",
+      "category": "entertainment"
+    },
+    {
+      "id": "nusrat-0166",
+      "date": "2026-09-16",
+      "description": "Foodpanda Order #FP512803 - bKash Payment",
+      "amount": -335,
+      "currency": "BDT",
+      "category": "eating_out"
+    },
+    {
+      "id": "nusrat-0167",
+      "date": "2026-09-18",
+      "description": "Foodpanda Order #FP185392 - bKash Payment",
+      "amount": -372,
+      "currency": "BDT",
+      "category": "eating_out"
+    },
+    {
+      "id": "nusrat-0168",
+      "date": "2026-09-18",
+      "description": "Foodpanda Order #FP142625 - bKash Payment",
+      "amount": -578,
+      "currency": "BDT",
+      "category": "eating_out"
+    },
+    {
+      "id": "nusrat-0169",
+      "date": "2026-09-19",
+      "description": "Foodpanda Order #FP753135 - bKash Payment",
+      "amount": -309,
+      "currency": "BDT",
+      "category": "eating_out"
+    },
+    {
+      "id": "nusrat-0170",
+      "date": "2026-09-19",
+      "description": "bKash Cash Out - Agent 01712xxxxxx",
+      "amount": -2500,
+      "currency": "BDT",
+      "category": "cash_withdrawal"
+    },
+    {
+      "id": "nusrat-0171",
+      "date": "2026-09-19",
+      "description": "bKash Cash Out Charge",
+      "amount": -46.25,
+      "currency": "BDT",
+      "category": "fees"
+    },
+    {
+      "id": "nusrat-0172",
+      "date": "2026-09-20",
+      "description": "bKash Cash Out - Agent 01712xxxxxx",
+      "amount": -2000,
+      "currency": "BDT",
+      "category": "cash_withdrawal"
+    },
+    {
+      "id": "nusrat-0173",
+      "date": "2026-09-20",
+      "description": "bKash Cash Out Charge",
+      "amount": -37,
+      "currency": "BDT",
+      "category": "fees"
+    },
+    {
+      "id": "nusrat-0174",
+      "date": "2026-09-21",
+      "description": "Pathao Ride #908353 - bKash Payment",
+      "amount": -117,
+      "currency": "BDT",
+      "category": "transport"
+    },
+    {
+      "id": "nusrat-0175",
+      "date": "2026-09-21",
+      "description": "MRT Rapid Pass Recharge - Mirpur 10 Station",
+      "amount": -500,
+      "currency": "BDT",
+      "category": "transport"
+    },
+    {
+      "id": "nusrat-0176",
+      "date": "2026-09-23",
+      "description": "Pathao Ride #146236 - bKash Payment",
+      "amount": -157,
+      "currency": "BDT",
+      "category": "transport"
+    },
+    {
+      "id": "nusrat-0177",
+      "date": "2026-09-25",
+      "description": "Foodpanda Order #FP928970 - bKash Payment",
+      "amount": -266,
+      "currency": "BDT",
+      "category": "eating_out"
+    },
+    {
+      "id": "nusrat-0178",
+      "date": "2026-09-25",
+      "description": "Pathao Ride #913169 - bKash Payment",
+      "amount": -119,
+      "currency": "BDT",
+      "category": "transport"
+    },
+    {
+      "id": "nusrat-0179",
+      "date": "2026-09-27",
+      "description": "bKash Payment - Shwapno Mirpur 10",
+      "amount": -733,
+      "currency": "BDT",
+      "category": "groceries"
+    },
+    {
+      "id": "nusrat-0180",
+      "date": "2026-09-27",
+      "description": "Bella Beauty Parlour, Mirpur 1 - bKash Payment",
+      "amount": -371,
+      "currency": "BDT",
+      "category": "personal_care"
+    },
+    {
+      "id": "nusrat-0181",
+      "date": "2026-09-28",
+      "description": "Foodpanda Order #FP169861 - bKash Payment",
+      "amount": -391,
+      "currency": "BDT",
+      "category": "eating_out"
+    },
+    {
+      "id": "nusrat-0182",
+      "date": "2026-09-29",
+      "description": "Foodpanda Order #FP610681 - bKash Payment",
+      "amount": -262,
+      "currency": "BDT",
+      "category": "eating_out"
+    },
+    {
+      "id": "nusrat-0183",
+      "date": "2026-09-29",
+      "description": "Chaldal.com Order #633811 - bKash Payment",
+      "amount": -1488,
+      "currency": "BDT",
+      "category": "groceries"
+    },
+    {
+      "id": "nusrat-0184",
+      "date": "2026-09-29",
+      "description": "bKash Payment - Shwapno Mirpur 10",
+      "amount": -517,
+      "currency": "BDT",
+      "category": "groceries"
+    },
+    {
+      "id": "nusrat-0185",
+      "date": "2026-09-30",
+      "description": "Nagad Received 01911xxxxxx - Tuition fee (Class 7)",
+      "amount": 3500,
+      "currency": "BDT",
+      "category": "side_income"
+    },
+    {
+      "id": "nusrat-0186",
+      "date": "2026-09-30",
+      "description": "MRT Rapid Pass Recharge - Mirpur 10 Station",
+      "amount": -400,
+      "currency": "BDT",
+      "category": "transport"
+    },
+    {
+      "id": "nusrat-0187",
+      "date": "2026-10-01",
+      "description": "Family allowance from Abbu - bKash Received 01711xxxxxx",
+      "amount": 15000,
+      "currency": "BDT",
+      "category": "family_support_in"
+    },
+    {
+      "id": "nusrat-0188",
+      "date": "2026-10-01",
+      "description": "Foodpanda Order #FP557685 - bKash Payment",
+      "amount": -473,
+      "currency": "BDT",
+      "category": "eating_out"
+    },
+    {
+      "id": "nusrat-0189",
+      "date": "2026-10-01",
+      "description": "Foodpanda Order #FP868363 - bKash Payment",
+      "amount": -384,
+      "currency": "BDT",
+      "category": "eating_out"
+    },
+    {
+      "id": "nusrat-0190",
+      "date": "2026-10-01",
+      "description": "Pathao Ride #596249 - bKash Payment",
+      "amount": -253,
+      "currency": "BDT",
+      "category": "transport"
+    },
+    {
+      "id": "nusrat-0191",
+      "date": "2026-10-02",
+      "description": "bKash Payment - Mess seat rent, Mirpur 10",
+      "amount": -5500,
+      "currency": "BDT",
+      "category": "rent"
+    },
+    {
+      "id": "nusrat-0192",
+      "date": "2026-10-02",
+      "description": "Pathao Ride #208332 - bKash Payment",
+      "amount": -141,
+      "currency": "BDT",
+      "category": "transport"
+    },
+    {
+      "id": "nusrat-0193",
+      "date": "2026-10-03",
+      "description": "Chaldal.com Order #942392 - bKash Payment",
+      "amount": -1476,
+      "currency": "BDT",
+      "category": "groceries"
+    },
+    {
+      "id": "nusrat-0194",
+      "date": "2026-10-06",
+      "description": "DPS Instalment - Dutch-Bangla Bank (Student DPS)",
+      "amount": -500,
+      "currency": "BDT",
+      "category": "savings_deposit"
+    },
+    {
+      "id": "nusrat-0195",
+      "date": "2026-10-06",
+      "description": "Pathao Ride #510095 - bKash Payment",
+      "amount": -161,
+      "currency": "BDT",
+      "category": "transport"
+    },
+    {
+      "id": "nusrat-0196",
+      "date": "2026-10-07",
+      "description": "Chaldal.com Order #406163 - bKash Payment",
+      "amount": -1798,
+      "currency": "BDT",
+      "category": "groceries"
+    },
+    {
+      "id": "nusrat-0197",
+      "date": "2026-10-08",
+      "description": "Foodpanda Order #FP942892 - bKash Payment",
+      "amount": -286,
+      "currency": "BDT",
+      "category": "eating_out"
+    },
+    {
+      "id": "nusrat-0198",
+      "date": "2026-10-10",
+      "description": "Foodpanda Order #FP764638 - bKash Payment",
+      "amount": -558,
+      "currency": "BDT",
+      "category": "eating_out"
+    },
+    {
+      "id": "nusrat-0199",
+      "date": "2026-10-10",
+      "description": "Foodpanda Order #FP938561 - bKash Payment",
+      "amount": -244,
+      "currency": "BDT",
+      "category": "eating_out"
+    },
+    {
+      "id": "nusrat-0200",
+      "date": "2026-10-10",
+      "description": "bKash Cash Out - Agent 01712xxxxxx",
+      "amount": -1500,
+      "currency": "BDT",
+      "category": "cash_withdrawal"
+    },
+    {
+      "id": "nusrat-0201",
+      "date": "2026-10-10",
+      "description": "bKash Cash Out Charge",
+      "amount": -27.75,
+      "currency": "BDT",
+      "category": "fees"
+    },
+    {
+      "id": "nusrat-0202",
+      "date": "2026-10-11",
+      "description": "Robi Internet Pack 30GB - Mobile Recharge 01812xxxxxx",
+      "amount": -353,
+      "currency": "BDT",
+      "category": "mobile_internet"
+    },
+    {
+      "id": "nusrat-0203",
+      "date": "2026-10-12",
+      "description": "Nagad Received 01811xxxxxx - Tuition fee (Class 9 Math)",
+      "amount": 4500,
+      "currency": "BDT",
+      "category": "side_income"
+    },
+    {
+      "id": "nusrat-0204",
+      "date": "2026-10-12",
+      "description": "Pathao Ride #700845 - bKash Payment",
+      "amount": -180,
+      "currency": "BDT",
+      "category": "transport"
+    },
+    {
+      "id": "nusrat-0205",
+      "date": "2026-10-14",
+      "description": "Pathao Ride #711554 - bKash Payment",
+      "amount": -105,
+      "currency": "BDT",
+      "category": "transport"
+    },
+    {
+      "id": "nusrat-0206",
+      "date": "2026-10-15",
+      "description": "Spotify Premium Student - bKash Payment",
+      "amount": -129,
+      "currency": "BDT",
+      "category": "entertainment"
+    },
+    {
+      "id": "nusrat-0207",
+      "date": "2026-10-16",
+      "description": "bKash Payment - Shwapno Mirpur 10",
+      "amount": -877,
+      "currency": "BDT",
+      "category": "groceries"
+    },
+    {
+      "id": "nusrat-0208",
+      "date": "2026-10-16",
+      "description": "Pathao Ride #719805 - bKash Payment",
+      "amount": -199,
+      "currency": "BDT",
+      "category": "transport"
+    },
+    {
+      "id": "nusrat-0209",
+      "date": "2026-10-18",
+      "description": "bKash Cash Out - Agent 01712xxxxxx",
+      "amount": -1500,
+      "currency": "BDT",
+      "category": "cash_withdrawal"
+    },
+    {
+      "id": "nusrat-0210",
+      "date": "2026-10-18",
+      "description": "bKash Cash Out Charge",
+      "amount": -27.75,
+      "currency": "BDT",
+      "category": "fees"
+    },
+    {
+      "id": "nusrat-0211",
+      "date": "2026-10-20",
+      "description": "University semester exam fee - bKash Payment",
+      "amount": -1376,
+      "currency": "BDT",
+      "category": "education"
+    },
+    {
+      "id": "nusrat-0212",
+      "date": "2026-10-22",
+      "description": "Pathao Ride #181551 - bKash Payment",
+      "amount": -247,
+      "currency": "BDT",
+      "category": "transport"
+    },
+    {
+      "id": "nusrat-0213",
+      "date": "2026-10-26",
+      "description": "Foodpanda Order #FP684272 - bKash Payment",
+      "amount": -407,
+      "currency": "BDT",
+      "category": "eating_out"
+    },
+    {
+      "id": "nusrat-0214",
+      "date": "2026-10-26",
+      "description": "Foodpanda Order #FP619389 - bKash Payment",
+      "amount": -530,
+      "currency": "BDT",
+      "category": "eating_out"
+    },
+    {
+      "id": "nusrat-0215",
+      "date": "2026-10-27",
+      "description": "Bella Beauty Parlour, Mirpur 1 - bKash Payment",
+      "amount": -414,
+      "currency": "BDT",
+      "category": "personal_care"
+    },
+    {
+      "id": "nusrat-0216",
+      "date": "2026-10-28",
+      "description": "Foodpanda Order #FP679852 - bKash Payment",
+      "amount": -420,
+      "currency": "BDT",
+      "category": "eating_out"
+    },
+    {
+      "id": "nusrat-0217",
+      "date": "2026-10-28",
+      "description": "Foodpanda Order #FP285987 - bKash Payment",
+      "amount": -400,
+      "currency": "BDT",
+      "category": "eating_out"
+    },
+    {
+      "id": "nusrat-0218",
+      "date": "2026-10-28",
+      "description": "bKash Payment - Shwapno Mirpur 10",
+      "amount": -403,
+      "currency": "BDT",
+      "category": "groceries"
+    },
+    {
+      "id": "nusrat-0219",
+      "date": "2026-10-29",
+      "description": "MRT Rapid Pass Recharge - Mirpur 10 Station",
+      "amount": -400,
+      "currency": "BDT",
+      "category": "transport"
+    },
+    {
+      "id": "nusrat-0220",
+      "date": "2026-10-30",
+      "description": "Foodpanda Order #FP164562 - bKash Payment",
+      "amount": -545,
+      "currency": "BDT",
+      "category": "eating_out"
+    },
+    {
+      "id": "nusrat-0221",
+      "date": "2026-10-30",
+      "description": "bKash Payment - Shwapno Mirpur 10",
+      "amount": -838,
+      "currency": "BDT",
+      "category": "groceries"
+    },
+    {
+      "id": "nusrat-0222",
+      "date": "2026-10-31",
+      "description": "Nagad Received 01911xxxxxx - Tuition fee (Class 7)",
+      "amount": 3500,
+      "currency": "BDT",
+      "category": "side_income"
+    },
+    {
+      "id": "nusrat-0223",
+      "date": "2026-10-31",
+      "description": "Foodpanda Order #FP236038 - bKash Payment",
+      "amount": -433,
+      "currency": "BDT",
+      "category": "eating_out"
+    },
+    {
+      "id": "nusrat-0224",
+      "date": "2026-10-31",
+      "description": "Foodpanda Order #FP964400 - bKash Payment",
+      "amount": -427,
+      "currency": "BDT",
+      "category": "eating_out"
+    },
+    {
+      "id": "nusrat-0225",
+      "date": "2026-10-31",
+      "description": "MRT Rapid Pass Recharge - Mirpur 10 Station",
+      "amount": -400,
+      "currency": "BDT",
+      "category": "transport"
+    }
+  ]
+}
