@@ -199,8 +199,9 @@ export const NUSRAT: Persona = {
 
 export const TANVIR: Persona = {
   // Freelance developer in Dhanmondi. Paid in dollars through Payoneer by clients abroad,
-  // spends in taka. Income swings from month to month; spending jumps with a laptop in
+  // spends in taka. Income swings from month to month; spending jumps with a PlayStation in
   // August and a trip to Cox's Bazar in September. Puts the same amount in a DPS monthly.
+  // Eid-ul-Adha is on 27 May: he sends salami to his nieces and nephews on the 25th.
   id: 'tanvir',
   seed: 2202,
   currency: 'BDT',
@@ -225,64 +226,75 @@ export const TANVIR: Persona = {
       amount: -20_000,
     },
     {
+      // Titas bills a single-burner connection a fixed amount each month.
       day: 10,
       category: 'utilities',
-      description: 'Titas Gas Bill - Dhanmondi (bKash Pay Bill)',
+      description: 'bKash Pay Bill - Titas Gas, Dhanmondi',
       amount: -990,
     },
     {
       day: 12,
       jitterDays: 2,
       category: 'utilities',
-      description: 'DPDC Electricity Bill (bKash Pay Bill)',
+      description: 'bKash Pay Bill - DPDC Electricity, Dhanmondi',
       amount: [-2_600, -1_500],
     },
     {
       day: 15,
       category: 'mobile_internet',
-      description: 'Link3 Broadband Bill (bKash Pay Bill)',
+      description: 'bKash Pay Bill - Link3 Broadband',
       amount: -1_500,
     },
     {
       day: 18,
       category: 'entertainment',
-      description: 'Netflix Subscription',
+      description: 'NETFLIX.COM - Card Payment',
       amount: -800,
     },
     {
+      // A prepaid top-up, in an amount he picks.
       day: 20,
       jitterDays: 2,
       category: 'mobile_internet',
       description: 'Grameenphone Mobile Recharge 01712xxxxxx',
-      amount: [-799, -499],
+      amount: [-800, -500],
+      roundTo: 100,
     },
     {
+      // A client's monthly retainer, in dollars.
       day: 'last',
       category: 'freelance',
       currency: 'USD',
-      description: 'Payoneer Payment - Orbit Softworks Inc. (monthly retainer)',
+      description: 'Payoneer - Payment from Orbit Softworks Inc',
       amount: 560,
     },
     {
       day: 14,
       inMonths: [8],
-      category: 'shopping',
-      description: 'StarTech Computer Ltd - Laptop (Card Payment)',
-      amount: -78_000,
+      category: 'entertainment',
+      description: 'Star Tech & Engineering - Sony PlayStation 5 Slim Console - Card Payment',
+      amount: -77_500,
     },
     {
       day: 5,
       inMonths: [9],
       category: 'travel',
-      description: "US-Bangla Airlines - Dhaka to Cox's Bazar",
+      description: 'US-Bangla Airlines Ltd - E-Ticket DAC-CXB-DAC - Card Payment',
       amount: -8_800,
     },
     {
       day: 18,
       inMonths: [9],
       category: 'travel',
-      description: "Hotel booking, Laboni Beach Cox's Bazar - 3 nights",
+      description: "Long Beach Hotel, Cox's Bazar - Card Payment",
       amount: -21_500,
+    },
+    {
+      day: 25,
+      inMonths: [5],
+      category: 'gifts',
+      description: 'bKash Send Money 01819xxxxxx - Eid salami',
+      amount: -4_000,
     },
   ],
   scattered: [
@@ -291,11 +303,12 @@ export const TANVIR: Persona = {
       currency: 'USD',
       category: 'freelance',
       description: [
-        'Payoneer Payment - Upwork Escrow Release (Contract {ref})',
-        'Payoneer Payment - Fiverr Order #FO{ref}',
-        'Payoneer Payment - Brightfield Labs Invoice {ref}',
+        'Payoneer - Payment from Upwork Global Inc',
+        'Payoneer - Payment from Fiverr International Ltd',
+        'Payoneer - Payment from Brightfield Labs LLC, Ref {ref}',
       ],
       amount: [250, 700],
+      roundTo: 5,
     },
     {
       perMonth: [4, 6],
@@ -345,6 +358,7 @@ export const TANVIR: Persona = {
       category: 'personal_care',
       description: "Gentlemen's Barber Shop, Dhanmondi - bKash Payment",
       amount: [-700, -350],
+      roundTo: 50,
     },
   ],
 }

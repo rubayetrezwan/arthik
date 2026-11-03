@@ -329,6 +329,25 @@ describe('Tanvir, freelance developer in Dhaka', () => {
     expect(analyse('tanvir').measures.spendingCV).toBeGreaterThan(0.25)
   })
 
+  it('buys a PlayStation in August, a want and not a work tool, and sends Eid salami', () => {
+    const august = SAMPLES.tanvir.transactions.filter((line) => monthOf(line.date) === '2026-08')
+    const [biggest] = [...august].sort((a, b) => a.amount - b.amount)
+    expect(biggest?.description).toMatch(/playstation/i)
+    expect(groupOf(biggest?.category ?? 'uncategorised_out')).toBe('want')
+    expect(biggest?.amount).toBeLessThan(-70_000)
+    expect(SAMPLES.tanvir.transactions.some((line) => /laptop|macbook|computer/i.test(line.description)))
+      .toBe(false)
+
+    const salami = inCategory('tanvir', 'gifts')
+    expect(salami).toHaveLength(1)
+    expect(salami[0] && salami[0].date >= '2026-05-20' && salami[0].date < EID_ADHA).toBe(true)
+  })
+
+  it('has every dollar payment worded the way Payoneer words it, "Payment from ..."', () => {
+    for (const line of inCategory('tanvir', 'freelance')) {
+      expect(line.description, line.id).toMatch(/^Payoneer - Payment from [A-Z]/)
+    }
+  })
 })
 
 describe('Farhana, office worker in Dhaka', () => {
