@@ -62,8 +62,11 @@ export function convert(
   to: CurrencyCode,
   rates: RatesSnapshot = RATES,
 ): number {
+  // Look both rates up first so an unknown code fails even when from === to.
   const fromRate = rateFor(from, rates)
   const toRate = rateFor(to, rates)
+  // Dividing and multiplying by the same rate can leave floating-point residue.
+  if (from === to) return amount
   return (amount / fromRate) * toRate
 }
 

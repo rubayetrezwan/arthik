@@ -32,6 +32,16 @@ describe('convert', () => {
     expect(convert(5, 'GBP', 'GBP', fx)).toBe(5)
   })
 
+  it('returns the amount exactly for the same currency, with no rounding drift', () => {
+    // (0.38 / 1.2) * 1.2 is 0.38000000000000006 in floating point.
+    expect(convert(0.38, 'JPY', 'JPY', fx)).toBe(0.38)
+    expect(toBDT(0.38, 'BDT', fx)).toBe(0.38)
+  })
+
+  it('still rejects an unknown currency when both sides are the same', () => {
+    expect(() => convert(1, 'XXX' as never, 'XXX' as never, fx)).toThrow(/unknown currency.*XXX/i)
+  })
+
   it('goes through BDT when converting between two foreign currencies', () => {
     expect(convert(100, 'USD', 'EUR', fx)).toBeCloseTo((100 / 0.008) * 0.007, 10)
   })
