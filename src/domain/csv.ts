@@ -296,6 +296,7 @@ function detectDelimiter(text: string): ',' | ';' {
   // skips them. Only the delimiter is wanted, hence a preview of a single row.
   const probe = Papa.parse<string[]>(text, {
     preview: 1,
+    newline: '\n',
     skipEmptyLines: 'greedy',
     delimiter: '',
     delimitersToGuess: [',', ';'],
@@ -321,7 +322,7 @@ function rejected(error: CsvError): ParseResult {
 function linesSwallowed(cells: readonly string[], delimiter: string): number {
   let count = 0
   for (const cell of cells) {
-    for (const line of cell.split(/\r\n|\r|\n/).slice(1)) {
+    for (const line of cell.split('\n').slice(1)) {
       if (line.replaceAll(delimiter, '').trim() !== '') count++
     }
   }
@@ -390,14 +391,18 @@ function brokenQuoteRecords(
  */
 export function parseTransactionsCsv(text: string, defaultCurrency: CurrencyCode): ParseResult {
   // Excel's "CSV UTF-8" puts a byte-order mark first. PapaParse drops it too, but this way
-  // nothing here depends on that.
-  const content = text.replace(/^\u{FEFF}/u, '')
+  // nothing here depends on that. Line endings are made the same everywhere as well: PapaParse
+  // takes the ending from the first line, so a CRLF header over LF rows would otherwise be read
+  // with the rows joined into one record. Both passes below then name the ending, and nothing
+  // after this has to allow for a CR.
+  const content = text.replace(/^\u{FEFF}/u, '').replace(/\r\n?/g, '\n')
 
   // Blank lines are kept here and skipped below, so each record's position in the list is
   // its row in a spreadsheet. A quoted line break stays inside its record, as in a spreadsheet.
   const delimiter = detectDelimiter(content)
   const { data: records, errors: complaints } = Papa.parse<string[]>(content, {
     delimiter,
+    newline: '\n',
     skipEmptyLines: false,
   })
   const brokenQuotes = brokenQuoteRecords(records, complaints, delimiter)

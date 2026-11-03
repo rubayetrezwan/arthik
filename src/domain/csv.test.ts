@@ -118,6 +118,66 @@ describe('parseTransactionsCsv: reading a file', () => {
     }
   })
 
+  it('reads a file whose header ends in CRLF and whose rows end in LF', () => {
+    // PapaParse takes the line ending from the first line, so before the line endings were
+    // normalised the rows below were one record and only the first was imported.
+    const { transactions, errors } = parseTransactionsCsv(
+      'Date,Description,Debit,Credit,Balance\r\n2026-10-01,Rent,800,,5000\n2026-10-02,Salary,,900,5900\n2026-10-03,Shop,100,,5800\n',
+      'BDT',
+    )
+    expect(errors).toEqual([])
+    expect(transactions.map((t) => [t.id, t.amount])).toEqual([
+      ['row-2', -800],
+      ['row-3', 900],
+      ['row-4', -100],
+    ])
+  })
+
+  it('reads a three-column file with a CRLF header and LF rows', () => {
+    const { transactions, errors } = parseTransactionsCsv(
+      'date,description,amount\r\n2026-10-01,a,-5\n2026-10-02,b,-7\n',
+      'BDT',
+    )
+    expect(errors).toEqual([])
+    expect(transactions.map((t) => t.amount)).toEqual([-5, -7])
+  })
+
+  it('reads a file that mixes CRLF, LF and a lone CR, and counts each as one row break', () => {
+    const { transactions, errors } = parseTransactionsCsv(
+      'date,description,amount\n2026-10-01,a,-5\r\n2026-10-02,b,-7\r2026-10-03,c,abc\n2026-10-04,d,-9',
+      'BDT',
+    )
+    expect(transactions.map((t) => [t.id, t.amount])).toEqual([
+      ['row-2', -5],
+      ['row-3', -7],
+      ['row-5', -9],
+    ])
+    expect(errors).toEqual<CsvError[]>([
+      { row: 4, code: 'bad_amount', column: 'amount', value: 'abc' },
+    ])
+  })
+
+  it('reads a semicolon file with mixed line endings', () => {
+    const { transactions, errors } = parseTransactionsCsv(
+      'date;description;amount\r\n2026-10-01;a;-5\n2026-10-02;b;-7\n',
+      'BDT',
+    )
+    expect(errors).toEqual([])
+    expect(transactions.map((t) => t.amount)).toEqual([-5, -7])
+  })
+
+  it('keeps a line break inside quotes as one row, whatever the file used for it', () => {
+    const { transactions, errors } = parseTransactionsCsv(
+      'date,description,amount\r\n2026-10-01,"Two\r\nline note",-5\n2026-10-02,b,-7\n',
+      'BDT',
+    )
+    expect(errors).toEqual([])
+    expect(transactions.map((t) => [t.id, t.description])).toEqual([
+      ['row-2', 'Two\nline note'],
+      ['row-3', 'b'],
+    ])
+  })
+
   it('matches headers regardless of case and surrounding spaces', () => {
     const { transactions, errors } = parseRow(
       '2026-10-01,Salary credit,55000',
