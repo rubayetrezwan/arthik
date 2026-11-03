@@ -684,6 +684,108 @@ describe('parseTransactionsCsv: amounts', () => {
     expect(amountOf(cell)).toBe(expected)
   })
 
+  // A space inside a number groups thousands exactly as a comma does (French, Russian and
+  // many bank exports). A space that does not make a group, such as 12 50, is the same
+  // ambiguity as 12,50: it may be a decimal mark, so it is not read.
+  it.each([
+    ['1 234', 1234],
+    ['1 234 567', 1234567], // Western groups
+    ['12 345 678', 12345678],
+    ['1 23 456', 123456], // lakh groups
+    ['12 34 567', 1234567],
+    ['1 23 45 678', 12345678],
+    ['1 234.50', 1234.5],
+    ['1 23 456.78', 123456.78],
+    ['-1 234 567', -1234567],
+    ['(1 234)', -1234],
+    ['৳ 1 234', 1234],
+    ['১ ২৩৪', 1234], // Bengali digits
+    ['1\u{A0}234\u{A0}567', 1234567],
+    ['1\u{202F}234', 1234], // the narrow no-break space that French locales use
+  ])('reads %s as %d, a space grouping thousands', (cell, expected) => {
+    expect(amountOf(cell)).toBe(expected)
+  })
+
+  it.each([
+    ['  1,240  ', 1240], // leading and trailing space
+    [' 1234 ', 1234],
+    ['\u{A0}1234\u{A0}', 1234],
+    ['৳ 1,240', 1240], // a space between a currency sign and the number
+    ['৳1,240', 1240],
+    ['1,240 ৳', 1240],
+    ['$ 5', 5],
+    ['€ 7.50', 7.5],
+    ['- 640', -640], // a space after the sign
+    ['-৳ 640', -640],
+    ['৳ -640', -640],
+    ['- ৳ 640', -640],
+    ['( 640 )', -640],
+    ['(৳ 640)', -640],
+    ['+ 4,000', 4000],
+    ['৳ 1 234', 1234],
+  ])('still ignores the space around the number in "%s"', (cell, expected) => {
+    expect(amountOf(cell)).toBe(expected)
+  })
+
+  it.each([
+    '12 50', // 12.50 written with a space, or 1250?
+    '1 2345',
+    '1 23',
+    '1 2',
+    '5 0',
+    '12 345 67',
+    '1 234 56',
+    '1234 567', // too long a first group
+    '123 45 678', // the first group of lakh is at most two digits
+    '1  234', // a double space is not one group
+    '1 234  567',
+    '1 \u{A0}234',
+    '1,234 567', // commas and spaces do not mix
+    '1 234,567',
+    '1 234,50',
+    '1,23 456',
+    '1 234 .50', // a space beside the decimal point
+    '1 234. 50',
+    '12 .5',
+    '12. 5',
+    '12.5 0',
+    '12 ৳ 50', // a currency sign does not join the parts
+    '1 ৳ 234',
+    '1 $ 234',
+    '- 1 2345',
+    '(12 50)',
+  ])('rejects "%s", a space that does not group thousands', (cell) => {
+    const { transactions, errors } = parseRow(`2026-10-01,Test,"${cell}",,`)
+    expect(transactions).toEqual([])
+    expect(errors).toEqual<CsvError[]>([
+      { row: 2, code: 'bad_amount', column: 'amount', value: cell.trim() },
+    ])
+  })
+
+  it('rejects a space that does not group thousands in an unquoted cell and in debit and credit columns', () => {
+    expect(parseRow('2026-10-01,Test,12 50,,').errors).toEqual<CsvError[]>([
+      { row: 2, code: 'bad_amount', column: 'amount', value: '12 50' },
+    ])
+    const { transactions, errors } = parseTransactionsCsv(
+      file('date,description,debit,credit', '2026-10-01,Rent,12 50,', '2026-10-02,Pay,,1 2345'),
+      'BDT',
+    )
+    expect(transactions).toEqual([])
+    expect(errors).toEqual<CsvError[]>([
+      { row: 2, code: 'bad_amount', column: 'debit', value: '12 50' },
+      { row: 3, code: 'bad_amount', column: 'credit', value: '1 2345' },
+    ])
+  })
+
+  it('reads a spaced thousands group in the debit and credit columns', () => {
+    const { transactions, errors } = parseTransactionsCsv(
+      file('date,description,debit,credit', '2026-10-01,Rent,"18 000",', '2026-10-02,Pay,,"1 23 456"'),
+      'BDT',
+    )
+    expect(errors).toEqual([])
+    expect(transactions.map((t) => t.amount)).toEqual([-18000, 123456])
+  })
+
   it('rejects dotted thousands in a semicolon file, where the decimal mark is a comma', () => {
     const { transactions, errors } = parseTransactionsCsv(
       file('date;description;amount', '01.10.2026;Miete;-1.500', '02.10.2026;Gehalt;3.200'),
@@ -2010,6 +2112,103 @@ describe('parseTransactionsCsv: whole-file problems', () => {
         'BDT',
       )
       expect(errors).toEqual<CsvError[]>([{ row: 2, code: 'duplicate_column', column: 'amount' }])
+    })
+
+    // debit and withdrawal are two names for the one column, and so are credit and deposit.
+    // With both in the header the reader would use one and ignore the other.
+    describe('two names for the same column', () => {
+      it.each([
+        ['debit', 'withdrawal'],
+        ['withdrawal', 'debit'],
+        ['credit', 'deposit'],
+        ['deposit', 'credit'],
+      ])('reports %s together with %s, naming the second', (first, second) => {
+        const { transactions, errors } = parseTransactionsCsv(
+          file(`date,description,amount,${first},${second}`, '2026-10-01,Shwapno,-500,1,2'),
+          'BDT',
+        )
+        expect(transactions).toEqual([])
+        expect(errors).toEqual<CsvError[]>([{ row: 1, code: 'duplicate_column', column: second }])
+      })
+
+      it('names the second one as the file wrote it, trimmed', () => {
+        expect(
+          parseTransactionsCsv(file('date,description,Debit, Withdrawal ,Credit', '2026-10-01,x,5,,'), 'BDT')
+            .errors,
+        ).toEqual<CsvError[]>([{ row: 1, code: 'duplicate_column', column: 'Withdrawal' }])
+        expect(
+          parseTransactionsCsv(file('date,description,WITHDRAWAL,DEBIT,Credit', '2026-10-01,x,5,,'), 'BDT')
+            .errors,
+        ).toEqual<CsvError[]>([{ row: 1, code: 'duplicate_column', column: 'DEBIT' }])
+      })
+
+      it('reports it when the rest of the pair is there too, and imports nothing', () => {
+        const { transactions, errors } = parseTransactionsCsv(
+          file('date,description,debit,credit,withdrawal', '2026-10-01,Rent,500,,'),
+          'BDT',
+        )
+        expect(transactions).toEqual([])
+        expect(errors).toEqual<CsvError[]>([{ row: 1, code: 'duplicate_column', column: 'withdrawal' }])
+      })
+
+      it('reports both pairs in the order the second names appear', () => {
+        const { errors } = parseTransactionsCsv(
+          file('date,description,debit,credit,Deposit,withdrawal', '2026-10-01,Rent,500,,,'),
+          'BDT',
+        )
+        expect(errors).toEqual<CsvError[]>([
+          { row: 1, code: 'duplicate_column', column: 'Deposit' },
+          { row: 1, code: 'duplicate_column', column: 'withdrawal' },
+        ])
+      })
+
+      it('reports a second name once however many times it appears', () => {
+        const { errors } = parseTransactionsCsv(
+          file('date,description,amount,debit,withdrawal,withdrawal', '2026-10-01,x,-5,1,2,3'),
+          'BDT',
+        )
+        expect(errors).toEqual<CsvError[]>([{ row: 1, code: 'duplicate_column', column: 'withdrawal' }])
+      })
+
+      it('reports it alongside a repeated name, each in the order of its second appearance', () => {
+        const { errors } = parseTransactionsCsv(
+          file('date,description,amount,debit,amount,withdrawal,debit', '2026-10-01,x,-5,1,-6,2,3'),
+          'BDT',
+        )
+        expect(errors).toEqual<CsvError[]>([
+          { row: 1, code: 'duplicate_column', column: 'amount' },
+          { row: 1, code: 'duplicate_column', column: 'withdrawal' },
+          { row: 1, code: 'duplicate_column', column: 'debit' },
+        ])
+      })
+
+      it('reports it after a missing column, on the header row', () => {
+        const { errors } = parseTransactionsCsv(
+          file('', 'date,Debit,Withdrawal', '2026-10-01,5,6'),
+          'BDT',
+        )
+        expect(errors).toEqual<CsvError[]>([
+          { row: 2, code: 'missing_column', column: 'description' },
+          { row: 2, code: 'missing_column', column: 'amount' },
+          { row: 2, code: 'duplicate_column', column: 'Withdrawal' },
+        ])
+      })
+
+      it('leaves alone a debit with a deposit, or a withdrawal with a credit', () => {
+        for (const header of [
+          'date,description,debit,deposit',
+          'date,description,withdrawal,credit',
+          'date,description,withdrawal,deposit',
+          'date,description,debit,credit',
+        ]) {
+          const { transactions, errors } = parseTransactionsCsv(
+            file(header, '2026-10-01,Rent,500,', '2026-10-02,Pay,,900'),
+            'BDT',
+          )
+          expect(errors, header).toEqual([])
+          expect(transactions.map((t) => t.amount), header).toEqual([-500, 900])
+        }
+      })
     })
 
     it('does not mind a repeated name the reader does not use', () => {

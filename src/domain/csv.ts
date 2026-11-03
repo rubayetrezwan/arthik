@@ -30,7 +30,10 @@ export type CsvErrorCode =
   | 'month_first_dates'
   /** The file has an amount column and a column that says debit or credit, so the sign of the amount cannot be told. */
   | 'direction_column'
-  /** A header name the reader uses (date, amount, ...) appears twice, so it cannot tell which column is meant. */
+  /**
+   * A header name the reader uses (date, amount, ...) appears twice, or the header has two names
+   * for one column (debit and withdrawal, credit and deposit), so it cannot tell which column is meant.
+   */
   | 'duplicate_column'
 
 export interface CsvError {
@@ -44,7 +47,8 @@ export interface CsvError {
   code: CsvErrorCode
   /**
    * The column the problem is in, by its canonical name: `date`, `amount`, `debit`, and so on.
-   * For `direction_column` it is the header as the file wrote it, trimmed (`DR/CR`).
+   * For `direction_column` it is the header as the file wrote it, trimmed (`DR/CR`). So it is for
+   * `duplicate_column` when the header has two names for one column: the second name (`Withdrawal`).
    */
   column?: string
   /** What the cell held, trimmed and cut short, so the message can quote it. */
@@ -132,18 +136,20 @@ const DIRECTION_COLUMNS: ReadonlySet<string> = new Set([
   'debit/credit',
 ])
 
-// The header names the reader looks for. If one appears twice, it cannot tell which column
-// is meant, and reading the first would ignore numbers the file put in the second.
-const READ_COLUMNS: ReadonlySet<string> = new Set([
-  'date',
-  'description',
-  'amount',
-  'debit',
-  'credit',
-  'withdrawal',
-  'deposit',
-  'currency',
-  'category',
+// The header names the reader looks for, each with the column it stands for. If one column is
+// named twice (or debit and withdrawal are both there, two names for the same column), the
+// reader cannot tell which is meant, and reading the first would ignore numbers the file put
+// in the second.
+const READ_COLUMNS: ReadonlyMap<string, string> = new Map([
+  ['date', 'date'],
+  ['description', 'description'],
+  ['amount', 'amount'],
+  ['debit', 'debit'],
+  ['withdrawal', 'debit'],
+  ['credit', 'credit'],
+  ['deposit', 'credit'],
+  ['currency', 'currency'],
+  ['category', 'category'],
 ])
 
 function readHeader(
@@ -175,15 +181,26 @@ function readHeader(
   if (!date) errors.push({ row, code: 'missing_column', column: 'date' })
   if (!description) errors.push({ row, code: 'missing_column', column: 'description' })
   if (!amount) errors.push({ row, code: 'missing_column', column: 'amount' })
-  const repeated = new Set<string>()
-  const seen = new Set<string>()
-  for (const name of names) {
-    if (READ_COLUMNS.has(name) && seen.has(name) && !repeated.has(name)) {
-      repeated.add(name)
-      errors.push({ row, code: 'duplicate_column', column: name })
+  // The name each column was first given, to tell a name written twice (reported by that name)
+  // from a second name for the same column (reported as the file wrote it). Each name is
+  // reported once, at its second appearance.
+  const firstNameOf = new Map<string, string>()
+  const reported = new Set<string>()
+  names.forEach((name, index) => {
+    const column = READ_COLUMNS.get(name)
+    if (column === undefined) return
+    const first = firstNameOf.get(column)
+    if (first === undefined) {
+      firstNameOf.set(column, name)
+    } else if (!reported.has(name)) {
+      reported.add(name)
+      errors.push({
+        row,
+        code: 'duplicate_column',
+        column: first === name ? name : (cells[index] ?? '').trim(),
+      })
     }
-    seen.add(name)
-  }
+  })
   if (signed) {
     // A signed amount next to a column that says debit or credit: the sign may be in either.
     names.forEach((name, index) => {

@@ -105,7 +105,14 @@ export function readDateCell(text: string): DateReading {
 // which is how Bangladeshi banks print it. Anything else with a comma, such as 12,50, is
 // more likely a decimal comma than a thousands separator. Reading it as 1250 would be
 // silently wrong, so it is not a number here.
-const NUMBER = /^(\d+|\d{1,3}(?:,\d{3})+|\d{1,2}(?:,\d{2})+,\d{3})(\.\d+)?$/
+//
+// A space can separate the groups in place of a comma (1 234 567, 12 34 567), and then it
+// has to follow the same grouping, so 12 50 is no more a number than 12,50 is. One kind of
+// separator at a time: 1,234 567 is not a number.
+function groups(separator: string): string {
+  return String.raw`\d{1,3}(?:${separator}\d{3})+|\d{1,2}(?:${separator}\d{2})+${separator}\d{3}`
+}
+const NUMBER = new RegExp(String.raw`^(\d+|${groups(',')}|${groups(' ')})(\.\d+)?$`)
 
 // 1.500 reads as 1500 where a point groups thousands and as 1.5 where it is the decimal mark,
 // and the cell does not say which. Only a short whole number can be followed by a group, so
@@ -114,16 +121,23 @@ const NUMBER = /^(\d+|\d{1,3}(?:,\d{3})+|\d{1,2}(?:,\d{2})+,\d{3})(\.\d+)?$/
 const POINT_AND_THREE_DIGITS = /^\d{1,3}\.\d{3}$/
 
 /**
- * Reads an amount such as `1,234.50`, `(640)`, `৳ 1,240`, `১,২৪০` or `-$5`. Brackets mean
- * negative. Returns null for anything else, including an empty cell, and for a cell that could
- * be read two ways with different values, such as 12,50 or 1.500, and for one too large to be
- * kept to the cent (over about 90 trillion).
+ * Reads an amount such as `1,234.50`, `1 234.50`, `(640)`, `৳ 1,240`, `১,২৪০` or `-$5`.
+ * Brackets mean negative. Spaces around the number, and between it and a currency sign, a sign
+ * or a bracket, are ignored; a space inside the number must separate thousands the way a comma
+ * would. Returns null for anything else, including an empty cell, and for a cell that could
+ * be read two ways with different values, such as 12,50, 12 50 or 1.500, and for one too large
+ * to be kept to the cent (over about 90 trillion).
  */
 export function parseAmount(text: string): number | null {
   const cleaned = toAsciiDigits(text)
-    .replace(/[৳$£€\s]/g, '')
+    .replace(/[৳$£€]/g, '')
     // The minus sign that word processors and some banks write.
     .replace(/\u{2212}/gu, '-')
+    // A sign or a bracket does not care about the space beside it. What space is left then
+    // lies inside the number, and any kind of it (no-break, narrow) counts as one plain space.
+    .replace(/\s*([()+-])\s*/g, '$1')
+    .trim()
+    .replace(/\s/g, ' ')
   const bracketed = /^\((.*)\)$/.exec(cleaned)
   const unwrapped = bracketed ? (bracketed[1] ?? '') : cleaned
 
@@ -136,7 +150,7 @@ export function parseAmount(text: string): number | null {
   const parts = NUMBER.exec(unsigned)
   if (!parts) return null
   const [, whole = '', fraction = ''] = parts
-  const value = Number(whole.replaceAll(',', '') + fraction)
+  const value = Number(whole.replaceAll(/[, ]/g, '') + fraction)
   // Money is added up in cents, which is only exact up to Number.MAX_SAFE_INTEGER. A larger
   // amount would have digits that were rounded away, so it is not read.
   if (!Number.isFinite(value) || Math.round(value * 100) > Number.MAX_SAFE_INTEGER) return null
