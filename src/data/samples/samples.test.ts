@@ -437,9 +437,11 @@ describe('the generator', () => {
         ],
       }
       const rides = buildDataset(away).transactions.filter((line) => line.category === 'transport')
-      expect(rides).toHaveLength(120)
       expect(rides.some((line) => line.date >= '2026-05-20' && line.date <= '2026-05-31')).toBe(false)
-      expect(rides.some((line) => line.date.startsWith('2026-06'))).toBe(true)
+      // May has 19 of its 31 days open, so 20 rides become 12; the other months keep 20.
+      expect(rides.filter((line) => line.date.startsWith('2026-05'))).toHaveLength(12)
+      expect(rides.filter((line) => line.date.startsWith('2026-06'))).toHaveLength(20)
+      expect(rides).toHaveLength(112)
     })
 
     it('folds a provider fee into one payment when asked to', () => {

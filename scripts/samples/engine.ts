@@ -65,7 +65,8 @@ export interface ScatteredItem extends ItemBase {
   perMonth: readonly [fewest: number, most: number]
   /**
    * No lines from the first date to the last, both included (`YYYY-MM-DD`): a week away
-   * from the city has no ride-hailing or pharmacy in it.
+   * from the city has no ride-hailing or pharmacy in it. A month with days skipped gets
+   * fewer lines in proportion to the days left.
    */
   skipBetween?: readonly [from: string, to: string]
 }
@@ -180,7 +181,8 @@ function openDays(item: ScatteredItem, month: number): number[] {
 function scatteredLines(item: ScatteredItem, currency: CurrencyCode, random: Random): Line[] {
   return monthsOf(item).flatMap((month) => {
     const open = openDays(item, month)
-    const count = random.int(item.perMonth[0], item.perMonth[1])
+    const planned = random.int(item.perMonth[0], item.perMonth[1])
+    const count = Math.round((planned * open.length) / daysInMonth(YEAR, month))
     const days = Array.from({ length: count }, () => open[random.int(0, open.length - 1)] as number)
     return linesOn(item, currency, month, days, random)
   })
