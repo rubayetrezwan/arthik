@@ -33,11 +33,36 @@ describe('formatMoney', () => {
     expect(formatMoney(150000, 'BDT', 'hi')).toBe('৳1,50,000')
   })
 
-  it('formats other currencies with the narrow symbol', () => {
+  it('keeps the plain symbol for the dollar, yen, pound and euro in English', () => {
     expect(formatMoney(13.2, 'USD', 'en')).toBe('$13.20')
     expect(formatMoney(1500, 'JPY', 'en')).toBe('¥1,500')
     expect(formatMoney(1234.5, 'GBP', 'en')).toBe('£1,234.50')
     expect(formatMoney(1234.5, 'EUR', 'en')).toBe('€1,234.50')
+  })
+
+  it('tells apart the currencies that share a narrow symbol, in English', () => {
+    expect(formatMoney(13.2, 'AUD', 'en')).toBe('A$13.20')
+    expect(formatMoney(13.2, 'CAD', 'en')).toBe('CA$13.20')
+    expect(formatMoney(13.2, 'HKD', 'en')).toBe('HK$13.20')
+    expect(formatMoney(13.2, 'CNY', 'en')).toBe('CN¥13.20')
+    expect(plain(formatMoney(13.2, 'SGD', 'en'))).toBe('SGD 13.20')
+  })
+
+  it('shows one unit of each of the 11 currencies differently in English and Bengali', () => {
+    for (const l of ['en', 'bn'] as const) {
+      const shown = CURRENCY_CODES.map((code) => formatMoney(1, code, l))
+
+      expect(new Set(shown).size, `${l}: ${shown.join(' | ')}`).toBe(CURRENCY_CODES.length)
+    }
+  })
+
+  it('keeps the taka symbol in front in every language, whatever the other currencies do', () => {
+    for (const l of LOCALE_CODES) {
+      const text = plain(formatMoney(1, 'BDT', l))
+
+      expect(text, l).toContain('৳')
+      expect(text, l).not.toContain('BDT')
+    }
   })
 
   it('shows no decimals for taka and yen and two for everything else', () => {

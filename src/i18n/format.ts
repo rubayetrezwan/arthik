@@ -62,7 +62,9 @@ export function formatMoney(
   const options: Intl.NumberFormatOptions = {
     style: 'currency',
     currency,
-    currencyDisplay: 'narrowSymbol',
+    // Taka need the narrow ৳, which the plain symbol spells "BDT". The rest use the plain
+    // symbol, because the narrow one is a bare "$" or "¥" for several currencies at once.
+    currencyDisplay: currency === 'BDT' ? 'narrowSymbol' : 'symbol',
     minimumFractionDigits: decimals,
     maximumFractionDigits: decimals,
     // Both leave out the sign on zero, including an amount that rounds to zero.
