@@ -569,61 +569,53 @@ export const FARHANA: Persona = {
 
 export const ARIF: Persona = {
   // Bangladeshi MSc student in London. Part-time wages from a catering job and family
-  // support each month. Pays for a room, eats at Tesco, and spends nearly all of it:
-  // a lot of takeaway and shopping, a new laptop and, in August, a flight home that
-  // the family pays for.
+  // support each month. Pays for a room in a shared house in Ilford, with a fixed share of
+  // the bills to the housemate who holds them. Eats at Tesco and spends nearly all of it: a
+  // lot of takeaway and shopping, a new laptop and, in August, a flight home that the family
+  // pays for. On Eid-ul-Adha (27 May) he has dinner out with friends.
   id: 'arif',
-  seed: 4404,
+  seed: 4070,
   currency: 'GBP',
   emergencySavings: 320,
   monthly: [
     {
       day: 1,
       category: 'rent',
-      description: 'STANDING ORDER - ROOM RENT - 14 EASTBROOK RD',
+      description: 'STANDING ORDER TO R PATEL - ROOM RENT',
       amount: -780,
     },
     {
+      // His share of the energy, water and broadband, paid to the housemate whose name is on them.
+      day: 1,
+      category: 'utilities',
+      description: 'STANDING ORDER TO H ALI - UTILITIES SHARE',
+      amount: -70,
+    },
+    {
+      // Sent by his family as a round sum in pounds, through their bank.
       day: 3,
       category: 'family_support_in',
-      description: 'FASTER PAYMENT IN - FAMILY SUPPORT - M RAHMAN',
-      amount: [800, 840],
+      description: 'INTERNATIONAL PAYMENT FROM M RAHMAN - FAMILY SUPPORT',
+      amount: 800,
     },
     {
       day: 5,
       category: 'entertainment',
-      description: 'SPOTIFY P1A2B3 STOCKHOLM',
+      description: 'SPOTIFY P{hex} STOCKHOLM',
       amount: -5.99,
     },
     {
-      day: 8,
-      category: 'mobile_internet',
-      description: 'DIRECT DEBIT VIRGIN MEDIA',
-      amount: -24,
-    },
-    {
+      // A giffgaff goodybag, bought each month.
       day: 11,
       category: 'mobile_internet',
-      description: 'CARD PAYMENT TO GIFFGAFF TOP UP',
+      description: 'CARD PAYMENT TO GIFFGAFF.COM',
       amount: -10,
-    },
-    {
-      day: 16,
-      category: 'utilities',
-      description: 'DIRECT DEBIT OCTOPUS ENERGY',
-      amount: [-62, -48],
-    },
-    {
-      day: 20,
-      category: 'utilities',
-      description: 'DIRECT DEBIT THAMES WATER',
-      amount: [-22, -18],
     },
     {
       day: 22,
       category: 'entertainment',
       description: 'NETFLIX.COM',
-      amount: -10.99,
+      amount: -12.99,
     },
     {
       day: 25,
@@ -645,12 +637,20 @@ export const ARIF: Persona = {
       amount: -25,
     },
     {
+      day: 27,
+      inMonths: [5],
+      category: 'eating_out',
+      description: 'CARD PAYMENT TO SHAHI BIRYANI HOUSE ILFORD',
+      amount: [-30, -18],
+      roundTo: 0.5,
+    },
+    {
       // Family pays for a flight home in August.
       day: 2,
       inMonths: [8],
       category: 'family_support_in',
-      description: 'FASTER PAYMENT IN - FAMILY SUPPORT FOR TICKET - M RAHMAN',
-      amount: [645, 660],
+      description: 'INTERNATIONAL PAYMENT FROM M RAHMAN - FAMILY SUPPORT TICKET',
+      amount: 650,
     },
     {
       day: 4,
@@ -664,17 +664,14 @@ export const ARIF: Persona = {
       inMonths: [9],
       category: 'shopping',
       description: 'CARD PAYMENT TO CURRYS 0392 LONDON',
-      amount: -430,
+      amount: -429,
     },
   ],
   scattered: [
     {
       perMonth: [6, 9],
       category: 'groceries',
-      description: [
-        'CARD PAYMENT TO TESCO STORES 2811',
-        'CARD PAYMENT TO TESCO EXPRESS 5474',
-      ],
+      description: ['CARD PAYMENT TO TESCO STORES 2811', 'CARD PAYMENT TO TESCO EXPRESS 5474'],
       amount: [-42, -8],
     },
     {
@@ -688,6 +685,7 @@ export const ARIF: Persona = {
       category: 'transport',
       description: 'CARD PAYMENT TO TFL TRAVEL CH, TFL.GOV.UK/CP',
       amount: [-24, -8],
+      roundTo: 0.05,
     },
     {
       perMonth: [4, 6],
@@ -708,22 +706,31 @@ export const ARIF: Persona = {
       amount: [-24, -14],
     },
     {
-      perMonth: [1, 3],
+      perMonth: [1, 2],
       category: 'shopping',
-      description: ['CARD PAYMENT TO PRIMARK 0414', 'AMAZON.CO.UK*RT4KD2 AMZNMKTPLACE'],
+      description: 'CARD PAYMENT TO PRIMARK 0414',
       amount: [-55, -12],
+      roundTo: 0.5,
+    },
+    {
+      perMonth: [0, 1],
+      category: 'shopping',
+      description: 'AMAZON.CO.UK*{code} AMZNMKTPLACE',
+      amount: [-35, -8],
     },
     {
       perMonth: [1, 2],
       category: 'entertainment',
-      description: 'CARD PAYMENT TO ODEON LEICESTER SQ',
-      amount: [-16, -10],
+      description: 'CARD PAYMENT TO CINEWORLD ILFORD',
+      amount: [-14, -9],
+      roundTo: 0.5,
     },
     {
       perMonth: [1, 1],
       category: 'personal_care',
       description: 'CARD PAYMENT TO BARBER SHOP ILFORD',
       amount: [-22, -15],
+      roundTo: 1,
     },
     {
       perMonth: [0, 1],
@@ -737,6 +744,7 @@ export const ARIF: Persona = {
       category: 'shopping',
       description: 'CARD PAYMENT TO UNIQLO OXFORD STREET',
       amount: [-85, -70],
+      roundTo: 0.1,
     },
   ],
 }

@@ -8,7 +8,7 @@
     {
       "id": "arif-0001",
       "date": "2026-05-01",
-      "description": "STANDING ORDER - ROOM RENT - 14 EASTBROOK RD",
+      "description": "STANDING ORDER TO R PATEL - ROOM RENT",
       "amount": -780,
       "currency": "GBP",
       "category": "rent"
@@ -16,285 +16,205 @@
     {
       "id": "arif-0002",
       "date": "2026-05-01",
-      "description": "CARD PAYMENT TO TESCO STORES 2811",
-      "amount": -37.33,
+      "description": "STANDING ORDER TO H ALI - UTILITIES SHARE",
+      "amount": -70,
       "currency": "GBP",
-      "category": "groceries"
+      "category": "utilities"
     },
     {
       "id": "arif-0003",
       "date": "2026-05-01",
-      "description": "CARD PAYMENT TO LIDL GB LONDON",
-      "amount": -24.78,
+      "description": "CARD PAYMENT TO BARBER SHOP ILFORD",
+      "amount": -19,
       "currency": "GBP",
-      "category": "groceries"
+      "category": "personal_care"
     },
     {
       "id": "arif-0004",
-      "date": "2026-05-02",
-      "description": "CARD PAYMENT TO LIDL GB LONDON",
-      "amount": -24.78,
+      "date": "2026-05-03",
+      "description": "INTERNATIONAL PAYMENT FROM M RAHMAN - FAMILY SUPPORT",
+      "amount": 800,
       "currency": "GBP",
-      "category": "groceries"
+      "category": "family_support_in"
     },
     {
       "id": "arif-0005",
-      "date": "2026-05-02",
+      "date": "2026-05-03",
       "description": "DELIVEROO PLC LONDON",
-      "amount": -16.62,
+      "amount": -19.61,
       "currency": "GBP",
       "category": "eating_out"
     },
     {
       "id": "arif-0006",
-      "date": "2026-05-03",
-      "description": "FASTER PAYMENT IN - FAMILY SUPPORT - M RAHMAN",
-      "amount": 834.89,
-      "currency": "GBP",
-      "category": "family_support_in"
-    },
-    {
-      "id": "arif-0007",
-      "date": "2026-05-03",
-      "description": "CARD PAYMENT TO TFL TRAVEL CH, TFL.GOV.UK/CP",
-      "amount": -15.24,
-      "currency": "GBP",
-      "category": "transport"
-    },
-    {
-      "id": "arif-0008",
-      "date": "2026-05-03",
-      "description": "CARD PAYMENT TO TFL TRAVEL CH, TFL.GOV.UK/CP",
-      "amount": -13.18,
-      "currency": "GBP",
-      "category": "transport"
-    },
-    {
-      "id": "arif-0009",
-      "date": "2026-05-04",
-      "description": "AMAZON.CO.UK*RT4KD2 AMZNMKTPLACE",
-      "amount": -41.65,
-      "currency": "GBP",
-      "category": "shopping"
-    },
-    {
-      "id": "arif-0010",
       "date": "2026-05-05",
-      "description": "SPOTIFY P1A2B3 STOCKHOLM",
+      "description": "SPOTIFY PFD4929E5 STOCKHOLM",
       "amount": -5.99,
       "currency": "GBP",
       "category": "entertainment"
     },
     {
-      "id": "arif-0011",
-      "date": "2026-05-06",
-      "description": "CARD PAYMENT TO TESCO STORES 2811",
-      "amount": -11.52,
+      "id": "arif-0007",
+      "date": "2026-05-05",
+      "description": "CARD PAYMENT TO CINEWORLD ILFORD",
+      "amount": -10,
       "currency": "GBP",
-      "category": "groceries"
+      "category": "entertainment"
     },
     {
-      "id": "arif-0012",
-      "date": "2026-05-07",
-      "description": "DELIVEROO PLC LONDON",
-      "amount": -27.98,
-      "currency": "GBP",
-      "category": "eating_out"
-    },
-    {
-      "id": "arif-0013",
+      "id": "arif-0008",
       "date": "2026-05-08",
-      "description": "DIRECT DEBIT VIRGIN MEDIA",
-      "amount": -24,
-      "currency": "GBP",
-      "category": "mobile_internet"
-    },
-    {
-      "id": "arif-0014",
-      "date": "2026-05-10",
-      "description": "CARD PAYMENT TO TESCO EXPRESS 5474",
-      "amount": -32.85,
+      "description": "CARD PAYMENT TO TESCO STORES 2811",
+      "amount": -9.99,
       "currency": "GBP",
       "category": "groceries"
     },
     {
-      "id": "arif-0015",
-      "date": "2026-05-10",
-      "description": "CARD PAYMENT TO GREGGS PLC 0921",
-      "amount": -5.12,
+      "id": "arif-0009",
+      "date": "2026-05-08",
+      "description": "CARD PAYMENT TO TFL TRAVEL CH, TFL.GOV.UK/CP",
+      "amount": -10.5,
+      "currency": "GBP",
+      "category": "transport"
+    },
+    {
+      "id": "arif-0010",
+      "date": "2026-05-08",
+      "description": "DELIVEROO PLC LONDON",
+      "amount": -15.93,
       "currency": "GBP",
       "category": "eating_out"
     },
     {
-      "id": "arif-0016",
+      "id": "arif-0011",
       "date": "2026-05-11",
-      "description": "CARD PAYMENT TO GIFFGAFF TOP UP",
+      "description": "CARD PAYMENT TO GIFFGAFF.COM",
       "amount": -10,
       "currency": "GBP",
       "category": "mobile_internet"
     },
     {
-      "id": "arif-0017",
+      "id": "arif-0012",
       "date": "2026-05-11",
-      "description": "CARD PAYMENT TO TESCO STORES 2811",
-      "amount": -26.51,
+      "description": "CARD PAYMENT TO TESCO EXPRESS 5474",
+      "amount": -28.49,
       "currency": "GBP",
       "category": "groceries"
     },
     {
-      "id": "arif-0018",
+      "id": "arif-0013",
       "date": "2026-05-11",
-      "description": "CARD PAYMENT TO TESCO EXPRESS 5474",
-      "amount": -9.94,
+      "description": "CARD PAYMENT TO NANDOS 0316 ILFORD",
+      "amount": -16.8,
+      "currency": "GBP",
+      "category": "eating_out"
+    },
+    {
+      "id": "arif-0014",
+      "date": "2026-05-12",
+      "description": "CARD PAYMENT TO PRIMARK 0414",
+      "amount": -18.5,
+      "currency": "GBP",
+      "category": "shopping"
+    },
+    {
+      "id": "arif-0015",
+      "date": "2026-05-13",
+      "description": "CARD PAYMENT TO PRET A MANGER 1403",
+      "amount": -7.87,
+      "currency": "GBP",
+      "category": "eating_out"
+    },
+    {
+      "id": "arif-0016",
+      "date": "2026-05-16",
+      "description": "CARD PAYMENT TO TFL TRAVEL CH, TFL.GOV.UK/CP",
+      "amount": -20.45,
+      "currency": "GBP",
+      "category": "transport"
+    },
+    {
+      "id": "arif-0017",
+      "date": "2026-05-18",
+      "description": "DELIVEROO PLC LONDON",
+      "amount": -28.44,
+      "currency": "GBP",
+      "category": "eating_out"
+    },
+    {
+      "id": "arif-0018",
+      "date": "2026-05-20",
+      "description": "CARD PAYMENT TO TESCO STORES 2811",
+      "amount": -40.92,
       "currency": "GBP",
       "category": "groceries"
     },
     {
       "id": "arif-0019",
-      "date": "2026-05-13",
-      "description": "CARD PAYMENT TO NANDOS 0316 ILFORD",
-      "amount": -20.52,
-      "currency": "GBP",
-      "category": "eating_out"
-    },
-    {
-      "id": "arif-0020",
-      "date": "2026-05-14",
-      "description": "CARD PAYMENT TO TFL TRAVEL CH, TFL.GOV.UK/CP",
-      "amount": -18.66,
-      "currency": "GBP",
-      "category": "transport"
-    },
-    {
-      "id": "arif-0021",
-      "date": "2026-05-14",
-      "description": "DELIVEROO PLC LONDON",
-      "amount": -24.97,
-      "currency": "GBP",
-      "category": "eating_out"
-    },
-    {
-      "id": "arif-0022",
-      "date": "2026-05-15",
-      "description": "CARD PAYMENT TO TFL TRAVEL CH, TFL.GOV.UK/CP",
-      "amount": -23.85,
-      "currency": "GBP",
-      "category": "transport"
-    },
-    {
-      "id": "arif-0023",
-      "date": "2026-05-16",
-      "description": "DIRECT DEBIT OCTOPUS ENERGY",
-      "amount": -49.96,
-      "currency": "GBP",
-      "category": "utilities"
-    },
-    {
-      "id": "arif-0024",
-      "date": "2026-05-17",
-      "description": "CARD PAYMENT TO TFL TRAVEL CH, TFL.GOV.UK/CP",
-      "amount": -21.75,
-      "currency": "GBP",
-      "category": "transport"
-    },
-    {
-      "id": "arif-0025",
-      "date": "2026-05-19",
-      "description": "CARD PAYMENT TO TESCO EXPRESS 5474",
-      "amount": -23.95,
+      "date": "2026-05-20",
+      "description": "CARD PAYMENT TO LIDL GB LONDON",
+      "amount": -24.81,
       "currency": "GBP",
       "category": "groceries"
     },
     {
-      "id": "arif-0026",
-      "date": "2026-05-19",
+      "id": "arif-0020",
+      "date": "2026-05-20",
+      "description": "DELIVEROO PLC LONDON",
+      "amount": -15.96,
+      "currency": "GBP",
+      "category": "eating_out"
+    },
+    {
+      "id": "arif-0021",
+      "date": "2026-05-22",
+      "description": "NETFLIX.COM",
+      "amount": -12.99,
+      "currency": "GBP",
+      "category": "entertainment"
+    },
+    {
+      "id": "arif-0022",
+      "date": "2026-05-22",
+      "description": "CARD PAYMENT TO TESCO STORES 2811",
+      "amount": -16.28,
+      "currency": "GBP",
+      "category": "groceries"
+    },
+    {
+      "id": "arif-0023",
+      "date": "2026-05-22",
+      "description": "CARD PAYMENT TO TFL TRAVEL CH, TFL.GOV.UK/CP",
+      "amount": -19.25,
+      "currency": "GBP",
+      "category": "transport"
+    },
+    {
+      "id": "arif-0024",
+      "date": "2026-05-24",
+      "description": "CARD PAYMENT TO TESCO EXPRESS 5474",
+      "amount": -37.65,
+      "currency": "GBP",
+      "category": "groceries"
+    },
+    {
+      "id": "arif-0025",
+      "date": "2026-05-24",
       "description": "CARD PAYMENT TO GREGGS PLC 0921",
-      "amount": -3.65,
+      "amount": -3.52,
+      "currency": "GBP",
+      "category": "eating_out"
+    },
+    {
+      "id": "arif-0026",
+      "date": "2026-05-24",
+      "description": "CARD PAYMENT TO GREGGS PLC 0921",
+      "amount": -6.99,
       "currency": "GBP",
       "category": "eating_out"
     },
     {
       "id": "arif-0027",
-      "date": "2026-05-19",
-      "description": "CARD PAYMENT TO PRIMARK 0414",
-      "amount": -15.98,
-      "currency": "GBP",
-      "category": "shopping"
-    },
-    {
-      "id": "arif-0028",
-      "date": "2026-05-20",
-      "description": "DIRECT DEBIT THAMES WATER",
-      "amount": -20.43,
-      "currency": "GBP",
-      "category": "utilities"
-    },
-    {
-      "id": "arif-0029",
-      "date": "2026-05-21",
-      "description": "DELIVEROO PLC LONDON",
-      "amount": -16.94,
-      "currency": "GBP",
-      "category": "eating_out"
-    },
-    {
-      "id": "arif-0030",
-      "date": "2026-05-21",
-      "description": "CARD PAYMENT TO ODEON LEICESTER SQ",
-      "amount": -15.28,
-      "currency": "GBP",
-      "category": "entertainment"
-    },
-    {
-      "id": "arif-0031",
-      "date": "2026-05-22",
-      "description": "NETFLIX.COM",
-      "amount": -10.99,
-      "currency": "GBP",
-      "category": "entertainment"
-    },
-    {
-      "id": "arif-0032",
-      "date": "2026-05-22",
-      "description": "DELIVEROO PLC LONDON",
-      "amount": -27.48,
-      "currency": "GBP",
-      "category": "eating_out"
-    },
-    {
-      "id": "arif-0033",
-      "date": "2026-05-22",
-      "description": "CARD PAYMENT TO BARBER SHOP ILFORD",
-      "amount": -18.19,
-      "currency": "GBP",
-      "category": "personal_care"
-    },
-    {
-      "id": "arif-0034",
-      "date": "2026-05-23",
-      "description": "CARD PAYMENT TO PRET A MANGER 1403",
-      "amount": -5.59,
-      "currency": "GBP",
-      "category": "eating_out"
-    },
-    {
-      "id": "arif-0035",
-      "date": "2026-05-24",
-      "description": "CARD PAYMENT TO TFL TRAVEL CH, TFL.GOV.UK/CP",
-      "amount": -11.07,
-      "currency": "GBP",
-      "category": "transport"
-    },
-    {
-      "id": "arif-0036",
-      "date": "2026-05-24",
-      "description": "CARD PAYMENT TO GREGGS PLC 0921",
-      "amount": -7.57,
-      "currency": "GBP",
-      "category": "eating_out"
-    },
-    {
-      "id": "arif-0037",
       "date": "2026-05-25",
       "description": "CARD PAYMENT TO PURE GYM LTD LONDON",
       "amount": -22.99,
@@ -302,39 +222,55 @@
       "category": "personal_care"
     },
     {
-      "id": "arif-0038",
-      "date": "2026-05-25",
-      "description": "CARD PAYMENT TO TESCO EXPRESS 5474",
-      "amount": -30.4,
-      "currency": "GBP",
-      "category": "groceries"
-    },
-    {
-      "id": "arif-0039",
-      "date": "2026-05-26",
-      "description": "CARD PAYMENT TO PRET A MANGER 1403",
-      "amount": -8.23,
-      "currency": "GBP",
-      "category": "eating_out"
-    },
-    {
-      "id": "arif-0040",
+      "id": "arif-0028",
       "date": "2026-05-27",
       "description": "BACS CREDIT HARBOUR CATERING LTD WAGES",
-      "amount": 840.78,
+      "amount": 868.6,
       "currency": "GBP",
       "category": "salary"
     },
     {
-      "id": "arif-0041",
+      "id": "arif-0029",
       "date": "2026-05-27",
-      "description": "DELIVEROO PLC LONDON",
-      "amount": -19.79,
+      "description": "CARD PAYMENT TO SHAHI BIRYANI HOUSE ILFORD",
+      "amount": -28.5,
       "currency": "GBP",
       "category": "eating_out"
     },
     {
-      "id": "arif-0042",
+      "id": "arif-0030",
+      "date": "2026-05-27",
+      "description": "CARD PAYMENT TO TESCO STORES 2811",
+      "amount": -8.12,
+      "currency": "GBP",
+      "category": "groceries"
+    },
+    {
+      "id": "arif-0031",
+      "date": "2026-05-27",
+      "description": "DELIVEROO PLC LONDON",
+      "amount": -22.78,
+      "currency": "GBP",
+      "category": "eating_out"
+    },
+    {
+      "id": "arif-0032",
+      "date": "2026-05-29",
+      "description": "CARD PAYMENT TO TFL TRAVEL CH, TFL.GOV.UK/CP",
+      "amount": -23.5,
+      "currency": "GBP",
+      "category": "transport"
+    },
+    {
+      "id": "arif-0033",
+      "date": "2026-05-29",
+      "description": "CARD PAYMENT TO PRET A MANGER 1403",
+      "amount": -4.36,
+      "currency": "GBP",
+      "category": "eating_out"
+    },
+    {
+      "id": "arif-0034",
       "date": "2026-05-31",
       "description": "STANDING ORDER TO MARCUS SAVINGS",
       "amount": -25,
@@ -342,351 +278,239 @@
       "category": "savings_deposit"
     },
     {
-      "id": "arif-0043",
-      "date": "2026-05-31",
-      "description": "CARD PAYMENT TO TESCO EXPRESS 5474",
-      "amount": -18.48,
-      "currency": "GBP",
-      "category": "groceries"
-    },
-    {
-      "id": "arif-0044",
-      "date": "2026-05-31",
-      "description": "CARD PAYMENT TO TESCO EXPRESS 5474",
-      "amount": -11.93,
-      "currency": "GBP",
-      "category": "groceries"
-    },
-    {
-      "id": "arif-0045",
+      "id": "arif-0035",
       "date": "2026-05-31",
       "description": "CARD PAYMENT TO TFL TRAVEL CH, TFL.GOV.UK/CP",
-      "amount": -19.49,
+      "amount": -11.5,
       "currency": "GBP",
       "category": "transport"
     },
     {
-      "id": "arif-0046",
+      "id": "arif-0036",
+      "date": "2026-05-31",
+      "description": "CARD PAYMENT TO GREGGS PLC 0921",
+      "amount": -7.44,
+      "currency": "GBP",
+      "category": "eating_out"
+    },
+    {
+      "id": "arif-0037",
       "date": "2026-06-01",
-      "description": "STANDING ORDER - ROOM RENT - 14 EASTBROOK RD",
+      "description": "STANDING ORDER TO R PATEL - ROOM RENT",
       "amount": -780,
       "currency": "GBP",
       "category": "rent"
     },
     {
-      "id": "arif-0047",
+      "id": "arif-0038",
       "date": "2026-06-01",
-      "description": "CARD PAYMENT TO PRET A MANGER 1403",
-      "amount": -5.39,
+      "description": "STANDING ORDER TO H ALI - UTILITIES SHARE",
+      "amount": -70,
       "currency": "GBP",
-      "category": "eating_out"
+      "category": "utilities"
     },
     {
-      "id": "arif-0048",
+      "id": "arif-0039",
+      "date": "2026-06-01",
+      "description": "CARD PAYMENT TO TESCO STORES 2811",
+      "amount": -15.74,
+      "currency": "GBP",
+      "category": "groceries"
+    },
+    {
+      "id": "arif-0040",
+      "date": "2026-06-02",
+      "description": "CARD PAYMENT TO TESCO EXPRESS 5474",
+      "amount": -15.21,
+      "currency": "GBP",
+      "category": "groceries"
+    },
+    {
+      "id": "arif-0041",
       "date": "2026-06-03",
-      "description": "FASTER PAYMENT IN - FAMILY SUPPORT - M RAHMAN",
-      "amount": 828.14,
+      "description": "INTERNATIONAL PAYMENT FROM M RAHMAN - FAMILY SUPPORT",
+      "amount": 800,
       "currency": "GBP",
       "category": "family_support_in"
     },
     {
-      "id": "arif-0049",
-      "date": "2026-06-03",
-      "description": "CARD PAYMENT TO TFL TRAVEL CH, TFL.GOV.UK/CP",
-      "amount": -14.19,
-      "currency": "GBP",
-      "category": "transport"
-    },
-    {
-      "id": "arif-0050",
-      "date": "2026-06-03",
-      "description": "CARD PAYMENT TO TFL TRAVEL CH, TFL.GOV.UK/CP",
-      "amount": -21.37,
-      "currency": "GBP",
-      "category": "transport"
-    },
-    {
-      "id": "arif-0051",
-      "date": "2026-06-03",
-      "description": "AMAZON.CO.UK*RT4KD2 AMZNMKTPLACE",
-      "amount": -50.33,
-      "currency": "GBP",
-      "category": "shopping"
-    },
-    {
-      "id": "arif-0052",
+      "id": "arif-0042",
       "date": "2026-06-04",
-      "description": "CARD PAYMENT TO TESCO STORES 2811",
-      "amount": -24.63,
+      "description": "DELIVEROO PLC LONDON",
+      "amount": -29.93,
       "currency": "GBP",
-      "category": "groceries"
+      "category": "eating_out"
     },
     {
-      "id": "arif-0053",
-      "date": "2026-06-04",
-      "description": "CARD PAYMENT TO TESCO EXPRESS 5474",
-      "amount": -37.49,
-      "currency": "GBP",
-      "category": "groceries"
-    },
-    {
-      "id": "arif-0054",
-      "date": "2026-06-04",
-      "description": "CARD PAYMENT TO LIDL GB LONDON",
-      "amount": -18.5,
-      "currency": "GBP",
-      "category": "groceries"
-    },
-    {
-      "id": "arif-0055",
+      "id": "arif-0043",
       "date": "2026-06-05",
-      "description": "SPOTIFY P1A2B3 STOCKHOLM",
+      "description": "SPOTIFY P7C315F2F STOCKHOLM",
       "amount": -5.99,
       "currency": "GBP",
       "category": "entertainment"
     },
     {
-      "id": "arif-0056",
-      "date": "2026-06-05",
-      "description": "CARD PAYMENT TO GREGGS PLC 0921",
-      "amount": -6.58,
-      "currency": "GBP",
-      "category": "eating_out"
-    },
-    {
-      "id": "arif-0057",
+      "id": "arif-0044",
       "date": "2026-06-06",
       "description": "CARD PAYMENT TO TESCO STORES 2811",
-      "amount": -21.34,
+      "amount": -31.56,
       "currency": "GBP",
       "category": "groceries"
     },
     {
-      "id": "arif-0058",
+      "id": "arif-0045",
       "date": "2026-06-06",
-      "description": "DELIVEROO PLC LONDON",
-      "amount": -20.66,
+      "description": "CARD PAYMENT TO PRET A MANGER 1403",
+      "amount": -7.3,
       "currency": "GBP",
       "category": "eating_out"
     },
     {
-      "id": "arif-0059",
-      "date": "2026-06-07",
+      "id": "arif-0046",
+      "date": "2026-06-08",
+      "description": "CARD PAYMENT TO PRIMARK 0414",
+      "amount": -25,
+      "currency": "GBP",
+      "category": "shopping"
+    },
+    {
+      "id": "arif-0047",
+      "date": "2026-06-09",
+      "description": "CARD PAYMENT TO CINEWORLD ILFORD",
+      "amount": -10,
+      "currency": "GBP",
+      "category": "entertainment"
+    },
+    {
+      "id": "arif-0048",
+      "date": "2026-06-10",
       "description": "CARD PAYMENT TO TFL TRAVEL CH, TFL.GOV.UK/CP",
-      "amount": -18.36,
+      "amount": -14.25,
       "currency": "GBP",
       "category": "transport"
     },
     {
-      "id": "arif-0060",
-      "date": "2026-06-08",
-      "description": "DIRECT DEBIT VIRGIN MEDIA",
-      "amount": -24,
-      "currency": "GBP",
-      "category": "mobile_internet"
-    },
-    {
-      "id": "arif-0061",
-      "date": "2026-06-08",
-      "description": "CARD PAYMENT TO LIDL GB LONDON",
-      "amount": -24.52,
-      "currency": "GBP",
-      "category": "groceries"
-    },
-    {
-      "id": "arif-0062",
-      "date": "2026-06-08",
-      "description": "CARD PAYMENT TO NANDOS 0316 ILFORD",
-      "amount": -17.5,
-      "currency": "GBP",
-      "category": "eating_out"
-    },
-    {
-      "id": "arif-0063",
-      "date": "2026-06-09",
+      "id": "arif-0049",
+      "date": "2026-06-10",
       "description": "CARD PAYMENT TO TFL TRAVEL CH, TFL.GOV.UK/CP",
-      "amount": -20.24,
+      "amount": -18.7,
       "currency": "GBP",
       "category": "transport"
     },
     {
-      "id": "arif-0064",
-      "date": "2026-06-09",
-      "description": "DELIVEROO PLC LONDON",
-      "amount": -26.01,
-      "currency": "GBP",
-      "category": "eating_out"
-    },
-    {
-      "id": "arif-0065",
+      "id": "arif-0050",
       "date": "2026-06-11",
-      "description": "CARD PAYMENT TO GIFFGAFF TOP UP",
+      "description": "CARD PAYMENT TO GIFFGAFF.COM",
       "amount": -10,
       "currency": "GBP",
       "category": "mobile_internet"
     },
     {
-      "id": "arif-0066",
+      "id": "arif-0051",
       "date": "2026-06-11",
-      "description": "CARD PAYMENT TO TESCO STORES 2811",
-      "amount": -17.66,
-      "currency": "GBP",
-      "category": "groceries"
-    },
-    {
-      "id": "arif-0067",
-      "date": "2026-06-11",
-      "description": "CARD PAYMENT TO TFL TRAVEL CH, TFL.GOV.UK/CP",
-      "amount": -20.03,
-      "currency": "GBP",
-      "category": "transport"
-    },
-    {
-      "id": "arif-0068",
-      "date": "2026-06-12",
-      "description": "CARD PAYMENT TO TFL TRAVEL CH, TFL.GOV.UK/CP",
-      "amount": -9.45,
-      "currency": "GBP",
-      "category": "transport"
-    },
-    {
-      "id": "arif-0069",
-      "date": "2026-06-13",
-      "description": "CARD PAYMENT TO TESCO STORES 2811",
-      "amount": -9.41,
-      "currency": "GBP",
-      "category": "groceries"
-    },
-    {
-      "id": "arif-0070",
-      "date": "2026-06-16",
-      "description": "DIRECT DEBIT OCTOPUS ENERGY",
-      "amount": -60.17,
-      "currency": "GBP",
-      "category": "utilities"
-    },
-    {
-      "id": "arif-0071",
-      "date": "2026-06-16",
       "description": "CARD PAYMENT TO PRET A MANGER 1403",
-      "amount": -4.01,
+      "amount": -3.93,
       "currency": "GBP",
       "category": "eating_out"
     },
     {
-      "id": "arif-0072",
+      "id": "arif-0052",
+      "date": "2026-06-11",
+      "description": "DELIVEROO PLC LONDON",
+      "amount": -29.53,
+      "currency": "GBP",
+      "category": "eating_out"
+    },
+    {
+      "id": "arif-0053",
+      "date": "2026-06-12",
+      "description": "CARD PAYMENT TO TFL TRAVEL CH, TFL.GOV.UK/CP",
+      "amount": -19.6,
+      "currency": "GBP",
+      "category": "transport"
+    },
+    {
+      "id": "arif-0054",
+      "date": "2026-06-15",
+      "description": "CARD PAYMENT TO TESCO STORES 2811",
+      "amount": -14.42,
+      "currency": "GBP",
+      "category": "groceries"
+    },
+    {
+      "id": "arif-0055",
+      "date": "2026-06-15",
+      "description": "CARD PAYMENT TO PRET A MANGER 1403",
+      "amount": -6.26,
+      "currency": "GBP",
+      "category": "eating_out"
+    },
+    {
+      "id": "arif-0056",
+      "date": "2026-06-16",
+      "description": "CARD PAYMENT TO PRET A MANGER 1403",
+      "amount": -7.62,
+      "currency": "GBP",
+      "category": "eating_out"
+    },
+    {
+      "id": "arif-0057",
       "date": "2026-06-16",
       "description": "CARD PAYMENT TO BARBER SHOP ILFORD",
-      "amount": -18.97,
+      "amount": -21,
       "currency": "GBP",
       "category": "personal_care"
     },
     {
-      "id": "arif-0073",
-      "date": "2026-06-17",
+      "id": "arif-0058",
+      "date": "2026-06-20",
+      "description": "CARD PAYMENT TO TESCO EXPRESS 5474",
+      "amount": -14.13,
+      "currency": "GBP",
+      "category": "groceries"
+    },
+    {
+      "id": "arif-0059",
+      "date": "2026-06-20",
+      "description": "CARD PAYMENT TO NANDOS 0316 ILFORD",
+      "amount": -19.98,
+      "currency": "GBP",
+      "category": "eating_out"
+    },
+    {
+      "id": "arif-0060",
+      "date": "2026-06-21",
       "description": "CARD PAYMENT TO TFL TRAVEL CH, TFL.GOV.UK/CP",
-      "amount": -15.61,
+      "amount": -21.2,
       "currency": "GBP",
       "category": "transport"
     },
     {
-      "id": "arif-0074",
-      "date": "2026-06-17",
-      "description": "DELIVEROO PLC LONDON",
-      "amount": -24.53,
-      "currency": "GBP",
-      "category": "eating_out"
-    },
-    {
-      "id": "arif-0075",
-      "date": "2026-06-17",
-      "description": "CARD PAYMENT TO NANDOS 0316 ILFORD",
-      "amount": -23.82,
-      "currency": "GBP",
-      "category": "eating_out"
-    },
-    {
-      "id": "arif-0076",
-      "date": "2026-06-17",
-      "description": "CARD PAYMENT TO ODEON LEICESTER SQ",
-      "amount": -10.15,
-      "currency": "GBP",
-      "category": "entertainment"
-    },
-    {
-      "id": "arif-0077",
-      "date": "2026-06-17",
-      "description": "CARD PAYMENT TO BOOTS 1130",
-      "amount": -10.27,
-      "currency": "GBP",
-      "category": "healthcare"
-    },
-    {
-      "id": "arif-0078",
-      "date": "2026-06-19",
-      "description": "DELIVEROO PLC LONDON",
-      "amount": -22.95,
-      "currency": "GBP",
-      "category": "eating_out"
-    },
-    {
-      "id": "arif-0079",
-      "date": "2026-06-20",
-      "description": "DIRECT DEBIT THAMES WATER",
-      "amount": -18.9,
-      "currency": "GBP",
-      "category": "utilities"
-    },
-    {
-      "id": "arif-0080",
+      "id": "arif-0061",
       "date": "2026-06-21",
-      "description": "CARD PAYMENT TO TESCO EXPRESS 5474",
-      "amount": -24.97,
-      "currency": "GBP",
-      "category": "groceries"
-    },
-    {
-      "id": "arif-0081",
-      "date": "2026-06-22",
-      "description": "NETFLIX.COM",
-      "amount": -10.99,
-      "currency": "GBP",
-      "category": "entertainment"
-    },
-    {
-      "id": "arif-0082",
-      "date": "2026-06-22",
-      "description": "CARD PAYMENT TO TESCO EXPRESS 5474",
-      "amount": -16.53,
-      "currency": "GBP",
-      "category": "groceries"
-    },
-    {
-      "id": "arif-0083",
-      "date": "2026-06-23",
-      "description": "CARD PAYMENT TO PRET A MANGER 1403",
-      "amount": -5.08,
-      "currency": "GBP",
-      "category": "eating_out"
-    },
-    {
-      "id": "arif-0084",
-      "date": "2026-06-24",
-      "description": "DELIVEROO PLC LONDON",
-      "amount": -19.54,
-      "currency": "GBP",
-      "category": "eating_out"
-    },
-    {
-      "id": "arif-0085",
-      "date": "2026-06-24",
       "description": "CARD PAYMENT TO PRIMARK 0414",
-      "amount": -39.47,
+      "amount": -46,
       "currency": "GBP",
       "category": "shopping"
     },
     {
-      "id": "arif-0086",
+      "id": "arif-0062",
+      "date": "2026-06-22",
+      "description": "NETFLIX.COM",
+      "amount": -12.99,
+      "currency": "GBP",
+      "category": "entertainment"
+    },
+    {
+      "id": "arif-0063",
+      "date": "2026-06-23",
+      "description": "CARD PAYMENT TO TESCO EXPRESS 5474",
+      "amount": -21.06,
+      "currency": "GBP",
+      "category": "groceries"
+    },
+    {
+      "id": "arif-0064",
       "date": "2026-06-25",
       "description": "CARD PAYMENT TO PURE GYM LTD LONDON",
       "amount": -22.99,
@@ -694,39 +518,71 @@
       "category": "personal_care"
     },
     {
-      "id": "arif-0087",
+      "id": "arif-0065",
       "date": "2026-06-25",
-      "description": "CARD PAYMENT TO TESCO STORES 2811",
-      "amount": -32.57,
-      "currency": "GBP",
-      "category": "groceries"
-    },
-    {
-      "id": "arif-0088",
-      "date": "2026-06-27",
-      "description": "CARD PAYMENT TO GREGGS PLC 0921",
-      "amount": -4.2,
+      "description": "DELIVEROO PLC LONDON",
+      "amount": -29.03,
       "currency": "GBP",
       "category": "eating_out"
     },
     {
-      "id": "arif-0089",
-      "date": "2026-06-28",
+      "id": "arif-0066",
+      "date": "2026-06-26",
+      "description": "CARD PAYMENT TO LIDL GB LONDON",
+      "amount": -18.8,
+      "currency": "GBP",
+      "category": "groceries"
+    },
+    {
+      "id": "arif-0067",
+      "date": "2026-06-26",
       "description": "CARD PAYMENT TO TFL TRAVEL CH, TFL.GOV.UK/CP",
-      "amount": -23.43,
+      "amount": -9.35,
       "currency": "GBP",
       "category": "transport"
     },
     {
-      "id": "arif-0090",
-      "date": "2026-06-29",
+      "id": "arif-0068",
+      "date": "2026-06-27",
+      "description": "DELIVEROO PLC LONDON",
+      "amount": -22.55,
+      "currency": "GBP",
+      "category": "eating_out"
+    },
+    {
+      "id": "arif-0069",
+      "date": "2026-06-28",
       "description": "BACS CREDIT HARBOUR CATERING LTD WAGES",
-      "amount": 849.59,
+      "amount": 898.6,
       "currency": "GBP",
       "category": "salary"
     },
     {
-      "id": "arif-0091",
+      "id": "arif-0070",
+      "date": "2026-06-28",
+      "description": "CARD PAYMENT TO GREGGS PLC 0921",
+      "amount": -5.06,
+      "currency": "GBP",
+      "category": "eating_out"
+    },
+    {
+      "id": "arif-0071",
+      "date": "2026-06-28",
+      "description": "DELIVEROO PLC LONDON",
+      "amount": -19.62,
+      "currency": "GBP",
+      "category": "eating_out"
+    },
+    {
+      "id": "arif-0072",
+      "date": "2026-06-28",
+      "description": "CARD PAYMENT TO NANDOS 0316 ILFORD",
+      "amount": -20.02,
+      "currency": "GBP",
+      "category": "eating_out"
+    },
+    {
+      "id": "arif-0073",
       "date": "2026-06-30",
       "description": "STANDING ORDER TO MARCUS SAVINGS",
       "amount": -25,
@@ -734,295 +590,287 @@
       "category": "savings_deposit"
     },
     {
-      "id": "arif-0092",
+      "id": "arif-0074",
+      "date": "2026-06-30",
+      "description": "CARD PAYMENT TO TESCO STORES 2811",
+      "amount": -27.27,
+      "currency": "GBP",
+      "category": "groceries"
+    },
+    {
+      "id": "arif-0075",
+      "date": "2026-06-30",
+      "description": "CARD PAYMENT TO GREGGS PLC 0921",
+      "amount": -8.34,
+      "currency": "GBP",
+      "category": "eating_out"
+    },
+    {
+      "id": "arif-0076",
       "date": "2026-07-01",
-      "description": "STANDING ORDER - ROOM RENT - 14 EASTBROOK RD",
+      "description": "STANDING ORDER TO R PATEL - ROOM RENT",
       "amount": -780,
       "currency": "GBP",
       "category": "rent"
     },
     {
-      "id": "arif-0093",
+      "id": "arif-0077",
       "date": "2026-07-01",
-      "description": "DELIVEROO PLC LONDON",
-      "amount": -19.51,
+      "description": "STANDING ORDER TO H ALI - UTILITIES SHARE",
+      "amount": -70,
       "currency": "GBP",
-      "category": "eating_out"
+      "category": "utilities"
     },
     {
-      "id": "arif-0094",
+      "id": "arif-0078",
       "date": "2026-07-02",
       "description": "CARD PAYMENT TO TFL TRAVEL CH, TFL.GOV.UK/CP",
-      "amount": -18.9,
+      "amount": -14.1,
       "currency": "GBP",
       "category": "transport"
     },
     {
-      "id": "arif-0095",
+      "id": "arif-0079",
       "date": "2026-07-02",
       "description": "CARD PAYMENT TO GREGGS PLC 0921",
-      "amount": -7.37,
+      "amount": -4.39,
       "currency": "GBP",
       "category": "eating_out"
     },
     {
-      "id": "arif-0096",
+      "id": "arif-0080",
+      "date": "2026-07-02",
+      "description": "DELIVEROO PLC LONDON",
+      "amount": -17.28,
+      "currency": "GBP",
+      "category": "eating_out"
+    },
+    {
+      "id": "arif-0081",
+      "date": "2026-07-02",
+      "description": "CARD PAYMENT TO NANDOS 0316 ILFORD",
+      "amount": -16.51,
+      "currency": "GBP",
+      "category": "eating_out"
+    },
+    {
+      "id": "arif-0082",
       "date": "2026-07-03",
-      "description": "FASTER PAYMENT IN - FAMILY SUPPORT - M RAHMAN",
-      "amount": 833.79,
+      "description": "INTERNATIONAL PAYMENT FROM M RAHMAN - FAMILY SUPPORT",
+      "amount": 800,
       "currency": "GBP",
       "category": "family_support_in"
     },
     {
-      "id": "arif-0097",
-      "date": "2026-07-03",
-      "description": "CARD PAYMENT TO TESCO STORES 2811",
-      "amount": -37.34,
-      "currency": "GBP",
-      "category": "groceries"
-    },
-    {
-      "id": "arif-0098",
+      "id": "arif-0083",
       "date": "2026-07-05",
-      "description": "SPOTIFY P1A2B3 STOCKHOLM",
+      "description": "SPOTIFY P461DC1E4 STOCKHOLM",
       "amount": -5.99,
       "currency": "GBP",
       "category": "entertainment"
     },
     {
-      "id": "arif-0099",
+      "id": "arif-0084",
       "date": "2026-07-05",
       "description": "DELIVEROO PLC LONDON",
-      "amount": -16.19,
+      "amount": -14.24,
       "currency": "GBP",
       "category": "eating_out"
     },
     {
-      "id": "arif-0100",
-      "date": "2026-07-08",
-      "description": "DIRECT DEBIT VIRGIN MEDIA",
-      "amount": -24,
+      "id": "arif-0085",
+      "date": "2026-07-06",
+      "description": "CARD PAYMENT TO PRIMARK 0414",
+      "amount": -13.5,
       "currency": "GBP",
-      "category": "mobile_internet"
+      "category": "shopping"
     },
     {
-      "id": "arif-0101",
-      "date": "2026-07-08",
-      "description": "CARD PAYMENT TO BARBER SHOP ILFORD",
-      "amount": -15.65,
+      "id": "arif-0086",
+      "date": "2026-07-07",
+      "description": "CARD PAYMENT TO TESCO EXPRESS 5474",
+      "amount": -28.44,
       "currency": "GBP",
-      "category": "personal_care"
+      "category": "groceries"
     },
     {
-      "id": "arif-0102",
-      "date": "2026-07-09",
-      "description": "DELIVEROO PLC LONDON",
-      "amount": -27.74,
+      "id": "arif-0087",
+      "date": "2026-07-07",
+      "description": "CARD PAYMENT TO TESCO EXPRESS 5474",
+      "amount": -41.41,
       "currency": "GBP",
-      "category": "eating_out"
+      "category": "groceries"
     },
     {
-      "id": "arif-0103",
-      "date": "2026-07-09",
-      "description": "CARD PAYMENT TO ODEON LEICESTER SQ",
-      "amount": -15.37,
+      "id": "arif-0088",
+      "date": "2026-07-07",
+      "description": "AMAZON.CO.UK*QNG13PABE AMZNMKTPLACE",
+      "amount": -19.84,
+      "currency": "GBP",
+      "category": "shopping"
+    },
+    {
+      "id": "arif-0089",
+      "date": "2026-07-07",
+      "description": "CARD PAYMENT TO CINEWORLD ILFORD",
+      "amount": -13,
       "currency": "GBP",
       "category": "entertainment"
     },
     {
-      "id": "arif-0104",
-      "date": "2026-07-10",
-      "description": "CARD PAYMENT TO TFL TRAVEL CH, TFL.GOV.UK/CP",
-      "amount": -12.24,
-      "currency": "GBP",
-      "category": "transport"
-    },
-    {
-      "id": "arif-0105",
-      "date": "2026-07-10",
-      "description": "CARD PAYMENT TO PRET A MANGER 1403",
-      "amount": -4.57,
+      "id": "arif-0090",
+      "date": "2026-07-08",
+      "description": "DELIVEROO PLC LONDON",
+      "amount": -29.65,
       "currency": "GBP",
       "category": "eating_out"
     },
     {
-      "id": "arif-0106",
+      "id": "arif-0091",
       "date": "2026-07-11",
-      "description": "CARD PAYMENT TO GIFFGAFF TOP UP",
+      "description": "CARD PAYMENT TO GIFFGAFF.COM",
       "amount": -10,
       "currency": "GBP",
       "category": "mobile_internet"
     },
     {
-      "id": "arif-0107",
+      "id": "arif-0092",
+      "date": "2026-07-11",
+      "description": "CARD PAYMENT TO TFL TRAVEL CH, TFL.GOV.UK/CP",
+      "amount": -14.85,
+      "currency": "GBP",
+      "category": "transport"
+    },
+    {
+      "id": "arif-0093",
+      "date": "2026-07-12",
+      "description": "CARD PAYMENT TO TESCO STORES 2811",
+      "amount": -14.78,
+      "currency": "GBP",
+      "category": "groceries"
+    },
+    {
+      "id": "arif-0094",
       "date": "2026-07-12",
       "description": "CARD PAYMENT TO TESCO EXPRESS 5474",
-      "amount": -8.99,
+      "amount": -16.93,
+      "currency": "GBP",
+      "category": "groceries"
+    },
+    {
+      "id": "arif-0095",
+      "date": "2026-07-13",
+      "description": "CARD PAYMENT TO TFL TRAVEL CH, TFL.GOV.UK/CP",
+      "amount": -17.15,
+      "currency": "GBP",
+      "category": "transport"
+    },
+    {
+      "id": "arif-0096",
+      "date": "2026-07-13",
+      "description": "CARD PAYMENT TO GREGGS PLC 0921",
+      "amount": -6.96,
+      "currency": "GBP",
+      "category": "eating_out"
+    },
+    {
+      "id": "arif-0097",
+      "date": "2026-07-14",
+      "description": "CARD PAYMENT TO TESCO STORES 2811",
+      "amount": -33.34,
+      "currency": "GBP",
+      "category": "groceries"
+    },
+    {
+      "id": "arif-0098",
+      "date": "2026-07-14",
+      "description": "DELIVEROO PLC LONDON",
+      "amount": -26.1,
+      "currency": "GBP",
+      "category": "eating_out"
+    },
+    {
+      "id": "arif-0099",
+      "date": "2026-07-16",
+      "description": "CARD PAYMENT TO TESCO EXPRESS 5474",
+      "amount": -33.31,
+      "currency": "GBP",
+      "category": "groceries"
+    },
+    {
+      "id": "arif-0100",
+      "date": "2026-07-16",
+      "description": "CARD PAYMENT TO PRET A MANGER 1403",
+      "amount": -5.85,
+      "currency": "GBP",
+      "category": "eating_out"
+    },
+    {
+      "id": "arif-0101",
+      "date": "2026-07-16",
+      "description": "CARD PAYMENT TO NANDOS 0316 ILFORD",
+      "amount": -23.72,
+      "currency": "GBP",
+      "category": "eating_out"
+    },
+    {
+      "id": "arif-0102",
+      "date": "2026-07-18",
+      "description": "CARD PAYMENT TO TFL TRAVEL CH, TFL.GOV.UK/CP",
+      "amount": -23.8,
+      "currency": "GBP",
+      "category": "transport"
+    },
+    {
+      "id": "arif-0103",
+      "date": "2026-07-18",
+      "description": "CARD PAYMENT TO BOOTS 1130",
+      "amount": -8.96,
+      "currency": "GBP",
+      "category": "healthcare"
+    },
+    {
+      "id": "arif-0104",
+      "date": "2026-07-19",
+      "description": "CARD PAYMENT TO TFL TRAVEL CH, TFL.GOV.UK/CP",
+      "amount": -14.15,
+      "currency": "GBP",
+      "category": "transport"
+    },
+    {
+      "id": "arif-0105",
+      "date": "2026-07-22",
+      "description": "NETFLIX.COM",
+      "amount": -12.99,
+      "currency": "GBP",
+      "category": "entertainment"
+    },
+    {
+      "id": "arif-0106",
+      "date": "2026-07-22",
+      "description": "CARD PAYMENT TO TESCO EXPRESS 5474",
+      "amount": -22.29,
+      "currency": "GBP",
+      "category": "groceries"
+    },
+    {
+      "id": "arif-0107",
+      "date": "2026-07-24",
+      "description": "CARD PAYMENT TO TESCO STORES 2811",
+      "amount": -20.87,
       "currency": "GBP",
       "category": "groceries"
     },
     {
       "id": "arif-0108",
-      "date": "2026-07-12",
-      "description": "CARD PAYMENT TO TESCO EXPRESS 5474",
-      "amount": -23.18,
+      "date": "2026-07-24",
+      "description": "CARD PAYMENT TO TFL TRAVEL CH, TFL.GOV.UK/CP",
+      "amount": -14.75,
       "currency": "GBP",
-      "category": "groceries"
+      "category": "transport"
     },
     {
       "id": "arif-0109",
-      "date": "2026-07-12",
-      "description": "CARD PAYMENT TO TFL TRAVEL CH, TFL.GOV.UK/CP",
-      "amount": -23.12,
-      "currency": "GBP",
-      "category": "transport"
-    },
-    {
-      "id": "arif-0110",
-      "date": "2026-07-15",
-      "description": "CARD PAYMENT TO PRET A MANGER 1403",
-      "amount": -5.77,
-      "currency": "GBP",
-      "category": "eating_out"
-    },
-    {
-      "id": "arif-0111",
-      "date": "2026-07-15",
-      "description": "CARD PAYMENT TO BOOTS 1130",
-      "amount": -7.41,
-      "currency": "GBP",
-      "category": "healthcare"
-    },
-    {
-      "id": "arif-0112",
-      "date": "2026-07-16",
-      "description": "DIRECT DEBIT OCTOPUS ENERGY",
-      "amount": -51.38,
-      "currency": "GBP",
-      "category": "utilities"
-    },
-    {
-      "id": "arif-0113",
-      "date": "2026-07-18",
-      "description": "CARD PAYMENT TO TESCO STORES 2811",
-      "amount": -32.38,
-      "currency": "GBP",
-      "category": "groceries"
-    },
-    {
-      "id": "arif-0114",
-      "date": "2026-07-18",
-      "description": "CARD PAYMENT TO TESCO STORES 2811",
-      "amount": -12.42,
-      "currency": "GBP",
-      "category": "groceries"
-    },
-    {
-      "id": "arif-0115",
-      "date": "2026-07-18",
-      "description": "CARD PAYMENT TO GREGGS PLC 0921",
-      "amount": -6.31,
-      "currency": "GBP",
-      "category": "eating_out"
-    },
-    {
-      "id": "arif-0116",
-      "date": "2026-07-18",
-      "description": "DELIVEROO PLC LONDON",
-      "amount": -28.81,
-      "currency": "GBP",
-      "category": "eating_out"
-    },
-    {
-      "id": "arif-0117",
-      "date": "2026-07-19",
-      "description": "CARD PAYMENT TO TFL TRAVEL CH, TFL.GOV.UK/CP",
-      "amount": -18.07,
-      "currency": "GBP",
-      "category": "transport"
-    },
-    {
-      "id": "arif-0118",
-      "date": "2026-07-19",
-      "description": "CARD PAYMENT TO TFL TRAVEL CH, TFL.GOV.UK/CP",
-      "amount": -20.29,
-      "currency": "GBP",
-      "category": "transport"
-    },
-    {
-      "id": "arif-0119",
-      "date": "2026-07-20",
-      "description": "DIRECT DEBIT THAMES WATER",
-      "amount": -19.15,
-      "currency": "GBP",
-      "category": "utilities"
-    },
-    {
-      "id": "arif-0120",
-      "date": "2026-07-20",
-      "description": "CARD PAYMENT TO TESCO STORES 2811",
-      "amount": -16.08,
-      "currency": "GBP",
-      "category": "groceries"
-    },
-    {
-      "id": "arif-0121",
-      "date": "2026-07-20",
-      "description": "CARD PAYMENT TO NANDOS 0316 ILFORD",
-      "amount": -23.93,
-      "currency": "GBP",
-      "category": "eating_out"
-    },
-    {
-      "id": "arif-0122",
-      "date": "2026-07-21",
-      "description": "CARD PAYMENT TO TESCO EXPRESS 5474",
-      "amount": -38.53,
-      "currency": "GBP",
-      "category": "groceries"
-    },
-    {
-      "id": "arif-0123",
-      "date": "2026-07-21",
-      "description": "CARD PAYMENT TO LIDL GB LONDON",
-      "amount": -24.32,
-      "currency": "GBP",
-      "category": "groceries"
-    },
-    {
-      "id": "arif-0124",
-      "date": "2026-07-21",
-      "description": "AMAZON.CO.UK*RT4KD2 AMZNMKTPLACE",
-      "amount": -19.15,
-      "currency": "GBP",
-      "category": "shopping"
-    },
-    {
-      "id": "arif-0125",
-      "date": "2026-07-22",
-      "description": "NETFLIX.COM",
-      "amount": -10.99,
-      "currency": "GBP",
-      "category": "entertainment"
-    },
-    {
-      "id": "arif-0126",
-      "date": "2026-07-23",
-      "description": "DELIVEROO PLC LONDON",
-      "amount": -20,
-      "currency": "GBP",
-      "category": "eating_out"
-    },
-    {
-      "id": "arif-0127",
-      "date": "2026-07-24",
-      "description": "CARD PAYMENT TO TESCO STORES 2811",
-      "amount": -14.63,
-      "currency": "GBP",
-      "category": "groceries"
-    },
-    {
-      "id": "arif-0128",
       "date": "2026-07-25",
       "description": "CARD PAYMENT TO PURE GYM LTD LONDON",
       "amount": -22.99,
@@ -1030,63 +878,71 @@
       "category": "personal_care"
     },
     {
-      "id": "arif-0129",
-      "date": "2026-07-27",
-      "description": "CARD PAYMENT TO TFL TRAVEL CH, TFL.GOV.UK/CP",
-      "amount": -20.61,
-      "currency": "GBP",
-      "category": "transport"
-    },
-    {
-      "id": "arif-0130",
-      "date": "2026-07-28",
-      "description": "CARD PAYMENT TO TESCO STORES 2811",
-      "amount": -13.39,
+      "id": "arif-0110",
+      "date": "2026-07-26",
+      "description": "CARD PAYMENT TO LIDL GB LONDON",
+      "amount": -22.29,
       "currency": "GBP",
       "category": "groceries"
     },
     {
-      "id": "arif-0131",
-      "date": "2026-07-28",
+      "id": "arif-0111",
+      "date": "2026-07-27",
       "description": "CARD PAYMENT TO TFL TRAVEL CH, TFL.GOV.UK/CP",
-      "amount": -13.9,
+      "amount": -22.2,
       "currency": "GBP",
       "category": "transport"
     },
     {
-      "id": "arif-0132",
-      "date": "2026-07-28",
-      "description": "CARD PAYMENT TO ODEON LEICESTER SQ",
-      "amount": -11.36,
-      "currency": "GBP",
-      "category": "entertainment"
-    },
-    {
-      "id": "arif-0133",
-      "date": "2026-07-29",
-      "description": "BACS CREDIT HARBOUR CATERING LTD WAGES",
-      "amount": 893.97,
-      "currency": "GBP",
-      "category": "salary"
-    },
-    {
-      "id": "arif-0134",
-      "date": "2026-07-29",
+      "id": "arif-0112",
+      "date": "2026-07-27",
       "description": "DELIVEROO PLC LONDON",
-      "amount": -29.58,
+      "amount": -29.71,
       "currency": "GBP",
       "category": "eating_out"
     },
     {
-      "id": "arif-0135",
-      "date": "2026-07-30",
+      "id": "arif-0113",
+      "date": "2026-07-28",
+      "description": "BACS CREDIT HARBOUR CATERING LTD WAGES",
+      "amount": 805.77,
+      "currency": "GBP",
+      "category": "salary"
+    },
+    {
+      "id": "arif-0114",
+      "date": "2026-07-28",
+      "description": "CARD PAYMENT TO PRET A MANGER 1403",
+      "amount": -8.33,
+      "currency": "GBP",
+      "category": "eating_out"
+    },
+    {
+      "id": "arif-0115",
+      "date": "2026-07-28",
+      "description": "CARD PAYMENT TO PRIMARK 0414",
+      "amount": -44.5,
+      "currency": "GBP",
+      "category": "shopping"
+    },
+    {
+      "id": "arif-0116",
+      "date": "2026-07-28",
+      "description": "CARD PAYMENT TO BARBER SHOP ILFORD",
+      "amount": -15,
+      "currency": "GBP",
+      "category": "personal_care"
+    },
+    {
+      "id": "arif-0117",
+      "date": "2026-07-29",
       "description": "CARD PAYMENT TO TFL TRAVEL CH, TFL.GOV.UK/CP",
-      "amount": -19.26,
+      "amount": -9.45,
       "currency": "GBP",
       "category": "transport"
     },
     {
-      "id": "arif-0136",
+      "id": "arif-0118",
       "date": "2026-07-31",
       "description": "STANDING ORDER TO MARCUS SAVINGS",
       "amount": -25,
@@ -1094,335 +950,287 @@
       "category": "savings_deposit"
     },
     {
-      "id": "arif-0137",
+      "id": "arif-0119",
       "date": "2026-07-31",
-      "description": "CARD PAYMENT TO NANDOS 0316 ILFORD",
-      "amount": -14.65,
+      "description": "DELIVEROO PLC LONDON",
+      "amount": -24.14,
       "currency": "GBP",
       "category": "eating_out"
     },
     {
-      "id": "arif-0138",
+      "id": "arif-0120",
       "date": "2026-08-01",
-      "description": "STANDING ORDER - ROOM RENT - 14 EASTBROOK RD",
+      "description": "STANDING ORDER TO R PATEL - ROOM RENT",
       "amount": -780,
       "currency": "GBP",
       "category": "rent"
     },
     {
-      "id": "arif-0139",
+      "id": "arif-0121",
       "date": "2026-08-01",
-      "description": "CARD PAYMENT TO PRET A MANGER 1403",
-      "amount": -6.52,
+      "description": "STANDING ORDER TO H ALI - UTILITIES SHARE",
+      "amount": -70,
       "currency": "GBP",
-      "category": "eating_out"
+      "category": "utilities"
     },
     {
-      "id": "arif-0140",
-      "date": "2026-08-02",
-      "description": "FASTER PAYMENT IN - FAMILY SUPPORT FOR TICKET - M RAHMAN",
-      "amount": 654.44,
-      "currency": "GBP",
-      "category": "family_support_in"
-    },
-    {
-      "id": "arif-0141",
-      "date": "2026-08-03",
-      "description": "FASTER PAYMENT IN - FAMILY SUPPORT - M RAHMAN",
-      "amount": 839.27,
-      "currency": "GBP",
-      "category": "family_support_in"
-    },
-    {
-      "id": "arif-0142",
-      "date": "2026-08-03",
+      "id": "arif-0122",
+      "date": "2026-08-01",
       "description": "CARD PAYMENT TO GREGGS PLC 0921",
-      "amount": -5.47,
+      "amount": -8.33,
       "currency": "GBP",
       "category": "eating_out"
     },
     {
-      "id": "arif-0143",
-      "date": "2026-08-03",
-      "description": "CARD PAYMENT TO PRIMARK 0414",
-      "amount": -31.7,
+      "id": "arif-0123",
+      "date": "2026-08-01",
+      "description": "DELIVEROO PLC LONDON",
+      "amount": -14.46,
       "currency": "GBP",
-      "category": "shopping"
+      "category": "eating_out"
     },
     {
-      "id": "arif-0144",
+      "id": "arif-0124",
+      "date": "2026-08-02",
+      "description": "INTERNATIONAL PAYMENT FROM M RAHMAN - FAMILY SUPPORT TICKET",
+      "amount": 650,
+      "currency": "GBP",
+      "category": "family_support_in"
+    },
+    {
+      "id": "arif-0125",
+      "date": "2026-08-03",
+      "description": "INTERNATIONAL PAYMENT FROM M RAHMAN - FAMILY SUPPORT",
+      "amount": 800,
+      "currency": "GBP",
+      "category": "family_support_in"
+    },
+    {
+      "id": "arif-0126",
       "date": "2026-08-04",
       "description": "CARD PAYMENT TO BIMAN BANGLADESH AIRLINES LONDON",
-      "amount": -620.98,
+      "amount": -625.58,
       "currency": "GBP",
       "category": "travel"
     },
     {
-      "id": "arif-0145",
+      "id": "arif-0127",
       "date": "2026-08-04",
-      "description": "CARD PAYMENT TO TESCO EXPRESS 5474",
-      "amount": -9.79,
+      "description": "CARD PAYMENT TO TESCO STORES 2811",
+      "amount": -40.06,
       "currency": "GBP",
       "category": "groceries"
     },
     {
-      "id": "arif-0146",
-      "date": "2026-08-04",
-      "description": "CARD PAYMENT TO TFL TRAVEL CH, TFL.GOV.UK/CP",
-      "amount": -22.31,
-      "currency": "GBP",
-      "category": "transport"
-    },
-    {
-      "id": "arif-0147",
-      "date": "2026-08-04",
-      "description": "CARD PAYMENT TO TFL TRAVEL CH, TFL.GOV.UK/CP",
-      "amount": -20.12,
-      "currency": "GBP",
-      "category": "transport"
-    },
-    {
-      "id": "arif-0148",
+      "id": "arif-0128",
       "date": "2026-08-05",
-      "description": "SPOTIFY P1A2B3 STOCKHOLM",
+      "description": "SPOTIFY P3B80A420 STOCKHOLM",
       "amount": -5.99,
       "currency": "GBP",
       "category": "entertainment"
     },
     {
-      "id": "arif-0149",
+      "id": "arif-0129",
       "date": "2026-08-05",
-      "description": "CARD PAYMENT TO TESCO STORES 2811",
-      "amount": -41.15,
+      "description": "CARD PAYMENT TO PRET A MANGER 1403",
+      "amount": -6.11,
       "currency": "GBP",
-      "category": "groceries"
+      "category": "eating_out"
     },
     {
-      "id": "arif-0150",
-      "date": "2026-08-06",
+      "id": "arif-0130",
+      "date": "2026-08-05",
       "description": "DELIVEROO PLC LONDON",
-      "amount": -20.08,
+      "amount": -20.73,
       "currency": "GBP",
       "category": "eating_out"
     },
     {
-      "id": "arif-0151",
+      "id": "arif-0131",
+      "date": "2026-08-05",
+      "description": "DELIVEROO PLC LONDON",
+      "amount": -21.44,
+      "currency": "GBP",
+      "category": "eating_out"
+    },
+    {
+      "id": "arif-0132",
       "date": "2026-08-07",
-      "description": "CARD PAYMENT TO LIDL GB LONDON",
-      "amount": -13.05,
+      "description": "CARD PAYMENT TO TESCO STORES 2811",
+      "amount": -29.29,
       "currency": "GBP",
       "category": "groceries"
     },
     {
-      "id": "arif-0152",
-      "date": "2026-08-07",
-      "description": "CARD PAYMENT TO NANDOS 0316 ILFORD",
-      "amount": -16.91,
-      "currency": "GBP",
-      "category": "eating_out"
-    },
-    {
-      "id": "arif-0153",
+      "id": "arif-0133",
       "date": "2026-08-08",
-      "description": "DIRECT DEBIT VIRGIN MEDIA",
-      "amount": -24,
-      "currency": "GBP",
-      "category": "mobile_internet"
-    },
-    {
-      "id": "arif-0154",
-      "date": "2026-08-09",
-      "description": "DELIVEROO PLC LONDON",
-      "amount": -21.41,
-      "currency": "GBP",
-      "category": "eating_out"
-    },
-    {
-      "id": "arif-0155",
-      "date": "2026-08-10",
-      "description": "CARD PAYMENT TO TESCO STORES 2811",
-      "amount": -35.04,
+      "description": "CARD PAYMENT TO TESCO EXPRESS 5474",
+      "amount": -25.01,
       "currency": "GBP",
       "category": "groceries"
     },
     {
-      "id": "arif-0156",
+      "id": "arif-0134",
+      "date": "2026-08-09",
+      "description": "CARD PAYMENT TO TFL TRAVEL CH, TFL.GOV.UK/CP",
+      "amount": -21.65,
+      "currency": "GBP",
+      "category": "transport"
+    },
+    {
+      "id": "arif-0135",
+      "date": "2026-08-10",
+      "description": "CARD PAYMENT TO TFL TRAVEL CH, TFL.GOV.UK/CP",
+      "amount": -17.4,
+      "currency": "GBP",
+      "category": "transport"
+    },
+    {
+      "id": "arif-0136",
+      "date": "2026-08-10",
+      "description": "CARD PAYMENT TO NANDOS 0316 ILFORD",
+      "amount": -20.87,
+      "currency": "GBP",
+      "category": "eating_out"
+    },
+    {
+      "id": "arif-0137",
       "date": "2026-08-11",
-      "description": "CARD PAYMENT TO GIFFGAFF TOP UP",
+      "description": "CARD PAYMENT TO GIFFGAFF.COM",
       "amount": -10,
       "currency": "GBP",
       "category": "mobile_internet"
     },
     {
-      "id": "arif-0157",
-      "date": "2026-08-11",
-      "description": "AMAZON.CO.UK*RT4KD2 AMZNMKTPLACE",
-      "amount": -25.75,
-      "currency": "GBP",
-      "category": "shopping"
-    },
-    {
-      "id": "arif-0158",
+      "id": "arif-0138",
       "date": "2026-08-12",
-      "description": "CARD PAYMENT TO GREGGS PLC 0921",
-      "amount": -6.87,
+      "description": "CARD PAYMENT TO TFL TRAVEL CH, TFL.GOV.UK/CP",
+      "amount": -22.2,
       "currency": "GBP",
-      "category": "eating_out"
+      "category": "transport"
     },
     {
-      "id": "arif-0159",
-      "date": "2026-08-12",
-      "description": "DELIVEROO PLC LONDON",
-      "amount": -23.88,
-      "currency": "GBP",
-      "category": "eating_out"
-    },
-    {
-      "id": "arif-0160",
+      "id": "arif-0139",
       "date": "2026-08-13",
-      "description": "CARD PAYMENT TO TFL TRAVEL CH, TFL.GOV.UK/CP",
-      "amount": -16.09,
-      "currency": "GBP",
-      "category": "transport"
-    },
-    {
-      "id": "arif-0161",
-      "date": "2026-08-14",
-      "description": "CARD PAYMENT TO TESCO EXPRESS 5474",
-      "amount": -30.89,
-      "currency": "GBP",
-      "category": "groceries"
-    },
-    {
-      "id": "arif-0162",
-      "date": "2026-08-14",
       "description": "DELIVEROO PLC LONDON",
-      "amount": -28.52,
+      "amount": -27.96,
       "currency": "GBP",
       "category": "eating_out"
     },
     {
-      "id": "arif-0163",
-      "date": "2026-08-14",
-      "description": "CARD PAYMENT TO ODEON LEICESTER SQ",
-      "amount": -11.7,
-      "currency": "GBP",
-      "category": "entertainment"
-    },
-    {
-      "id": "arif-0164",
-      "date": "2026-08-15",
+      "id": "arif-0140",
+      "date": "2026-08-16",
       "description": "CARD PAYMENT TO TESCO STORES 2811",
-      "amount": -15.96,
+      "amount": -31.38,
       "currency": "GBP",
       "category": "groceries"
     },
     {
-      "id": "arif-0165",
-      "date": "2026-08-16",
-      "description": "DIRECT DEBIT OCTOPUS ENERGY",
-      "amount": -54.01,
-      "currency": "GBP",
-      "category": "utilities"
-    },
-    {
-      "id": "arif-0166",
-      "date": "2026-08-16",
-      "description": "CARD PAYMENT TO TFL TRAVEL CH, TFL.GOV.UK/CP",
-      "amount": -9.99,
-      "currency": "GBP",
-      "category": "transport"
-    },
-    {
-      "id": "arif-0167",
-      "date": "2026-08-16",
-      "description": "CARD PAYMENT TO GREGGS PLC 0921",
-      "amount": -8.57,
-      "currency": "GBP",
-      "category": "eating_out"
-    },
-    {
-      "id": "arif-0168",
+      "id": "arif-0141",
       "date": "2026-08-17",
-      "description": "CARD PAYMENT TO GREGGS PLC 0921",
-      "amount": -4.97,
+      "description": "CARD PAYMENT TO LIDL GB LONDON",
+      "amount": -19.6,
       "currency": "GBP",
-      "category": "eating_out"
+      "category": "groceries"
     },
     {
-      "id": "arif-0169",
+      "id": "arif-0142",
       "date": "2026-08-19",
-      "description": "CARD PAYMENT TO TFL TRAVEL CH, TFL.GOV.UK/CP",
-      "amount": -19.84,
+      "description": "CARD PAYMENT TO LIDL GB LONDON",
+      "amount": -18.88,
       "currency": "GBP",
-      "category": "transport"
+      "category": "groceries"
     },
     {
-      "id": "arif-0170",
+      "id": "arif-0143",
       "date": "2026-08-20",
-      "description": "DIRECT DEBIT THAMES WATER",
-      "amount": -21.63,
+      "description": "CARD PAYMENT TO TESCO EXPRESS 5474",
+      "amount": -25.82,
       "currency": "GBP",
-      "category": "utilities"
+      "category": "groceries"
     },
     {
-      "id": "arif-0171",
+      "id": "arif-0144",
       "date": "2026-08-20",
-      "description": "CARD PAYMENT TO PRIMARK 0414",
-      "amount": -43.39,
+      "description": "CARD PAYMENT TO TESCO STORES 2811",
+      "amount": -28.11,
       "currency": "GBP",
-      "category": "shopping"
+      "category": "groceries"
     },
     {
-      "id": "arif-0172",
-      "date": "2026-08-21",
-      "description": "CARD PAYMENT TO TFL TRAVEL CH, TFL.GOV.UK/CP",
-      "amount": -12.04,
-      "currency": "GBP",
-      "category": "transport"
-    },
-    {
-      "id": "arif-0173",
-      "date": "2026-08-21",
-      "description": "DELIVEROO PLC LONDON",
-      "amount": -15.77,
+      "id": "arif-0145",
+      "date": "2026-08-20",
+      "description": "CARD PAYMENT TO GREGGS PLC 0921",
+      "amount": -8.02,
       "currency": "GBP",
       "category": "eating_out"
     },
     {
-      "id": "arif-0174",
+      "id": "arif-0146",
       "date": "2026-08-21",
-      "description": "DELIVEROO PLC LONDON",
-      "amount": -18.29,
+      "description": "CARD PAYMENT TO TFL TRAVEL CH, TFL.GOV.UK/CP",
+      "amount": -23.65,
+      "currency": "GBP",
+      "category": "transport"
+    },
+    {
+      "id": "arif-0147",
+      "date": "2026-08-21",
+      "description": "CARD PAYMENT TO TFL TRAVEL CH, TFL.GOV.UK/CP",
+      "amount": -21.8,
+      "currency": "GBP",
+      "category": "transport"
+    },
+    {
+      "id": "arif-0148",
+      "date": "2026-08-21",
+      "description": "CARD PAYMENT TO PRET A MANGER 1403",
+      "amount": -3.62,
       "currency": "GBP",
       "category": "eating_out"
     },
     {
-      "id": "arif-0175",
-      "date": "2026-08-21",
-      "description": "CARD PAYMENT TO BARBER SHOP ILFORD",
-      "amount": -15.51,
-      "currency": "GBP",
-      "category": "personal_care"
-    },
-    {
-      "id": "arif-0176",
+      "id": "arif-0149",
       "date": "2026-08-22",
       "description": "NETFLIX.COM",
-      "amount": -10.99,
+      "amount": -12.99,
       "currency": "GBP",
       "category": "entertainment"
     },
     {
-      "id": "arif-0177",
-      "date": "2026-08-24",
-      "description": "CARD PAYMENT TO PRET A MANGER 1403",
-      "amount": -5.64,
+      "id": "arif-0150",
+      "date": "2026-08-23",
+      "description": "DELIVEROO PLC LONDON",
+      "amount": -26.2,
       "currency": "GBP",
       "category": "eating_out"
     },
     {
-      "id": "arif-0178",
+      "id": "arif-0151",
+      "date": "2026-08-23",
+      "description": "CARD PAYMENT TO NANDOS 0316 ILFORD",
+      "amount": -22.28,
+      "currency": "GBP",
+      "category": "eating_out"
+    },
+    {
+      "id": "arif-0152",
+      "date": "2026-08-24",
+      "description": "CARD PAYMENT TO TESCO STORES 2811",
+      "amount": -28.16,
+      "currency": "GBP",
+      "category": "groceries"
+    },
+    {
+      "id": "arif-0153",
+      "date": "2026-08-24",
+      "description": "CARD PAYMENT TO CINEWORLD ILFORD",
+      "amount": -13,
+      "currency": "GBP",
+      "category": "entertainment"
+    },
+    {
+      "id": "arif-0154",
       "date": "2026-08-25",
       "description": "CARD PAYMENT TO PURE GYM LTD LONDON",
       "amount": -22.99,
@@ -1430,63 +1238,63 @@
       "category": "personal_care"
     },
     {
-      "id": "arif-0179",
+      "id": "arif-0155",
       "date": "2026-08-25",
       "description": "CARD PAYMENT TO TESCO STORES 2811",
-      "amount": -37.73,
+      "amount": -31.33,
       "currency": "GBP",
       "category": "groceries"
     },
     {
-      "id": "arif-0180",
+      "id": "arif-0156",
       "date": "2026-08-26",
-      "description": "DELIVEROO PLC LONDON",
-      "amount": -26.68,
+      "description": "CARD PAYMENT TO PRIMARK 0414",
+      "amount": -42,
       "currency": "GBP",
-      "category": "eating_out"
+      "category": "shopping"
     },
     {
-      "id": "arif-0181",
+      "id": "arif-0157",
       "date": "2026-08-27",
-      "description": "CARD PAYMENT TO TFL TRAVEL CH, TFL.GOV.UK/CP",
-      "amount": -8.93,
-      "currency": "GBP",
-      "category": "transport"
-    },
-    {
-      "id": "arif-0182",
-      "date": "2026-08-28",
       "description": "BACS CREDIT HARBOUR CATERING LTD WAGES",
-      "amount": 767.49,
+      "amount": 806.79,
       "currency": "GBP",
       "category": "salary"
     },
     {
-      "id": "arif-0183",
-      "date": "2026-08-28",
-      "description": "CARD PAYMENT TO TESCO STORES 2811",
-      "amount": -34.95,
+      "id": "arif-0158",
+      "date": "2026-08-27",
+      "description": "CARD PAYMENT TO PRET A MANGER 1403",
+      "amount": -7.91,
       "currency": "GBP",
-      "category": "groceries"
+      "category": "eating_out"
     },
     {
-      "id": "arif-0184",
+      "id": "arif-0159",
       "date": "2026-08-28",
-      "description": "CARD PAYMENT TO TFL TRAVEL CH, TFL.GOV.UK/CP",
-      "amount": -13.93,
+      "description": "CARD PAYMENT TO PRIMARK 0414",
+      "amount": -49.5,
       "currency": "GBP",
-      "category": "transport"
+      "category": "shopping"
     },
     {
-      "id": "arif-0185",
+      "id": "arif-0160",
+      "date": "2026-08-29",
+      "description": "CARD PAYMENT TO BARBER SHOP ILFORD",
+      "amount": -18,
+      "currency": "GBP",
+      "category": "personal_care"
+    },
+    {
+      "id": "arif-0161",
       "date": "2026-08-30",
-      "description": "CARD PAYMENT TO LIDL GB LONDON",
-      "amount": -14.02,
+      "description": "CARD PAYMENT TO TESCO EXPRESS 5474",
+      "amount": -9.48,
       "currency": "GBP",
       "category": "groceries"
     },
     {
-      "id": "arif-0186",
+      "id": "arif-0162",
       "date": "2026-08-31",
       "description": "STANDING ORDER TO MARCUS SAVINGS",
       "amount": -25,
@@ -1494,271 +1302,255 @@
       "category": "savings_deposit"
     },
     {
-      "id": "arif-0187",
+      "id": "arif-0163",
+      "date": "2026-08-31",
+      "description": "CARD PAYMENT TO TFL TRAVEL CH, TFL.GOV.UK/CP",
+      "amount": -8.75,
+      "currency": "GBP",
+      "category": "transport"
+    },
+    {
+      "id": "arif-0164",
       "date": "2026-09-01",
-      "description": "STANDING ORDER - ROOM RENT - 14 EASTBROOK RD",
+      "description": "STANDING ORDER TO R PATEL - ROOM RENT",
       "amount": -780,
       "currency": "GBP",
       "category": "rent"
     },
     {
-      "id": "arif-0188",
+      "id": "arif-0165",
       "date": "2026-09-01",
-      "description": "CARD PAYMENT TO TFL TRAVEL CH, TFL.GOV.UK/CP",
-      "amount": -14.74,
+      "description": "STANDING ORDER TO H ALI - UTILITIES SHARE",
+      "amount": -70,
       "currency": "GBP",
-      "category": "transport"
+      "category": "utilities"
     },
     {
-      "id": "arif-0189",
+      "id": "arif-0166",
       "date": "2026-09-01",
-      "description": "CARD PAYMENT TO NANDOS 0316 ILFORD",
-      "amount": -22.2,
-      "currency": "GBP",
-      "category": "eating_out"
-    },
-    {
-      "id": "arif-0190",
-      "date": "2026-09-02",
       "description": "CARD PAYMENT TO GREGGS PLC 0921",
-      "amount": -5.6,
+      "amount": -5.44,
       "currency": "GBP",
       "category": "eating_out"
     },
     {
-      "id": "arif-0191",
+      "id": "arif-0167",
+      "date": "2026-09-01",
+      "description": "DELIVEROO PLC LONDON",
+      "amount": -19.73,
+      "currency": "GBP",
+      "category": "eating_out"
+    },
+    {
+      "id": "arif-0168",
       "date": "2026-09-03",
-      "description": "FASTER PAYMENT IN - FAMILY SUPPORT - M RAHMAN",
-      "amount": 831.53,
+      "description": "INTERNATIONAL PAYMENT FROM M RAHMAN - FAMILY SUPPORT",
+      "amount": 800,
       "currency": "GBP",
       "category": "family_support_in"
     },
     {
-      "id": "arif-0192",
+      "id": "arif-0169",
+      "date": "2026-09-03",
+      "description": "CARD PAYMENT TO TESCO STORES 2811",
+      "amount": -29.84,
+      "currency": "GBP",
+      "category": "groceries"
+    },
+    {
+      "id": "arif-0170",
+      "date": "2026-09-03",
+      "description": "DELIVEROO PLC LONDON",
+      "amount": -24.63,
+      "currency": "GBP",
+      "category": "eating_out"
+    },
+    {
+      "id": "arif-0171",
+      "date": "2026-09-04",
+      "description": "CARD PAYMENT TO TFL TRAVEL CH, TFL.GOV.UK/CP",
+      "amount": -16.25,
+      "currency": "GBP",
+      "category": "transport"
+    },
+    {
+      "id": "arif-0172",
       "date": "2026-09-05",
-      "description": "SPOTIFY P1A2B3 STOCKHOLM",
+      "description": "SPOTIFY P4E466500 STOCKHOLM",
       "amount": -5.99,
       "currency": "GBP",
       "category": "entertainment"
     },
     {
-      "id": "arif-0193",
-      "date": "2026-09-05",
-      "description": "CARD PAYMENT TO TESCO STORES 2811",
-      "amount": -34.49,
-      "currency": "GBP",
-      "category": "groceries"
-    },
-    {
-      "id": "arif-0194",
+      "id": "arif-0173",
       "date": "2026-09-06",
-      "description": "DELIVEROO PLC LONDON",
-      "amount": -19.9,
-      "currency": "GBP",
-      "category": "eating_out"
-    },
-    {
-      "id": "arif-0195",
-      "date": "2026-09-07",
       "description": "CARD PAYMENT TO TESCO EXPRESS 5474",
-      "amount": -10.75,
+      "amount": -38.53,
       "currency": "GBP",
       "category": "groceries"
     },
     {
-      "id": "arif-0196",
-      "date": "2026-09-07",
-      "description": "CARD PAYMENT TO BARBER SHOP ILFORD",
-      "amount": -19.71,
-      "currency": "GBP",
-      "category": "personal_care"
-    },
-    {
-      "id": "arif-0197",
-      "date": "2026-09-08",
-      "description": "DIRECT DEBIT VIRGIN MEDIA",
-      "amount": -24,
-      "currency": "GBP",
-      "category": "mobile_internet"
-    },
-    {
-      "id": "arif-0198",
-      "date": "2026-09-08",
+      "id": "arif-0174",
+      "date": "2026-09-06",
       "description": "CARD PAYMENT TO TFL TRAVEL CH, TFL.GOV.UK/CP",
-      "amount": -21.34,
+      "amount": -16.4,
       "currency": "GBP",
       "category": "transport"
     },
     {
-      "id": "arif-0199",
+      "id": "arif-0175",
+      "date": "2026-09-07",
+      "description": "CARD PAYMENT TO TFL TRAVEL CH, TFL.GOV.UK/CP",
+      "amount": -8.95,
+      "currency": "GBP",
+      "category": "transport"
+    },
+    {
+      "id": "arif-0176",
+      "date": "2026-09-07",
+      "description": "CARD PAYMENT TO GREGGS PLC 0921",
+      "amount": -5.57,
+      "currency": "GBP",
+      "category": "eating_out"
+    },
+    {
+      "id": "arif-0177",
       "date": "2026-09-09",
       "description": "CARD PAYMENT TO CURRYS 0392 LONDON",
-      "amount": -430,
+      "amount": -429,
       "currency": "GBP",
       "category": "shopping"
     },
     {
-      "id": "arif-0200",
+      "id": "arif-0178",
       "date": "2026-09-09",
-      "description": "CARD PAYMENT TO ODEON LEICESTER SQ",
-      "amount": -10.37,
+      "description": "DELIVEROO PLC LONDON",
+      "amount": -14.02,
       "currency": "GBP",
-      "category": "entertainment"
+      "category": "eating_out"
     },
     {
-      "id": "arif-0201",
+      "id": "arif-0179",
+      "date": "2026-09-10",
+      "description": "DELIVEROO PLC LONDON",
+      "amount": -22.84,
+      "currency": "GBP",
+      "category": "eating_out"
+    },
+    {
+      "id": "arif-0180",
+      "date": "2026-09-10",
+      "description": "CARD PAYMENT TO PRIMARK 0414",
+      "amount": -54.5,
+      "currency": "GBP",
+      "category": "shopping"
+    },
+    {
+      "id": "arif-0181",
       "date": "2026-09-11",
-      "description": "CARD PAYMENT TO GIFFGAFF TOP UP",
+      "description": "CARD PAYMENT TO GIFFGAFF.COM",
       "amount": -10,
       "currency": "GBP",
       "category": "mobile_internet"
     },
     {
-      "id": "arif-0202",
-      "date": "2026-09-13",
-      "description": "CARD PAYMENT TO TESCO EXPRESS 5474",
-      "amount": -33.04,
-      "currency": "GBP",
-      "category": "groceries"
-    },
-    {
-      "id": "arif-0203",
-      "date": "2026-09-13",
+      "id": "arif-0182",
+      "date": "2026-09-11",
       "description": "CARD PAYMENT TO TFL TRAVEL CH, TFL.GOV.UK/CP",
-      "amount": -9.13,
+      "amount": -12.9,
       "currency": "GBP",
       "category": "transport"
     },
     {
-      "id": "arif-0204",
-      "date": "2026-09-15",
-      "description": "CARD PAYMENT TO TESCO EXPRESS 5474",
-      "amount": -25.87,
-      "currency": "GBP",
-      "category": "groceries"
-    },
-    {
-      "id": "arif-0205",
-      "date": "2026-09-15",
-      "description": "CARD PAYMENT TO TESCO EXPRESS 5474",
-      "amount": -28.79,
-      "currency": "GBP",
-      "category": "groceries"
-    },
-    {
-      "id": "arif-0206",
-      "date": "2026-09-15",
-      "description": "CARD PAYMENT TO GREGGS PLC 0921",
-      "amount": -4.35,
-      "currency": "GBP",
-      "category": "eating_out"
-    },
-    {
-      "id": "arif-0207",
-      "date": "2026-09-15",
-      "description": "CARD PAYMENT TO NANDOS 0316 ILFORD",
-      "amount": -18.56,
-      "currency": "GBP",
-      "category": "eating_out"
-    },
-    {
-      "id": "arif-0208",
-      "date": "2026-09-15",
-      "description": "CARD PAYMENT TO BOOTS 1130",
-      "amount": -5.71,
-      "currency": "GBP",
-      "category": "healthcare"
-    },
-    {
-      "id": "arif-0209",
-      "date": "2026-09-16",
-      "description": "DIRECT DEBIT OCTOPUS ENERGY",
-      "amount": -52.12,
-      "currency": "GBP",
-      "category": "utilities"
-    },
-    {
-      "id": "arif-0210",
-      "date": "2026-09-16",
+      "id": "arif-0183",
+      "date": "2026-09-14",
       "description": "DELIVEROO PLC LONDON",
-      "amount": -28.4,
+      "amount": -17.27,
       "currency": "GBP",
       "category": "eating_out"
     },
     {
-      "id": "arif-0211",
+      "id": "arif-0184",
       "date": "2026-09-17",
+      "description": "CARD PAYMENT TO TESCO EXPRESS 5474",
+      "amount": -31.97,
+      "currency": "GBP",
+      "category": "groceries"
+    },
+    {
+      "id": "arif-0185",
+      "date": "2026-09-17",
+      "description": "CARD PAYMENT TO BARBER SHOP ILFORD",
+      "amount": -15,
+      "currency": "GBP",
+      "category": "personal_care"
+    },
+    {
+      "id": "arif-0186",
+      "date": "2026-09-18",
+      "description": "CARD PAYMENT TO LIDL GB LONDON",
+      "amount": -18.59,
+      "currency": "GBP",
+      "category": "groceries"
+    },
+    {
+      "id": "arif-0187",
+      "date": "2026-09-18",
       "description": "CARD PAYMENT TO TFL TRAVEL CH, TFL.GOV.UK/CP",
-      "amount": -14.01,
+      "amount": -12.05,
       "currency": "GBP",
       "category": "transport"
     },
     {
-      "id": "arif-0212",
-      "date": "2026-09-20",
-      "description": "DIRECT DEBIT THAMES WATER",
-      "amount": -20.65,
-      "currency": "GBP",
-      "category": "utilities"
-    },
-    {
-      "id": "arif-0213",
-      "date": "2026-09-20",
+      "id": "arif-0188",
+      "date": "2026-09-19",
       "description": "CARD PAYMENT TO TFL TRAVEL CH, TFL.GOV.UK/CP",
-      "amount": -19.56,
+      "amount": -19.3,
       "currency": "GBP",
       "category": "transport"
     },
     {
-      "id": "arif-0214",
-      "date": "2026-09-20",
-      "description": "CARD PAYMENT TO GREGGS PLC 0921",
-      "amount": -3.73,
-      "currency": "GBP",
-      "category": "eating_out"
-    },
-    {
-      "id": "arif-0215",
-      "date": "2026-09-20",
-      "description": "CARD PAYMENT TO PRET A MANGER 1403",
-      "amount": -5.73,
-      "currency": "GBP",
-      "category": "eating_out"
-    },
-    {
-      "id": "arif-0216",
+      "id": "arif-0189",
       "date": "2026-09-21",
-      "description": "CARD PAYMENT TO PRET A MANGER 1403",
-      "amount": -3.6,
+      "description": "CARD PAYMENT TO GREGGS PLC 0921",
+      "amount": -7.24,
       "currency": "GBP",
       "category": "eating_out"
     },
     {
-      "id": "arif-0217",
+      "id": "arif-0190",
       "date": "2026-09-22",
       "description": "NETFLIX.COM",
-      "amount": -10.99,
+      "amount": -12.99,
       "currency": "GBP",
       "category": "entertainment"
     },
     {
-      "id": "arif-0218",
-      "date": "2026-09-22",
-      "description": "CARD PAYMENT TO LIDL GB LONDON",
-      "amount": -10.98,
+      "id": "arif-0191",
+      "date": "2026-09-23",
+      "description": "CARD PAYMENT TO TFL TRAVEL CH, TFL.GOV.UK/CP",
+      "amount": -16.3,
       "currency": "GBP",
-      "category": "groceries"
+      "category": "transport"
     },
     {
-      "id": "arif-0219",
+      "id": "arif-0192",
+      "date": "2026-09-23",
+      "description": "CARD PAYMENT TO TFL TRAVEL CH, TFL.GOV.UK/CP",
+      "amount": -17.95,
+      "currency": "GBP",
+      "category": "transport"
+    },
+    {
+      "id": "arif-0193",
       "date": "2026-09-24",
-      "description": "CARD PAYMENT TO PRIMARK 0414",
-      "amount": -31.62,
+      "description": "CARD PAYMENT TO NANDOS 0316 ILFORD",
+      "amount": -20.21,
       "currency": "GBP",
-      "category": "shopping"
+      "category": "eating_out"
     },
     {
-      "id": "arif-0220",
+      "id": "arif-0194",
       "date": "2026-09-25",
       "description": "CARD PAYMENT TO PURE GYM LTD LONDON",
       "amount": -22.99,
@@ -1766,87 +1558,79 @@
       "category": "personal_care"
     },
     {
-      "id": "arif-0221",
+      "id": "arif-0195",
       "date": "2026-09-25",
+      "description": "CARD PAYMENT TO CINEWORLD ILFORD",
+      "amount": -12.5,
+      "currency": "GBP",
+      "category": "entertainment"
+    },
+    {
+      "id": "arif-0196",
+      "date": "2026-09-26",
       "description": "CARD PAYMENT TO TESCO STORES 2811",
-      "amount": -15.51,
+      "amount": -31.77,
       "currency": "GBP",
       "category": "groceries"
     },
     {
-      "id": "arif-0222",
-      "date": "2026-09-25",
-      "description": "CARD PAYMENT TO TFL TRAVEL CH, TFL.GOV.UK/CP",
-      "amount": -20.8,
-      "currency": "GBP",
-      "category": "transport"
-    },
-    {
-      "id": "arif-0223",
+      "id": "arif-0197",
       "date": "2026-09-27",
       "description": "CARD PAYMENT TO TESCO EXPRESS 5474",
-      "amount": -34.34,
+      "amount": -26.05,
       "currency": "GBP",
       "category": "groceries"
     },
     {
-      "id": "arif-0224",
+      "id": "arif-0198",
       "date": "2026-09-27",
-      "description": "CARD PAYMENT TO LIDL GB LONDON",
-      "amount": -19.53,
+      "description": "CARD PAYMENT TO TESCO STORES 2811",
+      "amount": -33.26,
       "currency": "GBP",
       "category": "groceries"
     },
     {
-      "id": "arif-0225",
-      "date": "2026-09-28",
-      "description": "CARD PAYMENT TO TFL TRAVEL CH, TFL.GOV.UK/CP",
-      "amount": -18.09,
-      "currency": "GBP",
-      "category": "transport"
-    },
-    {
-      "id": "arif-0226",
-      "date": "2026-09-28",
+      "id": "arif-0199",
+      "date": "2026-09-27",
       "description": "DELIVEROO PLC LONDON",
-      "amount": -25.54,
+      "amount": -25.31,
       "currency": "GBP",
       "category": "eating_out"
     },
     {
-      "id": "arif-0227",
-      "date": "2026-09-28",
-      "description": "DELIVEROO PLC LONDON",
-      "amount": -23.44,
+      "id": "arif-0200",
+      "date": "2026-09-27",
+      "description": "CARD PAYMENT TO PRIMARK 0414",
+      "amount": -14,
       "currency": "GBP",
-      "category": "eating_out"
+      "category": "shopping"
     },
     {
-      "id": "arif-0228",
+      "id": "arif-0201",
+      "date": "2026-09-28",
+      "description": "CARD PAYMENT TO CINEWORLD ILFORD",
+      "amount": -13.5,
+      "currency": "GBP",
+      "category": "entertainment"
+    },
+    {
+      "id": "arif-0202",
       "date": "2026-09-29",
       "description": "BACS CREDIT HARBOUR CATERING LTD WAGES",
-      "amount": 798.15,
+      "amount": 786.18,
       "currency": "GBP",
       "category": "salary"
     },
     {
-      "id": "arif-0229",
+      "id": "arif-0203",
       "date": "2026-09-29",
-      "description": "CARD PAYMENT TO TESCO EXPRESS 5474",
-      "amount": -21.99,
+      "description": "CARD PAYMENT TO NANDOS 0316 ILFORD",
+      "amount": -17.01,
       "currency": "GBP",
-      "category": "groceries"
+      "category": "eating_out"
     },
     {
-      "id": "arif-0230",
-      "date": "2026-09-29",
-      "description": "CARD PAYMENT TO TFL TRAVEL CH, TFL.GOV.UK/CP",
-      "amount": -12.09,
-      "currency": "GBP",
-      "category": "transport"
-    },
-    {
-      "id": "arif-0231",
+      "id": "arif-0204",
       "date": "2026-09-30",
       "description": "STANDING ORDER TO MARCUS SAVINGS",
       "amount": -25,
@@ -1854,279 +1638,255 @@
       "category": "savings_deposit"
     },
     {
-      "id": "arif-0232",
+      "id": "arif-0205",
       "date": "2026-09-30",
-      "description": "DELIVEROO PLC LONDON",
-      "amount": -28.93,
+      "description": "CARD PAYMENT TO PRET A MANGER 1403",
+      "amount": -6.82,
       "currency": "GBP",
       "category": "eating_out"
     },
     {
-      "id": "arif-0233",
+      "id": "arif-0206",
       "date": "2026-10-01",
-      "description": "STANDING ORDER - ROOM RENT - 14 EASTBROOK RD",
+      "description": "STANDING ORDER TO R PATEL - ROOM RENT",
       "amount": -780,
       "currency": "GBP",
       "category": "rent"
     },
     {
-      "id": "arif-0234",
+      "id": "arif-0207",
       "date": "2026-10-01",
-      "description": "CARD PAYMENT TO TESCO STORES 2811",
-      "amount": -11.82,
+      "description": "STANDING ORDER TO H ALI - UTILITIES SHARE",
+      "amount": -70,
       "currency": "GBP",
-      "category": "groceries"
+      "category": "utilities"
     },
     {
-      "id": "arif-0235",
-      "date": "2026-10-01",
-      "description": "CARD PAYMENT TO TESCO STORES 2811",
-      "amount": -9.02,
-      "currency": "GBP",
-      "category": "groceries"
-    },
-    {
-      "id": "arif-0236",
+      "id": "arif-0208",
       "date": "2026-10-02",
       "description": "CARD PAYMENT TO TESCO EXPRESS 5474",
-      "amount": -13.24,
+      "amount": -10.87,
       "currency": "GBP",
       "category": "groceries"
     },
     {
-      "id": "arif-0237",
+      "id": "arif-0209",
+      "date": "2026-10-02",
+      "description": "CARD PAYMENT TO TFL TRAVEL CH, TFL.GOV.UK/CP",
+      "amount": -14.5,
+      "currency": "GBP",
+      "category": "transport"
+    },
+    {
+      "id": "arif-0210",
       "date": "2026-10-03",
-      "description": "FASTER PAYMENT IN - FAMILY SUPPORT - M RAHMAN",
-      "amount": 805.41,
+      "description": "INTERNATIONAL PAYMENT FROM M RAHMAN - FAMILY SUPPORT",
+      "amount": 800,
       "currency": "GBP",
       "category": "family_support_in"
     },
     {
-      "id": "arif-0238",
-      "date": "2026-10-04",
-      "description": "AMAZON.CO.UK*RT4KD2 AMZNMKTPLACE",
-      "amount": -54.47,
+      "id": "arif-0211",
+      "date": "2026-10-03",
+      "description": "CARD PAYMENT TO LIDL GB LONDON",
+      "amount": -23.65,
       "currency": "GBP",
-      "category": "shopping"
+      "category": "groceries"
     },
     {
-      "id": "arif-0239",
+      "id": "arif-0212",
+      "date": "2026-10-04",
+      "description": "CARD PAYMENT TO NANDOS 0316 ILFORD",
+      "amount": -14.02,
+      "currency": "GBP",
+      "category": "eating_out"
+    },
+    {
+      "id": "arif-0213",
       "date": "2026-10-05",
-      "description": "SPOTIFY P1A2B3 STOCKHOLM",
+      "description": "SPOTIFY PA5B07DFE STOCKHOLM",
       "amount": -5.99,
       "currency": "GBP",
       "category": "entertainment"
     },
     {
-      "id": "arif-0240",
+      "id": "arif-0214",
       "date": "2026-10-05",
       "description": "CARD PAYMENT TO TESCO STORES 2811",
-      "amount": -41.46,
+      "amount": -33.4,
       "currency": "GBP",
       "category": "groceries"
     },
     {
-      "id": "arif-0241",
-      "date": "2026-10-05",
-      "description": "CARD PAYMENT TO GREGGS PLC 0921",
-      "amount": -6.59,
+      "id": "arif-0215",
+      "date": "2026-10-06",
+      "description": "CARD PAYMENT TO TFL TRAVEL CH, TFL.GOV.UK/CP",
+      "amount": -11.95,
       "currency": "GBP",
-      "category": "eating_out"
+      "category": "transport"
     },
     {
-      "id": "arif-0242",
+      "id": "arif-0216",
       "date": "2026-10-06",
-      "description": "DELIVEROO PLC LONDON",
-      "amount": -23.17,
+      "description": "CARD PAYMENT TO BARBER SHOP ILFORD",
+      "amount": -20,
       "currency": "GBP",
-      "category": "eating_out"
+      "category": "personal_care"
     },
     {
-      "id": "arif-0243",
-      "date": "2026-10-06",
-      "description": "CARD PAYMENT TO ODEON LEICESTER SQ",
-      "amount": -14.65,
+      "id": "arif-0217",
+      "date": "2026-10-07",
+      "description": "CARD PAYMENT TO CINEWORLD ILFORD",
+      "amount": -10.5,
       "currency": "GBP",
       "category": "entertainment"
     },
     {
-      "id": "arif-0244",
-      "date": "2026-10-07",
-      "description": "CARD PAYMENT TO NANDOS 0316 ILFORD",
-      "amount": -21.03,
-      "currency": "GBP",
-      "category": "eating_out"
-    },
-    {
-      "id": "arif-0245",
-      "date": "2026-10-08",
-      "description": "DIRECT DEBIT VIRGIN MEDIA",
-      "amount": -24,
-      "currency": "GBP",
-      "category": "mobile_internet"
-    },
-    {
-      "id": "arif-0246",
+      "id": "arif-0218",
       "date": "2026-10-08",
       "description": "DELIVEROO PLC LONDON",
-      "amount": -21.45,
+      "amount": -23.22,
       "currency": "GBP",
       "category": "eating_out"
     },
     {
-      "id": "arif-0247",
+      "id": "arif-0219",
       "date": "2026-10-09",
-      "description": "DELIVEROO PLC LONDON",
-      "amount": -27.6,
+      "description": "CARD PAYMENT TO PRET A MANGER 1403",
+      "amount": -7.35,
       "currency": "GBP",
       "category": "eating_out"
     },
     {
-      "id": "arif-0248",
+      "id": "arif-0220",
+      "date": "2026-10-10",
+      "description": "CARD PAYMENT TO TESCO STORES 2811",
+      "amount": -18.56,
+      "currency": "GBP",
+      "category": "groceries"
+    },
+    {
+      "id": "arif-0221",
       "date": "2026-10-11",
-      "description": "CARD PAYMENT TO GIFFGAFF TOP UP",
+      "description": "CARD PAYMENT TO GIFFGAFF.COM",
       "amount": -10,
       "currency": "GBP",
       "category": "mobile_internet"
     },
     {
-      "id": "arif-0249",
+      "id": "arif-0222",
       "date": "2026-10-12",
-      "description": "CARD PAYMENT TO TFL TRAVEL CH, TFL.GOV.UK/CP",
-      "amount": -9.21,
-      "currency": "GBP",
-      "category": "transport"
-    },
-    {
-      "id": "arif-0250",
-      "date": "2026-10-14",
-      "description": "DELIVEROO PLC LONDON",
-      "amount": -22.36,
+      "description": "CARD PAYMENT TO GREGGS PLC 0921",
+      "amount": -6.51,
       "currency": "GBP",
       "category": "eating_out"
     },
     {
-      "id": "arif-0251",
-      "date": "2026-10-15",
+      "id": "arif-0223",
+      "date": "2026-10-12",
+      "description": "DELIVEROO PLC LONDON",
+      "amount": -18.65,
+      "currency": "GBP",
+      "category": "eating_out"
+    },
+    {
+      "id": "arif-0224",
+      "date": "2026-10-13",
+      "description": "CARD PAYMENT TO TESCO EXPRESS 5474",
+      "amount": -36.38,
+      "currency": "GBP",
+      "category": "groceries"
+    },
+    {
+      "id": "arif-0225",
+      "date": "2026-10-13",
       "description": "CARD PAYMENT TO TFL TRAVEL CH, TFL.GOV.UK/CP",
-      "amount": -18.8,
+      "amount": -12,
       "currency": "GBP",
       "category": "transport"
     },
     {
-      "id": "arif-0252",
+      "id": "arif-0226",
       "date": "2026-10-16",
-      "description": "DIRECT DEBIT OCTOPUS ENERGY",
-      "amount": -49.8,
+      "description": "CARD PAYMENT TO BOOTS 1130",
+      "amount": -9.81,
       "currency": "GBP",
-      "category": "utilities"
+      "category": "healthcare"
     },
     {
-      "id": "arif-0253",
+      "id": "arif-0227",
       "date": "2026-10-17",
-      "description": "CARD PAYMENT TO TFL TRAVEL CH, TFL.GOV.UK/CP",
-      "amount": -13.75,
+      "description": "CARD PAYMENT TO TESCO EXPRESS 5474",
+      "amount": -25.45,
       "currency": "GBP",
-      "category": "transport"
+      "category": "groceries"
     },
     {
-      "id": "arif-0254",
-      "date": "2026-10-19",
-      "description": "CARD PAYMENT TO TFL TRAVEL CH, TFL.GOV.UK/CP",
-      "amount": -12.52,
+      "id": "arif-0228",
+      "date": "2026-10-18",
+      "description": "CARD PAYMENT TO PRET A MANGER 1403",
+      "amount": -6.24,
       "currency": "GBP",
-      "category": "transport"
+      "category": "eating_out"
     },
     {
-      "id": "arif-0255",
+      "id": "arif-0229",
+      "date": "2026-10-18",
+      "description": "CARD PAYMENT TO UNIQLO OXFORD STREET",
+      "amount": -74.9,
+      "currency": "GBP",
+      "category": "shopping"
+    },
+    {
+      "id": "arif-0230",
       "date": "2026-10-19",
-      "description": "CARD PAYMENT TO ODEON LEICESTER SQ",
-      "amount": -15.36,
+      "description": "CARD PAYMENT TO GREGGS PLC 0921",
+      "amount": -3.93,
+      "currency": "GBP",
+      "category": "eating_out"
+    },
+    {
+      "id": "arif-0231",
+      "date": "2026-10-19",
+      "description": "CARD PAYMENT TO PRET A MANGER 1403",
+      "amount": -5.65,
+      "currency": "GBP",
+      "category": "eating_out"
+    },
+    {
+      "id": "arif-0232",
+      "date": "2026-10-20",
+      "description": "CARD PAYMENT TO CINEWORLD ILFORD",
+      "amount": -11,
       "currency": "GBP",
       "category": "entertainment"
     },
     {
-      "id": "arif-0256",
-      "date": "2026-10-19",
-      "description": "CARD PAYMENT TO BARBER SHOP ILFORD",
-      "amount": -20.76,
-      "currency": "GBP",
-      "category": "personal_care"
-    },
-    {
-      "id": "arif-0257",
-      "date": "2026-10-20",
-      "description": "DIRECT DEBIT THAMES WATER",
-      "amount": -20.17,
-      "currency": "GBP",
-      "category": "utilities"
-    },
-    {
-      "id": "arif-0258",
-      "date": "2026-10-20",
-      "description": "CARD PAYMENT TO TESCO EXPRESS 5474",
-      "amount": -24.16,
-      "currency": "GBP",
-      "category": "groceries"
-    },
-    {
-      "id": "arif-0259",
-      "date": "2026-10-20",
-      "description": "CARD PAYMENT TO GREGGS PLC 0921",
-      "amount": -7.66,
+      "id": "arif-0233",
+      "date": "2026-10-21",
+      "description": "DELIVEROO PLC LONDON",
+      "amount": -16.44,
       "currency": "GBP",
       "category": "eating_out"
     },
     {
-      "id": "arif-0260",
-      "date": "2026-10-21",
-      "description": "CARD PAYMENT TO TESCO STORES 2811",
-      "amount": -31.38,
-      "currency": "GBP",
-      "category": "groceries"
-    },
-    {
-      "id": "arif-0261",
-      "date": "2026-10-21",
-      "description": "CARD PAYMENT TO TFL TRAVEL CH, TFL.GOV.UK/CP",
-      "amount": -10.42,
-      "currency": "GBP",
-      "category": "transport"
-    },
-    {
-      "id": "arif-0262",
-      "date": "2026-10-21",
-      "description": "CARD PAYMENT TO GREGGS PLC 0921",
-      "amount": -3.84,
-      "currency": "GBP",
-      "category": "eating_out"
-    },
-    {
-      "id": "arif-0263",
+      "id": "arif-0234",
       "date": "2026-10-22",
       "description": "NETFLIX.COM",
-      "amount": -10.99,
+      "amount": -12.99,
       "currency": "GBP",
       "category": "entertainment"
     },
     {
-      "id": "arif-0264",
-      "date": "2026-10-22",
-      "description": "CARD PAYMENT TO TFL TRAVEL CH, TFL.GOV.UK/CP",
-      "amount": -17.66,
-      "currency": "GBP",
-      "category": "transport"
-    },
-    {
-      "id": "arif-0265",
+      "id": "arif-0235",
       "date": "2026-10-24",
-      "description": "CARD PAYMENT TO TFL TRAVEL CH, TFL.GOV.UK/CP",
-      "amount": -11.76,
+      "description": "DELIVEROO PLC LONDON",
+      "amount": -18.6,
       "currency": "GBP",
-      "category": "transport"
+      "category": "eating_out"
     },
     {
-      "id": "arif-0266",
+      "id": "arif-0236",
       "date": "2026-10-25",
       "description": "CARD PAYMENT TO PURE GYM LTD LONDON",
       "amount": -22.99,
@@ -2134,47 +1894,87 @@
       "category": "personal_care"
     },
     {
-      "id": "arif-0267",
+      "id": "arif-0237",
+      "date": "2026-10-25",
+      "description": "CARD PAYMENT TO GREGGS PLC 0921",
+      "amount": -8.93,
+      "currency": "GBP",
+      "category": "eating_out"
+    },
+    {
+      "id": "arif-0238",
       "date": "2026-10-26",
-      "description": "CARD PAYMENT TO NANDOS 0316 ILFORD",
-      "amount": -17.59,
+      "description": "CARD PAYMENT TO TFL TRAVEL CH, TFL.GOV.UK/CP",
+      "amount": -19.9,
       "currency": "GBP",
-      "category": "eating_out"
+      "category": "transport"
     },
     {
-      "id": "arif-0268",
-      "date": "2026-10-27",
-      "description": "CARD PAYMENT TO PRET A MANGER 1403",
-      "amount": -6.95,
-      "currency": "GBP",
-      "category": "eating_out"
-    },
-    {
-      "id": "arif-0269",
-      "date": "2026-10-29",
-      "description": "BACS CREDIT HARBOUR CATERING LTD WAGES",
-      "amount": 864.45,
-      "currency": "GBP",
-      "category": "salary"
-    },
-    {
-      "id": "arif-0270",
-      "date": "2026-10-29",
-      "description": "CARD PAYMENT TO LIDL GB LONDON",
-      "amount": -14.31,
-      "currency": "GBP",
-      "category": "groceries"
-    },
-    {
-      "id": "arif-0271",
-      "date": "2026-10-30",
-      "description": "CARD PAYMENT TO UNIQLO OXFORD STREET",
-      "amount": -83.37,
+      "id": "arif-0239",
+      "date": "2026-10-26",
+      "description": "CARD PAYMENT TO PRIMARK 0414",
+      "amount": -46,
       "currency": "GBP",
       "category": "shopping"
     },
     {
-      "id": "arif-0272",
+      "id": "arif-0240",
+      "date": "2026-10-27",
+      "description": "CARD PAYMENT TO TESCO STORES 2811",
+      "amount": -24.71,
+      "currency": "GBP",
+      "category": "groceries"
+    },
+    {
+      "id": "arif-0241",
+      "date": "2026-10-28",
+      "description": "DELIVEROO PLC LONDON",
+      "amount": -26.81,
+      "currency": "GBP",
+      "category": "eating_out"
+    },
+    {
+      "id": "arif-0242",
+      "date": "2026-10-28",
+      "description": "CARD PAYMENT TO PRIMARK 0414",
+      "amount": -20,
+      "currency": "GBP",
+      "category": "shopping"
+    },
+    {
+      "id": "arif-0243",
+      "date": "2026-10-29",
+      "description": "BACS CREDIT HARBOUR CATERING LTD WAGES",
+      "amount": 834.2,
+      "currency": "GBP",
+      "category": "salary"
+    },
+    {
+      "id": "arif-0244",
+      "date": "2026-10-29",
+      "description": "CARD PAYMENT TO TESCO EXPRESS 5474",
+      "amount": -22.53,
+      "currency": "GBP",
+      "category": "groceries"
+    },
+    {
+      "id": "arif-0245",
+      "date": "2026-10-30",
+      "description": "CARD PAYMENT TO TFL TRAVEL CH, TFL.GOV.UK/CP",
+      "amount": -10.55,
+      "currency": "GBP",
+      "category": "transport"
+    },
+    {
+      "id": "arif-0246",
+      "date": "2026-10-30",
+      "description": "DELIVEROO PLC LONDON",
+      "amount": -28.82,
+      "currency": "GBP",
+      "category": "eating_out"
+    },
+    {
+      "id": "arif-0247",
       "date": "2026-10-31",
       "description": "STANDING ORDER TO MARCUS SAVINGS",
       "amount": -25,
@@ -2182,10 +1982,34 @@
       "category": "savings_deposit"
     },
     {
-      "id": "arif-0273",
+      "id": "arif-0248",
+      "date": "2026-10-31",
+      "description": "CARD PAYMENT TO TESCO EXPRESS 5474",
+      "amount": -41.33,
+      "currency": "GBP",
+      "category": "groceries"
+    },
+    {
+      "id": "arif-0249",
+      "date": "2026-10-31",
+      "description": "CARD PAYMENT TO TFL TRAVEL CH, TFL.GOV.UK/CP",
+      "amount": -17.8,
+      "currency": "GBP",
+      "category": "transport"
+    },
+    {
+      "id": "arif-0250",
       "date": "2026-10-31",
       "description": "DELIVEROO PLC LONDON",
-      "amount": -17.74,
+      "amount": -20.5,
+      "currency": "GBP",
+      "category": "eating_out"
+    },
+    {
+      "id": "arif-0251",
+      "date": "2026-10-31",
+      "description": "CARD PAYMENT TO NANDOS 0316 ILFORD",
+      "amount": -14.88,
       "currency": "GBP",
       "category": "eating_out"
     }

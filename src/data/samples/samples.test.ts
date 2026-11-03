@@ -490,6 +490,45 @@ describe('Arif, MSc student in the UK', () => {
     expect(saved).toBeGreaterThan(0)
     expect(saved / income).toBeLessThan(0.1)
   })
+
+  it('gets family support as a round sum in pounds from abroad, and a ticket home in August', () => {
+    const support = inCategory('arif', 'family_support_in')
+    for (const line of support) {
+      expect(line.description, line.id).toMatch(/^INTERNATIONAL PAYMENT FROM /)
+      expect(line.amount % 50, line.id).toBe(0)
+    }
+    expect(support.filter((line) => /ticket/i.test(line.description)).map((line) => line.date))
+      .toEqual(['2026-08-02'])
+  })
+
+  it('rents a room: a fixed rent and a fixed share of the bills, with no energy or water direct debits', () => {
+    expect(monthlyTotals('arif', 'rent')).toEqual(Array(6).fill(-780))
+    expect(monthlyTotals('arif', 'utilities')).toEqual(Array(6).fill(-70))
+    for (const line of inCategory('arif', 'rent')) {
+      expect(line.description, line.id).toMatch(/^STANDING ORDER TO [A-Z] [A-Z]+ - /)
+    }
+    const statement = SAMPLES.arif.transactions.map((line) => line.description).join('\n')
+    // No energy, water or broadband direct debits, and no street address in a payee.
+    expect(statement).not.toMatch(/direct debit|octopus|thames|virgin media|\b\d+ [A-Z]+ RD\b/i)
+  })
+
+  it('has a different reference on every Spotify and Amazon line, in the shape those firms use', () => {
+    const spotify = SAMPLES.arif.transactions.filter((line) => /spotify/i.test(line.description))
+    const amazon = SAMPLES.arif.transactions.filter((line) => /amazon/i.test(line.description))
+    expect(spotify).toHaveLength(6)
+    expect(amazon.length).toBeGreaterThan(0)
+    for (const line of spotify) expect(line.description).toMatch(/^SPOTIFY P[0-9A-F]{8} STOCKHOLM$/)
+    for (const line of amazon) {
+      expect(line.description).toMatch(/^AMAZON\.CO\.UK\*[A-Z0-9]{9} AMZNMKTPLACE$/)
+    }
+    expect(new Set(spotify.map((line) => line.description)).size).toBe(spotify.length)
+    expect(new Set(amazon.map((line) => line.description)).size).toBe(amazon.length)
+  })
+
+  it('has dinner out on Eid-ul-Adha', () => {
+    const dinner = inCategory('arif', 'eating_out').filter((line) => line.date === EID_ADHA)
+    expect(dinner.some((line) => /biryani/i.test(line.description))).toBe(true)
+  })
 })
 
 describe('Rahim, construction worker in Singapore', () => {
