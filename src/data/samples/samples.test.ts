@@ -61,12 +61,30 @@ function total(transactions: readonly Transaction[]): number {
   return transactions.reduce((sum, transaction) => sum + transaction.amount, 0)
 }
 
-/** What a category adds up to in each month, May to October. Money out comes back negative. */
-function monthlyTotals(id: PersonId, category: CategoryId): number[] {
-  const transactions = inCategory(id, category)
+/** What some lines add up to in each month, May to October. */
+function monthlyTotalsOf(transactions: readonly Transaction[]): number[] {
   return MAY_TO_OCT.map((month) =>
     total(transactions.filter((transaction) => monthOf(transaction.date) === month)),
   )
+}
+
+/** What a category adds up to in each month, May to October. Money out comes back negative. */
+function monthlyTotals(id: PersonId, category: CategoryId): number[] {
+  return monthlyTotalsOf(inCategory(id, category))
+}
+
+/**
+ * Follows a wallet's balance line by line, from nothing: the lowest it gets and where it
+ * ends. `belongs` picks the wallet's lines.
+ */
+function walletBalance(id: PersonId, belongs: (transaction: Transaction) => boolean) {
+  let balance = 0
+  let lowest = 0
+  for (const transaction of SAMPLES[id].transactions.filter(belongs)) {
+    balance += transaction.amount
+    lowest = Math.min(lowest, balance)
+  }
+  return { lowest, final: balance }
 }
 
 /** True when the category has a payment in every one of the six months. */
@@ -352,8 +370,54 @@ describe('Tanvir, freelance developer in Dhaka', () => {
 
 describe('Farhana, office worker in Dhaka', () => {
   it('is paid 65,000 taka a month and pays 22,000 rent', () => {
-    expect(monthlyTotals('farhana', 'salary')).toEqual(Array(6).fill(65_000))
+    const pay = inCategory('farhana', 'salary').filter((line) => /^salary/i.test(line.description))
+    expect(monthlyTotalsOf(pay)).toEqual(Array(6).fill(65_000))
     expect(monthlyTotals('farhana', 'rent')).toEqual(Array(6).fill(-22_000))
+  })
+
+  it('gets a festival bonus before Eid, and Eid costs her more than the bonus', () => {
+    // The word "bonus" is what makes the categoriser read it as salary.
+    const bonus = inCategory('farhana', 'salary').filter((line) => /bonus/i.test(line.description))
+    expect(bonus).toHaveLength(1)
+    expect(bonus[0]?.date.startsWith('2026-05')).toBe(true)
+    expect(bonus[0] && bonus[0].date < EID_ADHA).toBe(true)
+
+    // From the day the bonus lands to the day after Eid: the qurbani share sent to her mother,
+    // Eid clothes and salami.
+    const eidLines = SAMPLES.farhana.transactions.filter(
+      (line) => line.date >= (bonus[0]?.date ?? '') && line.date <= '2026-05-28',
+    )
+    const qurbani = eidLines.filter((line) => /qurbani/i.test(line.description))
+    expect(qurbani).toHaveLength(1)
+    expect(qurbani[0]?.category).toBe('family_support_out')
+    const eidSpending = total(
+      eidLines.filter((line) =>
+        ['family_support_out', 'gifts', 'shopping'].includes(line.category),
+      ),
+    )
+    expect(-eidSpending).toBeGreaterThan(bonus[0]?.amount ?? Infinity)
+
+    // Salami goes out close to Eid itself.
+    const salami = inCategory('farhana', 'gifts')
+    expect(salami.length).toBeGreaterThanOrEqual(2)
+    for (const line of salami) {
+      expect(line.date >= '2026-05-24' && line.date <= EID_ADHA, line.id).toBe(true)
+    }
+  })
+
+  it('covers part of what she overspends with two loans from a relative, which are not income', () => {
+    const loans = inCategory('farhana', 'loan_received')
+    expect(loans).toHaveLength(2)
+    for (const loan of loans) {
+      expect(loan.amount).toBeGreaterThan(0)
+      expect(loan.description).toMatch(/loan from shila apa/i)
+    }
+    // Everything counted as income is her pay: six salaries and the bonus.
+    expect(analyse('farhana').measures.income).toBe(6 * 65_000 + 20_000)
+    // The borrowing is smaller than what she overspends by, so it does not hide the gap.
+    const { measures } = analyse('farhana')
+    const gap = -(measures.income - measures.spending - measures.debtPayments)
+    expect(gap).toBeGreaterThan(total(loans))
   })
 
   it('pays a 12,000 taka loan EMI and a credit card bill every month', () => {
@@ -384,6 +448,16 @@ describe('Farhana, office worker in Dhaka', () => {
   it('tops up bKash from her bank every month, which is neither income nor spending', () => {
     expect(everyMonth('farhana', 'own_transfer')).toBe(true)
     expect(monthlyTotals('farhana', 'own_transfer')).toEqual(Array(6).fill(0))
+  })
+
+  it('keeps enough in bKash to pay from it: the balance never goes below zero or piles up', () => {
+    // The bank's side of a top-up also says "bKash", so it is left out.
+    const bkash = (line: Transaction) =>
+      /bkash/i.test(line.description) && !/^add money to bkash/i.test(line.description)
+    const { lowest, final } = walletBalance('farhana', bkash)
+    expect(lowest).toBe(0)
+    expect(final).toBeLessThan(10_000)
+    expect(SAMPLES.farhana.transactions.filter(bkash).some((line) => line.amount < 0)).toBe(true)
   })
 
   it('spends more than she earns once debt payments are counted, with almost no reserve', () => {

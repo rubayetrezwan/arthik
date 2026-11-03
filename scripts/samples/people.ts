@@ -366,8 +366,18 @@ export const TANVIR: Persona = {
 export const FARHANA: Persona = {
   // Office worker renting a flat in Mirpur. Earns 65,000 taka, but rent, a personal loan
   // and a credit card she never clears take most of it. Heavy Daraz shopping, paid by bKash.
+  //
+  // Her salary account and her bKash wallet are in the same file. Money moved between them
+  // is not income or spending: it shows up on both sides and is not counted. She tops the
+  // wallet up from the bank on the 1st and again mid-month, enough to cover what she pays
+  // from it. She spends more than she earns, and the gap is covered by two loans from a
+  // relative (which are not income) and by running down what she had.
+  //
+  // Eid-ul-Adha is on 27 May. Her employer pays a festival bonus of half the basic salary on
+  // the 19th. She buys Eid clothes at Aarong, sends 15,000 to her mother for a qurbani share
+  // and gives salami on the 25th and 26th. That is more than the bonus.
   id: 'farhana',
-  seed: 3303,
+  seed: 3349,
   currency: 'BDT',
   emergencySavings: 5_000,
   monthly: [
@@ -378,18 +388,36 @@ export const FARHANA: Persona = {
       amount: 65_000,
     },
     {
-      // Her bank account and her bKash wallet are in the same file. Money moved between
-      // them is not income or spending, so it shows up on both sides and is not counted.
-      day: 2,
-      category: 'own_transfer',
-      description: 'Add Money to bKash 01711xxxxxx - City Bank A/C',
-      amount: -20_000,
+      day: 19,
+      inMonths: [5],
+      category: 'salary',
+      description: 'Festival Bonus - Padma Logistics Ltd (BEFTN Credit)',
+      amount: 20_000,
     },
     {
-      day: 2,
+      day: 1,
       category: 'own_transfer',
-      description: 'bKash Add Money from City Bank A/C xxxx4821',
-      amount: 20_000,
+      description: 'Add Money to bKash 01711xxxxxx - City Bank A/C',
+      mirror: 'bKash Add Money from City Bank A/C xxxx4821',
+      amount: -12_000,
+    },
+    {
+      day: 14,
+      jitterDays: 2,
+      category: 'own_transfer',
+      description: 'Add Money to bKash 01711xxxxxx - City Bank A/C',
+      mirror: 'bKash Add Money from City Bank A/C xxxx4821',
+      amount: [-8_000, -2_000],
+      roundTo: 1_000,
+    },
+    {
+      // Extra for the Eid shopping, the qurbani share and the salami.
+      day: 20,
+      inMonths: [5],
+      category: 'own_transfer',
+      description: 'Add Money to bKash 01711xxxxxx - City Bank A/C',
+      mirror: 'bKash Add Money from City Bank A/C xxxx4821',
+      amount: -25_000,
     },
     {
       day: 5,
@@ -404,23 +432,26 @@ export const FARHANA: Persona = {
       amount: -12_000,
     },
     {
+      // Her postpaid plan costs the same each month.
       day: 9,
       category: 'mobile_internet',
-      description: 'Grameenphone Postpaid Bill 01711xxxxxx (bKash Pay Bill)',
-      amount: [-999, -799],
+      description: 'bKash Pay Bill - Grameenphone Postpaid 01711xxxxxx',
+      amount: -899,
     },
     {
       day: 11,
       category: 'mobile_internet',
-      description: 'Link3 Broadband Bill (bKash Pay Bill)',
+      description: 'bKash Pay Bill - Link3 Broadband',
       amount: -1_100,
     },
     {
+      // A prepaid meter: she tops it up in a round amount when it runs low.
       day: 14,
       jitterDays: 3,
       category: 'utilities',
-      description: 'DESCO Prepaid Meter Recharge (bKash Pay Bill)',
-      amount: [-2_300, -1_400],
+      description: 'bKash Pay Bill - DESCO Prepaid Meter Recharge',
+      amount: [-2_500, -1_500],
+      roundTo: 500,
     },
     {
       day: 18,
@@ -428,19 +459,63 @@ export const FARHANA: Persona = {
       category: 'card_payment',
       description: 'Credit Card Bill Payment - EBL Visa xx5512',
       amount: [-15_000, -11_000],
-      roundTo: 50,
+      roundTo: 500,
     },
     {
       day: 21,
       category: 'entertainment',
-      description: 'Netflix Subscription',
+      description: 'NETFLIX.COM - City Bank Debit Card',
       amount: -800,
     },
     {
       day: 'last',
       category: 'utilities',
-      description: 'Titas Gas Bill - Mirpur 12 (bKash Pay Bill)',
+      description: 'bKash Pay Bill - Titas Gas, Mirpur 12',
       amount: -990,
+    },
+    {
+      // Two loans from a cousin, paid into bKash. Borrowed money is not income.
+      day: 9,
+      inMonths: [7],
+      category: 'loan_received',
+      description: 'bKash Received 01912xxxxxx - Loan from Shila Apa',
+      amount: 15_000,
+    },
+    {
+      day: 6,
+      inMonths: [10],
+      category: 'loan_received',
+      description: 'bKash Received 01912xxxxxx - Loan from Shila Apa',
+      amount: 10_000,
+    },
+    {
+      day: 21,
+      inMonths: [5],
+      category: 'family_support_out',
+      description: 'bKash Send Money to Ammu 01715xxxxxx - Qurbani share',
+      amount: -15_000,
+    },
+    {
+      day: 22,
+      inMonths: [5],
+      category: 'shopping',
+      description: 'bKash Payment - AARONG, Mirpur',
+      amount: [-5_500, -3_500],
+      roundTo: 100,
+    },
+    {
+      day: 25,
+      inMonths: [5],
+      category: 'gifts',
+      description: 'bKash Send Money 01618xxxxxx - Eid salami',
+      amount: -1_500,
+    },
+    {
+      day: 26,
+      inMonths: [5],
+      category: 'gifts',
+      description: 'bKash Send Money 01819xxxxxx - Eid salami',
+      amount: -2_000,
     },
   ],
   scattered: [
@@ -479,6 +554,7 @@ export const FARHANA: Persona = {
       category: 'personal_care',
       description: 'Yellow Beauty Parlour, Mirpur 10 - bKash Payment',
       amount: [-1_800, -900],
+      roundTo: 100,
     },
     {
       // The 9.9 sale.
@@ -487,21 +563,6 @@ export const FARHANA: Persona = {
       category: 'shopping',
       description: 'bKash Payment - Daraz 9.9 Sale Order #{ref}',
       amount: [-6_500, -5_000],
-    },
-    {
-      // Eid-ul-Adha is at the end of May.
-      perMonth: [1, 1],
-      inMonths: [5],
-      category: 'shopping',
-      description: 'bKash Payment - Aarong Eid Collection, Mirpur',
-      amount: [-4_500, -2_500],
-    },
-    {
-      perMonth: [1, 1],
-      inMonths: [5],
-      category: 'gifts',
-      description: 'bKash Send Money 01715xxxxxx - Eid salami',
-      amount: [-2_000, -1_500],
     },
   ],
 }
