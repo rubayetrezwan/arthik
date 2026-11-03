@@ -1,9 +1,11 @@
 // Loads the web fonts a language needs, and only those (spec 9a, "Type, per script").
 //
 // The fonts are self-hosted through @fontsource, so the browser never contacts Google.
-// Each set is a dynamic import, which the build turns into its own chunk, fetched when a
-// language that needs it is first shown. This file only loads fonts: the font-family
-// rules that use them live in the stylesheets.
+// Each import is a stylesheet of @font-face rules. The build keeps every one as its own
+// CSS file, outside the main bundle, and the dynamic import adds it to the page when a
+// language that needs it is first shown. The font files inside are fetched later, by the
+// browser, only when text uses them. This file only loads stylesheets: the font-family
+// rules that use the fonts live in the app's own CSS.
 //
 // Only the weights the design uses are loaded: 400, 500 and 600, plus Newsreader italic.
 // Tiro Bangla and Tiro Devanagari Hindi are published in 400 alone.
@@ -79,7 +81,10 @@ async function fetchFonts(l: LocaleCode): Promise<void> {
   }
 }
 
-/** Loads the fonts for a language once. The promise never rejects. */
+/**
+ * Loads the font stylesheets for a language, once. The promise resolves when the CSS is in,
+ * not when the font files have downloaded, and it never rejects.
+ */
 export function loadFonts(l: LocaleCode): Promise<void> {
   let request = requests.get(l)
   if (!request) {

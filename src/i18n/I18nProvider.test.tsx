@@ -3,7 +3,7 @@ import userEvent from '@testing-library/user-event'
 import { FormattedMessage } from 'react-intl'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { PrefsProvider, usePrefs } from '../state/prefs'
-import { I18nProvider } from './I18nProvider'
+import { I18nProvider, useLocale } from './I18nProvider'
 import { loadFonts } from './fonts'
 import { loadMessages } from './loadMessages'
 import { LOCALE_CODES, LOCALES } from './locales'
@@ -39,14 +39,41 @@ function LanguageButtons() {
   )
 }
 
+/** Shows the language that was asked for next to the one that is on screen. */
+function Status() {
+  const { locale: asked } = usePrefs()
+  const shown = useLocale()
+
+  return (
+    <p>
+      asked {asked}, shown {shown}
+    </p>
+  )
+}
+
 function renderApp() {
   return render(
     <PrefsProvider>
       <I18nProvider>
         <LanguageButtons />
+        <Status />
       </I18nProvider>
     </PrefsProvider>,
   )
+}
+
+/** Collects every change made to the page's lang and dir attributes. */
+function watchPageAttributes() {
+  const changes: MutationRecord[] = []
+  const observer = new MutationObserver((records) => changes.push(...records))
+  observer.observe(html, { attributes: true, attributeFilter: ['lang', 'dir'] })
+  return {
+    changes() {
+      changes.push(...observer.takeRecords())
+      return changes
+    },
+    stop: () => observer.disconnect(),
+  }
 }
 
 beforeEach(() => {
@@ -86,9 +113,13 @@ describe('I18nProvider', () => {
   })
 
   it.each(LOCALE_CODES)('sets the page language and direction for %s', async (l) => {
+    // Start somewhere else, with the page already showing it, so the check cannot pass
+    // on what was there before the click.
+    const start = l === 'fr' ? 'es' : 'fr'
     const user = userEvent.setup()
-    localStorage.setItem('arthik.locale', 'fr')
+    localStorage.setItem('arthik.locale', start)
     renderApp()
+    await waitFor(() => expect(html.lang).toBe(LOCALES[start].intl))
 
     await user.click(screen.getByRole('button', { name: LOCALES[l].nativeName }))
 
@@ -182,6 +213,61 @@ describe('I18nProvider', () => {
     expect(html.dir).toBe('ltr')
   })
 
+  it('tells components which language is on screen, not the one asked for', async () => {
+    const messages = deferred<typeof en>()
+    vi.mocked(loadMessages).mockReturnValue(messages.promise)
+    const user = userEvent.setup()
+    renderApp()
+    expect(screen.getByText('asked en, shown en')).toBeInTheDocument()
+
+    await user.click(screen.getByRole('button', { name: 'العربية' }))
+
+    expect(screen.getByText('asked ar, shown en')).toBeInTheDocument()
+
+    messages.resolve(en)
+
+    expect(await screen.findByText('asked ar, shown ar')).toBeInTheDocument()
+  })
+
+  it('does not rewrite a page language and direction that already match', async () => {
+    const attributes = watchPageAttributes()
+    const user = userEvent.setup()
+    renderApp()
+    await screen.findByText('asked en, shown en')
+
+    expect(attributes.changes()).toHaveLength(0)
+
+    await user.click(screen.getByRole('button', { name: 'العربية' }))
+    await screen.findByText('asked ar, shown ar')
+
+    // Only the switch itself wrote anything: one change each for lang and dir.
+    expect(attributes.changes()).toHaveLength(2)
+    attributes.stop()
+  })
+
+  it('keeps a page language and direction that were set early for the saved language', async () => {
+    html.lang = 'ar'
+    html.dir = 'rtl'
+    localStorage.setItem('arthik.locale', 'ar')
+    const messages = deferred<typeof en>()
+    vi.mocked(loadMessages).mockReturnValue(messages.promise)
+    const attributes = watchPageAttributes()
+
+    renderApp()
+
+    expect(html.lang).toBe('ar')
+    expect(html.dir).toBe('rtl')
+    expect(screen.getByText('asked ar, shown en')).toBeInTheDocument()
+
+    messages.resolve(en)
+    await screen.findByText('asked ar, shown ar')
+
+    expect(html.lang).toBe('ar')
+    expect(html.dir).toBe('rtl')
+    expect(attributes.changes()).toHaveLength(0)
+    attributes.stop()
+  })
+
   it('does not log an error when a language has no translations yet', async () => {
     const error = vi.spyOn(console, 'error')
     const user = userEvent.setup()
@@ -192,5 +278,17 @@ describe('I18nProvider', () => {
 
     expect(screen.getByRole('heading', { name: 'Arthik' })).toBeInTheDocument()
     expect(error).not.toHaveBeenCalled()
+  })
+})
+
+describe('useLocale', () => {
+  it('says so when it is used outside the provider', () => {
+    function Lonely() {
+      useLocale()
+      return null
+    }
+    vi.spyOn(console, 'error').mockImplementation(() => {})
+
+    expect(() => render(<Lonely />)).toThrow(/I18nProvider/)
   })
 })
