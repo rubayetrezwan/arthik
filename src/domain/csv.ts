@@ -8,7 +8,7 @@ import Papa, { type ParseError } from 'papaparse'
 import { CATEGORIES, categoriesFor } from './categories'
 import { categorize } from './categorize'
 import { CATEGORY_LABELS_EN } from './categoryLabels'
-import { parseAmount, parseDate } from './csvCells'
+import { parseAmount, readDateCell } from './csvCells'
 import { CURRENCY_CODES, type CategoryId, type CurrencyCode, type Transaction } from './types'
 
 export type CsvErrorCode =
@@ -23,11 +23,13 @@ export type CsvErrorCode =
   | 'too_many_rows'
   /** A row has more cells than the header: an unquoted comma in an amount or description shifted its cells. */
   | 'extra_cells'
+  /** The file writes dates month first (a date such as 10/31/2026), so dates that could be read either way are rejected. */
+  | 'month_first_dates'
 
 export interface CsvError {
   /**
    * Row number as a spreadsheet shows it, so the header is row 1. Row 0 means the file as
-   * a whole (empty, no rows, too many rows). For `bad_quotes` it is the row where the
+   * a whole (empty, no rows, too many rows, month-first dates). For `bad_quotes` it is the row where the
    * broken record begins.
    */
   row: number
@@ -168,9 +170,21 @@ function isCsvError(value: unknown): value is CsvError {
   return typeof value === 'object' && value !== null && 'code' in value
 }
 
-function readDate(cells: readonly string[], row: number, column: Column): string | CsvError {
+/**
+ * A date such as 10/05/2026 is read day first, unless the file has shown that it writes month
+ * first (`monthFirstFile`). Then it could be either, and it is not read at all.
+ */
+function readDate(
+  cells: readonly string[],
+  row: number,
+  column: Column,
+  monthFirstFile: boolean,
+): string | CsvError {
   const text = cellText(cells, column)
-  return parseDate(text) ?? cellError(row, 'bad_date', column, text)
+  const { date, ambiguous } = readDateCell(text)
+  return date === null || (monthFirstFile && ambiguous)
+    ? cellError(row, 'bad_date', column, text)
+    : date
 }
 
 /** The amount of a row, signed (money in is positive). */
@@ -287,6 +301,7 @@ function readRow(
   row: number,
   columns: Columns,
   defaultCurrency: CurrencyCode,
+  monthFirstFile: boolean,
 ): RowOutcome {
   // Nothing in a row that does not line up with the header can be trusted, so it is checked
   // before anything else, and nothing else about the row is reported.
@@ -297,7 +312,7 @@ function readRow(
   // and not worth an error, whatever else the row holds.
   if (amount === 0) return { kind: 'skipped' }
 
-  const date = readDate(cells, row, columns.date)
+  const date = readDate(cells, row, columns.date, monthFirstFile)
   const currency = readCurrency(cells, row, columns.currency, defaultCurrency)
   const description = cellText(cells, columns.description)
   // The category has to fit the direction of the money, so it waits for a readable amount.
@@ -435,7 +450,9 @@ function swallowsDatedRow(cells: readonly string[], delimiter: string): boolean 
         .slice(1)
         .some((line) => {
           const end = line.indexOf(delimiter)
-          return end !== -1 && parseDate(line.slice(0, end).trim()) !== null
+          if (end === -1) return false
+          const { date, monthFirstOnly } = readDateCell(line.slice(0, end).trim())
+          return date !== null || monthFirstOnly
         }),
   )
 }
@@ -521,10 +538,18 @@ export function parseTransactionsCsv(text: string, defaultCurrency: CurrencyCode
   }
   if (dataRows.length > MAX_ROWS) return rejected({ row: 0, code: 'too_many_rows' })
 
+  // One date that can only be month first (10/31/2026) shows how the whole file writes its
+  // dates. Every row counts, even one that is skipped or has another problem, because the date
+  // is still what the file wrote.
+  const monthFirstFile = dataRows.some(
+    ({ cells }) => readDateCell(cellText(cells, columns.date)).monthFirstOnly,
+  )
+
   const transactions: Transaction[] = []
   const errors: CsvError[] = []
+  if (monthFirstFile) errors.push({ row: 0, code: 'month_first_dates' })
   for (const { row, cells } of dataRows) {
-    const outcome = readRow(cells, row, columns, defaultCurrency)
+    const outcome = readRow(cells, row, columns, defaultCurrency, monthFirstFile)
     if (outcome.kind === 'transaction') transactions.push(outcome.transaction)
     else if (outcome.kind === 'errors') errors.push(...outcome.errors)
   }

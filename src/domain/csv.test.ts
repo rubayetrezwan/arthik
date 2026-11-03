@@ -320,7 +320,9 @@ describe('parseTransactionsCsv: dates', () => {
   it('reads dates day first, so 10/31/2026 is not a date', () => {
     const { transactions, errors } = parseRow('10/31/2026,Test,-10,,')
     expect(transactions).toEqual([])
+    // The row's own error is the bad_date; the other says why, for the whole file.
     expect(errors).toEqual<CsvError[]>([
+      { row: 0, code: 'month_first_dates' },
       { row: 2, code: 'bad_date', column: 'date', value: '10/31/2026' },
     ])
   })
@@ -364,6 +366,182 @@ describe('parseTransactionsCsv: dates', () => {
     const { transactions, errors } = parseRow(`${cell},Test,-10,,`)
     expect(transactions).toEqual([])
     expect(errors).toEqual<CsvError[]>([{ row: 2, code: 'bad_date', column: 'date', value: cell }])
+  })
+})
+
+describe('parseTransactionsCsv: month-first dates', () => {
+  // 10/05/2026 is 10 May day first and 5 October month first. On its own it is read day
+  // first, as before. But a date such as 10/31/2026 can only be month first, and a file
+  // that has one writes all its dates that way, so 10/05/2026 in it is not to be trusted.
+  const HEAD = 'date,description,amount'
+
+  it('reports every ambiguous date once the file shows it writes month first', () => {
+    const { transactions, errors } = parseTransactionsCsv(
+      file(
+        HEAD,
+        '10/05/2026,Rent,-100', // row 2: 10 May or 5 October
+        '10/31/2026,Shop,-50', // row 3: can only be 31 October
+        '05/05/2026,Same day and month,-20', // row 4: the same either way
+        '2026-10-06,Written in full,-30', // row 5
+        '13/10/2026,Plainly day first,-40', // row 6
+      ),
+      'BDT',
+    )
+    expect(transactions.map((t) => [t.id, t.date])).toEqual([
+      ['row-4', '2026-05-05'],
+      ['row-5', '2026-10-06'],
+      ['row-6', '2026-10-13'],
+    ])
+    expect(errors).toEqual<CsvError[]>([
+      { row: 0, code: 'month_first_dates' },
+      { row: 2, code: 'bad_date', column: 'date', value: '10/05/2026' },
+      { row: 3, code: 'bad_date', column: 'date', value: '10/31/2026' },
+    ])
+  })
+
+  it('sees equal parts as the same date however many digits they are written with', () => {
+    const { transactions, errors } = parseTransactionsCsv(
+      file(HEAD, '5/05/2026,A,-1', '05/5/2026,B,-2', '5/5/2026,C,-3', '10/31/2026,D,-4'),
+      'BDT',
+    )
+    expect(transactions.map((t) => [t.id, t.date])).toEqual([
+      ['row-2', '2026-05-05'],
+      ['row-3', '2026-05-05'],
+      ['row-4', '2026-05-05'],
+    ])
+    expect(errors.map((e) => [e.row, e.code])).toEqual([
+      [0, 'month_first_dates'],
+      [5, 'bad_date'],
+    ])
+  })
+
+  it('does not mind which comes first, the ambiguous date or the one that gives it away', () => {
+    const rows = ['10/05/2026,Rent,-100', '03/04/2026,Tea,-5', '10/31/2026,Shop,-50']
+    for (const order of [rows, [...rows].reverse()]) {
+      const { transactions, errors } = parseTransactionsCsv(file(HEAD, ...order), 'BDT')
+      expect(transactions, order.join('|')).toEqual([])
+      expect(errors.map((e) => e.code), order.join('|')).toEqual([
+        'month_first_dates',
+        'bad_date',
+        'bad_date',
+        'bad_date',
+      ])
+    }
+  })
+
+  it('reports the file even when no other date is ambiguous', () => {
+    const { errors } = parseTransactionsCsv(file(HEAD, '10/31/2026,Shop,-50', '2026-10-01,Tea,-5'), 'BDT')
+    expect(errors).toEqual<CsvError[]>([
+      { row: 0, code: 'month_first_dates' },
+      { row: 2, code: 'bad_date', column: 'date', value: '10/31/2026' },
+    ])
+  })
+
+  it('reports it once however many month-first dates there are', () => {
+    const { errors } = parseTransactionsCsv(
+      file(HEAD, '10/31/2026,A,-1', '11/30/2026,B,-2', '12/25/2026,C,-3'),
+      'BDT',
+    )
+    expect(errors.filter((e) => e.code === 'month_first_dates')).toEqual([
+      { row: 0, code: 'month_first_dates' },
+    ])
+    expect(errors).toHaveLength(4)
+  })
+
+  it('leaves a file alone when none of its dates is impossible day first', () => {
+    const { transactions, errors } = parseTransactionsCsv(
+      file(HEAD, '10/05/2026,Rent,-100', '03/04/2026,Tea,-5', '31/10/2026,Shop,-50', '05/05/2026,Same,-1'),
+      'BDT',
+    )
+    expect(errors).toEqual([])
+    expect(transactions.map((t) => t.date)).toEqual([
+      '2026-05-10',
+      '2026-04-03',
+      '2026-10-31',
+      '2026-05-05',
+    ])
+  })
+
+  it('reads 10/05/2026 as 10 May when it is the only slash date', () => {
+    const { transactions, errors } = parseRow('10/05/2026,Rent,-100,,')
+    expect(errors).toEqual([])
+    expect(transactions[0]?.date).toBe('2026-05-10')
+  })
+
+  it('does not take a date that is impossible both ways for a sign of month first', () => {
+    const { transactions, errors } = parseTransactionsCsv(
+      file(HEAD, '02/30/2026,Nonsense,-5', '13/45/2026,Nonsense,-6', '10/05/2026,Rent,-100'),
+      'BDT',
+    )
+    expect(transactions.map((t) => [t.id, t.date])).toEqual([['row-4', '2026-05-10']])
+    expect(errors).toEqual<CsvError[]>([
+      { row: 2, code: 'bad_date', column: 'date', value: '02/30/2026' },
+      { row: 3, code: 'bad_date', column: 'date', value: '13/45/2026' },
+    ])
+  })
+
+  it.each([
+    ['10-31-2026', '10-05-2026'],
+    ['10.31.2026', '10.05.2026'],
+    ['1/13/2026', '1/2/2026'], // no leading zeros
+    ['10/31/2026 14:03', '10/05/2026 14:03'], // with a time
+    ['১০/৩১/২০২৬', '১০/০৫/২০২৬'], // Bengali digits
+    ['02/29/2028', '03/04/2028'], // a leap day that exists only month first
+  ])('sees month first in %s and rejects %s', (monthFirst, ambiguous) => {
+    const { transactions, errors } = parseTransactionsCsv(
+      file(HEAD, `${ambiguous},Rent,-100`, `${monthFirst},Shop,-50`),
+      'BDT',
+    )
+    expect(transactions).toEqual([])
+    expect(errors.map((e) => [e.row, e.code])).toEqual([
+      [0, 'month_first_dates'],
+      [2, 'bad_date'],
+      [3, 'bad_date'],
+    ])
+  })
+
+  it('counts a month-first date on a row that is skipped for being zero', () => {
+    const { transactions, errors } = parseTransactionsCsv(
+      file(HEAD, '10/31/2026,Balance enquiry,0', '10/05/2026,Rent,-100'),
+      'BDT',
+    )
+    expect(transactions).toEqual([])
+    expect(errors).toEqual<CsvError[]>([
+      { row: 0, code: 'month_first_dates' },
+      { row: 3, code: 'bad_date', column: 'date', value: '10/05/2026' },
+    ])
+  })
+
+  it('counts a month-first date on a row with another problem', () => {
+    const { errors } = parseTransactionsCsv(
+      file(HEAD, '10/31/2026,Shop,abc', '10/05/2026,Rent,-100'),
+      'BDT',
+    )
+    expect(errors).toEqual<CsvError[]>([
+      { row: 0, code: 'month_first_dates' },
+      { row: 2, code: 'bad_date', column: 'date', value: '10/31/2026' },
+      { row: 2, code: 'bad_amount', column: 'amount', value: 'abc' },
+      { row: 3, code: 'bad_date', column: 'date', value: '10/05/2026' },
+    ])
+  })
+
+  it('also sees a month-first date in a swallowed line when it looks for a merged record', () => {
+    // The line after the stray quote starts with 10/31/2026, which is a date written month first.
+    const { transactions, errors } = parseTransactionsCsv(
+      file(HEAD, '2026-10-01,"Eid shopping,-7', '10/31/2026,Monitor 24",-8', '2026-10-04,e,-9'),
+      'BDT',
+    )
+    expect(transactions.map((t) => t.id)).toEqual(['row-3'])
+    expect(errors).toEqual<CsvError[]>([{ row: 2, code: 'bad_quotes', skippedRows: 1 }])
+  })
+
+  it('does not apply to ISO dates', () => {
+    const { transactions, errors } = parseTransactionsCsv(
+      file(HEAD, '2026-10-05,Rent,-100', '2026-10-31,Shop,-50'),
+      'BDT',
+    )
+    expect(errors).toEqual([])
+    expect(transactions).toHaveLength(2)
   })
 })
 

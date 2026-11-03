@@ -32,34 +32,67 @@ const DAY_FIRST_DATE = new RegExp(
   'i',
 )
 
-function datePartsOf(text: string): [year: number, month: number, day: number] | null {
-  const iso = ISO_DATE.exec(text)
-  if (iso) {
-    const [, year = '', month = '', day = ''] = iso
-    return [Number(year), Number(month), Number(day)]
-  }
-  const dayFirst = DAY_FIRST_DATE.exec(text)
-  if (dayFirst) {
-    const [, day = '', , month = '', year = ''] = dayFirst
-    return [Number(year), Number(month), Number(day)]
-  }
-  return null
-}
-
-/**
- * `YYYY-MM-DD`, or day first as `DD/MM/YYYY`, `DD-MM-YYYY` or `DD.MM.YYYY`, optionally
- * followed by a time of day (`31/10/2026 14:03`, `2026-10-31T14:03:22+06:00`), which is
- * ignored. A month-first date such as 10/31/2026 is not a date here, and neither is a
- * date followed by anything that is not a time. The result is always a real calendar date in
- * `YYYY-MM-DD` form, which is what the rest of the domain code expects.
- */
-export function parseDate(text: string): string | null {
-  const parts = datePartsOf(toAsciiDigits(text))
-  if (!parts) return null
-  const [year, month, day] = parts
+/** A real calendar date as `YYYY-MM-DD`, or null. */
+function buildDate(year: number, month: number, day: number): string | null {
   if (month < 1 || month > 12 || day < 1 || day > daysInMonth(year, month)) return null
   const pad = (value: number, length: number) => String(value).padStart(length, '0')
   return `${pad(year, 4)}-${pad(month, 2)}-${pad(day, 2)}`
+}
+
+/** What a date cell turned out to be. */
+export interface DateReading {
+  /**
+   * The date as `YYYY-MM-DD`, or null if the cell is not a real date read day first (or in
+   * the `YYYY-MM-DD` form).
+   */
+  date: string | null
+  /**
+   * The cell is a real date read day first and a different real date read month first, as
+   * 10/05/2026 is 10 May or 5 October. Equal parts (05/05/2026) read the same either way and
+   * are never ambiguous, and neither is anything with a part above 12.
+   */
+  ambiguous: boolean
+  /** The cell can only be a month-first date: it is not one day first, but it is one month first (10/31/2026). */
+  monthFirstOnly: boolean
+}
+
+const NOT_A_DATE: DateReading = { date: null, ambiguous: false, monthFirstOnly: false }
+
+/**
+ * Reads a date cell: `YYYY-MM-DD`, or day first as `DD/MM/YYYY`, `DD-MM-YYYY` or
+ * `DD.MM.YYYY`, optionally followed by a time of day (`31/10/2026 14:03`,
+ * `2026-10-31T14:03:22+06:00`), which is ignored. A date followed by anything that is not a
+ * time is not a date. `date` is always a real calendar date in `YYYY-MM-DD` form, which is what
+ * the rest of the domain code expects.
+ *
+ * A month-first date such as 10/31/2026 is not a `date`, but it is reported as
+ * `monthFirstOnly`, so the caller can tell the visitor what is wrong instead of just that the
+ * cell is not a date, and can stop trusting dates like 10/05/2026 in the same file.
+ */
+export function readDateCell(text: string): DateReading {
+  const digits = toAsciiDigits(text)
+
+  const iso = ISO_DATE.exec(digits)
+  if (iso) {
+    const [, year = '', month = '', day = ''] = iso
+    const date = buildDate(Number(year), Number(month), Number(day))
+    return { date, ambiguous: false, monthFirstOnly: false }
+  }
+
+  const dayFirst = DAY_FIRST_DATE.exec(digits)
+  if (dayFirst) {
+    const [, firstText = '', , secondText = '', year = ''] = dayFirst
+    const first = Number(firstText)
+    const second = Number(secondText)
+    const date = buildDate(Number(year), second, first)
+    const monthFirst = buildDate(Number(year), first, second)
+    return {
+      date,
+      ambiguous: date !== null && monthFirst !== null && first !== second,
+      monthFirstOnly: date === null && monthFirst !== null,
+    }
+  }
+  return NOT_A_DATE
 }
 
 // The whole part is plain digits, Western groups (1,234,567) or lakh groups (12,34,567),
