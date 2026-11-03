@@ -208,11 +208,23 @@ describe('what the five scores show', () => {
     expect(bands).toEqual(['coping', 'coping', 'vulnerable', 'coping', 'healthy'])
   })
 
-  it("has Farhana earning over 2.5 times what Nusrat has coming in, and scoring lower", () => {
+  it('has Farhana earning at least 2.7 times what Nusrat has coming in, and scoring lower', () => {
+    // Both in taka: the measures convert everything to BDT. The spec says "nearly three times".
     const farhana = analyse('farhana')
     const nusrat = analyse('nusrat')
-    expect(farhana.measures.income).toBeGreaterThan(2.5 * nusrat.measures.income)
+    expect(farhana.measures.income).toBeGreaterThanOrEqual(2.7 * nusrat.measures.income)
+    expect(farhana.measures.income).toBeLessThan(3 * nusrat.measures.income)
     expect(farhana.result.score).toBeLessThan(nusrat.result.score ?? 0)
+  })
+
+  it('has Farhana with the lowest score of the five and Rahim the highest', () => {
+    const score = (id: PersonId) => analyse(id).result.score ?? 0
+    for (const id of PERSON_IDS.filter((other) => other !== 'farhana')) {
+      expect(score(id), `${id} should score above Farhana`).toBeGreaterThan(score('farhana'))
+    }
+    for (const id of PERSON_IDS.filter((other) => other !== 'rahim')) {
+      expect(score(id), `${id} should score below Rahim`).toBeLessThan(score('rahim'))
+    }
   })
 
   it('has Rahim send at least 40% of his income home and still score highest', () => {
@@ -222,6 +234,72 @@ describe('what the five scores show', () => {
 
     const scores = PERSON_IDS.map((id) => analyse(id).result.score ?? 0)
     expect(result.score).toBe(Math.max(...scores))
+  })
+})
+
+describe('prices a careful reader would check', () => {
+  /** The different amounts that every line matching `plan` was charged. */
+  function amountsOf(id: PersonId, plan: RegExp): number[] {
+    const lines = SAMPLES[id].transactions.filter((line) => plan.test(line.description))
+    return [...new Set(lines.map((line) => line.amount))]
+  }
+
+  /** True when the amount is a whole multiple of `step`, ignoring the sign and float dust. */
+  function isMultipleOf(amount: number, step: number): boolean {
+    return Math.round(Math.abs(amount) * 100) % Math.round(step * 100) === 0
+  }
+
+  it.each([
+    ['nusrat', /robi/i],
+    ['nusrat', /spotify/i],
+    ['nusrat', /exam fee/i],
+    ['nusrat', /mess rent/i],
+    ['tanvir', /titas/i],
+    ['tanvir', /link3/i],
+    ['tanvir', /netflix/i],
+    ['tanvir', /gym/i],
+    ['farhana', /postpaid/i],
+    ['farhana', /link3/i],
+    ['farhana', /titas/i],
+    ['farhana', /netflix/i],
+    ['arif', /room rent/i],
+    ['arif', /utilities share/i],
+    ['arif', /spotify/i],
+    ['arif', /netflix/i],
+    ['arif', /pure gym/i],
+    ['arif', /giffgaff/i],
+    ['rahim', /singtel/i],
+  ] as const)('charges %s the same price every time for a named plan: %s', (id, plan) => {
+    expect(amountsOf(id, plan)).toHaveLength(1)
+  })
+
+  it.each([
+    // Prepaid top-ups and cash a person chooses to put in or take out.
+    ['nusrat', /mrt rapid pass/i, 100],
+    ['nusrat', /cash out - agent/i, 500],
+    ['tanvir', /mobile recharge/i, 100],
+    ['tanvir', /atm cash/i, 1_000],
+    ['farhana', /desco prepaid/i, 500],
+    ['farhana', /credit card bill/i, 500],
+    ['rahim', /atm cash/i, 10],
+    // Haircuts, parlour visits and cinema tickets at typical prices.
+    ['nusrat', /beauty parlour/i, 50],
+    ['tanvir', /barber/i, 50],
+    ['farhana', /beauty parlour/i, 100],
+    ['arif', /barber/i, 1],
+    ['arif', /cineworld/i, 0.5],
+    ['rahim', /barber/i, 1],
+  ] as const)('keeps %s lines matching %s to a multiple of %s', (id, pattern, step) => {
+    const lines = SAMPLES[id].transactions.filter((line) => pattern.test(line.description))
+    expect(lines.length).toBeGreaterThan(0)
+    for (const line of lines) expect(isMultipleOf(line.amount, step), line.description).toBe(true)
+  })
+
+  it('does not use the tidy labels the review asked to replace', () => {
+    const everything = PERSON_IDS.flatMap((id) => SAMPLES[id].transactions)
+    const tidy =
+      /\(eid\)|monthly retainer|family allowance from|escrow|mess seat rent|^dental clinic|remittance fee|\(student dps\)/i
+    expect(everything.filter((line) => tidy.test(line.description))).toEqual([])
   })
 })
 
