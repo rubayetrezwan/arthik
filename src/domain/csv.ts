@@ -21,7 +21,10 @@ export type CsvErrorCode =
   | 'bad_category'
   | 'bad_quotes'
   | 'too_many_rows'
-  /** A row has more cells than the header: an unquoted comma in an amount or description shifted its cells. */
+  /**
+   * A row has more cells than the header: an unquoted comma in an amount or description
+   * shifted its cells. A trailing empty cell on every row of the file is not this.
+   */
   | 'extra_cells'
   /** The file writes dates month first (a date such as 10/31/2026), so dates that could be read either way are rejected. */
   | 'month_first_dates'
@@ -113,6 +116,8 @@ interface Columns {
    * padding and not columns.
    */
   width: number
+  /** How many cells the header line has, padding included. */
+  length: number
 }
 
 // Headers that say which way the money went. Next to a single `amount` column, they leave it open
@@ -198,6 +203,7 @@ function readHeader(
       currency: find('currency'),
       category: find('category'),
       width: lastNamed + 1,
+      length: cells.length,
     },
   }
 }
@@ -327,21 +333,53 @@ type RowOutcome =
  * Whether a row runs past the header in a way that means its cells are not where the header
  * says. A comma inside an unquoted cell, as in 55,000 or "Flat 5, 300", cuts the cell in two and
  * pushes every cell after it one place right, so an amount can be read as 55 with the 000
- * left over. Empty cells after the last column are fine; spreadsheets add them.
+ * left over.
  *
- * One case hides behind those empty cells. In a debit and credit file the empty credit cell is
- * what gets pushed off the end, so 18,000 in the debit column makes a row with a debit of 18,
- * a credit of 000 and nothing extra. A row that runs past the header and fills both money
- * columns is therefore not trusted either. (Both filled is unusual anyway.)
+ * - A cell with something in it past the last named column is always a shifted row.
+ * - A row longer than the header is one too, even when the extra cells are empty: the cell
+ *   that was last, if it was empty, is what gets pushed off the end (-18,500 beside a balance
+ *   column becomes -18, 500 and an empty cell), and an empty cell is all that is left to see.
+ *   The one exception is `trailingCellsOk`: a file whose every row ends with the same empty
+ *   cells has a trailing delimiter that its exporter adds, and not a shift.
+ *
+ * Even then, in a debit and credit file the empty credit cell is what gets pushed off the end,
+ * so 18,000 in the debit column makes a row with a debit of 18, a credit of 000 and nothing
+ * extra. A row that runs past the named columns and fills both money columns is therefore not
+ * trusted either. (Both filled is unusual anyway.)
  */
-function hasExtraCells(cells: readonly string[], columns: Columns): boolean {
+function hasExtraCells(
+  cells: readonly string[],
+  columns: Columns,
+  trailingCellsOk: boolean,
+): boolean {
   const extra = cells.slice(columns.width)
   if (extra.some((cell) => cell.trim() !== '')) return true
+  if (cells.length > columns.length && !trailingCellsOk) return true
   return (
     extra.length > 0 &&
     columns.amount.kind === 'split' &&
     cellText(cells, columns.amount.debit) !== '' &&
     cellText(cells, columns.amount.credit) !== ''
+  )
+}
+
+/**
+ * Whether the file ends every row with empty cells that the header has no column for. That
+ * is so when all the rows are the same length, longer than the header, and nothing is in any
+ * cell past the header. Some exporters write a delimiter at the end of every line. One row
+ * that differs, in length or in what its extra cells hold, and the extra cells can no longer be
+ * told from a shifted row, so none are allowed.
+ */
+function hasTrailingCells(
+  rows: readonly { cells: readonly string[] }[],
+  columns: Columns,
+): boolean {
+  const [first] = rows
+  if (first === undefined || first.cells.length <= columns.length) return false
+  return rows.every(
+    ({ cells }) =>
+      cells.length === first.cells.length &&
+      cells.slice(columns.length).every((cell) => cell.trim() === ''),
   )
 }
 
@@ -351,10 +389,13 @@ function readRow(
   columns: Columns,
   defaultCurrency: CurrencyCode,
   monthFirstFile: boolean,
+  trailingCellsOk: boolean,
 ): RowOutcome {
   // Nothing in a row that does not line up with the header can be trusted, so it is checked
   // before anything else, and nothing else about the row is reported.
-  if (hasExtraCells(cells, columns)) return { kind: 'errors', errors: [{ row, code: 'extra_cells' }] }
+  if (hasExtraCells(cells, columns, trailingCellsOk)) {
+    return { kind: 'errors', errors: [{ row, code: 'extra_cells' }] }
+  }
 
   const amount = readAmount(cells, row, columns.amount)
   // A zero amount, such as a balance enquiry, moves no money. It is not worth importing
@@ -528,6 +569,11 @@ function swallowsDatedRow(cells: readonly string[], delimiter: string): boolean 
  * the file first and will see it then. A broken quote in the header is reported alone, because
  * the header cannot be read.
  *
+ * A row with more cells than the header is not imported (`extra_cells`), because an unquoted comma
+ * in an amount shifts every cell after it. The one exception is a file in which every row has the
+ * same length, longer than the header, with nothing in the extra cells: that is a trailing delimiter
+ * that the exporter writes on every line, and the rows import.
+ *
  * Each imported transaction has the id `row-<n>`, where n is its spreadsheet row.
  */
 export function parseTransactionsCsv(text: string, defaultCurrency: CurrencyCode): ParseResult {
@@ -594,11 +640,13 @@ export function parseTransactionsCsv(text: string, defaultCurrency: CurrencyCode
     ({ cells }) => readDateCell(cellText(cells, columns.date)).monthFirstOnly,
   )
 
+  const trailingCellsOk = hasTrailingCells(dataRows, columns)
+
   const transactions: Transaction[] = []
   const errors: CsvError[] = []
   if (monthFirstFile) errors.push({ row: 0, code: 'month_first_dates' })
   for (const { row, cells } of dataRows) {
-    const outcome = readRow(cells, row, columns, defaultCurrency, monthFirstFile)
+    const outcome = readRow(cells, row, columns, defaultCurrency, monthFirstFile, trailingCellsOk)
     if (outcome.kind === 'transaction') transactions.push(outcome.transaction)
     else if (outcome.kind === 'errors') errors.push(...outcome.errors)
   }
