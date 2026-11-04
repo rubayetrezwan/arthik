@@ -73,6 +73,13 @@
   margin-inline-start: auto;
 }
 
+/* Tablets: tighter groups, so the header usually keeps to one row. */
+@media (max-width: 1023px) {
+  .bar {
+    column-gap: var(--s5);
+  }
+}
+
 /*
  * Phones: the wordmark, then the three links spread across the width, then the two
  * selects side by side. The links share one row and wrap inside themselves if a language

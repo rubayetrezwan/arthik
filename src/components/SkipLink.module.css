@@ -3,7 +3,7 @@
   position: absolute;
   z-index: 100;
   inset-inline-start: var(--s4);
-  top: -100px;
+  inset-block-start: -100px;
   display: inline-flex;
   align-items: center;
   min-height: 44px;
@@ -15,5 +15,5 @@
 }
 
 .skip:focus {
-  top: max(var(--s2), env(safe-area-inset-top));
+  inset-block-start: max(var(--s2), env(safe-area-inset-top));
 }

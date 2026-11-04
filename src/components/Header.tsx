@@ -1,15 +1,18 @@
 import { FormattedMessage, useIntl } from 'react-intl'
 import { Link, NavLink, useMatch } from 'react-router'
-import { PERSON_IDS } from '../data/samples'
+import type { PersonId } from '../domain/types'
 import { useSession } from '../state/session'
 import { CurrencySelect } from './CurrencySelect'
 import styles from './Header.module.css'
 import { LanguageSelect } from './LanguageSelect'
 
+/** Where "Your score" leads a visitor who has not looked at anyone yet: the first sample. */
+const FIRST_PERSON: PersonId = 'nusrat'
+
 /** Where "Your score" leads: the visitor's own file, else the last person they looked at. */
 function useScorePath(): string {
   const { upload, activeKey } = useSession()
-  const key = upload ? 'mine' : (activeKey ?? PERSON_IDS[0])
+  const key = upload ? 'mine' : (activeKey ?? FIRST_PERSON)
   return `/score/${key}`
 }
 
