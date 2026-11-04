@@ -37,7 +37,7 @@
   "home.own.title": "Your own transactions",
   "home.own.text": "Save a statement from your bank or mobile wallet as a CSV file, and Arthik will work out your score the same way.",
   "home.privacy.lead": "Your data stays in your browser.",
-  "home.privacy.text": "Arthik has no server, so your file is never uploaded, and nothing is saved: refresh the page and it’s gone.",
+  "home.privacy.text": "Arthik runs entirely in your browser, so your file is never uploaded, and nothing is saved: refresh the page and it’s gone.",
   "home.method.title": "What goes into the score",
   "home.method.note": "Five measures of your money habits, each scored out of {highest}. Some count for more than others.",
   "home.method.measure": "Measure",

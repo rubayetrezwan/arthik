@@ -49,7 +49,9 @@ describe('HomePage', () => {
       'href',
       '#/upload',
     )
-    expect(own.getByText(/Your data stays in your browser/)).toBeInTheDocument()
+    expect(own.getByText('Your data stays in your browser.').closest('p')).toHaveTextContent(
+      'Your data stays in your browser. Arthik runs entirely in your browser, so your file is never uploaded',
+    )
   })
 
   it('shows what goes into the score, with weights that add up to the whole', () => {
