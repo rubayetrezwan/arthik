@@ -1,0 +1,156 @@
+.title {
+  font-size: 22px;
+}
+
+.note {
+  margin-block-start: var(--s1);
+  color: var(--ink-2);
+  font-size: 15px;
+}
+
+.table {
+  inline-size: 100%;
+  margin-block-start: var(--s3);
+  border-collapse: collapse;
+  font-size: 15px;
+}
+
+.table th {
+  padding: var(--s2);
+  border-block-end: 1px solid var(--ink);
+  font-family: var(--display);
+  font-size: 15px;
+  font-style: var(--label-style);
+  font-weight: 400;
+  color: var(--ink-2);
+  text-align: start;
+  white-space: nowrap;
+}
+
+.table td {
+  padding: var(--s2);
+  border-block-end: 1px solid var(--rule);
+  vertical-align: middle;
+}
+
+.table .end {
+  text-align: end;
+}
+
+.date {
+  white-space: nowrap;
+}
+
+/* Wide enough for most category names; the list itself shows every name in full. */
+.category {
+  inline-size: 15rem;
+}
+
+.flag {
+  margin-block-start: var(--s1);
+  padding-inline-start: var(--s2);
+  border-inline-start: 2px solid var(--red);
+  font-size: 14px;
+}
+
+.amount {
+  text-align: end;
+  white-space: nowrap;
+}
+
+/* Money in, as in the mockup: green and heavier. The sign says it in text too. */
+.in {
+  color: var(--healthy);
+  font-weight: 600;
+}
+
+.original {
+  display: block;
+  color: var(--ink-2);
+  font-size: 14px;
+  font-weight: 400;
+}
+
+.more {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s2) var(--s4);
+  margin-block-start: var(--s3);
+}
+
+.count {
+  color: var(--ink-2);
+  font-size: 15px;
+}
+
+.showMore {
+  min-block-size: 44px;
+  padding-inline: var(--s4);
+  border: 1px solid var(--primary);
+  border-radius: var(--radius);
+  background: var(--surface);
+  color: var(--primary);
+  font-size: 15px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.showMore:hover {
+  background: var(--bg);
+}
+
+/*
+ * Phones: each transaction becomes a stacked row. The date and the amount share the first
+ * line, the description follows, and the category select takes the full width below. The
+ * column headings stay for screen readers.
+ */
+@media (max-width: 640px) {
+  .table thead {
+    position: absolute;
+    inline-size: 1px;
+    block-size: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
+  .table tbody tr {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: var(--s1) var(--s3);
+    padding-block: var(--s3);
+    border-block-end: 1px solid var(--rule);
+  }
+
+  .table td {
+    padding: 0;
+    border: 0;
+  }
+
+  .date {
+    grid-column: 1;
+    grid-row: 1;
+    color: var(--ink-2);
+    font-size: 14px;
+  }
+
+  .amount {
+    grid-column: 2;
+    grid-row: 1 / span 2;
+    align-self: start;
+  }
+
+  .description {
+    grid-column: 1;
+    grid-row: 2;
+  }
+
+  .category {
+    grid-column: 1 / -1;
+    grid-row: 3;
+    inline-size: auto;
+    margin-block-start: var(--s1);
+  }
+}
