@@ -34,10 +34,11 @@
   background: var(--ink);
 }
 
-/* The band names sit under their zones, in the same proportions. */
+/* The band names sit under their zones: the first two start at 0 and at the 40 tick. */
 .names {
-  display: grid;
-  grid-template-columns: 40fr 40fr 20fr;
+  display: flex;
+  flex-wrap: wrap;
+  row-gap: var(--s1);
   margin: var(--s2) 0 0;
   padding: 0;
   list-style: none;
@@ -46,8 +47,22 @@
 }
 
 .names li {
+  flex: 0 0 40%;
   min-inline-size: 0;
-  padding-inline-start: var(--s1);
+  padding-inline: var(--s1);
+}
+
+/*
+ * The top band's zone is the narrowest, a fifth of the scale, so its name ends at the end
+ * of the scale and never breaks inside a word. A name too long for that fifth moves to a
+ * line of its own, still at the end, rather than running into its neighbour.
+ */
+.names li:last-child {
+  flex: 0 0 auto;
+  margin-inline-start: auto;
+  padding-inline: 0;
+  text-align: end;
+  white-space: nowrap;
 }
 
 .name {

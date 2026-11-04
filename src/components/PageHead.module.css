@@ -14,6 +14,8 @@
   max-width: 22ch;
   font-size: clamp(28px, 4vw, 38px);
   line-height: var(--line-title);
+  /* Even lines, so a headline never leaves one word alone on its last line. */
+  text-wrap: balance;
 }
 
 .lead {

@@ -112,6 +112,14 @@
   color: var(--ink-2);
 }
 
+/*
+ * The rule over the total. In the collapsed table the edge is shared with the last
+ * measure's hairline, and the upper cell wins a tie, so that cell draws it in ink.
+ */
+.table tbody tr:last-child .points {
+  border-block-end-color: var(--ink);
+}
+
 .total td {
   border-block-start: 1px solid var(--ink);
   font-family: var(--display);
@@ -152,8 +160,9 @@
 }
 
 /*
- * Phones: each measure becomes a stacked row. Name and points share the first line; the
- * score and its weight share the second. The column headings stay for screen readers.
+ * Phones: each measure becomes a stacked row. Name and points share the first line, the
+ * score and its bar take the full width below, and the weight closes the row at the end
+ * edge, under the points. The column headings stay for screen readers.
  */
 @media (max-width: 640px) {
   .sheet {
@@ -194,14 +203,14 @@
   }
 
   .scoreCell {
-    grid-column: 1;
+    grid-column: 1 / -1;
     grid-row: 2;
     min-inline-size: 0;
   }
 
   .weight {
-    grid-column: 2;
-    grid-row: 2;
+    grid-column: 1 / -1;
+    grid-row: 3;
     font-size: 14px;
   }
 
@@ -214,10 +223,6 @@
   /* A measure that is not scored has no weight to show: its reason says why. */
   .unscored .weight {
     display: none;
-  }
-
-  .unscored .scoreCell {
-    grid-column: 1 / -1;
   }
 
   .table tfoot tr {
