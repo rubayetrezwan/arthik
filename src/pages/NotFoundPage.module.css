@@ -1,0 +1,7 @@
+.home {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  margin-block-start: var(--s3);
+  font-weight: 500;
+}

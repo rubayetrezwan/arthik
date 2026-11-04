@@ -1,0 +1,40 @@
+.field {
+  position: relative;
+}
+
+.select {
+  appearance: none;
+  width: 100%;
+  min-height: 44px;
+  padding-block: 0;
+  padding-inline: var(--s3) 34px;
+  border: 1px solid var(--control);
+  border-radius: var(--radius);
+  background: var(--surface);
+  color: var(--ink);
+  font-size: 15px;
+  cursor: pointer;
+}
+
+/*
+ * The arrow is a box with two borders, turned. Its end side and the turn both mirror, so
+ * it points down in right-to-left pages too.
+ */
+.field::after {
+  --turn: 45deg;
+
+  content: "";
+  position: absolute;
+  inset-inline-end: var(--s3);
+  top: 50%;
+  width: 7px;
+  height: 7px;
+  border-inline-end: 1.5px solid var(--ink-2);
+  border-block-end: 1.5px solid var(--ink-2);
+  transform: translateY(-70%) rotate(var(--turn));
+  pointer-events: none;
+}
+
+:global([dir="rtl"]) .field::after {
+  --turn: -45deg;
+}

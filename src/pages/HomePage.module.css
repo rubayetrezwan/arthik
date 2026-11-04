@@ -1,0 +1,246 @@
+/* The opening line, set like the first sentence of a book rather than a slogan. */
+.pitch {
+  max-width: 34em;
+  font-family: var(--display);
+  font-size: clamp(18px, 2.2vw, 21px);
+  color: var(--ink);
+}
+
+.heading {
+  font-size: 22px;
+}
+
+.note {
+  max-width: 52ch;
+  margin-block-start: var(--s1);
+  color: var(--ink-2);
+  font-size: 15px;
+}
+
+/* Two ruled columns, like facing sides of a ledger page. */
+.columns {
+  display: grid;
+  grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+  gap: var(--s7);
+  margin-block-start: var(--s5);
+  padding-block-start: var(--s5);
+  border-block-start: 1px solid var(--rule);
+}
+
+/* The sample people, entered as numbered lines. */
+.people {
+  margin: var(--s4) 0 0;
+  padding: 0;
+  list-style: none;
+  border-block-start: 1px solid var(--ink);
+}
+
+.people li {
+  border-block-end: 1px solid var(--rule);
+}
+
+.person {
+  display: grid;
+  grid-template-columns: 40px minmax(0, 1fr);
+  align-items: baseline;
+  gap: var(--s3);
+  min-height: 56px;
+  padding-block: var(--s3);
+  padding-inline-end: var(--s2);
+  color: var(--ink-2);
+  text-decoration: none;
+}
+
+.person:hover {
+  background: var(--surface);
+}
+
+.numeral {
+  justify-self: center;
+  font-family: var(--display);
+  font-size: 28px;
+  line-height: 1;
+  color: var(--red);
+  font-variant-numeric: lining-nums;
+}
+
+.name {
+  font-family: var(--display);
+  font-size: 21px;
+  font-weight: var(--display-medium);
+  line-height: var(--line-heading);
+  color: var(--primary);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 4px;
+}
+
+.person:hover .name {
+  text-decoration-thickness: 2px;
+}
+
+/* The visitor's own file, on the facing side. */
+.own {
+  align-self: start;
+  padding-inline-start: var(--s6);
+  border-inline-start: 1px solid var(--rule);
+}
+
+.text {
+  max-width: 44ch;
+  margin-block-start: var(--s2);
+}
+
+.action {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  margin-block-start: var(--s4);
+  padding-inline: var(--s4);
+  border: 1px solid var(--primary);
+  border-radius: var(--radius);
+  color: var(--primary);
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.action:hover {
+  background: var(--surface);
+}
+
+.privacy {
+  max-width: 44ch;
+  margin-block-start: var(--s5);
+  padding-block-start: var(--s4);
+  border-block-start: 1px solid var(--rule);
+  color: var(--ink-2);
+  font-size: 15px;
+}
+
+.privacy strong {
+  color: var(--ink);
+  font-weight: 600;
+}
+
+/* What the score is made of: a small ledger whose column adds up to the whole. */
+.method {
+  margin-block-start: var(--s7);
+  padding-block-start: var(--s5);
+  border-block-start: 1px solid var(--rule);
+}
+
+.methodBody {
+  display: grid;
+  grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+  align-items: end;
+  gap: var(--s7);
+  margin-block-start: var(--s4);
+}
+
+.weights {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.weights th,
+.weights td {
+  padding: var(--s3) var(--s2);
+  text-align: start;
+  font-weight: 400;
+  vertical-align: baseline;
+}
+
+.weights thead th {
+  padding-block: var(--s2);
+  border-block-end: 1px solid var(--ink);
+  font-family: var(--display);
+  font-size: 15px;
+  font-style: var(--label-style);
+  color: var(--ink-2);
+}
+
+.weights tbody th,
+.weights tbody td {
+  border-block-end: 1px solid var(--rule);
+}
+
+.weights .end {
+  text-align: end;
+}
+
+.measure {
+  display: block;
+  font-weight: 600;
+}
+
+.question {
+  display: block;
+  color: var(--ink-2);
+  font-size: 15px;
+}
+
+.weight {
+  font-family: var(--display);
+  font-size: 20px;
+  white-space: nowrap;
+}
+
+.weights tfoot th {
+  font-family: var(--display);
+  font-style: var(--label-style);
+  color: var(--ink-2);
+}
+
+/* A final total gets the accounting double underline. */
+.total {
+  display: inline-block;
+  padding-block-end: 2px;
+  border-block-end: 4px double var(--ink);
+  font-family: var(--display);
+  font-size: 22px;
+  font-weight: var(--display-bold);
+  white-space: nowrap;
+}
+
+.formulas {
+  max-width: 44ch;
+  padding-block-end: var(--s3);
+}
+
+.more {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  margin-block-start: var(--s2);
+  font-weight: 500;
+}
+
+@media (max-width: 900px) {
+  .columns,
+  .methodBody {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--s6);
+  }
+
+  .own {
+    padding-inline-start: 0;
+    padding-block-start: var(--s5);
+    border-inline-start: 0;
+    border-block-start: 1px solid var(--rule);
+  }
+}
+
+@media (max-width: 640px) {
+  .person {
+    grid-template-columns: 28px minmax(0, 1fr);
+    gap: var(--s2);
+  }
+
+  .numeral {
+    font-size: 24px;
+  }
+
+  .name {
+    font-size: 19px;
+  }
+}

@@ -1,0 +1,101 @@
+/*
+ * Design tokens for the "hal khata" ledger look (spec 9a).
+ *
+ * Contrast, as the spec requires: ink and ink-2 are 6.6:1 or better on paper and on
+ * sheets, control borders are 3:1 or better, and the band colours are 4.5:1 or better as
+ * text on a sheet. `rule` is for decoration only, never for anything that must be seen.
+ */
+:root {
+  --bg: #f4efe4;
+  --surface: #fbf8f1;
+  --ink: #1e1b16;
+  --ink-2: #5a5347;
+  --rule: #ddd3c0;
+  --control: #8a7d69;
+  --primary: #0e5a43;
+  --primary-ink: #ffffff;
+  --red: #9c2a22;
+
+  --vulnerable: #9a3324;
+  --coping: #7a5209;
+  --healthy: #1f6b45;
+  /* Band zones are never the only signal: always with ink ticks and the band's name. */
+  --zone-v: #e8c4b8;
+  --zone-c: #ead39c;
+  --zone-h: #c3dcc8;
+
+  --s1: 4px;
+  --s2: 8px;
+  --s3: 12px;
+  --s4: 16px;
+  --s5: 24px;
+  --s6: 32px;
+  --s7: 56px;
+
+  --radius: 3px;
+  --content-width: 1160px;
+  --gutter: var(--s5);
+
+  /*
+   * Type. Latin first: Newsreader for display and figures, IBM Plex Sans for body. Neither
+   * has the taka sign, so the Bengali faces follow as its fallback.
+   */
+  --display: "Newsreader", "Tiro Bangla", Georgia, serif;
+  --body: "IBM Plex Sans", "Noto Sans Bengali", system-ui, sans-serif;
+  --display-medium: 500;
+  --display-bold: 600;
+  /* Small labels: the display face, in italic where the script has a true italic. */
+  --label-style: italic;
+  --line-body: 1.55;
+  --line-heading: 1.25;
+  --line-title: 1.15;
+}
+
+/*
+ * Each script gets its own pairing and line heights. Indic scripts need taller lines for
+ * their marks above and below. Tiro Bangla and Tiro Devanagari Hindi exist in weight 400
+ * only, so their display text stays at 400 and the browser may never fake a bold.
+ */
+:root:lang(bn) {
+  --display: "Tiro Bangla", "Noto Sans Bengali", serif;
+  --body: "Noto Sans Bengali", system-ui, sans-serif;
+  --display-medium: 400;
+  --display-bold: 400;
+  --label-style: normal;
+  --line-body: 1.75;
+  --line-heading: 1.4;
+  --line-title: 1.4;
+  font-synthesis: none;
+}
+
+:root:lang(hi) {
+  --display: "Tiro Devanagari Hindi", "Tiro Bangla", serif;
+  --body: "IBM Plex Sans Devanagari", "Noto Sans Bengali", system-ui, sans-serif;
+  --display-medium: 400;
+  --display-bold: 400;
+  --label-style: normal;
+  --line-body: 1.75;
+  --line-heading: 1.4;
+  --line-title: 1.4;
+  font-synthesis: none;
+}
+
+/* Arabic and Chinese have no true italic in these faces, and a slanted one reads badly. */
+:root:lang(ar) {
+  --display: "Noto Naskh Arabic", "Tiro Bangla", serif;
+  --body: "IBM Plex Sans Arabic", "Noto Sans Bengali", system-ui, sans-serif;
+  --label-style: normal;
+  --line-body: 1.7;
+  --line-heading: 1.4;
+  --line-title: 1.4;
+}
+
+:root:lang(zh) {
+  --display: "Noto Serif SC", "Tiro Bangla", "Songti SC", "SimSun", serif;
+  --body: "Noto Sans SC", "Noto Sans Bengali", "PingFang SC", "Microsoft YaHei", system-ui,
+    sans-serif;
+  --label-style: normal;
+  --line-body: 1.7;
+  --line-heading: 1.35;
+  --line-title: 1.35;
+}

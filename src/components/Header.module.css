@@ -1,0 +1,107 @@
+/* The ledger's red double rule: a hairline, a strip of paper, and a second hairline. */
+.header {
+  background: var(--surface);
+  box-shadow:
+    inset 0 -1px 0 var(--red),
+    inset 0 -4px 0 var(--surface),
+    inset 0 -5px 0 var(--red);
+}
+
+.bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--s2) var(--s6);
+  min-height: 72px;
+  padding-block: var(--s2) var(--s3);
+}
+
+.wordmark {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  color: var(--ink);
+  text-decoration: none;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+/* Set in fixed faces, not the language's: this is the logo. The two names share a baseline. */
+.lockup {
+  font-family: "Newsreader", Georgia, serif;
+  font-size: 26px;
+  font-weight: 600;
+}
+
+.bengali {
+  margin-inline-start: var(--s1);
+  font-family: "Tiro Bangla", serif;
+  font-size: 18px;
+  font-weight: 400;
+  font-synthesis: none;
+  color: var(--red);
+}
+
+.nav {
+  display: flex;
+  flex-wrap: wrap;
+  column-gap: var(--s5);
+}
+
+.link {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  color: var(--ink-2);
+  font-size: 15px;
+  text-decoration: none;
+}
+
+.link:hover {
+  color: var(--ink);
+}
+
+.link[aria-current="page"] {
+  color: var(--ink);
+  font-weight: 600;
+  box-shadow: inset 0 -2px 0 var(--primary);
+}
+
+.prefs {
+  display: flex;
+  gap: var(--s2);
+  margin-inline-start: auto;
+}
+
+/*
+ * Phones: the wordmark, then the three links spread across the width, then the two
+ * selects side by side. The links share one row and wrap inside themselves if a language
+ * needs it, so a single link never drops onto a line of its own.
+ */
+@media (max-width: 640px) {
+  .bar {
+    gap: 0 var(--s4);
+    padding-block: var(--s1) var(--s3);
+  }
+
+  .nav {
+    display: grid;
+    grid-auto-flow: column;
+    justify-content: space-between;
+    column-gap: var(--s3);
+    width: 100%;
+  }
+
+  .link {
+    line-height: 1.3;
+  }
+
+  .prefs {
+    width: 100%;
+    margin-inline-start: 0;
+  }
+
+  .prefs > * {
+    flex: 1;
+  }
+}

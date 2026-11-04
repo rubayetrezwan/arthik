@@ -1,0 +1,108 @@
+.bar {
+  border-block-end: 1px solid var(--rule);
+}
+
+.inner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--s2) var(--s4);
+  padding-block: var(--s3);
+}
+
+.label {
+  font-family: var(--display);
+  font-style: var(--label-style);
+  color: var(--ink-2);
+}
+
+/* One ruled strip, like the columns of a ledger page. */
+.people {
+  display: flex;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border: 1px solid var(--control);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+
+.people li + li {
+  border-inline-start: 1px solid var(--rule);
+}
+
+.person {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  min-height: 44px;
+  padding-inline: var(--s4);
+  background: var(--surface);
+  color: var(--ink);
+  font-size: 15px;
+  text-align: center;
+  text-decoration: none;
+}
+
+.person:hover {
+  text-decoration: underline;
+}
+
+.person[aria-current="page"] {
+  background: var(--ink);
+  color: var(--surface);
+}
+
+/* Inside the strip, a focus ring would be clipped: draw it within the cell instead. */
+.person:focus-visible {
+  outline-offset: -4px;
+}
+
+.person[aria-current="page"]:focus-visible {
+  outline-color: var(--surface);
+}
+
+.own {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  margin-inline-start: auto;
+  padding-inline: var(--s4);
+  border: 1px solid var(--primary);
+  border-radius: var(--radius);
+  color: var(--primary);
+  font-size: 15px;
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.own:hover {
+  background: var(--surface);
+}
+
+/*
+ * Phones: the five names share one even row, so none is ever left alone on a second line.
+ */
+@media (max-width: 640px) {
+  .people {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    width: 100%;
+  }
+
+  .person {
+    padding-inline: var(--s1);
+  }
+
+  .own {
+    margin-inline-start: 0;
+  }
+}
+
+@media (max-width: 360px) {
+  .person {
+    padding-inline: 2px;
+    font-size: 14px;
+  }
+}

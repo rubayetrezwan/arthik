@@ -1,0 +1,47 @@
+.footer {
+  margin-block-start: var(--s7);
+  padding-block-end: max(var(--s6), env(safe-area-inset-bottom));
+  color: var(--ink-2);
+  font-size: 14px;
+}
+
+.lines {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0 var(--s5);
+  margin-block-start: var(--s3);
+}
+
+.rates {
+  padding-block: var(--s3);
+}
+
+/* Separated by hairlines rather than dots, so there is nothing for a screen reader to say. */
+.credits {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.credits li {
+  display: flex;
+  align-items: center;
+  min-height: 44px;
+}
+
+.credits li + li {
+  margin-inline-start: var(--s3);
+  padding-inline-start: var(--s3);
+  border-inline-start: 1px solid var(--rule);
+}
+
+.credits a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+}

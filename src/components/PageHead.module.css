@@ -1,0 +1,23 @@
+.head {
+  padding-block: var(--s6) var(--s4);
+}
+
+.kicker {
+  margin-block-end: var(--s1);
+  font-family: var(--display);
+  font-size: 17px;
+  font-style: var(--label-style);
+  color: var(--ink-2);
+}
+
+.title {
+  max-width: 22ch;
+  font-size: clamp(28px, 4vw, 38px);
+  line-height: var(--line-title);
+}
+
+.lead {
+  max-width: 62ch;
+  margin-block-start: var(--s2);
+  color: var(--ink-2);
+}

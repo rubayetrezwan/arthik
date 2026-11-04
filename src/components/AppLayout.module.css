@@ -1,0 +1,8 @@
+.main {
+  flex: 1;
+}
+
+/* Focus lands here only from the skip link. The page itself is not a control to outline. */
+.main:focus {
+  outline: none;
+}

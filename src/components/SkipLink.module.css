@@ -1,0 +1,19 @@
+/* Out of sight until it has keyboard focus. */
+.skip {
+  position: absolute;
+  z-index: 100;
+  inset-inline-start: var(--s4);
+  top: -100px;
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding-inline: var(--s4);
+  border-radius: var(--radius);
+  background: var(--ink);
+  color: var(--surface);
+  font-weight: 500;
+}
+
+.skip:focus {
+  top: max(var(--s2), env(safe-area-inset-top));
+}
