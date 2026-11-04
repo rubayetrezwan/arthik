@@ -251,7 +251,7 @@ describe('formatMonth', () => {
 
 describe('formatMonthRange', () => {
   /** Thin spaces either side of the dash are the language's own choice; compare without them. */
-  const squeezed = (text: string) => text.replace(/[     ]*–[     ]*/g, '–')
+  const squeezed = (text: string) => text.replace(/[\u2009\u200a\u00a0\u202f ]*\u2013[\u2009\u200a\u00a0\u202f ]*/g, '\u2013')
 
   it('shows the first and last month, with the year once when they share it', () => {
     expect(squeezed(formatMonthRange('2026-05', '2026-10', 'en'))).toBe('May–Oct 2026')
