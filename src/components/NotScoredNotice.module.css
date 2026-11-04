@@ -20,6 +20,8 @@
   font-family: var(--display);
   font-size: 19px;
   line-height: var(--line-heading);
+  /* Keeps a short last word, such as the "3." of "at least 3.", off a line of its own. */
+  text-wrap: pretty;
 }
 
 .notice p:not(.lead) {
