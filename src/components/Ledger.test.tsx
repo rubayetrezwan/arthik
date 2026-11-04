@@ -210,6 +210,41 @@ describe('Ledger: plain-language values at the edges', () => {
   })
 })
 
+describe('Ledger: a tiny amount never reads as zero (R49)', () => {
+  it('says "under 1%" for debt payments that round to 0%', () => {
+    renderLedger(computeScore(specExample({ debtRatio: 0.003 })))
+
+    expect(measureRows()[2]).toHaveTextContent('Under 1% of your income went on debt payments')
+  })
+
+  it('says "less than 0.1 months" for emergency savings that round to 0.0', () => {
+    renderLedger(computeScore(specExample({ bufferMonths: 0.03 })))
+
+    expect(measureRows()[1]).toHaveTextContent('Would cover less than 0.1 months of essentials')
+  })
+
+  it('shows 0.1 months as it is, once it rounds up to that', () => {
+    renderLedger(computeScore(specExample({ bufferMonths: 0.05 })))
+
+    expect(measureRows()[1]).toHaveTextContent('Would cover 0.1 months of essentials')
+  })
+
+  it('says "under 1%" for wants and for swings in spending that round to 0%', () => {
+    renderLedger(computeScore(specExample({ wantsShare: 0.002, spendingCV: 0.004 })))
+
+    expect(measureRows()[3]).toHaveTextContent('Under 1% of your spending went on wants')
+    expect(measureRows()[4]).toHaveTextContent('Your monthly spending varies by under 1%')
+  })
+
+  it('keeps the plain wording for a true zero', () => {
+    renderLedger(computeScore(specExample({ debtRatio: 0, wantsShare: 0, spendingCV: 0 })))
+
+    expect(measureRows()[2]).toHaveTextContent('No loan or card payments')
+    expect(measureRows()[3]).toHaveTextContent('0% of your spending went on wants')
+    expect(measureRows()[4]).toHaveTextContent('Your monthly spending varies by about 0%')
+  })
+})
+
 describe('Ledger: spending with no category (R4)', () => {
   const result = computeScore(specExample())
 
