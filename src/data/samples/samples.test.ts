@@ -734,6 +734,12 @@ describe('what the written summaries say', () => {
   })
 
   describe('Arif', () => {
+    it('keeps only a little of his income, though enough to show as at least 1%', () => {
+      const { savingsRate } = analyse('arif').measures
+      expect(savingsRate).toBeGreaterThan(0.005)
+      expect(savingsRate).toBeLessThan(0.1)
+    })
+
     it('has little to fall back on', () => {
       expect(analyse('arif').measures.bufferMonths).toBeLessThan(0.5)
     })
