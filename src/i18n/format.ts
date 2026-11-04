@@ -156,34 +156,34 @@ export function formatMonth(month: string, locale: LocaleCode): string {
   return dateFormat(LOCALES[locale].intl, { month: 'short', year: 'numeric' }).format(date)
 }
 
-/** "31 Oct", from 'YYYY-MM-DD'. Text that is not a date is returned as it came. */
-export function formatDate(date: string, locale: LocaleCode): string {
+/**
+ * A calendar day from 'YYYY-MM-DD', with or without its year. Text that is not a real date
+ * is returned as it came.
+ */
+function formatDay(date: string, locale: LocaleCode, { withYear }: { withYear: boolean }): string {
   const match = /^(\d{4})-(\d{2})-(\d{2})$/.exec(date)
   const day = match ? utcDate(Number(match[1]), Number(match[2]), Number(match[3])) : null
   if (!day) return date
 
-  const parts = dateFormat(LOCALES[locale].intl, { day: 'numeric', month: 'short' }).formatToParts(
-    day,
-  )
+  const options: Intl.DateTimeFormatOptions = withYear
+    ? { day: 'numeric', month: 'short', year: 'numeric' }
+    : { day: 'numeric', month: 'short' }
+  const parts = dateFormat(LOCALES[locale].intl, options).formatToParts(day)
   if (locale !== 'en') return parts.map((part) => part.value).join('')
 
   // Plain English puts the month first ("Oct 31"). Readers here expect "31 Oct", and the
   // day-first English locales spell September "Sept", which would not match "Sep 2026".
   const value = (type: string) => parts.find((part) => part.type === type)?.value ?? ''
-  return `${value('day')} ${value('month')}`
+  const dayFirst = [value('day'), value('month')]
+  return (withYear ? [...dayFirst, value('year')] : dayFirst).join(' ')
+}
+
+/** "31 Oct", from 'YYYY-MM-DD'. Text that is not a date is returned as it came. */
+export function formatDate(date: string, locale: LocaleCode): string {
+  return formatDay(date, locale, { withYear: false })
 }
 
 /** "3 Nov 2026", from 'YYYY-MM-DD'. Text that is not a date is returned as it came. */
 export function formatFullDate(date: string, locale: LocaleCode): string {
-  const match = /^(\d{4})-(\d{2})-(\d{2})$/.exec(date)
-  const day = match ? utcDate(Number(match[1]), Number(match[2]), Number(match[3])) : null
-  if (!day) return date
-
-  const options: Intl.DateTimeFormatOptions = { day: 'numeric', month: 'short', year: 'numeric' }
-  const parts = dateFormat(LOCALES[locale].intl, options).formatToParts(day)
-  if (locale !== 'en') return parts.map((part) => part.value).join('')
-
-  // Day first, for the same reasons as formatDate.
-  const value = (type: string) => parts.find((part) => part.type === type)?.value ?? ''
-  return `${value('day')} ${value('month')} ${value('year')}`
+  return formatDay(date, locale, { withYear: true })
 }
