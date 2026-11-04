@@ -5,6 +5,7 @@ import {
   formatFullDate,
   formatMoney,
   formatMonth,
+  formatMonthRange,
   formatNumber,
   formatPercent,
   formatPoints,
@@ -245,6 +246,35 @@ describe('formatMonth', () => {
     expect(formatMonth('2026-00', 'en')).toBe('2026-00')
     expect(formatMonth('October', 'en')).toBe('October')
     expect(formatMonth('', 'en')).toBe('')
+  })
+})
+
+describe('formatMonthRange', () => {
+  /** Thin spaces either side of the dash are the language's own choice; compare without them. */
+  const squeezed = (text: string) => text.replace(/[     ]*–[     ]*/g, '–')
+
+  it('shows the first and last month, with the year once when they share it', () => {
+    expect(squeezed(formatMonthRange('2026-05', '2026-10', 'en'))).toBe('May–Oct 2026')
+  })
+
+  it('shows both years when the months fall in different years', () => {
+    expect(squeezed(formatMonthRange('2025-11', '2026-10', 'en'))).toBe('Nov 2025–Oct 2026')
+  })
+
+  it('shows a single month as that month', () => {
+    expect(formatMonthRange('2026-10', '2026-10', 'en')).toBe(formatMonth('2026-10', 'en'))
+  })
+
+  it('follows each language, with its own digits', () => {
+    expect(formatMonthRange('2026-05', '2026-10', 'bn')).toContain('২০২৬')
+    for (const locale of LOCALE_CODES) {
+      expect(formatMonthRange('2026-05', '2026-10', locale), locale).toMatch(/\S/)
+    }
+  })
+
+  it('joins the two with a dash, leaving text that is not a month as it came', () => {
+    expect(formatMonthRange('2026-13', '2026-10', 'en')).toBe('2026-13–Oct 2026')
+    expect(formatMonthRange('May', 'Oct', 'en')).toBe('May–Oct')
   })
 })
 

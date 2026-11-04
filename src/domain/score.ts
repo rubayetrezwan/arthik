@@ -32,6 +32,13 @@ export const WEIGHTS: Record<MeasureId, number> = {
 
 export type Band = 'vulnerable' | 'coping' | 'healthy'
 
+/** The whole scores each band covers, lowest band first. `bandOf` draws the same lines. */
+export const BAND_RANGES: readonly { band: Band; min: number; max: number }[] = [
+  { band: 'vulnerable', min: 0, max: 39 },
+  { band: 'coping', min: 40, max: 79 },
+  { band: 'healthy', min: 80, max: 100 },
+]
+
 /** 0 to 39 Vulnerable, 40 to 79 Coping, 80 to 100 Healthy. */
 export function bandOf(score: number): Band {
   if (score < 40) return 'vulnerable'
@@ -78,7 +85,7 @@ export interface ScoreResult {
 }
 
 /** Fewer scored measures than this and the overall score is not shown. */
-const MIN_SCORED_MEASURES = 3
+export const MIN_SCORED_MEASURES = 3
 
 const RAW_VALUE: Record<MeasureId, (m: Measures) => number | null> = {
   savingsRate: (m) => m.savingsRate,

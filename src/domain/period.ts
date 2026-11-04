@@ -1,5 +1,5 @@
 /** The first and last months are only partly covered. This many days at the edge decide if they count. */
-const EDGE_DAYS = 7
+export const EDGE_DAYS = 7
 
 const DATE_PATTERN = /^(\d{4})-(\d{2})-(\d{2})$/
 

@@ -14,8 +14,11 @@ import { LOCALES, type LocaleCode } from './locales'
 
 const MINUS = '\u2212'
 
-/** Shown instead of NaN or infinity, so "NaN" and "\u221e" can never reach the screen. */
-const NO_VALUE = '\u2014'
+/**
+ * Shown instead of NaN or infinity, so "NaN" and "\u221e" can never reach the screen, and
+ * wherever a figure has no value, such as the points of a measure that is not scored.
+ */
+export const NO_VALUE = '\u2014'
 
 /** Taka and yen are shown in whole units. Every other currency shows two decimals. */
 const WHOLE_UNIT_CURRENCIES: ReadonlySet<CurrencyCode> = new Set(['BDT', 'JPY'])
@@ -147,13 +150,33 @@ function utcDate(year: number, month: number, day: number): Date | null {
   return real ? date : null
 }
 
+const MONTH_YEAR: Intl.DateTimeFormatOptions = { month: 'short', year: 'numeric' }
+
+/** The first day of a 'YYYY-MM' month, or null for text that is not a month. */
+function monthStart(month: string): Date | null {
+  const match = /^(\d{4})-(\d{2})$/.exec(month)
+  return match ? utcDate(Number(match[1]), Number(match[2]), 1) : null
+}
+
 /** "Oct 2026", from 'YYYY-MM'. Text that is not a month is returned as it came. */
 export function formatMonth(month: string, locale: LocaleCode): string {
-  const match = /^(\d{4})-(\d{2})$/.exec(month)
-  const date = match ? utcDate(Number(match[1]), Number(match[2]), 1) : null
+  const date = monthStart(month)
   if (!date) return month
 
-  return dateFormat(LOCALES[locale].intl, { month: 'short', year: 'numeric' }).format(date)
+  return dateFormat(LOCALES[locale].intl, MONTH_YEAR).format(date)
+}
+
+/**
+ * "May – Oct 2026", from two 'YYYY-MM' months, oldest first. Each language joins the two
+ * its own way and writes a shared year once. One month on its own is just that month.
+ */
+export function formatMonthRange(first: string, last: string, locale: LocaleCode): string {
+  const from = monthStart(first)
+  const to = monthStart(last)
+  if (!from || !to) return `${formatMonth(first, locale)}–${formatMonth(last, locale)}`
+  if (first === last) return formatMonth(first, locale)
+
+  return dateFormat(LOCALES[locale].intl, MONTH_YEAR).formatRange(from, to)
 }
 
 /**

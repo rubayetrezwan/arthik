@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest'
 import { fixtureA } from './fixtures'
 import { computeMeasures, type Measures } from './measures'
 import {
+  BAND_RANGES,
   bandOf,
   computeScore,
   MEASURE_IDS,
@@ -52,6 +53,23 @@ describe('measure ids and weights', () => {
 
   it('weights them 25, 25, 20, 15, 15 percent', () => {
     expect(MEASURE_IDS.map((id) => WEIGHTS[id])).toEqual([25, 25, 20, 15, 15])
+  })
+})
+
+describe('BAND_RANGES', () => {
+  it('lists the three bands with their ranges, lowest first', () => {
+    expect(BAND_RANGES).toEqual([
+      { band: 'vulnerable', min: 0, max: 39 },
+      { band: 'coping', min: 40, max: 79 },
+      { band: 'healthy', min: 80, max: 100 },
+    ])
+  })
+
+  it('agrees with bandOf for every whole score', () => {
+    for (let score = 0; score <= 100; score++) {
+      const range = BAND_RANGES.find(({ min, max }) => score >= min && score <= max)
+      expect(range?.band, String(score)).toBe(bandOf(score))
+    }
   })
 })
 
