@@ -1,0 +1,13 @@
+/*
+ * Sized by its column, not by its longest option, so a long name in the list never widens
+ * the table. The chosen name shows in full on a phone, where the select takes the row.
+ */
+.category {
+  inline-size: 100%;
+  min-inline-size: 0;
+}
+
+.category select {
+  font-size: 14px;
+  text-overflow: ellipsis;
+}
