@@ -1,0 +1,46 @@
+/* Takes the place of the two score sheets, so it is boxed like them. */
+.notice {
+  max-inline-size: 640px;
+  padding: var(--s5);
+  border: 1px solid var(--rule);
+  border-inline-start: 3px solid var(--red);
+  border-radius: var(--radius);
+  background: var(--surface);
+}
+
+.notice > * + * {
+  margin-block-start: var(--s3);
+}
+
+.title {
+  font-size: 22px;
+}
+
+.lead {
+  font-family: var(--display);
+  font-size: 19px;
+  line-height: var(--line-heading);
+}
+
+.notice p:not(.lead) {
+  color: var(--ink-2);
+}
+
+.missing {
+  margin-block-end: 0;
+  padding-inline-start: var(--s5);
+}
+
+.missing li + li {
+  margin-block-start: var(--s1);
+}
+
+.measure {
+  font-weight: 600;
+}
+
+@media (max-width: 640px) {
+  .notice {
+    padding: var(--s4);
+  }
+}

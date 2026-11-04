@@ -1,0 +1,103 @@
+/* One of the two boxed sheets on the page; everything else is ruled, not boxed. */
+.sheet {
+  min-inline-size: 0;
+  padding: var(--s5);
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+  background: var(--surface);
+}
+
+.title {
+  font-size: 22px;
+}
+
+.figure {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--s2);
+  margin-block: var(--s4) var(--s3);
+  font-variant-numeric: tabular-nums lining-nums;
+}
+
+.score {
+  padding-block-end: 6px;
+  border-block-end: 4px double var(--ink);
+  font-family: var(--display);
+  font-size: 104px;
+  font-weight: var(--display-medium);
+  line-height: 0.9;
+}
+
+.outOf {
+  color: var(--ink-2);
+  font-size: 18px;
+}
+
+.band {
+  color: var(--ink-2);
+  font-size: 15px;
+}
+
+/* The band, set like a slightly crooked rubber stamp in the ledger's margin. */
+.stamp {
+  display: inline-block;
+  margin-inline-end: var(--s2);
+  padding-inline: 10px;
+  border: 1.5px solid currentColor;
+  border-radius: 2px;
+  font-family: var(--display);
+  font-size: 19px;
+  font-weight: var(--display-bold);
+  transform: rotate(-1.5deg);
+}
+
+:global([dir="rtl"]) .stamp {
+  transform: rotate(1.5deg);
+}
+
+.vulnerable {
+  color: var(--vulnerable);
+}
+
+.coping {
+  color: var(--coping);
+}
+
+.healthy {
+  color: var(--healthy);
+}
+
+.summary,
+.changed {
+  margin-block-start: var(--s5);
+  padding-block-start: var(--s4);
+  border-block-start: 1px solid var(--rule);
+}
+
+.changed {
+  color: var(--ink-2);
+  font-size: 15px;
+}
+
+.summaryText {
+  font-family: var(--display);
+  font-size: 18px;
+  line-height: var(--line-body);
+}
+
+.note {
+  margin-block-start: var(--s2);
+  color: var(--ink-2);
+  font-size: 14px;
+}
+
+@media (max-width: 640px) {
+  .sheet {
+    padding: var(--s4);
+  }
+
+  .score {
+    font-size: 88px;
+  }
+}

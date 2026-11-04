@@ -1,0 +1,20 @@
+.period {
+  font-variant-numeric: tabular-nums lining-nums;
+}
+
+/*
+ * The score card and the ledger, side by side from 1024px (spec 9b) and stacked below it.
+ * The ledger takes the rest of the width; its column headings never wrap.
+ */
+.sheets {
+  display: grid;
+  grid-template-columns: minmax(300px, 360px) minmax(0, 1fr);
+  align-items: start;
+  gap: var(--s5);
+}
+
+@media (max-width: 1023px) {
+  .sheets {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

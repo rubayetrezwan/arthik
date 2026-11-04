@@ -45,7 +45,6 @@
   "home.method.total": "Total",
   "home.method.formulas": "The score is worked out with published formulas, not by AI, so every point can be traced back to your own numbers.",
   "score.title": "Your score",
-  "score.kicker.sample": "Sample: {name}, {role}",
   "score.kicker.mine": "Your own transactions",
   "score.period": "Using {count, plural, one {# complete month} other {# complete months}}: {range}",
   "score.sheet": "Financial health score",
