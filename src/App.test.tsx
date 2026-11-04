@@ -3,6 +3,7 @@ import userEvent from '@testing-library/user-event'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { PERSON_IDS } from './data/samples'
 import { RATES } from './domain/currency'
+import { formatFullDate } from './i18n/format'
 import { renderApp } from './test/renderApp'
 
 vi.mock('./i18n/fonts', () => ({ loadFonts: vi.fn(() => Promise.resolve()) }))
@@ -59,15 +60,17 @@ describe('footer', () => {
   it('names the date and source of the exchange rates, with a link to the source', () => {
     renderApp('/')
 
+    // Worked out from the rates file, so refreshing the rates cannot break this test.
+    const shown = formatFullDate(RATES.date, 'en')
     const date = screen.getByRole('contentinfo').querySelector('time')
     expect(date).toHaveAttribute('datetime', RATES.date)
-    expect(date).toHaveTextContent('3 Nov 2026')
-    expect(footer().getByRole('link', { name: 'ExchangeRate-API' })).toHaveAttribute(
+    expect(date).toHaveTextContent(shown)
+    expect(footer().getByRole('link', { name: RATES.source })).toHaveAttribute(
       'href',
       RATES.sourceUrl,
     )
     expect(screen.getByRole('contentinfo')).toHaveTextContent(
-      'Exchange rates as of 3 Nov 2026, source: ExchangeRate-API.',
+      `Exchange rates as of ${shown}, source: ${RATES.source}.`,
     )
   })
 
