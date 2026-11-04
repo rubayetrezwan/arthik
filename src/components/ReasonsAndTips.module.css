@@ -1,0 +1,104 @@
+.title {
+  font-size: 22px;
+}
+
+.note {
+  margin-block-start: var(--s1);
+  color: var(--ink-2);
+  font-size: 15px;
+}
+
+/*
+ * A ruled, numbered list, as in a ledger's margin: the number in red display figures, the
+ * reason, then what would help, set off by a rule on its start side.
+ */
+.reasons {
+  margin: var(--s4) 0 0;
+  padding: 0;
+  list-style: none;
+  counter-reset: reason;
+}
+
+.reason {
+  display: grid;
+  grid-template-columns: 40px minmax(0, 1fr) minmax(0, 1fr);
+  gap: var(--s2) var(--s5);
+  padding-block: var(--s4);
+  border-block-start: 1px solid var(--rule);
+  counter-increment: reason;
+}
+
+.reason::before {
+  content: counter(reason);
+  font-family: var(--display);
+  font-size: 30px;
+  font-variant-numeric: lining-nums;
+  line-height: 1;
+  color: var(--red);
+}
+
+.reason p {
+  margin-block-start: var(--s1);
+}
+
+.measure {
+  font-family: var(--body);
+  font-size: 16px;
+  font-weight: 600;
+  line-height: var(--line-heading);
+}
+
+.worth {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--primary);
+}
+
+.reason .worth {
+  margin-block-start: var(--s2);
+}
+
+.help {
+  padding-inline-start: var(--s4);
+  border-inline-start: 2px solid var(--rule);
+}
+
+.label {
+  font-family: var(--display);
+  font-size: 15px;
+  font-style: var(--label-style);
+  color: var(--ink-2);
+}
+
+.reason .label {
+  margin-block-start: 0;
+}
+
+/* Tips that answer no one measure follow the list, under one label. */
+.more {
+  padding-block-start: var(--s4);
+  border-block-start: 1px solid var(--rule);
+}
+
+.more ul {
+  margin: var(--s1) 0 0;
+  padding: 0;
+  padding-inline-start: var(--s4);
+  border-inline-start: 2px solid var(--rule);
+  list-style: none;
+}
+
+.more li + li {
+  margin-block-start: var(--s2);
+}
+
+/* Narrower screens: the tip moves under its reason, still beside the number's column. */
+@media (max-width: 980px) {
+  .reason {
+    grid-template-columns: 34px minmax(0, 1fr);
+  }
+
+  .help {
+    grid-column: 2;
+  }
+}
