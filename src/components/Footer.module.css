@@ -45,3 +45,21 @@
   align-items: center;
   min-height: 44px;
 }
+
+/* Phones: one credit per line, so no line ever starts with a separator. */
+@media (max-width: 640px) {
+  .credits {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .credits li {
+    min-height: 0;
+  }
+
+  .credits li + li {
+    margin-inline-start: 0;
+    padding-inline-start: 0;
+    border-inline-start: 0;
+  }
+}

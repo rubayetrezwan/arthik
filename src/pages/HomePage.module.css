@@ -132,7 +132,7 @@
 .methodBody {
   display: grid;
   grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
-  align-items: end;
+  align-items: start;
   gap: var(--s7);
   margin-block-start: var(--s4);
 }
@@ -166,6 +166,11 @@
 
 .weights .end {
   text-align: end;
+}
+
+/* A column heading never breaks: the measure names take the narrower width instead. */
+.weights thead .end {
+  white-space: nowrap;
 }
 
 .measure {
@@ -204,7 +209,7 @@
 
 .formulas {
   max-width: 44ch;
-  padding-block-end: var(--s3);
+  padding-block-start: var(--s2);
 }
 
 .more {
