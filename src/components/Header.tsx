@@ -1,7 +1,7 @@
 import { FormattedMessage, useIntl } from 'react-intl'
-import { Link, NavLink, useMatch } from 'react-router'
+import { Link, NavLink } from 'react-router'
 import type { PersonId } from '../domain/types'
-import { useSession } from '../state/session'
+import { useRouteDatasetKey, useSession, type DatasetKey } from '../state/session'
 import { CurrencySelect } from './CurrencySelect'
 import styles from './Header.module.css'
 import { LanguageSelect } from './LanguageSelect'
@@ -9,18 +9,20 @@ import { LanguageSelect } from './LanguageSelect'
 /** Where "Your score" leads a visitor who has not looked at anyone yet: the first sample. */
 const FIRST_PERSON: PersonId = 'nusrat'
 
-/** Where "Your score" leads: the visitor's own file, else the last person they looked at. */
-function useScorePath(): string {
+/**
+ * Where "Your score" leads: the visitor's own file once there is one, else the person on
+ * screen or looked at last. The copy speaks to the visitor even for samples.
+ */
+function useScoreKey(shown: DatasetKey | null): DatasetKey {
   const { upload, activeKey } = useSession()
-  const key = upload ? 'mine' : (activeKey ?? FIRST_PERSON)
-  return `/score/${key}`
+  if (upload) return 'mine'
+  return shown ?? activeKey ?? FIRST_PERSON
 }
 
 export function Header() {
   const intl = useIntl()
-  const scorePath = useScorePath()
-  // "Your score" covers every score page: the copy speaks to the visitor even for samples.
-  const onScorePage = useMatch('/score/*') !== null
+  const shown = useRouteDatasetKey()
+  const scoreKey = useScoreKey(shown)
 
   return (
     <header className={styles.header}>
@@ -37,9 +39,9 @@ export function Header() {
 
         <nav className={styles.nav} aria-label={intl.formatMessage({ id: 'nav.label' })}>
           <Link
-            to={scorePath}
+            to={`/score/${scoreKey}`}
             className={styles.link}
-            aria-current={onScorePage ? 'page' : undefined}
+            aria-current={shown === scoreKey ? 'page' : undefined}
           >
             <FormattedMessage id="nav.score" />
           </Link>

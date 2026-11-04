@@ -90,8 +90,8 @@ function useSessionState(): SessionState {
   return state
 }
 
-/** The dataset the current route names, if it names one that can exist. */
-function useRouteDatasetKey(): DatasetKey | null {
+/** The dataset the current route shows, if it is a score page for one that can exist. */
+export function useRouteDatasetKey(): DatasetKey | null {
   const person = useMatch('/score/:person')?.params.person
   return person !== undefined && isDatasetKey(person) ? person : null
 }

@@ -1,9 +1,15 @@
-import { screen, waitFor, within } from '@testing-library/react'
+import { render, screen, waitFor, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import { useEffect } from 'react'
+import { MemoryRouter } from 'react-router'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-import { CURRENCY_CODES } from '../domain/types'
+import { CURRENCY_CODES, type Dataset } from '../domain/types'
+import { I18nProvider } from '../i18n/I18nProvider'
 import { LOCALE_CODES, LOCALES } from '../i18n/locales'
+import { PrefsProvider } from '../state/prefs'
+import { SessionProvider, useSession } from '../state/session'
 import { renderApp } from '../test/renderApp'
+import { Header } from './Header'
 
 vi.mock('../i18n/fonts', () => ({ loadFonts: vi.fn(() => Promise.resolve()) }))
 
@@ -17,6 +23,36 @@ beforeEach(() => {
 
 function header() {
   return within(screen.getByRole('banner'))
+}
+
+function scoreLink() {
+  const nav = header().getByRole('navigation', { name: 'Main' })
+  return within(nav).getByRole('link', { name: 'Your score' })
+}
+
+const ownFile: Dataset = { key: 'mine', transactions: [], emergencySavings: null }
+
+/** Puts a file of the visitor's own into the session, as the upload page will. */
+function WithOwnFile() {
+  const { setUpload } = useSession()
+  useEffect(() => setUpload(ownFile), [setUpload])
+  return null
+}
+
+/** The header alone, at a route, for a visitor who has brought their own file. */
+function renderHeaderWithOwnFile(path: string) {
+  return render(
+    <PrefsProvider>
+      <SessionProvider>
+        <I18nProvider>
+          <MemoryRouter initialEntries={[path]}>
+            <WithOwnFile />
+            <Header />
+          </MemoryRouter>
+        </I18nProvider>
+      </SessionProvider>
+    </PrefsProvider>,
+  )
 }
 
 describe('Header', () => {
@@ -86,15 +122,30 @@ describe('Header', () => {
     expect(localStorage.getItem('arthik.currency')).toBe('GBP')
   })
 
-  it('marks "Your score" as the page on any score page', () => {
+  it('marks "Your score" as the page when it is the sample on screen', () => {
     renderApp('/score/tanvir')
 
+    expect(scoreLink()).toHaveAttribute('href', '#/score/tanvir')
+    expect(scoreLink()).toHaveAttribute('aria-current', 'page')
     const nav = header().getByRole('navigation', { name: 'Main' })
-    expect(within(nav).getByRole('link', { name: 'Your score' })).toHaveAttribute(
-      'aria-current',
-      'page',
-    )
     expect(within(nav).getByRole('link', { name: 'About' })).not.toHaveAttribute('aria-current')
+  })
+
+  it('does not mark "Your score" on the page for a person who does not exist', () => {
+    renderApp('/score/nobody')
+
+    expect(scoreLink()).not.toHaveAttribute('aria-current')
+  })
+
+  it("leads to the visitor's own file once there is one, and marks it only there", async () => {
+    const { unmount } = renderHeaderWithOwnFile('/score/tanvir')
+
+    await waitFor(() => expect(scoreLink()).toHaveAttribute('href', '/score/mine'))
+    expect(scoreLink()).not.toHaveAttribute('aria-current')
+    unmount()
+
+    renderHeaderWithOwnFile('/score/mine')
+    await waitFor(() => expect(scoreLink()).toHaveAttribute('aria-current', 'page'))
   })
 
   it('takes "Your score" back to the person looked at last', async () => {
