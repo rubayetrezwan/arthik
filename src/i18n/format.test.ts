@@ -2,6 +2,7 @@ import { afterEach, describe, expect, it, vi } from 'vitest'
 import { CURRENCY_CODES } from '../domain/types'
 import {
   formatDate,
+  formatFullDate,
   formatMoney,
   formatMonth,
   formatNumber,
@@ -292,5 +293,24 @@ describe('formatDate', () => {
         expect(formatMonth('2026-12', 'en')).toBe('Dec 2026')
       },
     )
+  })
+})
+
+describe('formatFullDate', () => {
+  it('shows day, month and year, day first, in English', () => {
+    expect(formatFullDate('2026-11-03', 'en')).toBe('3 Nov 2026')
+    expect(formatFullDate('2026-09-30', 'en')).toBe('30 Sep 2026')
+  })
+
+  it('follows each language', () => {
+    expect(formatFullDate('2026-11-03', 'bn')).toContain('২০২৬')
+    expect(formatFullDate('2026-11-03', 'zh')).toBe('2026年11月3日')
+    expect(plain(formatFullDate('2026-11-03', 'fr'))).toMatch(/^3 nov\.? 2026$/)
+    expect(formatFullDate('2026-11-03', 'ar')).toContain('2026')
+  })
+
+  it('returns the text unchanged when it is not a real date', () => {
+    expect(formatFullDate('2026-02-31', 'en')).toBe('2026-02-31')
+    expect(formatFullDate('soon', 'en')).toBe('soon')
   })
 })

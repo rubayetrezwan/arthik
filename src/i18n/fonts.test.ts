@@ -1,7 +1,8 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import type { LocaleCode } from './locales'
 
-// Two files from each font set: the display face and the body face.
+// Two files from each font set: the display face and the body face. The wordmark set is
+// Newsreader's 600 alone, which the Latin set also loads.
 const FONT_FILES = {
   latin: ['@fontsource/newsreader/400.css', '@fontsource/ibm-plex-sans/400.css'],
   bengali: ['@fontsource/tiro-bangla/400.css', '@fontsource/noto-sans-bengali/400.css'],
@@ -11,6 +12,7 @@ const FONT_FILES = {
   ],
   arabic: ['@fontsource/noto-naskh-arabic/400.css', '@fontsource/ibm-plex-sans-arabic/400.css'],
   chinese: ['@fontsource/noto-serif-sc/400.css', '@fontsource/noto-sans-sc/400.css'],
+  wordmark: ['@fontsource/newsreader/600.css'],
 }
 
 type FontSet = keyof typeof FONT_FILES
@@ -40,14 +42,16 @@ afterEach(() => {
 })
 
 describe('loadFonts', () => {
+  // Every language shows the wordmark ("Arthik" in Newsreader beside "আর্থিক" in Tiro
+  // Bangla) and taka amounts, whose ৳ only the Bengali fonts have.
   it.each<[LocaleCode, FontSet[]]>([
-    ['en', ['latin', 'bengali']],
-    ['es', ['latin', 'bengali']],
-    ['fr', ['latin', 'bengali']],
-    ['bn', ['bengali']],
-    ['hi', ['devanagari']],
-    ['ar', ['arabic']],
-    ['zh', ['chinese']],
+    ['en', ['latin', 'bengali', 'wordmark']],
+    ['es', ['latin', 'bengali', 'wordmark']],
+    ['fr', ['latin', 'bengali', 'wordmark']],
+    ['bn', ['bengali', 'wordmark']],
+    ['hi', ['devanagari', 'bengali', 'wordmark']],
+    ['ar', ['arabic', 'bengali', 'wordmark']],
+    ['zh', ['chinese', 'bengali', 'wordmark']],
   ])('loads only the fonts %s needs', async (l, expected) => {
     const imported = recordImports()
     const { loadFonts } = await import('./fonts')

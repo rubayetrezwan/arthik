@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
-import { PrefsProvider, usePrefs } from './prefs'
+import { PrefsProvider, readStoredLocale, usePrefs } from './prefs'
 
 function Probe() {
   const { locale, setLocale, currency, setCurrency } = usePrefs()
@@ -138,5 +138,28 @@ describe('usePrefs', () => {
     vi.spyOn(console, 'error').mockImplementation(() => {})
 
     expect(() => render(<Probe />)).toThrow(/PrefsProvider/)
+  })
+})
+
+describe('readStoredLocale', () => {
+  it('reads the remembered language, for the page to set up before it first draws', () => {
+    localStorage.setItem('arthik.locale', 'ar')
+
+    expect(readStoredLocale()).toBe('ar')
+  })
+
+  it('gives English when nothing is remembered, or something unknown is', () => {
+    expect(readStoredLocale()).toBe('en')
+
+    localStorage.setItem('arthik.locale', 'klingon')
+    expect(readStoredLocale()).toBe('en')
+  })
+
+  it('gives English when storage is blocked', () => {
+    vi.spyOn(window, 'localStorage', 'get').mockImplementation(() => {
+      throw new DOMException('Storage is blocked', 'SecurityError')
+    })
+
+    expect(readStoredLocale()).toBe('en')
   })
 })

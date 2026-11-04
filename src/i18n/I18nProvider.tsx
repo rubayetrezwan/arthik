@@ -6,10 +6,13 @@ import { loadMessages, type Messages } from './loadMessages'
 import { LOCALES, type LocaleCode } from './locales'
 import en from './messages/en.json'
 
-interface Loaded {
+/** A language whose messages, and fonts, have already loaded. */
+export interface PreloadedLanguage {
   locale: LocaleCode
   messages: Messages
 }
+
+type Loaded = PreloadedLanguage
 
 const DisplayedLocaleContext = createContext<LocaleCode | null>(null)
 
@@ -36,18 +39,31 @@ export function useLocale(): LocaleCode {
  * previous language stays on screen, so a visitor never sees raw message keys. The font
  * files themselves download after the stylesheet is in, and swap in as they arrive.
  *
- * English is the only language bundled with the app, so a returning visitor's saved
- * language replaces it a moment after the first paint. Until a language has loaded, the
- * provider leaves `lang` and `dir` as the page has them, so a page that set them early
+ * English is the only language bundled with the app. For a returning visitor, the page
+ * loads their saved language before React starts and passes it in as `initial`, so the
+ * very first frame is already in that language (see `startup.ts`). Without it, the saved
+ * language replaces English a moment after the first paint. Until a language has loaded,
+ * the provider leaves `lang` and `dir` as the page has them, so a page that set them early
  * for the saved language does not flip direction twice.
  */
-export function I18nProvider({ children }: { children: ReactNode }) {
+export function I18nProvider({
+  children,
+  initial,
+}: {
+  children: ReactNode
+  /** Messages for the asked-for language, loaded together with its fonts. */
+  initial?: PreloadedLanguage
+}) {
   const { locale } = usePrefs()
   // Null until the first language has loaded. The bundled English is on screen meanwhile.
-  const [loaded, setLoaded] = useState<Loaded | null>(null)
+  const [loaded, setLoaded] = useState<Loaded | null>(() =>
+    initial?.locale === locale ? initial : null,
+  )
   const shown = loaded?.locale ?? 'en'
 
   useEffect(() => {
+    // Already on screen, preloaded or chosen earlier: there is nothing to fetch.
+    if (loaded?.locale === locale) return
     let current = true
     // Neither promise rejects: a missing translation or font falls back, it does not fail.
     Promise.all([loadMessages(locale), loadFonts(locale)]).then(([messages]) => {
@@ -57,7 +73,7 @@ export function I18nProvider({ children }: { children: ReactNode }) {
     return () => {
       current = false
     }
-  }, [locale])
+  }, [locale, loaded])
 
   // Before paint, so there is no frame of new text in the old direction. It only writes
   // what differs, so a page that already carries the right values is left untouched.

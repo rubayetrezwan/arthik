@@ -172,3 +172,18 @@ export function formatDate(date: string, locale: LocaleCode): string {
   const value = (type: string) => parts.find((part) => part.type === type)?.value ?? ''
   return `${value('day')} ${value('month')}`
 }
+
+/** "3 Nov 2026", from 'YYYY-MM-DD'. Text that is not a date is returned as it came. */
+export function formatFullDate(date: string, locale: LocaleCode): string {
+  const match = /^(\d{4})-(\d{2})-(\d{2})$/.exec(date)
+  const day = match ? utcDate(Number(match[1]), Number(match[2]), Number(match[3])) : null
+  if (!day) return date
+
+  const options: Intl.DateTimeFormatOptions = { day: 'numeric', month: 'short', year: 'numeric' }
+  const parts = dateFormat(LOCALES[locale].intl, options).formatToParts(day)
+  if (locale !== 'en') return parts.map((part) => part.value).join('')
+
+  // Day first, for the same reasons as formatDate.
+  const value = (type: string) => parts.find((part) => part.type === type)?.value ?? ''
+  return `${value('day')} ${value('month')} ${value('year')}`
+}

@@ -25,7 +25,11 @@ function isCurrencyCode(value: string): value is CurrencyCode {
   return (CURRENCY_CODES as readonly string[]).includes(value)
 }
 
-function storedLocale(): LocaleCode {
+/**
+ * The remembered language, or English. The page reads it before React starts too, to set
+ * up the visitor's language before the first frame, so both must read it the same way.
+ */
+export function readStoredLocale(): LocaleCode {
   const value = safeGet(LOCALE_KEY)
   return value !== null && isLocaleCode(value) ? value : DEFAULT_LOCALE
 }
@@ -36,7 +40,7 @@ function storedCurrency(): CurrencyCode {
 }
 
 export function PrefsProvider({ children }: { children: ReactNode }) {
-  const [locale, setLocaleState] = useState(storedLocale)
+  const [locale, setLocaleState] = useState(readStoredLocale)
   const [currency, setCurrencyState] = useState(storedCurrency)
 
   const setLocale = useCallback((l: LocaleCode) => {

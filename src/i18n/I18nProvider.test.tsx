@@ -3,7 +3,7 @@ import userEvent from '@testing-library/user-event'
 import { FormattedMessage } from 'react-intl'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { PrefsProvider, usePrefs } from '../state/prefs'
-import { I18nProvider, useLocale } from './I18nProvider'
+import { I18nProvider, useLocale, type PreloadedLanguage } from './I18nProvider'
 import { loadFonts } from './fonts'
 import { loadMessages } from './loadMessages'
 import { LOCALE_CODES, LOCALES } from './locales'
@@ -51,10 +51,10 @@ function Status() {
   )
 }
 
-function renderApp() {
+function renderApp(initial?: PreloadedLanguage) {
   return render(
     <PrefsProvider>
-      <I18nProvider>
+      <I18nProvider initial={initial}>
         <LanguageButtons />
         <Status />
       </I18nProvider>
@@ -266,6 +266,48 @@ describe('I18nProvider', () => {
     expect(html.dir).toBe('rtl')
     expect(attributes.changes()).toHaveLength(0)
     attributes.stop()
+  })
+
+  it('shows a language loaded before it mounted from the very first render', () => {
+    html.lang = 'ar'
+    html.dir = 'rtl'
+    localStorage.setItem('arthik.locale', 'ar')
+
+    renderApp({ locale: 'ar', messages: { ...en, 'app.name': 'أرثيك' } })
+
+    // No await: the first frame is already in the visitor's language.
+    expect(screen.getByRole('heading', { name: 'أرثيك' })).toBeInTheDocument()
+    expect(screen.getByText('asked ar, shown ar')).toBeInTheDocument()
+    expect(loadMessages).not.toHaveBeenCalled()
+  })
+
+  it('ignores a preloaded language that is not the one asked for', async () => {
+    localStorage.setItem('arthik.locale', 'bn')
+
+    renderApp({ locale: 'ar', messages: { ...en, 'app.name': 'أرثيك' } })
+
+    expect(screen.getByRole('heading', { name: 'Arthik' })).toBeInTheDocument()
+    await waitFor(() => expect(html.lang).toBe('bn-BD'))
+    expect(loadMessages).toHaveBeenCalledWith('bn')
+  })
+
+  it('does not fetch a language again when the visitor returns to it', async () => {
+    const slow = deferred<typeof en>()
+    vi.mocked(loadMessages).mockImplementation((l) =>
+      l === 'ar' ? slow.promise : Promise.resolve(en),
+    )
+    const user = userEvent.setup()
+    renderApp()
+    await screen.findByText('asked en, shown en')
+    vi.mocked(loadMessages).mockClear()
+
+    await user.click(screen.getByRole('button', { name: 'العربية' }))
+    await user.click(screen.getByRole('button', { name: 'English' }))
+
+    expect(await screen.findByText('asked en, shown en')).toBeInTheDocument()
+    expect(loadMessages).toHaveBeenCalledTimes(1)
+    expect(loadMessages).toHaveBeenCalledWith('ar')
+    expect(html.dir).toBe('ltr')
   })
 
   it('does not log an error when a language has no translations yet', async () => {

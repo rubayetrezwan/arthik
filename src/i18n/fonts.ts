@@ -24,8 +24,7 @@ const FONT_SETS = {
       import('@fontsource/ibm-plex-sans/500.css'),
       import('@fontsource/ibm-plex-sans/600.css'),
     ]),
-  // Tiro Bangla for display, Noto Sans Bengali for body. The Latin fonts have no ৳, so
-  // English, Spanish and French load this set too.
+  // Tiro Bangla for display, Noto Sans Bengali for body. Every language loads it (below).
   bengali: () =>
     Promise.all([
       import('@fontsource/tiro-bangla/400.css'),
@@ -49,6 +48,8 @@ const FONT_SETS = {
       import('@fontsource/ibm-plex-sans-arabic/500.css'),
       import('@fontsource/ibm-plex-sans-arabic/600.css'),
     ]),
+  // The wordmark's "Arthik" is set in Newsreader 600 in every language.
+  wordmark: () => import('@fontsource/newsreader/600.css'),
   chinese: () =>
     Promise.all([
       import('@fontsource/noto-serif-sc/400.css'),
@@ -60,14 +61,17 @@ const FONT_SETS = {
     ]),
 }
 
+// Every language shows the wordmark, "Arthik" in Newsreader beside "আর্থিক" in Tiro Bangla,
+// and amounts in taka, whose ৳ only the Bengali fonts have. So every language declares the
+// Bengali set and the wordmark weight too. Their files download only for the glyphs on screen.
 const FONTS_FOR: Record<LocaleCode, (keyof typeof FONT_SETS)[]> = {
   en: ['latin', 'bengali'],
   es: ['latin', 'bengali'],
   fr: ['latin', 'bengali'],
-  bn: ['bengali'],
-  hi: ['devanagari'],
-  ar: ['arabic'],
-  zh: ['chinese'],
+  bn: ['bengali', 'wordmark'],
+  hi: ['devanagari', 'bengali', 'wordmark'],
+  ar: ['arabic', 'bengali', 'wordmark'],
+  zh: ['chinese', 'bengali', 'wordmark'],
 }
 
 const requests = new Map<LocaleCode, Promise<void>>()
