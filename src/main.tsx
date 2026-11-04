@@ -9,10 +9,13 @@ const root = document.getElementById('root')
 if (!root) throw new Error('index.html is missing the #root element')
 
 // A returning visitor's language is set up first, so the first frame is already theirs.
-void prepareFirstPaint().then((language) => {
-  createRoot(root).render(
-    <StrictMode>
-      <App language={language} />
-    </StrictMode>,
-  )
-})
+// prepareFirstPaint never rejects; the catch is the last guard against a blank page.
+void prepareFirstPaint()
+  .catch(() => undefined)
+  .then((language) => {
+    createRoot(root).render(
+      <StrictMode>
+        <App language={language} />
+      </StrictMode>,
+    )
+  })

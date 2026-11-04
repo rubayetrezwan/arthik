@@ -23,6 +23,7 @@ beforeEach(() => {
 })
 
 afterEach(() => {
+  vi.restoreAllMocks()
   vi.useRealTimers()
   vi.mocked(loadFonts).mockReset()
   vi.mocked(loadMessages).mockReset()
@@ -79,5 +80,29 @@ describe('prepareFirstPaint', () => {
     // English text must not sit in a right-to-left page while Arabic loads.
     expect(html.lang).toBe('en')
     expect(html.dir).toBe('ltr')
+  })
+
+  it('draws the page in English if loading a language ever fails', async () => {
+    localStorage.setItem('arthik.locale', 'ar')
+    vi.mocked(loadMessages).mockRejectedValue(new Error('chunk failed'))
+
+    await expect(prepareFirstPaint()).resolves.toBeUndefined()
+
+    expect(html.lang).toBe('en')
+    expect(html.dir).toBe('ltr')
+  })
+
+  it('opens in English, without logging, when the browser blocks storage (Review Focus 4)', async () => {
+    vi.spyOn(window, 'localStorage', 'get').mockImplementation(() => {
+      throw new DOMException('Storage is blocked', 'SecurityError')
+    })
+    const error = vi.spyOn(console, 'error')
+
+    await expect(prepareFirstPaint()).resolves.toBeUndefined()
+
+    expect(html.lang).toBe('en')
+    expect(html.dir).toBe('ltr')
+    expect(loadMessages).not.toHaveBeenCalled()
+    expect(error).not.toHaveBeenCalled()
   })
 })

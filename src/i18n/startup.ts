@@ -15,7 +15,8 @@ const WAIT_AT_MOST_MS = 5000
 
 /**
  * Sets `<html lang dir>` for the remembered language and loads its messages and font
- * stylesheets, then resolves with the messages to hand to `I18nProvider`.
+ * stylesheets, then resolves with the messages to hand to `I18nProvider`. It never rejects:
+ * whatever goes wrong, the page is drawn, in English if need be.
  *
  * English resolves at once with nothing: its messages are bundled, and its fonts are only
  * started here, so the default path never waits.
@@ -37,9 +38,10 @@ export async function prepareFirstPaint({
   const tooSlow = new Promise<undefined>((resolve) => {
     timer = window.setTimeout(resolve, waitAtMostMs)
   })
-  // Neither load rejects: a missing translation or font falls back, it does not fail.
   const ready = Promise.all([loadMessages(locale), loadFonts(locale)]).then(
     ([messages]): PreloadedLanguage => ({ locale, messages }),
+    // Neither loader rejects today. If one ever does, the page still draws, in English.
+    () => undefined,
   )
 
   const preloaded = await Promise.race([ready, tooSlow])
