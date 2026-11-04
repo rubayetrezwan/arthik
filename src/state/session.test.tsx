@@ -1,7 +1,7 @@
 import { act, render, screen } from '@testing-library/react'
 import { useEffect } from 'react'
 import { MemoryRouter, useNavigate } from 'react-router'
-import { describe, expect, it, vi } from 'vitest'
+import { afterEach, describe, expect, it, vi } from 'vitest'
 import { SAMPLES } from '../data/samples'
 import type { Dataset } from '../domain/types'
 import { SessionProvider, useActiveDataset, useSession } from './session'
@@ -52,6 +52,10 @@ function Probe() {
   })
   return <p>{dataset ? `showing ${dataset.key}` : 'showing nothing'}</p>
 }
+
+afterEach(() => {
+  vi.restoreAllMocks()
+})
 
 function renderAt(path: string) {
   return render(
@@ -199,6 +203,5 @@ describe('the session', () => {
         </MemoryRouter>,
       ),
     ).toThrow(/SessionProvider/)
-    vi.restoreAllMocks()
   })
 })
