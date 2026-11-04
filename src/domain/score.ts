@@ -32,11 +32,14 @@ export const WEIGHTS: Record<MeasureId, number> = {
 
 export type Band = 'vulnerable' | 'coping' | 'healthy'
 
+/** The top of the scale. Every sub-score and the overall score run from 0 to this. */
+export const HIGHEST_SCORE = 100
+
 /** The whole scores each band covers, lowest band first. `bandOf` draws the same lines. */
 export const BAND_RANGES: readonly { band: Band; min: number; max: number }[] = [
   { band: 'vulnerable', min: 0, max: 39 },
   { band: 'coping', min: 40, max: 79 },
-  { band: 'healthy', min: 80, max: 100 },
+  { band: 'healthy', min: 80, max: HIGHEST_SCORE },
 ]
 
 /** 0 to 39 Vulnerable, 40 to 79 Coping, 80 to 100 Healthy. */

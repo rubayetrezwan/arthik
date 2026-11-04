@@ -5,6 +5,7 @@ import {
   BAND_RANGES,
   bandOf,
   computeScore,
+  HIGHEST_SCORE,
   MEASURE_IDS,
   WEIGHTS,
   type LedgerLine,
@@ -63,6 +64,15 @@ describe('BAND_RANGES', () => {
       { band: 'coping', min: 40, max: 79 },
       { band: 'healthy', min: 80, max: 100 },
     ])
+  })
+
+  it('runs from 0 to HIGHEST_SCORE, 100, with no gaps', () => {
+    expect(HIGHEST_SCORE).toBe(100)
+    expect(BAND_RANGES[0]?.min).toBe(0)
+    expect(BAND_RANGES.at(-1)?.max).toBe(HIGHEST_SCORE)
+    for (let index = 1; index < BAND_RANGES.length; index++) {
+      expect(BAND_RANGES[index]?.min).toBe((BAND_RANGES[index - 1]?.max ?? NaN) + 1)
+    }
   })
 
   it('agrees with bandOf for every whole score', () => {

@@ -6,7 +6,7 @@
 .bullet {
   position: relative;
   display: grid;
-  grid-template-columns: 40fr 40fr 20fr;
+  grid-template-columns: var(--zone-columns);
   block-size: 12px;
 }
 

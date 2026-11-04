@@ -23,6 +23,11 @@
   --zone-v: #e8c4b8;
   --zone-c: #ead39c;
   --zone-h: #c3dcc8;
+  /*
+   * The three zones laid along a 0-100 scale, split at the band edges 40 and 80
+   * (BAND_RANGES in src/domain/score.ts). Used by the band scale and each measure's bar.
+   */
+  --zone-columns: 40fr 40fr 20fr;
 
   --s1: 4px;
   --s2: 8px;

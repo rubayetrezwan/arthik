@@ -67,6 +67,8 @@ describe('Ledger: the spec example', () => {
     renderLedger(result)
 
     expect(screen.getByRole('heading', { level: 2 })).toHaveTextContent('How 67 adds up')
+    // The table carries the same name, so it is announced by what it adds up.
+    expect(screen.getByRole('table', { name: 'How 67 adds up' })).toBeInTheDocument()
   })
 
   it('lists the five measures by name, each with its own number in plain words', () => {

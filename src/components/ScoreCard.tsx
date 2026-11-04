@@ -1,13 +1,11 @@
 import { useId, type ReactNode } from 'react'
 import { FormattedMessage } from 'react-intl'
 import { Link } from 'react-router'
-import type { Band } from '../domain/score'
+import { HIGHEST_SCORE, type Band } from '../domain/score'
 import { formatNumber } from '../i18n/format'
 import { useLocale } from '../i18n/I18nProvider'
 import { BandScale } from './BandScale'
 import styles from './ScoreCard.module.css'
-
-const HIGHEST_SCORE = 100
 
 interface ScoreCardProps {
   score: number
@@ -43,9 +41,7 @@ export function ScoreCard({ score, band, summary, summaryHidden = false }: Score
         <span className={`${styles.stamp} ${styles[band]}`}>
           <FormattedMessage id={`band.${band}`} />
         </span>{' '}
-        <span className={styles.explain}>
-          <FormattedMessage id={`band.${band}.explain`} />
-        </span>
+        <FormattedMessage id={`band.${band}.explain`} />
       </p>
 
       <BandScale score={score} />

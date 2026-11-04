@@ -1,7 +1,7 @@
 import { useId, type ReactNode } from 'react'
 import { FormattedMessage, useIntl } from 'react-intl'
 import { MIN_MONTHS_FOR_CV } from '../domain/measures'
-import type { LedgerLine, ScoreResult } from '../domain/score'
+import { HIGHEST_SCORE, type LedgerLine, type ScoreResult } from '../domain/score'
 import {
   formatNumber,
   formatPercent,
@@ -13,8 +13,6 @@ import { useLocale } from '../i18n/I18nProvider'
 import type { LocaleCode } from '../i18n/locales'
 import { Bullet } from './Bullet'
 import styles from './Ledger.module.css'
-
-const HIGHEST_SCORE = 100
 
 interface LedgerProps {
   /** A scored result. The page shows a notice instead for the other statuses. */
@@ -175,7 +173,8 @@ export function Ledger({ result, uncategorisedShare }: LedgerProps) {
         />
       </p>
 
-      <table className={styles.table}>
+      {/* Named by the heading, so the table is announced as "How 66 adds up". */}
+      <table className={styles.table} aria-labelledby={titleId}>
         <thead>
           <tr>
             <th scope="col">
