@@ -10,9 +10,11 @@ import { computeScore, type MeasureId } from '../../domain/score'
 import type { CategoryId, PersonId, Transaction } from '../../domain/types'
 import arifFile from './arif.json?raw'
 import farhanaFile from './farhana.json?raw'
+import en from '../../i18n/messages/en.json'
 import { parseSample, PERSON_IDS, PERSON_META, SAMPLES } from './index'
 import nusratFile from './nusrat.json?raw'
 import rahimFile from './rahim.json?raw'
+import { summaryFigures, summaryValues } from './summaryValues'
 import tanvirFile from './tanvir.json?raw'
 
 const MAY_TO_OCT = ['2026-05', '2026-06', '2026-07', '2026-08', '2026-09', '2026-10']
@@ -230,8 +232,8 @@ describe('what the five scores show', () => {
 
   it('has Rahim send at least 40% of his income home and still score highest', () => {
     const { measures, result } = analyse('rahim')
-    const sentHome = (measures.categoryMonthlyAvg.family_support_out ?? 0) * measures.months.length
-    expect(sentHome / measures.income).toBeGreaterThanOrEqual(0.4)
+    // The same figure his summary shows.
+    expect(summaryFigures('rahim', measures).sentHomeShare ?? NaN).toBeGreaterThanOrEqual(0.4)
 
     const scores = PERSON_IDS.map((id) => analyse(id).result.score ?? 0)
     expect(result.score).toBe(Math.max(...scores))
@@ -655,6 +657,47 @@ describe('Rahim, construction worker in Singapore', () => {
   it('saves something every month', () => {
     expect(everyMonth('rahim', 'savings_deposit')).toBe(true)
     expect(analyse('rahim').measures.savingsRate).toBeGreaterThan(0.1)
+  })
+})
+
+describe('the numbers in the written summaries', () => {
+  const messages: Record<string, string> = en
+
+  it.each(PERSON_IDS)('fills every placeholder in %s’s summary, and nothing else', (id) => {
+    const placeholders = [...(messages[`sample.${id}.summary`] ?? '').matchAll(/\{(\w+)\}/g)].map(
+      ([, name]) => name,
+    )
+    const values = summaryValues(id, analyse(id).measures, 'en')
+    expect(Object.keys(values).sort()).toEqual([...new Set(placeholders)].sort())
+    // Never the em dash shown for a missing number, and never a bare zero percent.
+    for (const [name, value] of Object.entries(values)) {
+      expect(value, name).not.toMatch(/^—$|^0%$/)
+    }
+  })
+
+  it('formats them in the language asked for', () => {
+    const { measures } = analyse('nusrat')
+    expect(summaryValues('nusrat', measures, 'en')).toEqual({
+      savedShare: '2%',
+      bufferMonths: '1.2',
+    })
+    expect(summaryValues('nusrat', measures, 'bn').bufferMonths).toBe('১.২')
+  })
+
+  it('says Farhana earns nearly 3 times what Nusrat has coming in', () => {
+    const values = summaryValues('farhana', analyse('farhana').measures, 'en')
+    expect(values.incomeMultiple).toBe('3')
+    expect(values.debtShare).toBe('38%')
+    expect(values.overspendShare).toBe('8%')
+  })
+
+  it('gives Rahim’s share sent home as a share of his pay', () => {
+    const { measures } = analyse('rahim')
+    // Checked against his own lines in Singapore dollars, not the measures in taka.
+    const sent = -total(inCategory('rahim', 'family_support_out'))
+    const pay = total(inCategory('rahim', 'salary'))
+    expect(summaryFigures('rahim', measures).sentHomeShare).toBeCloseTo(sent / pay, 6)
+    expect(summaryValues('rahim', measures, 'en').sentHomeShare).toBe('48%')
   })
 })
 
