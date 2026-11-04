@@ -1,5 +1,5 @@
 import { useIntl } from 'react-intl'
-import { CURRENCY_CODES, type CurrencyCode } from '../domain/types'
+import { CURRENCY_CODES, isCurrencyCode, type CurrencyCode } from '../domain/types'
 import { usePrefs } from '../state/prefs'
 import { SelectField } from './SelectField'
 
@@ -16,10 +16,6 @@ const SIGNS: Record<CurrencyCode, string> = {
   CAD: 'C$',
   HKD: 'HK$',
   SGD: 'S$',
-}
-
-function isCurrencyCode(value: string): value is CurrencyCode {
-  return (CURRENCY_CODES as readonly string[]).includes(value)
 }
 
 export function CurrencySelect() {

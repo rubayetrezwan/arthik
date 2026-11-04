@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { CURRENCY_CODES, type CurrencyCode } from './types'
+import { CURRENCY_CODES, isCurrencyCode, type CurrencyCode } from './types'
 import { RATES, convert, parseRatesSnapshot, toBDT, type RatesSnapshot } from './currency'
 
 const fx: RatesSnapshot = {
@@ -110,5 +110,16 @@ describe('parseRatesSnapshot', () => {
 
   it('rejects a snapshot that is not an object', () => {
     expect(() => parseRatesSnapshot(null)).toThrow(/rates/i)
+  })
+})
+
+describe('isCurrencyCode', () => {
+  it('accepts the eleven codes and nothing else', () => {
+    for (const code of CURRENCY_CODES) expect(isCurrencyCode(code)).toBe(true)
+
+    expect(isCurrencyCode('XYZ')).toBe(false)
+    expect(isCurrencyCode('bdt')).toBe(false)
+    expect(isCurrencyCode('')).toBe(false)
+    expect(isCurrencyCode('toString')).toBe(false)
   })
 })

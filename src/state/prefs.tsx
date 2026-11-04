@@ -1,5 +1,5 @@
 import { createContext, useCallback, useContext, useMemo, useState, type ReactNode } from 'react'
-import { CURRENCY_CODES, type CurrencyCode } from '../domain/types'
+import { isCurrencyCode, type CurrencyCode } from '../domain/types'
 import { isLocaleCode, type LocaleCode } from '../i18n/locales'
 import { safeGet, safeSet } from './storage'
 
@@ -20,10 +20,6 @@ export interface Prefs {
 }
 
 const PrefsContext = createContext<Prefs | null>(null)
-
-function isCurrencyCode(value: string): value is CurrencyCode {
-  return (CURRENCY_CODES as readonly string[]).includes(value)
-}
 
 /**
  * The remembered language, or English. The page reads it before React starts too, to set

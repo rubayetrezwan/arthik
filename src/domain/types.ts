@@ -16,6 +16,10 @@ export const CURRENCY_CODES = [
 
 export type CurrencyCode = (typeof CURRENCY_CODES)[number]
 
+export function isCurrencyCode(value: string): value is CurrencyCode {
+  return (CURRENCY_CODES as readonly string[]).includes(value)
+}
+
 export type PersonId = 'nusrat' | 'tanvir' | 'farhana' | 'arif' | 'rahim'
 
 export type CategoryId =

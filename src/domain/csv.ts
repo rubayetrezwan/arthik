@@ -9,7 +9,7 @@ import { CATEGORIES, categoriesFor } from './categories'
 import { categorize } from './categorize'
 import { CATEGORY_LABELS_EN } from './categoryLabels'
 import { isWrittenZero, parseAmount, readDateCell } from './csvCells'
-import { CURRENCY_CODES, type CategoryId, type CurrencyCode, type Transaction } from './types'
+import { isCurrencyCode, type CategoryId, type CurrencyCode, type Transaction } from './types'
 
 export type CsvErrorCode =
   | 'empty_file'
@@ -74,10 +74,6 @@ const MAX_SHOWN_LENGTH = 40
 // ---------------------------------------------------------------------------
 // Reading single cells
 // ---------------------------------------------------------------------------
-
-function isCurrencyCode(code: string): code is CurrencyCode {
-  return (CURRENCY_CODES as readonly string[]).includes(code)
-}
 
 function nameKey(text: string): string {
   return text.trim().replace(/\s+/g, ' ').toLowerCase()
