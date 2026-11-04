@@ -5,6 +5,7 @@ import { groupOf } from '../../domain/categories'
 import { categorize } from '../../domain/categorize'
 import { computeMeasures } from '../../domain/measures'
 import { completeMonths, monthOf } from '../../domain/period'
+import { topReasons } from '../../domain/reasons'
 import { computeScore, type MeasureId } from '../../domain/score'
 import type { CategoryId, PersonId, Transaction } from '../../domain/types'
 import arifFile from './arif.json?raw'
@@ -654,6 +655,111 @@ describe('Rahim, construction worker in Singapore', () => {
   it('saves something every month', () => {
     expect(everyMonth('rahim', 'savings_deposit')).toBe(true)
     expect(analyse('rahim').measures.savingsRate).toBeGreaterThan(0.1)
+  })
+})
+
+// Each claim in the written summaries and headlines (sample.* in en.json) that the tests
+// above do not already cover. Numbers in that text come from placeholders; these are the
+// statements around them (Ruling R3).
+describe('what the written summaries say', () => {
+  function topTwo(id: PersonId): MeasureId[] {
+    return topReasons(analyse(id).result)
+      .slice(0, 2)
+      .map((reason) => reason.measure)
+      .sort()
+  }
+
+  describe('Nusrat', () => {
+    it('lives within her means, with little left over', () => {
+      const { savingsRate } = analyse('nusrat').measures
+      expect(savingsRate).toBeGreaterThan(0)
+      expect(savingsRate).toBeLessThan(0.05)
+    })
+
+    it('spends about the same every month', () => {
+      expect(analyse('nusrat').measures.spendingCV).toBeLessThan(0.1)
+    })
+
+    it('is held back most by how little she keeps and has put by', () => {
+      expect(topTwo('nusrat')).toEqual(['emergencySavings', 'savingsRate'])
+    })
+  })
+
+  describe('Tanvir', () => {
+    it('saves well: enough of his income for full marks', () => {
+      expect(analyse('tanvir').measures.savingsRate).toBeGreaterThanOrEqual(0.2)
+      expect(subScore('tanvir', 'savingsRate')).toBe(100)
+    })
+
+    it('is held back most by uneven spending', () => {
+      expect(topReasons(analyse('tanvir').result)[0]?.measure).toBe('stability')
+    })
+
+    it('has August as his most expensive month because of the PlayStation', () => {
+      const spending = analyse('tanvir').measures.monthly.map((month) => month.spending)
+      const august = spending[MAY_TO_OCT.indexOf('2026-08')] ?? 0
+      const others = spending.filter((_, index) => MAY_TO_OCT[index] !== '2026-08')
+      expect(august).toBeGreaterThan(Math.max(...others))
+
+      const playstation = SAMPLES.tanvir.transactions.find((line) =>
+        /playstation/i.test(line.description),
+      )
+      expect(august + (playstation?.amount ?? 0)).toBeLessThan(Math.max(...others))
+    })
+  })
+
+  describe('Farhana', () => {
+    it('pays debts only on her loan and her credit card', () => {
+      const debt = SAMPLES.farhana.transactions.filter((line) => groupOf(line.category) === 'debt')
+      expect(new Set(debt.map((line) => line.category))).toEqual(
+        new Set(['loan_emi', 'card_payment']),
+      )
+    })
+
+    it('spends less than she earns until debt payments are counted', () => {
+      const { measures } = analyse('farhana')
+      expect(measures.spending).toBeLessThan(measures.income)
+      expect(measures.spending + measures.debtPayments).toBeGreaterThan(measures.income)
+    })
+
+    it('spends a small share on wants', () => {
+      expect(analyse('farhana').measures.wantsShare).toBeLessThan(0.25)
+    })
+
+    it('has most of her pay go on rent and debt', () => {
+      const { measures } = analyse('farhana')
+      const rent = -total(inCategory('farhana', 'rent'))
+      expect((rent + measures.debtPayments) / measures.income).toBeGreaterThan(0.5)
+    })
+  })
+
+  describe('Arif', () => {
+    it('has little to fall back on', () => {
+      expect(analyse('arif').measures.bufferMonths).toBeLessThan(0.5)
+    })
+
+    it('has the most to gain from what he keeps and has put by', () => {
+      expect(topTwo('arif')).toEqual(['emergencySavings', 'savingsRate'])
+    })
+
+    it('spends most on eating out and delivery among his wants', () => {
+      expect(largestWant('arif')).toBe('eating_out')
+    })
+  })
+
+  describe('Rahim', () => {
+    it('has his pay as his only income', () => {
+      const income = SAMPLES.rahim.transactions.filter((line) => groupOf(line.category) === 'income')
+      expect(income.every((line) => line.category === 'salary')).toBe(true)
+    })
+
+    it('spends about the same every month', () => {
+      expect(analyse('rahim').measures.spendingCV).toBeLessThan(0.1)
+    })
+
+    it('has the most room to grow in emergency savings', () => {
+      expect(topReasons(analyse('rahim').result)[0]?.measure).toBe('emergencySavings')
+    })
   })
 })
 
