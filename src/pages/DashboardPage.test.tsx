@@ -186,7 +186,9 @@ describe('DashboardPage: a sample person', () => {
     const card = within(main().getByRole('region', { name: 'Financial health score' }))
     const summary = card.getByText(/^You live within your means/)
     expect(summary).toHaveTextContent('you keep 2% of your income')
-    expect(summary).toHaveTextContent('would last about 1.2 months')
+    // Savings divided by average monthly essentials: months of essentials, not of life.
+    expect(summary).toHaveTextContent('would cover about 1.2 months of essentials')
+    expect(summary).toHaveTextContent(/Eating out and delivery is the biggest of your wants\.$/)
     expect(card.getByText(/^Summary written with Claude\./)).toBeInTheDocument()
     expect(card.getByRole('link', { name: 'How the score works' })).toHaveAttribute(
       'href',
@@ -383,6 +385,14 @@ describe('the sample people’s own words', () => {
     const en = files['../i18n/messages/en.json'] ?? {}
     for (const id of PERSON_IDS) {
       for (const part of parts) expect(en[`sample.${id}.${part}`], `${id} ${part}`).toBeTruthy()
+    }
+  })
+
+  it('never say emergency savings would last a time if income stopped (R46)', () => {
+    // The measure is savings divided by average monthly essentials: months of essentials.
+    const en = files['../i18n/messages/en.json'] ?? {}
+    for (const [key, text] of Object.entries(en)) {
+      expect(text, key).not.toMatch(/income stopped|would last/i)
     }
   })
 
