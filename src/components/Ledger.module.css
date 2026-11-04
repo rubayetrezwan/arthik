@@ -1,0 +1,229 @@
+/* One of the two boxed sheets on the page; everything else is ruled, not boxed. */
+.sheet {
+  min-inline-size: 0;
+  padding: var(--s5);
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+  background: var(--surface);
+}
+
+.title {
+  font-size: 22px;
+}
+
+.note {
+  margin-block-start: var(--s1);
+  color: var(--ink-2);
+  font-size: 15px;
+}
+
+.table {
+  inline-size: 100%;
+  margin-block-start: var(--s4);
+  border-collapse: collapse;
+}
+
+.table th,
+.table td {
+  text-align: start;
+  font-weight: 400;
+}
+
+/* Column headings: small display-face labels that never break onto a second line. */
+.table thead th {
+  padding: var(--s2);
+  border-block-end: 1px solid var(--ink);
+  font-family: var(--display);
+  font-size: 15px;
+  font-style: var(--label-style);
+  color: var(--ink-2);
+  white-space: nowrap;
+}
+
+.table tbody th,
+.table tbody td {
+  padding: var(--s3) var(--s2);
+  border-block-end: 1px solid var(--rule);
+  vertical-align: top;
+}
+
+.table .end {
+  text-align: end;
+}
+
+.name {
+  display: block;
+  font-weight: 600;
+}
+
+.value {
+  display: block;
+  color: var(--ink-2);
+  font-size: 15px;
+}
+
+.scoreCell {
+  min-inline-size: 170px;
+}
+
+.scoreLine {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--s2);
+  margin-block-end: 6px;
+  font-size: 15px;
+}
+
+.scoreLine b {
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.scoreLine span {
+  color: var(--ink-2);
+}
+
+.reason {
+  display: block;
+  color: var(--ink-2);
+  font-size: 15px;
+}
+
+.weight {
+  color: var(--ink-2);
+  white-space: nowrap;
+}
+
+.points {
+  font-family: var(--display);
+  font-size: 20px;
+  white-space: nowrap;
+}
+
+/* The footing: points totalled under a single rule, then the score, double-ruled. */
+.table tfoot th,
+.table tfoot td {
+  padding: var(--s3) var(--s2) 0;
+}
+
+.total th {
+  font-family: var(--display);
+  font-style: var(--label-style);
+  color: var(--ink-2);
+}
+
+.total td {
+  border-block-start: 1px solid var(--ink);
+  font-family: var(--display);
+  font-size: 20px;
+  white-space: nowrap;
+}
+
+.table .final th,
+.table .final td {
+  padding-block-start: var(--s1);
+}
+
+.final th {
+  font-weight: 600;
+}
+
+.grand {
+  display: inline-block;
+  border-block-end: 4px double var(--ink);
+  font-family: var(--display);
+  font-size: 28px;
+  font-weight: var(--display-bold);
+  line-height: 1.2;
+}
+
+.foot {
+  margin-block-start: var(--s3);
+  color: var(--ink-2);
+  font-size: 14px;
+}
+
+/* Spending with no category: a plain one-line notice, set off by a rule (spec 5.3, R4). */
+.uncategorised {
+  margin-block-start: var(--s3);
+  padding-inline-start: var(--s3);
+  border-inline-start: 2px solid var(--control);
+  font-size: 15px;
+}
+
+/*
+ * Phones: each measure becomes a stacked row. Name and points share the first line; the
+ * score and its weight share the second. The column headings stay for screen readers.
+ */
+@media (max-width: 640px) {
+  .sheet {
+    padding: var(--s4);
+  }
+
+  .table thead {
+    position: absolute;
+    inline-size: 1px;
+    block-size: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
+  .table tbody tr {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: var(--s2) var(--s3);
+    padding-block: var(--s3);
+    border-block-end: 1px solid var(--rule);
+  }
+
+  .table tbody th,
+  .table tbody td {
+    padding: 0;
+    border: 0;
+  }
+
+  .measure {
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  .points {
+    grid-column: 2;
+    grid-row: 1;
+  }
+
+  .scoreCell {
+    grid-column: 1;
+    grid-row: 2;
+    min-inline-size: 0;
+  }
+
+  .weight {
+    grid-column: 2;
+    grid-row: 2;
+    font-size: 14px;
+  }
+
+  /* The heading is hidden here, so the weight names itself. Decorative to screen readers. */
+  .weight::before {
+    content: attr(data-label) " ";
+    content: attr(data-label) " " / "";
+  }
+
+  /* A measure that is not scored has no weight to show: its reason says why. */
+  .unscored .weight {
+    display: none;
+  }
+
+  .unscored .scoreCell {
+    grid-column: 1 / -1;
+  }
+
+  .table tfoot tr {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--s3);
+  }
+}

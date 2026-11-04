@@ -1,0 +1,44 @@
+/*
+ * The zones split at the band edges, 40 and 80 out of 100. Colour is never the only
+ * signal: the middle zone carries 1px ink ticks at both edges, and the band is named in
+ * text beside the bar.
+ */
+.bullet {
+  position: relative;
+  display: grid;
+  grid-template-columns: 40fr 40fr 20fr;
+  block-size: 12px;
+}
+
+.vulnerable {
+  background: var(--zone-v);
+}
+
+.coping {
+  background: var(--zone-c);
+  border-inline: 1px solid var(--ink);
+}
+
+.healthy {
+  background: var(--zone-h);
+}
+
+.fill {
+  position: absolute;
+  inset-block-start: 4px;
+  inset-inline-start: 0;
+  block-size: 4px;
+  background: var(--ink);
+}
+
+/* High-contrast modes drop background colours; keep the bar itself visible. */
+@media (forced-colors: active) {
+  .bullet {
+    border: 1px solid CanvasText;
+  }
+
+  .fill {
+    forced-color-adjust: none;
+    background: CanvasText;
+  }
+}
