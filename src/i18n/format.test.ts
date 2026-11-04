@@ -1,10 +1,12 @@
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { CURRENCY_CODES } from '../domain/types'
 import {
+  currencyDecimals,
   formatDate,
   formatFullDate,
   formatMoney,
   formatMonth,
+  formatMonthName,
   formatMonthRange,
   formatNumber,
   formatPercent,
@@ -114,6 +116,20 @@ describe('formatMoney', () => {
     expect(formatMoney(0.4, 'BDT', 'en', { signed: true })).toBe('৳0')
   })
 
+  it('keeps a tiny amount from reading as zero when asked to (R49)', () => {
+    expect(formatMoney(0.37, 'BDT', 'en', { keepTiny: true })).toBe('৳0.37')
+    expect(formatMoney(-0.4, 'BDT', 'en', { signed: true, keepTiny: true })).toBe(`${MINUS}৳0.4`)
+    expect(formatMoney(0.0033, 'USD', 'en', { signed: true, keepTiny: true })).toBe('+$0.0033')
+    expect(formatMoney(0.37, 'BDT', 'bn', { keepTiny: true })).toBe('৳০.৩৭')
+  })
+
+  it('formats everything else as usual when keeping tiny amounts', () => {
+    expect(formatMoney(0, 'BDT', 'en', { keepTiny: true })).toBe('৳0')
+    expect(formatMoney(0.5, 'BDT', 'en', { keepTiny: true })).toBe('৳1')
+    expect(formatMoney(1610.4, 'BDT', 'en', { keepTiny: true })).toBe('৳1,610')
+    expect(formatMoney(0.005, 'USD', 'en', { keepTiny: true })).toBe('$0.01')
+  })
+
   it('follows each language for the other languages', () => {
     expect(plain(formatMoney(150000, 'BDT', 'es'))).toBe('150.000 ৳')
     expect(plain(formatMoney(150000, 'BDT', 'fr'))).toBe('150 000 ৳')
@@ -138,6 +154,12 @@ describe('formatMoney', () => {
         expect(text, `${code} ${l}`).not.toMatch(/NaN|undefined/)
       }
     }
+  })
+})
+
+describe('currencyDecimals', () => {
+  it('is 0 for taka and yen and 2 for every other currency', () => {
+    expect(CURRENCY_CODES.map(currencyDecimals)).toEqual([0, 2, 2, 0, 2, 2, 2, 2, 2, 2, 2])
   })
 })
 
@@ -246,6 +268,18 @@ describe('formatMonth', () => {
     expect(formatMonth('2026-00', 'en')).toBe('2026-00')
     expect(formatMonth('October', 'en')).toBe('October')
     expect(formatMonth('', 'en')).toBe('')
+  })
+})
+
+describe('formatMonthName', () => {
+  it('gives the month alone, short, in each language', () => {
+    expect(formatMonthName('2026-05', 'en')).toBe('May')
+    expect(formatMonthName('2026-09', 'en')).toBe('Sep')
+    expect(formatMonthName('2026-10', 'bn')).not.toMatch(/২০২৬/)
+  })
+
+  it('returns the text unchanged when it is not a month', () => {
+    expect(formatMonthName('2026-13', 'en')).toBe('2026-13')
   })
 })
 

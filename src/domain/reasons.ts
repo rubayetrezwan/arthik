@@ -19,7 +19,7 @@ export interface Reason {
 const MAX_REASONS = 3
 
 /** When every scored measure reaches this, there is nothing worth fixing first. */
-const STRENGTH_FROM = 80
+export const STRENGTH_FROM = 80
 
 /**
  * The reasons behind a score, at most three.

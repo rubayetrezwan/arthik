@@ -23,6 +23,14 @@ export const NO_VALUE = '\u2014'
 /** Taka and yen are shown in whole units. Every other currency shows two decimals. */
 const WHOLE_UNIT_CURRENCIES: ReadonlySet<CurrencyCode> = new Set(['BDT', 'JPY'])
 
+/** How many decimals an amount in this currency is shown with: 0 for taka and yen, else 2. */
+export function currencyDecimals(currency: CurrencyCode): number {
+  return WHOLE_UNIT_CURRENCIES.has(currency) ? 0 : 2
+}
+
+/** A tiny amount kept from reading as zero shows this many significant digits. */
+const TINY_SIGNIFICANT_DIGITS = 2
+
 // ---------------------------------------------------------------------------
 // Numbers
 // ---------------------------------------------------------------------------
@@ -59,23 +67,33 @@ function symbolFirst(parts: Intl.NumberFormatPart[]): string {
   return toText([...signs, ...symbols, ...digits])
 }
 
+/**
+ * An amount of money in the language's own way. With `signed`, money in gets a plus sign.
+ *
+ * With `keepTiny`, an amount that is not zero but would round to zero at the currency's
+ * usual decimals keeps enough decimals to show it ("৳0.37", "$0.0033"), so a small amount
+ * never reads as none (R49). Every other amount is formatted as usual.
+ */
 export function formatMoney(
   amount: number,
   currency: CurrencyCode,
   locale: LocaleCode,
-  opts: { signed?: boolean } = {},
+  opts: { signed?: boolean; keepTiny?: boolean } = {},
 ): string {
   if (!Number.isFinite(amount)) return NO_VALUE
 
-  const decimals = WHOLE_UNIT_CURRENCIES.has(currency) ? 0 : 2
+  const decimals = currencyDecimals(currency)
+  const tiny =
+    opts.keepTiny === true && amount !== 0 && Math.round(Math.abs(amount) * 10 ** decimals) === 0
   const options: Intl.NumberFormatOptions = {
     style: 'currency',
     currency,
     // Taka need the narrow ৳, which the plain symbol spells "BDT". The rest use the plain
     // symbol, because the narrow one is a bare "$" or "¥" for several currencies at once.
     currencyDisplay: currency === 'BDT' ? 'narrowSymbol' : 'symbol',
-    minimumFractionDigits: decimals,
-    maximumFractionDigits: decimals,
+    ...(tiny
+      ? { maximumSignificantDigits: TINY_SIGNIFICANT_DIGITS }
+      : { minimumFractionDigits: decimals, maximumFractionDigits: decimals }),
     // Both leave out the sign on zero, including an amount that rounds to zero.
     signDisplay: opts.signed ? 'exceptZero' : 'negative',
   }
@@ -164,6 +182,14 @@ export function formatMonth(month: string, locale: LocaleCode): string {
   if (!date) return month
 
   return dateFormat(LOCALES[locale].intl, MONTH_YEAR).format(date)
+}
+
+/** "Oct", from 'YYYY-MM': the month alone, for a chart's labels. Text that is not a month is returned as it came. */
+export function formatMonthName(month: string, locale: LocaleCode): string {
+  const date = monthStart(month)
+  if (!date) return month
+
+  return dateFormat(LOCALES[locale].intl, { month: 'short' }).format(date)
 }
 
 /**

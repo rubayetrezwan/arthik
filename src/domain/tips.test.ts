@@ -1,8 +1,9 @@
 import { describe, expect, it } from 'vitest'
 import { fixtureA, fixtureRates, nusratLike, tx } from './fixtures'
 import { computeMeasures, type Measures } from './measures'
-import { computeScore } from './score'
-import { pickTips, type Tip, type TipId } from './tips'
+import { topReasons } from './reasons'
+import { computeScore, MEASURE_IDS } from './score'
+import { pickTips, TIP_MEASURE, type Tip, type TipId } from './tips'
 import type { Dataset, Transaction } from './types'
 
 const MONTHS = ['2026-01', '2026-02', '2026-03']
@@ -323,6 +324,30 @@ describe('pickTips', () => {
   it('never lists keep_going twice', () => {
     for (const ds of [fixtureA, nusratLike, healthy, empty, salaried(23_000, 12_000, 0)]) {
       expect(idsOf(tipsFor(ds)).filter((id) => id === 'keep_going').length).toBeLessThanOrEqual(1)
+    }
+  })
+})
+
+describe('TIP_MEASURE', () => {
+  it('names one tip for each measure, and none for the data checks or keep_going', () => {
+    expect(Object.values(TIP_MEASURE).sort()).toEqual([...MEASURE_IDS].sort())
+    for (const id of ['sort_uncategorised', 'check_unrecognised', 'keep_going'] as const) {
+      expect(TIP_MEASURE[id]).toBeUndefined()
+    }
+  })
+
+  it('names the measure of the reason each rule tip answers', () => {
+    // nusratLike as it is, then with debt payments and swings in spending that need tips too.
+    for (const overrides of [{}, { debtRatio: 0.3, spendingCV: 0.4 }, { debtRatio: 0.45 }]) {
+      const measures = { ...computeMeasures(nusratLike, fixtureRates), ...overrides }
+      const result = computeScore(measures)
+      const answered = pickTips(nusratLike, measures, result).flatMap(
+        (tip) => TIP_MEASURE[tip.id] ?? [],
+      )
+      const reasons = topReasons(result).map((reason) => reason.measure)
+
+      expect(answered.length).toBeGreaterThanOrEqual(2)
+      expect(answered).toEqual(reasons.filter((measure) => answered.includes(measure)))
     }
   })
 })

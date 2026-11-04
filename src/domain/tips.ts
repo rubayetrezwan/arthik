@@ -39,7 +39,7 @@ const DEBT_HIGHEST_INTEREST_BELOW = 70
 const STEADY_SPENDING_BELOW = 60
 
 /** The emergency buffer worth aiming for, in months of essentials. */
-const DPS_TARGET_MONTHS = 3
+export const DPS_TARGET_MONTHS = 3
 /** The suggested monthly deposit is this share of average income (1 in 20 is 5%). */
 const DPS_INCOME_DIVISOR = 20
 /** ...rounded to the nearest multiple of this, and never less than one. */
@@ -112,6 +112,19 @@ function steadySpending(m: Measures, subScore: number): Tip | null {
     if (highest === null || spending > highest.spending) highest = { month, spending }
   }
   return highest && { id: 'steady_spending', values: { month: highest.month } }
+}
+
+/**
+ * The measure each rule's tip helps with, so the screen can set a tip beside its reason. The
+ * two data checks and keep_going help with no one measure. Kept in step with
+ * TIP_FOR_MEASURE below by the tests.
+ */
+export const TIP_MEASURE: Readonly<Partial<Record<TipId, MeasureId>>> = {
+  avoid_cash_fees: 'savingsRate',
+  start_dps: 'emergencySavings',
+  debt_highest_interest: 'debtPayments',
+  cut_biggest_want: 'needsWants',
+  steady_spending: 'stability',
 }
 
 /** The tip each measure can lead to, given its sub-score. */

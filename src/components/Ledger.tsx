@@ -12,6 +12,7 @@ import {
 import { useLocale } from '../i18n/I18nProvider'
 import type { LocaleCode } from '../i18n/locales'
 import { Bullet } from './Bullet'
+import { MonthsMessage, savingsRateForm, ShareMessage } from './FigureMessage'
 import styles from './Ledger.module.css'
 
 interface LedgerProps {
@@ -21,61 +22,38 @@ interface LedgerProps {
   uncategorisedShare: number
 }
 
-/** The smallest share and the fewest months shown as a number; anything less but above 0 says so. */
-const SMALLEST_SHARE = 0.01
-const FEWEST_MONTHS = 0.1
-
-/**
- * A message that states a share of something. A share above 0 that would round to 0% uses
- * the message's ".under" form ("Under 1% of …"), so a tiny amount never reads as none.
- */
-function shareMessage(id: string, ratio: number, locale: LocaleCode): ReactNode {
-  const tiny = ratio > 0 && Math.round(ratio * 100) === 0
-  return (
-    <FormattedMessage
-      id={tiny ? `${id}.under` : id}
-      values={{ share: formatPercent(tiny ? SMALLEST_SHARE : ratio, locale) }}
-    />
-  )
-}
-
 /** A measure's own number, in plain words. Null when it could not be worked out. */
 function plainValue({ id, raw }: LedgerLine, locale: LocaleCode): ReactNode {
   if (raw === null) return null
-  const share = (ratio: number) => formatPercent(ratio, locale)
 
   switch (id) {
     case 'savingsRate': {
-      const whole = Math.round(raw * 100)
-      if (whole > 0) {
-        return <FormattedMessage id="ledger.value.savingsRate.kept" values={{ share: share(raw) }} />
-      }
-      if (whole < 0) {
-        return <FormattedMessage id="ledger.value.savingsRate.over" values={{ share: share(-raw) }} />
-      }
-      return <FormattedMessage id="ledger.value.savingsRate.even" />
-    }
-    case 'emergencySavings': {
-      if (raw === 0) return <FormattedMessage id="ledger.value.emergencySavings.none" />
-      // Months are shown to one decimal, so a buffer under 0.05 months would read "0.0".
-      const tiny = Math.round(raw * 10) === 0
-      return (
+      const form = savingsRateForm(raw)
+      return form === 'even' ? (
+        <FormattedMessage id="ledger.value.savingsRate.even" />
+      ) : (
         <FormattedMessage
-          id={tiny ? 'ledger.value.emergencySavings.under' : 'ledger.value.emergencySavings'}
-          values={{ months: formatNumber(tiny ? FEWEST_MONTHS : raw, locale, 1) }}
+          id={`ledger.value.savingsRate.${form}`}
+          values={{ share: formatPercent(Math.abs(raw), locale) }}
         />
       )
     }
+    case 'emergencySavings':
+      return raw === 0 ? (
+        <FormattedMessage id="ledger.value.emergencySavings.none" />
+      ) : (
+        <MonthsMessage id="ledger.value.emergencySavings" months={raw} />
+      )
     case 'debtPayments':
       return raw === 0 ? (
         <FormattedMessage id="ledger.value.debtPayments.none" />
       ) : (
-        shareMessage('ledger.value.debtPayments', raw, locale)
+        <ShareMessage id="ledger.value.debtPayments" share={raw} />
       )
     case 'needsWants':
-      return shareMessage('ledger.value.needsWants', raw, locale)
+      return <ShareMessage id="ledger.value.needsWants" share={raw} />
     case 'stability':
-      return shareMessage('ledger.value.stability', raw, locale)
+      return <ShareMessage id="ledger.value.stability" share={raw} />
   }
 }
 
@@ -224,7 +202,7 @@ export function Ledger({ result, uncategorisedShare }: LedgerProps) {
       </p>
       {uncategorisedShare > 0 && (
         <p className={styles.uncategorised}>
-          {shareMessage('ledger.uncategorised', uncategorisedShare, locale)}
+          <ShareMessage id="ledger.uncategorised" share={uncategorisedShare} />
         </p>
       )}
     </section>
