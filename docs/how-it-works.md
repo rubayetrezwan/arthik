@@ -81,7 +81,7 @@ Plan isn't measured. Credit card payments count as debt even when paid in full. 
 Unit tests cover each anchor boundary, rounding and missing-data cases. A worked example in the methodology (66.80 gives 67) is a test. The ledger is checked to sum to the total. The sample people are pinned to score ranges.
 
 **11. How did you make it work in Arabic and Bengali?**
-Logical CSS properties so layout mirrors, a font per script, and `Intl` for numbers with fixes for lakh grouping. A test checks no page scrolls sideways at common widths in every language. The Bengali translation gets my own review before launch, since I can read it and the AI might not be right.
+Logical CSS properties so layout mirrors, a font per script, and `Intl` for numbers with fixes for lakh grouping. A test checks no page scrolls sideways at six widths from 320 to 1920px, in English, Bengali and Arabic. The Bengali translation gets my own review before launch, since I can read it and the AI might not be right.
 
 **12. What would you do next?**
 Add more merchants and local data sources, add a "Can I afford it?" assistant with a live model (with the score staying formula-based), and test the anchor points against real survey data if I could get access to it. I'd also want real user feedback on the explanations.

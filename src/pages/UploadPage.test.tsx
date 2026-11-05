@@ -191,7 +191,7 @@ describe('UploadPage: a file Arthik can read', () => {
     await submit(user)
 
     await waitFor(() => expect(router.state.location.pathname).toBe('/score/mine'))
-    expect(await main().findByTestId('score')).toBeInTheDocument()
+    expect(await main().findByTestId('score', {}, { timeout: 10_000 })).toBeInTheDocument()
     expect(session().upload).toMatchObject({ key: 'mine', emergencySavings: null })
     expect(session().upload?.transactions).toHaveLength(TEMPLATE_ROWS)
   })

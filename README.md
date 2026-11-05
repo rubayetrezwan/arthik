@@ -41,6 +41,10 @@ Below the ledger are the three measures with the most points to gain ("Worth up 
 - The only things remembered on your device are your language and currency choice.
 - There are no live AI calls. Exchange rates are a dated snapshot bundled with the site.
 
+## Install it, use it offline
+
+Arthik is a progressive web app. Your browser can install it to the home screen or desktop, and after the first visit it opens with no network. The app, the five sample people and the translations are cached. Fonts for a language are downloaded the first time you use that language and kept after that. Nothing you upload is cached, so a file you bring is never stored. Visit once while online first; a language you haven't opened yet needs a connection the first time.
+
 ## Seven languages, eleven currencies
 
 English is the default. The site also runs in Bengali, Hindi, Arabic (full right-to-left layout), Chinese (Simplified), Spanish and French. BDT is the default currency, with USD, EUR, JPY, GBP, CNY, CHF, AUD, CAD, HKD and SGD. BDT amounts use South Asian digit grouping (৳1,50,000). Because every measure is a ratio, switching currency never changes the score.
@@ -60,7 +64,7 @@ Upload a CSV with `date`, `description` and `amount` columns (and optionally `cu
 
 ## Tech stack
 
-React 19, TypeScript and Vite. react-intl for translations, react-router, PapaParse for CSV, CSS modules with logical properties so Arabic mirrors properly. Vitest and Testing Library for unit tests, Playwright (with axe-core) for end-to-end and accessibility checks on desktop Chrome, Firefox and Safari, iPad, Android and iPhone profiles. The scoring code in `src/domain/` is plain TypeScript with no React or DOM.
+React 19, TypeScript and Vite. react-intl for translations, react-router, PapaParse for CSV, CSS modules with logical properties so Arabic mirrors properly. Vitest and Testing Library for unit tests, Playwright for end-to-end tests: the main flows run on desktop Chrome, Firefox and Safari, iPad (both ways), Android and iPhone profiles. The other suites run on desktop Chrome: axe-core checks for serious or critical accessibility problems (English and Arabic, every page), a check that nothing scrolls sideways at 320 to 1920px (English, Bengali and Arabic), the language tests and the offline tests. The scoring code in `src/domain/` is plain TypeScript with no React or DOM.
 
 ## Run it
 
@@ -71,6 +75,7 @@ npm ci                 # install
 npm run dev            # dev server
 npm test               # unit tests
 npm run test:e2e       # browser tests (run npx playwright install first)
+npx playwright test --grep @screenshots --project=desktop-chrome   # redo the README pictures (add --project=android for the mobile one)
 npm run build          # type check and production build
 npm run gen:samples    # regenerate the sample people
 npm run rates:update   # refresh the exchange-rate snapshot (needs network)

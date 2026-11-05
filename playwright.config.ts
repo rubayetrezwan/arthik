@@ -4,6 +4,8 @@ const FLOWS = /flows\.spec\.ts$/
 
 export default defineConfig({
   testDir: 'e2e',
+  // The screenshot generator only runs when asked for: --grep @screenshots.
+  grepInvert: process.argv.some((arg) => arg.includes('@screenshots')) ? undefined : /@screenshots/,
   fullyParallel: true,
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 2 : 0,
@@ -26,7 +28,7 @@ export default defineConfig({
     { name: 'desktop-safari', use: { ...devices['Desktop Safari'] }, testMatch: FLOWS },
     { name: 'ipad', use: { ...devices['iPad (gen 7)'] }, testMatch: FLOWS },
     { name: 'ipad-landscape', use: { ...devices['iPad (gen 7) landscape'] }, testMatch: FLOWS },
-    { name: 'android', use: { ...devices['Pixel 7'] }, testMatch: FLOWS },
+    { name: 'android', use: { ...devices['Pixel 7'] }, testMatch: /(flows|screenshots)\.spec\.ts$/ },
     { name: 'iphone', use: { ...devices['iPhone 14'] }, testMatch: FLOWS },
   ],
 })
