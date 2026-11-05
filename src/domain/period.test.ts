@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { completeMonths, monthOf } from './period'
+import { completeMonths, MAX_MONTHS, monthOf } from './period'
 
 describe('monthOf', () => {
   it('returns the YYYY-MM part of a date', () => {
@@ -115,6 +115,7 @@ describe('completeMonths', () => {
     // August 2025 to October 2026 is 15 complete months.
     const months = completeMonths(['2025-08-01', '2026-10-31'])
     expect(months).toHaveLength(12)
+    expect(MAX_MONTHS).toBe(12)
     expect(months[0]).toBe('2025-11')
     expect(months.at(-1)).toBe('2026-10')
   })
