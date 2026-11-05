@@ -133,6 +133,18 @@ export function formatNumber(n: number, locale: LocaleCode, decimals = 0): strin
   return toText(format.formatToParts(n))
 }
 
+/** A year in the language's own digits, without the grouping a plain number would get: "2021". */
+export function formatYear(year: number, locale: LocaleCode): string {
+  if (!Number.isFinite(year)) return NO_VALUE
+
+  const format = numberFormat(LOCALES[locale].intl, {
+    useGrouping: false,
+    maximumFractionDigits: 0,
+    signDisplay: 'negative',
+  })
+  return toText(format.formatToParts(year))
+}
+
 /** Score points are kept in hundredths: 1450 is shown as "14.50". */
 export function formatPoints(hundredths: number, locale: LocaleCode): string {
   return formatNumber(hundredths / 100, locale, 2)

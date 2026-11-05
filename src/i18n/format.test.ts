@@ -12,6 +12,7 @@ import {
   formatPercent,
   formatPoints,
   formatWeight,
+  formatYear,
 } from './format'
 import { LOCALE_CODES } from './locales'
 
@@ -226,6 +227,22 @@ describe('formatNumber', () => {
 
   it('writes a negative number with U+2212', () => {
     expect(formatNumber(-2.5, 'en', 1)).toBe(`${MINUS}2.5`)
+  })
+})
+
+describe('formatYear', () => {
+  it('writes a year without grouping, in the digits of the language', () => {
+    expect(formatYear(2021, 'en')).toBe('2021')
+    expect(formatYear(2021, 'fr')).toBe('2021')
+    expect(formatYear(2021, 'es')).toBe('2021')
+    expect(formatYear(2021, 'zh')).toBe('2021')
+    expect(formatYear(2021, 'bn')).toBe('২০২১')
+    expect(formatYear(2021, 'hi')).toBe('2021')
+    expect(plain(formatYear(2021, 'ar'))).toBe('2021')
+  })
+
+  it('shows an em dash for a year that is not a finite number', () => {
+    expect(formatYear(NaN, 'en')).toBe(EM_DASH)
   })
 })
 
