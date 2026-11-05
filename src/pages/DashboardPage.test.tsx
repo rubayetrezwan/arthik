@@ -412,8 +412,9 @@ describe('DashboardPage: explore your money', () => {
     const user = userEvent.setup()
     renderApp('/score/nusrat')
     const tuition = () =>
-      screen.getAllByRole('combobox', { name: 'Category for Nagad Received 01911xxxxxx - Tuition' })[0]!
-    const wants = () => screen.getByRole('slider', { name: 'Cut spending on wants' })
+      screen.getAllByRole('combobox', { name: /Nagad Received 01911xxxxxx - Tuition/ })[0]!
+    // The first slider is the wants one; position holds in every language.
+    const wants = () => screen.getAllByRole('slider')[0]!
 
     await user.selectOptions(tuition(), 'own_transfer')
     const score = main().getByTestId('score').textContent

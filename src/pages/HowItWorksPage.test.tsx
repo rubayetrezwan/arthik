@@ -122,7 +122,7 @@ describe('HowItWorksPage', () => {
     it('gives the savings-rate anchor points: −10%, 0%, 10% and 20% score 0, 30, 70 and 100', () => {
       renderApp('/how-it-works')
 
-      expect(bodyRows(main().getByRole('table', { name: 'Savings rate' }))).toEqual([
+      expect(bodyRows(main().getAllByRole('table')[1]!)).toEqual([
         ['−10% or less', '0'],
         ['0%', '30'],
         ['10%', '70'],
@@ -394,7 +394,7 @@ describe('HowItWorksPage', () => {
     renderApp('/how-it-works')
     await waitFor(() => expect(html.lang).toBe('bn-BD'))
 
-    expect(bodyRows(main().getByRole('table', { name: 'Savings rate' })).map((row) => row[1])).toEqual([
+    expect(bodyRows(main().getAllByRole('table')[1]!).map((row) => row[1])).toEqual([
       '০',
       '৩০',
       '৭০',

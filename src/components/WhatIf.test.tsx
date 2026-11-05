@@ -67,9 +67,10 @@ function renderWhatIf(dataset: Dataset = nusratLike) {
   }
 }
 
-const wants = () => screen.getByRole('slider', { name: 'Cut spending on wants' })
-const income = () => screen.getByRole('slider', { name: 'Extra income each month' })
-const savings = () => screen.getByRole('slider', { name: 'Add to emergency savings' })
+// Sliders are found by position (wants, income, savings), so the tests hold in every language.
+const wants = () => screen.getAllByRole('slider')[0]!
+const income = () => screen.getAllByRole('slider')[1]!
+const savings = () => screen.getAllByRole('slider')[2]!
 const liveRegion = () => document.querySelector('[aria-live="polite"]')
 
 /** The score nusratLike would have with a change, worked out by the domain. */

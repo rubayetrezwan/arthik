@@ -226,7 +226,7 @@ const hi: Glossary = {
     card_payment: 'क्रेडिट कार्ड भुगतान',
     bnpl: 'अभी खरीदें, बाद में भुगतान करें (BNPL) की किस्त',
     savings_deposit: 'बचत जमा या डिपॉज़िट पेंशन स्कीम (DPS)',
-    investments: 'संचयपत्र और निवेश',
+    investments: 'बचत पत्र और निवेश',
     cash_withdrawal: 'नकद निकासी',
     refund: 'रिफ़ंड या रिवर्सल',
     own_transfer: 'अपने खातों के बीच ट्रांसफ़र',
@@ -243,7 +243,7 @@ const hi: Glossary = {
     entertainment: 'मनोरंजन और सब्सक्रिप्शन',
     travel: 'यात्रा और छुट्टियाँ',
     gifts: 'उपहार और दान',
-    investments: 'संचयपत्र और निवेश',
+    investments: 'बचत पत्र और निवेश',
   },
 }
 
@@ -508,7 +508,7 @@ const fr: Glossary = {
     gifts: 'Cadeaux et dons',
     loan_emi: 'Échéance de prêt (EMI)',
     card_payment: 'Paiement de carte de crédit',
-    bnpl: 'Échéance « achetez maintenant, payez plus tard » (BNPL)',
+    bnpl: 'Échéance « achetez maintenant, payez plus tard » (BNPL)',
     savings_deposit: 'Versement d’épargne ou Régime d’épargne-retraite par dépôts (DPS)',
     investments: 'Sanchayapatra et investissements',
     cash_withdrawal: 'Retrait d’espèces',
