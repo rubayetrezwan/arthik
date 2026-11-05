@@ -429,6 +429,60 @@ table('debt, savings and investments', [
   ['Sanchay patra', -50000, 'investments'],
 ])
 
+// Cleanup round: the rule gaps the Task 7 review found.
+table('accented and plain Cafe', [
+  ['Café Rio', -450, 'eating_out'],
+  ['CAFÉ', -300, 'eating_out'],
+  ['Cafe Rio', -450, 'eating_out'],
+  // Decomposed (e + combining acute) is normalised to the same letter.
+  ['Café Nero', -4, 'eating_out'],
+  ['Cafeteria fees', -100, 'fees'],
+])
+
+table('a loan, or an advance on salary, is money borrowed, not income', [
+  ['Salary loan disbursement', 50000, 'loan_received'],
+  ['Salary advance', 20000, 'loan_received'],
+  ['Advance salary', 20000, 'loan_received'],
+  ['Interest-free loan from friend', 5000, 'loan_received'],
+  ['Loan from mom', 5000, 'loan_received'],
+  ['Personal loan', 100000, 'loan_received'],
+  ['Loans', 100000, 'loan_received'],
+  // Money out keeps its debt rules, and the words alone do not make a loan.
+  ['Salary loan EMI', -5000, 'loan_emi'],
+  ['Salary disbursement ACME LTD', 65000, 'salary'],
+  ['Salary OCT ACME', 65000, 'salary'],
+  ['Bank interest', 12, 'other_income'],
+  ['Loan refund', 500, 'refund'],
+])
+
+table('PayLater needs a word boundary', [
+  ['Repay later', -500, 'uncategorised_out'],
+  ['Prepay later invoice', -500, 'uncategorised_out'],
+  ['Pay Later', -500, 'bnpl'],
+  ['Daraz PayLater', -1200, 'bnpl'],
+  ['SPayLater', -800, 'bnpl'],
+  ['Shopee SPayLater', -800, 'bnpl'],
+])
+
+table('Grab cars and wallet', [
+  ['GrabCar', -14, 'transport'],
+  ['GRABCAR 1234', -9, 'transport'],
+  ['Grab Car', -9, 'transport'],
+  ['GrabPay', -30, 'transport'],
+  ['Grab Pay top up', -50, 'transport'],
+  ['GrabFood', -14, 'eating_out'],
+  ['GrabMart', -23, 'groceries'],
+  ['Grabber Ltd', -10, 'uncategorised_out'],
+])
+
+table('savings certificates are investments, not savings deposits', [
+  ['Savings certificate', -50000, 'investments'],
+  ['National Savings Certificates', -50000, 'investments'],
+  ['Savings account', -300, 'savings_deposit'],
+  ['Transfer to savings', -300, 'savings_deposit'],
+  ['Savings certificate encashment', 50000, 'savings_withdrawal'],
+])
+
 describe('categorize', () => {
   it('never puts money in a category of the wrong direction', () => {
     const incoming = new Set<CategoryId>(categoriesFor('in'))

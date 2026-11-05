@@ -59,6 +59,18 @@ const either = (category: CategoryId, ...patterns: RegExp[]) => rulesFor('any', 
 // ---------------------------------------------------------------------------
 const refunds = inflow('refund', /\b(?:refund(?:ed|s)?|reversal|reversed|chargeback|cash ?back)\b/i)
 
+// Borrowed money (money in). Before every income rule: a loan is not income however it is
+// worded, so "Salary loan disbursement", "Salary advance" and "Interest-free loan from
+// friend" must not fall to salary or interest, and "Loan from mom" is not family support.
+// A refund still wins ("Loan fee refund"). A bare "disbursement" is deliberately not a
+// keyword: employers write "Salary disbursement" for pay. A repayment received is not
+// income either.
+const loansReceived = inflow(
+  'loan_received',
+  /\bloans?\b/i,
+  /\b(?:salary advance|advance salary)\b/i,
+)
+
 // Interest and dividends are real income that we do recognise, so they are not flagged.
 // Before the savings rules: "Sanchayapatra profit" is income, "Sanchayapatra" alone is a
 // maturity.
@@ -167,8 +179,9 @@ const cardBills = outflow(
 
 const buyNowPayLater = outflow(
   'bnpl',
-  // No leading \b: Shopee's product is written "SPayLater".
-  /pay ?later\b|\bbuy now pay later\b|\bbnpl\b/i,
+  // Shopee's product is written "SPayLater", so one optional S may sit before "Pay". A bare
+  // "pay later" with no boundary would also catch "Repay later".
+  /\bs?pay ?later\b|\bbuy now pay later\b|\bbnpl\b/i,
   /\b(?:klarna|afterpay|clearpay|laybuy|zilch|atome|hoolah)\b/i,
 )
 
@@ -179,7 +192,13 @@ const SAVINGS_PRODUCTS = /\b(?:dps|fdr|fd|(?:fixed|recurring|term) deposit)\b/i
 
 const savingsAndInvestments = [
   // DPS = deposit pension scheme, FDR = fixed deposit receipt.
-  ...outflow('savings_deposit', SAVINGS_PRODUCTS, /\bsavings\b/i, /\bpension\b/i),
+  ...outflow(
+    'savings_deposit',
+    SAVINGS_PRODUCTS,
+    // A savings certificate is an investment, matched just below.
+    /\bsavings\b(?! certificates?\b)/i,
+    /\bpension\b/i,
+  ),
   ...outflow(
     'investments',
     // Sanchayapatra (national savings certificate), however it is spelled.
@@ -201,8 +220,7 @@ const notIncome = [
     /\bsanchay ?a? ?patr[ao]\b/i,
     /\b(?:maturity|matured|encashment|encashed)\b/i,
   ),
-  // A disbursement, or a friend lending. A repayment received is not income either.
-  ...inflow('loan_received', /\bloan\b/i),
+  // Loans received are matched earlier (loansReceived), before the income rules.
 ]
 
 // ---------------------------------------------------------------------------
@@ -270,7 +288,8 @@ const eatingOut = outflow(
   // Domino's and Nando's lose the apostrophe, and card statements may cut the name
   // short ("DOMINO S"). Plain prefixes would also catch "Dominion Theatre".
   /\b(?:kfc|pizza ?hut|burger ?king|starbucks|costa coffee|greggs|wagamama|pret|kopitiam|ya kun|toast box|secret recipe|chillox|pizza inn|kacchi ?bhai|dominos?|domino s|nandos?|nando s)\b|\bmcdonald/i,
-  /\b(?:restaurants?|caf[eé]|coffee|bakery|pizza|burger|biryani|canteen|food ?court|hawker|takeaway|eatery)\b/i,
+  // "café" ends in a letter that \b does not know, so it is kept outside the group's own \b.
+  /\b(?:restaurants?|coffee|bakery|pizza|burger|biryani|canteen|food ?court|hawker|takeaway|eatery)\b|\bcaf(?:e\b|é)/i,
 )
 
 // Transport.
@@ -278,6 +297,10 @@ const transport = outflow(
   'transport',
   // Ride-hailing, buses and taxis.
   /\b(?:uber|pathao|shohoz|obhai|grab|comfort ?del ?gro|smrt|sbs transit|transitlink)\b/i,
+  // GrabCar, GrabTaxi, GrabBike and the GrabPay wallet. A wallet payment hides what it buys,
+  // and rides are what Grab is mostly used for (as with bare "Grab"). Counting it as
+  // spending is the safe side: an own transfer would drop it from spending altogether.
+  /\bgrab ?(?:car|taxi|bike|ride|pay)\b/i,
   /\b(?:taxi|cab|rickshaw|cng|bus|mrt|metro ?rail|parking|toll)\b/i,
   // Trains and travel cards: London, Singapore, Bangladesh.
   /\b(?:tfl|transport for london|oyster|national rail|trainline|railway|rail|train|ez ?link|simply ?go)\b/i,
@@ -345,6 +368,7 @@ const otherFees = outflow('fees', /\b(?:charges?|fees?|commission)\b/i)
 
 export const RULES: readonly Rule[] = [
   ...refunds,
+  ...loansReceived,
   ...interest,
   ...feesOnMovingMoney,
   ...ownTransfers,
