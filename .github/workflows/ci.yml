@@ -32,7 +32,7 @@ jobs:
       - run: npx playwright install --with-deps
       - run: npm run test:e2e
       - name: Upload the site for Pages
-        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
         uses: actions/upload-pages-artifact@v3
         with:
           path: dist
@@ -45,7 +45,7 @@ jobs:
           if-no-files-found: ignore
 
   deploy:
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
     needs: check
     runs-on: ubuntu-latest
     permissions:
