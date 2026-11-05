@@ -130,9 +130,28 @@
   text-align: center;
 }
 
-/* Many months on a narrow screen: every other month is named, the rest are in the table. */
+.xAxis span {
+  white-space: nowrap;
+}
+
+/*
+ * Narrow screens: tighter columns, so a longer month name (Bengali "জুলাই") still fits its
+ * own. With many months, every other one is named; the rest are in the table.
+ */
 @media (max-width: 640px) {
+  .bars,
+  .xAxis {
+    column-gap: var(--s1);
+  }
+
   .dense .xAxis span:nth-child(even) {
+    visibility: hidden;
+  }
+}
+
+/* Arabic month names are written in full, and six of them only fit from about 360px. */
+@media (max-width: 359px) {
+  :global(:root:lang(ar)) .xAxis span:nth-child(even) {
     visibility: hidden;
   }
 }

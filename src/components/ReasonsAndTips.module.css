@@ -42,6 +42,7 @@
 }
 
 .measure {
+  margin: 0;
   font-family: var(--body);
   font-size: 16px;
   font-weight: 600;
