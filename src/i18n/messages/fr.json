@@ -433,5 +433,10 @@
   "footer.rates": "Taux de change en date du {date}, source : {source}.",
   "footer.madeBy": "Réalisé par Rubayet Rezwan",
   "footer.builtWith": "Construit avec Claude Code",
-  "footer.sourceCode": "Code source"
+  "footer.sourceCode": "Code source",
+  "shell.title.pattern": "{page} · {app}",
+  "shell.title.sample": "Score de {name}",
+  "shell.loading": "Chargement des chiffres de cette personne…",
+  "shell.loadFailed": "Ces chiffres n’ont pas pu être chargés. Vérifiez votre connexion et rechargez la page.",
+  "shell.stepsNone": "Il y a trop peu à ajuster ici, donc ce curseur est désactivé."
 }

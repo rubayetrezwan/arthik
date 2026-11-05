@@ -433,5 +433,10 @@
   "footer.rates": "বিনিময় হার {date} তারিখের, সূত্র: {source}।",
   "footer.madeBy": "বানিয়েছেন রুবায়েত রেজওয়ান",
   "footer.builtWith": "Claude Code দিয়ে তৈরি",
-  "footer.sourceCode": "সোর্স কোড"
+  "footer.sourceCode": "সোর্স কোড",
+  "shell.title.pattern": "{page} · {app}",
+  "shell.title.sample": "{name}-এর স্কোর",
+  "shell.loading": "এই ব্যক্তির হিসাব লোড হচ্ছে…",
+  "shell.loadFailed": "হিসাবগুলো লোড করা যায়নি। আপনার সংযোগ দেখে পেজটি আবার লোড করুন।",
+  "shell.stepsNone": "এখানে বদলানোর মতো অঙ্ক খুব কম, তাই এই স্লাইডারটি বন্ধ।"
 }

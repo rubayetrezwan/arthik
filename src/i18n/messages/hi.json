@@ -433,5 +433,10 @@
   "footer.rates": "{date} तक की विनिमय दरें, स्रोत: {source}।",
   "footer.madeBy": "Rubayet Rezwan द्वारा बनाया गया",
   "footer.builtWith": "Claude Code से तैयार",
-  "footer.sourceCode": "सोर्स कोड"
+  "footer.sourceCode": "सोर्स कोड",
+  "shell.title.pattern": "{page} · {app}",
+  "shell.title.sample": "{name} का स्कोर",
+  "shell.loading": "इस व्यक्ति के आँकड़े लोड हो रहे हैं…",
+  "shell.loadFailed": "ये आँकड़े लोड नहीं हो सके। अपना कनेक्शन जाँचें और पेज को दोबारा लोड करें।",
+  "shell.stepsNone": "यहाँ बदलने लायक रकम बहुत कम है, इसलिए यह स्लाइडर बंद है।"
 }

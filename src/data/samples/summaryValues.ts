@@ -7,7 +7,7 @@ import { computeMeasures, type Measures } from '../../domain/measures'
 import type { PersonId } from '../../domain/types'
 import { formatNumber, formatPercent } from '../../i18n/format'
 import type { LocaleCode } from '../../i18n/locales'
-import { SAMPLES } from './index'
+import { getLoadedSample } from './loadSamples'
 
 /** How each placeholder is written: shares as whole percentages, months with one decimal. */
 const FORMATS = {
@@ -31,6 +31,15 @@ function sentHomeShare(m: Measures): number | null {
   return m.income > 0 ? sent / m.income : null
 }
 
+/**
+ * Nusrat's income, which Farhana's summary compares hers with. Null until Nusrat's data has
+ * been loaded (loadSample loads it together with Farhana's).
+ */
+function nusratIncome(): number | null {
+  const nusrat = getLoadedSample('nusrat')
+  return nusrat ? computeMeasures(nusrat).income : null
+}
+
 const FIGURES: Record<PersonId, (m: Measures) => SummaryFigures> = {
   nusrat: (m) => ({ savedShare: m.savingsRate, bufferMonths: m.bufferMonths }),
   tanvir: (m) => ({
@@ -38,12 +47,15 @@ const FIGURES: Record<PersonId, (m: Measures) => SummaryFigures> = {
     wantsShare: m.wantsShare,
     bufferMonths: m.bufferMonths,
   }),
-  farhana: (m) => ({
-    // "You earn nearly {incomeMultiple} times what Nusrat has coming in."
-    incomeMultiple: m.income / computeMeasures(SAMPLES.nusrat).income,
-    debtShare: m.debtRatio,
-    overspendShare: m.savingsRate === null ? null : -m.savingsRate,
-  }),
+  farhana: (m) => {
+    const income = nusratIncome()
+    return {
+      // "You earn nearly {incomeMultiple} times what Nusrat has coming in."
+      incomeMultiple: income === null ? null : m.income / income,
+      debtShare: m.debtRatio,
+      overspendShare: m.savingsRate === null ? null : -m.savingsRate,
+    }
+  },
   arif: (m) => ({ savedShare: m.savingsRate, bufferMonths: m.bufferMonths }),
   rahim: (m) => ({
     sentHomeShare: sentHomeShare(m),

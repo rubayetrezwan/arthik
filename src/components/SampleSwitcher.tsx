@@ -1,7 +1,7 @@
 import { useId } from 'react'
 import { FormattedMessage } from 'react-intl'
 import { Link, NavLink } from 'react-router'
-import { PERSON_IDS } from '../data/samples'
+import { PERSON_IDS } from '../data/samples/people'
 import styles from './SampleSwitcher.module.css'
 
 /** The bar under the header on score pages: move between the five people, or use your own file. */

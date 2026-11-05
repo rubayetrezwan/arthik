@@ -2,7 +2,8 @@ import { useMemo } from 'react'
 import { computeMeasures, type Measures } from '../domain/measures'
 import { computeScore, type ScoreResult } from '../domain/score'
 import type { Dataset } from '../domain/types'
-import { useActiveDataset } from '../state/session'
+import { useActiveDatasetStatus } from '../state/session'
+import type { SampleStatus } from '../state/useSample'
 
 export interface Scored {
   dataset: Dataset
@@ -18,11 +19,17 @@ export interface Scored {
  * currency only reformats the result.
  */
 export function useScore(): Scored | null {
-  const dataset = useActiveDataset()
+  return useScoreStatus().scored
+}
 
-  return useMemo(() => {
+/** The score, and whether a sample person's data is still being fetched or failed to load. */
+export function useScoreStatus(): { scored: Scored | null; status: SampleStatus } {
+  const { dataset, status } = useActiveDatasetStatus()
+
+  const scored = useMemo(() => {
     if (!dataset) return null
     const measures = computeMeasures(dataset)
     return { dataset, measures, result: computeScore(measures) }
   }, [dataset])
+  return { scored, status }
 }

@@ -1,6 +1,7 @@
 import { Outlet, ScrollRestoration } from 'react-router'
 import { useRouteDatasetKey } from '../state/session'
 import styles from './AppLayout.module.css'
+import { DocumentTitle } from './DocumentTitle'
 import { Footer } from './Footer'
 import { Header } from './Header'
 import { SampleSwitcher } from './SampleSwitcher'
@@ -12,6 +13,7 @@ export function AppLayout() {
 
   return (
     <>
+      <DocumentTitle />
       <SkipLink />
       <Header />
       {onScorePage && <SampleSwitcher />}

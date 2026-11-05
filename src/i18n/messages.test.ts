@@ -95,6 +95,7 @@ const CODE_ONLY = new Set([
   'howItWorks.example.times',
   'ledger.outOf',
   'noScore.missing',
+  'shell.title.pattern',
 ])
 
 /** The product name stays "Arthik" everywhere except Bengali (আর্থিক, set in the glossary). */

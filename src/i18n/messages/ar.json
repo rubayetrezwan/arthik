@@ -433,5 +433,10 @@
   "footer.rates": "أسعار الصرف بتاريخ {date}، المصدر: {source}.",
   "footer.madeBy": "من صنع Rubayet Rezwan",
   "footer.builtWith": "بُني باستخدام Claude Code",
-  "footer.sourceCode": "الشيفرة المصدرية"
+  "footer.sourceCode": "الشيفرة المصدرية",
+  "shell.title.pattern": "{page} · {app}",
+  "shell.title.sample": "درجة {name}",
+  "shell.loading": "جارٍ تحميل أرقام هذا الشخص…",
+  "shell.loadFailed": "تعذّر تحميل هذه الأرقام. تحقّق من اتصالك ثم أعد تحميل الصفحة.",
+  "shell.stepsNone": "المبلغ هنا أصغر من أن يُعدَّل، لذلك هذا المنزلق معطّل."
 }

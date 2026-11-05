@@ -8,8 +8,9 @@ import {
   type ReactNode,
 } from 'react'
 import { useMatch } from 'react-router'
-import { PERSON_IDS, SAMPLES } from '../data/samples'
+import { PERSON_IDS } from '../data/samples/people'
 import type { CategoryId, Dataset, PersonId } from '../domain/types'
+import { useSample, type SampleStatus } from './useSample'
 
 // What the visitor is doing in this visit: the file they brought, and the categories they
 // corrected. It lives in memory only. Nothing here is ever written to storage, so
@@ -133,12 +134,18 @@ function withOverrides(dataset: Dataset, overrides: Overrides): Dataset {
 
 /**
  * The dataset the current route shows, with the visitor's category changes applied: a
- * sample person, the visitor's own file, or null on any other page.
+ * sample person, the visitor's own file, or null on any other page (or while a sample is
+ * still being fetched: see useActiveDatasetStatus).
  *
  * Showing a different dataset forgets the changes made to the previous one. Reading a
  * page in between (How the score works, say) does not.
  */
 export function useActiveDataset(): Dataset | null {
+  return useActiveDatasetStatus().dataset
+}
+
+/** The same dataset, with whether a sample's data is still on its way or failed to arrive. */
+export function useActiveDatasetStatus(): { dataset: Dataset | null; status: SampleStatus } {
   const { upload, show } = useSessionState()
   const { overrides } = useSession()
   const key = useRouteDatasetKey()
@@ -147,6 +154,8 @@ export function useActiveDataset(): Dataset | null {
     if (key) show(key)
   }, [key, show])
 
-  const base = key === null ? null : key === 'mine' ? upload : SAMPLES[key]
-  return useMemo(() => base && withOverrides(base, overrides), [base, overrides])
+  const sample = useSample(key === null || key === 'mine' ? null : key)
+  const base = key === 'mine' ? upload : sample.dataset
+  const dataset = useMemo(() => base && withOverrides(base, overrides), [base, overrides])
+  return { dataset, status: sample.status }
 }

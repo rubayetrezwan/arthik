@@ -113,14 +113,17 @@ interface SliderProps {
   onMove(position: number): void
   /** Why the slider is off. It is off when this is given or when it has no steps. */
   offNote?: ReactNode
+  /** Said when the slider has no steps, so a switched-off slider is never unexplained. */
+  noStepsNote?: ReactNode
 }
 
-function Slider({ label, position, scale, format, onMove, offNote }: SliderProps) {
+function Slider({ label, position, scale, format, onMove, offNote, noStepsNote }: SliderProps) {
   const id = useId()
   const noteId = useId()
   const rtl = LOCALES[useLocale()].dir === 'rtl'
   const value = scale.at(position)
   const top = scale.at(scale.positions)
+  const note = offNote ?? (scale.positions === 0 ? noStepsNote : undefined)
 
   return (
     <div className={styles.slider}>
@@ -140,7 +143,7 @@ function Slider({ label, position, scale, format, onMove, offNote }: SliderProps
         step={scale.step}
         value={value}
         aria-valuetext={format(value)}
-        aria-describedby={offNote ? noteId : undefined}
+        aria-describedby={note ? noteId : undefined}
         disabled={offNote !== undefined || scale.positions === 0}
         onChange={(event) =>
           onMove(Math.min(scale.positions, Math.round(Number(event.target.value) / scale.step)))
@@ -156,9 +159,9 @@ function Slider({ label, position, scale, format, onMove, offNote }: SliderProps
         <span>{format(0)}</span>
         <span>{format(top)}</span>
       </div>
-      {offNote && (
+      {note && (
         <p id={noteId} className={styles.offNote}>
-          {offNote}
+          {note}
         </p>
       )}
     </div>
@@ -177,16 +180,22 @@ export function WhatIf({ dataset, measures, result }: WhatIfProps) {
   const { currency } = usePrefs()
   const titleId = useId()
 
-  const [{ basis, positions: moved }, setState] = useState(() => ({
+  // `moves` counts the visitor's slider changes. Only a change to a slider is read out.
+  const [{ basis, positions: moved, moves }, setState] = useState(() => ({
     basis: { dataset, currency, locale },
     positions: AT_REST,
+    moves: 0,
   }))
   const changedBasis =
     basis.dataset !== dataset || basis.currency !== currency || basis.locale !== locale
-  if (changedBasis) setState({ basis: { dataset, currency, locale }, positions: AT_REST })
+  if (changedBasis) setState({ basis: { dataset, currency, locale }, positions: AT_REST, moves: 0 })
   const positions = changedBasis ? AT_REST : moved
   const move = (slider: keyof Positions) => (position: number) =>
-    setState((state) => ({ ...state, positions: { ...state.positions, [slider]: position } }))
+    setState((state) => ({
+      ...state,
+      positions: { ...state.positions, [slider]: position },
+      moves: state.moves + 1,
+    }))
 
   const limits = useMemo(() => sliderLimits(measures), [measures])
   const decimals = currencyDecimals(currency)
@@ -224,7 +233,18 @@ export function WhatIf({ dataset, measures, result }: WhatIfProps) {
           { id: delta > 0 ? 'whatif.announce.up' : 'whatif.announce.down' },
           { ...shown, points: Math.abs(delta) },
         )
-  const announced = useSettled(sentence, ANNOUNCE_AFTER_MS)
+  // A new sentence is spoken only once a slider has moved and settled. A category change
+  // that moves the score, with the sliders untouched, is not announced here.
+  // (Settled as one text, since an object made on each render would never settle.)
+  const settled = useSettled(`${changedBasis ? 0 : moves}|${sentence}`, ANNOUNCE_AFTER_MS)
+  const settledMoves = Number(settled.slice(0, settled.indexOf('|')))
+  const [spoken, setSpoken] = useState({ text: '', moves: 0 })
+  if (settledMoves !== spoken.moves) {
+    setSpoken({
+      text: settledMoves === 0 ? '' : settled.slice(settled.indexOf('|') + 1),
+      moves: settledMoves,
+    })
+  }
 
   if (result.status !== 'scored' || result.score === null || result.band === null) return null
 
@@ -257,6 +277,7 @@ export function WhatIf({ dataset, measures, result }: WhatIfProps) {
             scale={incomeScale}
             format={money}
             onMove={move('income')}
+            noStepsNote={<FormattedMessage id="shell.stepsNone" />}
           />
           <Slider
             label={intl.formatMessage({ id: 'whatif.savings' })}
@@ -265,6 +286,7 @@ export function WhatIf({ dataset, measures, result }: WhatIfProps) {
             format={money}
             onMove={move('savings')}
             offNote={canAddSavings ? undefined : <FormattedMessage id="whatif.savings.off" />}
+            noStepsNote={<FormattedMessage id="shell.stepsNone" />}
           />
         </div>
 
@@ -293,7 +315,7 @@ export function WhatIf({ dataset, measures, result }: WhatIfProps) {
             </bdi>
           </p>
           <p className="visually-hidden" aria-live="polite">
-            {announced}
+            {spoken.text}
           </p>
           <p className={styles.band}>
             {toBand !== result.band ? (

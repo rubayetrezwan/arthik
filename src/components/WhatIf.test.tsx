@@ -3,7 +3,7 @@ import userEvent from '@testing-library/user-event'
 import { useMemo } from 'react'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { convert } from '../domain/currency'
-import { nusratLike } from '../domain/fixtures'
+import { nusratLike, tx } from '../domain/fixtures'
 import { computeMeasures } from '../domain/measures'
 import { computeScore } from '../domain/score'
 import { NO_CHANGE, simulate, sliderLimits, type WhatIf as Change } from '../domain/whatif'
@@ -211,6 +211,29 @@ describe('WhatIf: the sliders', () => {
     expect(income()).toBeEnabled()
   })
 
+  it('turns a money slider with no steps off, and says why', () => {
+    // Income but no essential spending: there is nothing to base added savings on.
+    const noEssentials: Dataset = {
+      ...nusratLike,
+      transactions: [
+        tx('2026-08-01', 'salary', 40000),
+        tx('2026-09-01', 'salary', 40000),
+        tx('2026-10-01', 'salary', 40000),
+        tx('2026-08-05', 'eating_out', -3000),
+        tx('2026-09-05', 'eating_out', -3000),
+        tx('2026-10-05', 'eating_out', -3000),
+      ],
+    }
+    renderWhatIf(noEssentials)
+
+    expect(savings()).toBeDisabled()
+    expect(savings()).toHaveAccessibleDescription(
+      'There is too little here to adjust, so this slider is off.',
+    )
+    expect(income()).toBeEnabled()
+    expect(income()).not.toHaveAccessibleDescription()
+  })
+
   it('shows nothing unless there is a score (R14)', () => {
     const noIncome: Dataset = {
       ...nusratLike,
@@ -219,6 +242,41 @@ describe('WhatIf: the sliders', () => {
     renderWhatIf(noIncome)
 
     expect(screen.queryByRole('slider')).not.toBeInTheDocument()
+  })
+})
+
+describe('WhatIf: the live region', () => {
+  it('says nothing when a category change moves the score and no slider has moved', async () => {
+    vi.useFakeTimers()
+    const view = renderWhatIf()
+    const region = liveRegion()!
+    const changed: Dataset = {
+      ...nusratLike,
+      transactions: nusratLike.transactions.map((t, i) =>
+        i === 0 ? { ...t, amount: t.amount * 2 } : t,
+      ),
+    }
+
+    view.rerenderWith(changed)
+    act(() => vi.advanceTimersByTime(2_000))
+    await Promise.resolve()
+
+    expect(region.textContent).toBe('')
+  })
+
+  it('says nothing after a slider moved and a category change then reset the sliders', async () => {
+    vi.useFakeTimers()
+    const view = renderWhatIf()
+    fireEvent.keyDown(wants(), { key: 'ArrowRight' })
+    act(() => vi.advanceTimersByTime(500))
+    await Promise.resolve()
+    expect(liveRegion()!.textContent).not.toBe('')
+
+    view.rerenderWith({ ...nusratLike, transactions: [...nusratLike.transactions] })
+    act(() => vi.advanceTimersByTime(2_000))
+    await Promise.resolve()
+
+    expect(liveRegion()!.textContent).toBe('')
   })
 })
 
@@ -258,7 +316,8 @@ describe('WhatIf: the result', () => {
     renderWhatIf()
     const region = liveRegion()!
     const before = region.textContent
-    expect(before).toBe(`Your score would stay at ${BASE}.`)
+    // Nothing is said until a slider has moved.
+    expect(before).toBe('')
     expect(region).toHaveClass('visually-hidden')
 
     const changes: string[] = []

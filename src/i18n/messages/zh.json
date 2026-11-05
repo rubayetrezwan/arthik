@@ -433,5 +433,10 @@
   "footer.rates": "汇率截至{date}，来源：{source}。",
   "footer.madeBy": "由 Rubayet Rezwan 制作",
   "footer.builtWith": "使用 Claude Code 构建",
-  "footer.sourceCode": "源代码"
+  "footer.sourceCode": "源代码",
+  "shell.title.pattern": "{page} · {app}",
+  "shell.title.sample": "{name}的得分",
+  "shell.loading": "正在加载此人的数据……",
+  "shell.loadFailed": "无法加载这些数据。请检查网络连接后重新加载页面。",
+  "shell.stepsNone": "这里的金额太小，无法调整，所以这个滑块已关闭。"
 }

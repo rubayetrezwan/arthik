@@ -433,5 +433,10 @@
   "footer.rates": "Tipos de cambio a fecha de {date}, fuente: {source}.",
   "footer.madeBy": "Creado por Rubayet Rezwan",
   "footer.builtWith": "Construido con Claude Code",
-  "footer.sourceCode": "Código fuente"
+  "footer.sourceCode": "Código fuente",
+  "shell.title.pattern": "{page} · {app}",
+  "shell.title.sample": "Puntuación de {name}",
+  "shell.loading": "Cargando las cifras de esta persona…",
+  "shell.loadFailed": "No se pudieron cargar estas cifras. Comprueba tu conexión y vuelve a cargar la página.",
+  "shell.stepsNone": "Aquí hay muy poco que ajustar, así que este control deslizante está desactivado."
 }

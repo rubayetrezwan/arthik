@@ -9,10 +9,10 @@ import { ReasonsAndTips } from '../components/ReasonsAndTips'
 import { ScoreCard } from '../components/ScoreCard'
 import { TransactionsTable } from '../components/TransactionsTable'
 import { WhatIf } from '../components/WhatIf'
-import { SAMPLES } from '../data/samples'
+import { getLoadedSample } from '../data/samples/loadSamples'
 import { summaryValues } from '../data/samples/summaryValues'
 import type { Dataset, PersonId } from '../domain/types'
-import { useScore, type Scored } from '../hooks/useScore'
+import { useScoreStatus, type Scored } from '../hooks/useScore'
 import { formatMonthRange } from '../i18n/format'
 import { useLocale } from '../i18n/I18nProvider'
 import { useSession } from '../state/session'
@@ -25,7 +25,7 @@ import styles from './DashboardPage.module.css'
  */
 function asWritten(dataset: Dataset | undefined): PersonId | null {
   if (!dataset || dataset.key === 'mine') return null
-  return dataset === SAMPLES[dataset.key] ? dataset.key : null
+  return dataset === getLoadedSample(dataset.key) ? dataset.key : null
 }
 
 /**
@@ -63,7 +63,7 @@ function Explore({ scored: { dataset, measures, result } }: { scored: Scored }) 
 /** A sample person's score, or the visitor's own: the page head, the score sheet, then the rest. */
 export function DashboardPage() {
   const locale = useLocale()
-  const scored = useScore()
+  const { scored, status } = useScoreStatus()
 
   const writtenFor = asWritten(scored?.dataset)
   const measures = scored?.measures
@@ -73,7 +73,14 @@ export function DashboardPage() {
     [writtenFor, measures, locale],
   )
 
-  if (!scored) return null
+  if (!scored) {
+    // A sample person's data is on its way. The space is held, so the page does not jump.
+    return status === 'ready' ? null : (
+      <p className={styles.loading} role="status">
+        <FormattedMessage id={status === 'failed' ? 'shell.loadFailed' : 'shell.loading'} />
+      </p>
+    )
+  }
   const { dataset, result } = scored
   const person = dataset.key === 'mine' ? null : dataset.key
   const [first, last] = [result.months[0], result.months.at(-1)]

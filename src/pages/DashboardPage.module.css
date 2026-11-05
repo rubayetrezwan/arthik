@@ -59,3 +59,9 @@
     grid-template-columns: minmax(0, 1fr);
   }
 }
+
+/* Held at about the height of the score sheet, so the page does not jump when data arrives. */
+.loading {
+  min-block-size: 24rem;
+  color: var(--ink-2, inherit);
+}

@@ -433,5 +433,10 @@
   "footer.rates": "Exchange rates as of {date}, source: {source}.",
   "footer.madeBy": "Made by Rubayet Rezwan",
   "footer.builtWith": "Built with Claude Code",
-  "footer.sourceCode": "Source code"
+  "footer.sourceCode": "Source code",
+  "shell.title.pattern": "{page} · {app}",
+  "shell.title.sample": "Score for {name}",
+  "shell.loading": "Loading this person’s figures…",
+  "shell.loadFailed": "These figures could not be loaded. Check your connection and reload the page.",
+  "shell.stepsNone": "There is too little here to adjust, so this slider is off."
 }
