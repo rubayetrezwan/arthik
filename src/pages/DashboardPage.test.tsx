@@ -8,8 +8,10 @@ import { tx } from '../domain/fixtures'
 import { computeMeasures } from '../domain/measures'
 import { computeScore } from '../domain/score'
 import type { CategoryId, Dataset, PersonId } from '../domain/types'
+import { formatNumber } from '../i18n/format'
 import { I18nProvider } from '../i18n/I18nProvider'
 import { LOCALE_CODES, LOCALES, type LocaleCode } from '../i18n/locales'
+import enMessages from '../i18n/messages/en.json'
 import { routes } from '../routes'
 import { PrefsProvider } from '../state/prefs'
 import { SessionProvider, useSession } from '../state/session'
@@ -24,6 +26,10 @@ vi.mock('../domain/measures', async (importOriginal) => {
 })
 
 const html = document.documentElement
+
+function isPersonId(name: string): name is PersonId {
+  return (PERSON_IDS as readonly string[]).includes(name)
+}
 
 beforeEach(() => {
   localStorage.clear()
@@ -304,8 +310,10 @@ describe('DashboardPage: your own transactions', () => {
       'Your transactions run from 1 Nov 2026 to 3 Nov 2026.',
     )
     expect(screen.queryByTestId('score')).not.toBeInTheDocument()
-    expect(screen.queryByRole('table')).not.toBeInTheDocument()
+    expect(screen.queryByRole('table', { name: /adds up$/ })).not.toBeInTheDocument()
     expect(main().queryByText(/^Using /)).not.toBeInTheDocument()
+    // What was read from the file is still there to check.
+    expect(screen.getByRole('table', { name: 'Your transactions' })).toBeInTheDocument()
   })
 
   it('asks for the account income arrives in when the file has no income at all', () => {
@@ -350,7 +358,127 @@ describe('DashboardPage: your own transactions', () => {
   })
 })
 
+describe('DashboardPage: explore your money', () => {
+  /** The headings of the sections under "Explore your money", in order. */
+  function sections() {
+    const explore = main().getByRole('region', { name: 'Explore your money' })
+    return within(explore)
+      .getAllByRole('heading', { level: 3 })
+      .map((heading) => heading.textContent)
+  }
+
+  it('follows the score sheet with the reasons, the what-if, the charts and the transactions', () => {
+    renderScore('nusrat')
+
+    expect(main().getByRole('heading', { level: 2, name: 'Explore your money' }))
+      .toBeInTheDocument()
+    expect(sections()).toEqual([
+      'Why 66, and what would help',
+      'What if…',
+      'Money in and out, by month',
+      'Where the money goes',
+      'Your transactions',
+    ])
+  })
+
+  it('works out the score, the ledger and the reasons again when a category changes', async () => {
+    const user = userEvent.setup()
+    renderScore('nusrat')
+    const [tuition] = screen.getAllByRole('combobox', {
+      name: 'Category for Nagad Received 01911xxxxxx - Tuition',
+    })
+
+    await user.selectOptions(tuition!, 'own_transfer')
+
+    // October's tuition fee (nusrat-0231) is now money moved between accounts, not income.
+    const changed: Dataset = {
+      ...SAMPLES.nusrat,
+      transactions: SAMPLES.nusrat.transactions.map((t) =>
+        t.id === 'nusrat-0231' ? { ...t, category: 'own_transfer' } : t,
+      ),
+    }
+    const score = String(computeScore(computeMeasures(changed)).score)
+    expect(score).not.toBe('66')
+    expect(main().getByTestId('score')).toHaveTextContent(score)
+    expect(main().getByRole('heading', { name: `How ${score} adds up` })).toBeInTheDocument()
+    expect(sections()[0]).toBe(`Why ${score}, and what would help`)
+    expect(screen.getAllByRole('combobox', { name: /Tuition$/ })[0]).toHaveValue('own_transfer')
+    expect(main().queryByText(/^You live within your means/)).not.toBeInTheDocument()
+  })
+
+  it('keeps category changes and the score when the currency or language changes, and resets the sliders (Review Focus 5)', async () => {
+    const user = userEvent.setup()
+    renderApp('/score/nusrat')
+    const tuition = () =>
+      screen.getAllByRole('combobox', { name: 'Category for Nagad Received 01911xxxxxx - Tuition' })[0]!
+    const wants = () => screen.getByRole('slider', { name: 'Cut spending on wants' })
+
+    await user.selectOptions(tuition(), 'own_transfer')
+    const score = main().getByTestId('score').textContent
+    wants().focus()
+    await user.keyboard('{ArrowRight}{ArrowRight}')
+    expect(wants()).toHaveValue('10')
+
+    await user.selectOptions(screen.getByLabelText('Currency'), 'USD')
+    expect(main().getByTestId('score')).toHaveTextContent(score!)
+    expect(tuition()).toHaveValue('own_transfer')
+    expect(wants()).toHaveValue('0')
+    expect(screen.getByRole('slider', { name: 'Extra income each month' }).getAttribute('aria-valuetext'))
+      .toMatch(/^\$/)
+
+    wants().focus()
+    await user.keyboard('{ArrowRight}')
+    await user.selectOptions(screen.getByLabelText('Language'), 'bn')
+    await languageShown('bn')
+    expect(main().getByTestId('score')).toHaveTextContent(
+      formatNumber(Number(score), 'bn'),
+    )
+    expect(tuition()).toHaveValue('own_transfer')
+    expect(wants()).toHaveValue('0')
+  })
+
+  it('shows the reasons and the what-if only with a score, but the transactions always (R14)', () => {
+    renderScore(EDGE_DATASETS['no income']!)
+
+    expect(sections()).toEqual([
+      'Money in and out, by month',
+      'Where the money goes',
+      'Your transactions',
+    ])
+    expect(screen.queryByRole('slider')).not.toBeInTheDocument()
+  })
+
+  it('has nothing to explore without transactions', () => {
+    renderScore(EDGE_DATASETS['no transactions at all']!)
+
+    expect(main().queryByRole('region', { name: 'Explore your money' })).not.toBeInTheDocument()
+  })
+})
+
 describe('Review Focus 3: no broken values reach the screen', () => {
+  /** Nor in the words given to screen readers, the slider values or the bar sizes. */
+  function expectNoBrokenValues() {
+    expect(document.body.textContent).not.toMatch(/NaN|Infinity|undefined|null/)
+    expect(document.body.innerHTML).not.toMatch(/NaN|Infinity/)
+  }
+
+  it.each([...PERSON_IDS, 'one complete month'])(
+    'moves every slider to its end for "%s" without them',
+    async (name) => {
+      const user = userEvent.setup()
+      renderScore(isPersonId(name) ? name : EDGE_DATASETS[name]!)
+
+      for (const slider of screen.getAllByRole('slider')) {
+        if ((slider as HTMLInputElement).disabled) continue
+        slider.focus()
+        await user.keyboard('{End}')
+      }
+      expectNoBrokenValues()
+      await user.click(screen.getByRole('button', { name: 'Show as table' }))
+      expectNoBrokenValues()
+    },
+  )
+
   const cases = LOCALE_CODES.flatMap((locale) =>
     Object.keys(EDGE_DATASETS).map((name) => [name, locale] as const),
   )
@@ -360,7 +488,7 @@ describe('Review Focus 3: no broken values reach the screen', () => {
     await languageShown(locale)
 
     expect(main().getByRole('heading', { level: 1 })).toBeInTheDocument()
-    expect(document.body.textContent).not.toMatch(/NaN|Infinity|undefined|null/)
+    expectNoBrokenValues()
   })
 
   it.each(LOCALE_CODES)('shows every sample person in %s without them either', async (locale) => {
@@ -368,7 +496,7 @@ describe('Review Focus 3: no broken values reach the screen', () => {
       const { unmount } = renderScore(id, { locale })
       await languageShown(locale)
       expect(main().getByTestId('score').textContent).not.toBe('')
-      expect(document.body.textContent).not.toMatch(/NaN|Infinity|undefined|null/)
+      expectNoBrokenValues()
       unmount()
     }
   })
@@ -405,6 +533,23 @@ describe('the sample people’s own words', () => {
     for (const [key, text] of persona) {
       // Any decimal digit: 0-9, Bengali, Devanagari, Arabic-Indic and the rest.
       expect(text, key).not.toMatch(/\p{Nd}/u)
+    }
+  })
+})
+
+describe('the explore section’s own words', () => {
+  const en: Record<string, string> = enMessages
+  const EXPLORE_KEYS = /^(explore|reasons?|tip|whatif|chart|transactions|group|category)\./
+
+  it('carries no typed digit: every number comes from a placeholder', () => {
+    const explore = Object.entries(en).filter(([key]) => EXPLORE_KEYS.test(key))
+    expect(explore.length).toBeGreaterThan(100)
+    for (const [key, text] of explore) expect(text, key).not.toMatch(/\p{Nd}/u)
+  })
+
+  it('spells out the Deposit Pension Scheme wherever it names a DPS', () => {
+    for (const [key, text] of Object.entries(en).filter(([key]) => EXPLORE_KEYS.test(key))) {
+      if (text.includes('DPS')) expect(text, key).toContain('Deposit Pension Scheme (DPS)')
     }
   })
 })

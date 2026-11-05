@@ -1,15 +1,21 @@
-import { useMemo } from 'react'
+import { useId, useMemo } from 'react'
 import { FormattedMessage } from 'react-intl'
+import { CategoryChart } from '../components/CategoryChart'
 import { Ledger } from '../components/Ledger'
+import { MonthlyChart } from '../components/MonthlyChart'
 import { NotScoredNotice } from '../components/NotScoredNotice'
 import { PageHead } from '../components/PageHead'
+import { ReasonsAndTips } from '../components/ReasonsAndTips'
 import { ScoreCard } from '../components/ScoreCard'
+import { TransactionsTable } from '../components/TransactionsTable'
+import { WhatIf } from '../components/WhatIf'
 import { SAMPLES } from '../data/samples'
 import { summaryValues } from '../data/samples/summaryValues'
 import type { Dataset, PersonId } from '../domain/types'
-import { useScore } from '../hooks/useScore'
+import { useScore, type Scored } from '../hooks/useScore'
 import { formatMonthRange } from '../i18n/format'
 import { useLocale } from '../i18n/I18nProvider'
+import { useSession } from '../state/session'
 import styles from './DashboardPage.module.css'
 
 /**
@@ -22,7 +28,39 @@ function asWritten(dataset: Dataset | undefined): PersonId | null {
   return dataset === SAMPLES[dataset.key] ? dataset.key : null
 }
 
-/** A sample person's score, or the visitor's own: the page head, then the score sheet. */
+/**
+ * "Explore your money", under the score sheet: the reasons and the what-if sliders when
+ * there is a score (R14), then the charts and every transaction. The transactions show
+ * even without a score, since changing a category there may be what gets one.
+ */
+function Explore({ scored: { dataset, measures, result } }: { scored: Scored }) {
+  const { overrideCategory } = useSession()
+  const titleId = useId()
+  const hasScore = result.status === 'scored'
+
+  return (
+    <section className={styles.explore} aria-labelledby={titleId}>
+      <h2 id={titleId} className={styles.exploreTitle}>
+        <FormattedMessage id="explore.title" />
+      </h2>
+      {hasScore && <ReasonsAndTips dataset={dataset} measures={measures} result={result} />}
+      {hasScore && <WhatIf dataset={dataset} measures={measures} result={result} />}
+      {/* A chart with nothing to draw steps aside; with neither, the row goes too. */}
+      <div className={styles.charts}>
+        <MonthlyChart measures={measures} />
+        <CategoryChart measures={measures} />
+      </div>
+      {/* Keyed by person, so a page of "Show more" is kept when only a category changes. */}
+      <TransactionsTable
+        key={dataset.key}
+        transactions={dataset.transactions}
+        onCategoryChange={overrideCategory}
+      />
+    </section>
+  )
+}
+
+/** A sample person's score, or the visitor's own: the page head, the score sheet, then the rest. */
 export function DashboardPage() {
   const locale = useLocale()
   const scored = useScore()
@@ -80,7 +118,7 @@ export function DashboardPage() {
         <NotScoredNotice result={result} dataset={dataset} />
       )}
 
-      {/* "Explore your money" (plan Task 13) follows here, under the score sheet. */}
+      {dataset.transactions.length > 0 && <Explore scored={scored} />}
     </>
   )
 }
