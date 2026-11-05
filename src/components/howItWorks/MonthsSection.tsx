@@ -41,34 +41,34 @@ export function MonthsSection() {
           <FormattedMessage id="howItWorks.months.last" values={{ days }} />
         </li>
       </ul>
-      <p className={`${styles.prose} ${styles.intro}`}>
-        <FormattedMessage
-          id="howItWorks.months.example"
-          values={{
-            first: formatFullDate(EXAMPLE_FIRST, locale),
-            last: formatFullDate(EXAMPLE_LAST, locale),
-            range: used,
-          }}
-        />
+      <div className={`${styles.prose} ${styles.intro}`}>
+        <p>
+          <FormattedMessage
+            id="howItWorks.months.example"
+            values={{
+              first: formatFullDate(EXAMPLE_FIRST, locale),
+              last: formatFullDate(EXAMPLE_LAST, locale),
+              range: used,
+            }}
+          />
+        </p>
         {firstLeftOut && (
-          <>
-            {' '}
+          <p>
             <FormattedMessage
               id="howItWorks.months.firstLeftOut"
               values={{ month: formatMonth(firstMonth, locale), days }}
             />
-          </>
+          </p>
         )}
         {lastLeftOut && (
-          <>
-            {' '}
+          <p>
             <FormattedMessage
               id="howItWorks.months.lastLeftOut"
               values={{ month: formatMonth(lastMonth, locale), days }}
             />
-          </>
+          </p>
         )}
-      </p>
+      </div>
       <p className={`${styles.intro} ${styles.note}`}>
         <FormattedMessage id="howItWorks.months.shown" />
       </p>

@@ -278,7 +278,18 @@ describe('HowItWorksPage', () => {
     expect(section).toHaveTextContent(
       `For example, transactions from ${formatFullDate('2026-05-12', 'en')} to ${formatFullDate('2026-10-27', 'en')} use ${formatMonthRange(months[0] ?? '', months.at(-1) ?? '', 'en')}.`.replace(/\s+/g, ' '),
     )
-    expect(section).toHaveTextContent('May 2026 is left out because they start after day 7.')
+    expect(section).toHaveTextContent('May 2026 is left out because your transactions start after day 7 of it.')
+  })
+
+  it('puts each sentence of the worked example in its own paragraph', () => {
+    renderApp('/how-it-works')
+
+    const left = screen.getByText('May 2026 is left out because your transactions start after day 7 of it.')
+    expect(left.tagName).toBe('P')
+    const example = screen.getByText(/^For example, transactions from /)
+    expect(example.tagName).toBe('P')
+    expect(example).not.toBe(left)
+    expect(example).not.toHaveTextContent('left out')
   })
 
   it('sorts every category into its group, in the order of CATEGORIES', () => {
