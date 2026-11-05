@@ -1,0 +1,82 @@
+.title {
+  font-size: 22px;
+}
+
+.subtitle {
+  margin-block-start: var(--s5);
+  font-size: 18px;
+}
+
+.note {
+  color: var(--ink-2);
+  font-size: 15px;
+}
+
+.title + .note {
+  max-width: 52ch;
+  margin-block-start: var(--s1);
+}
+
+.after {
+  margin-block-start: var(--s2);
+}
+
+/* The columns, entered like lines in the ledger: the name on the left, what it holds beside it. */
+.columns {
+  display: grid;
+  grid-template-columns: max-content minmax(0, 1fr);
+  margin: var(--s2) 0 0;
+  border-block-start: 1px solid var(--ink);
+}
+
+.columns dt,
+.columns dd {
+  margin: 0;
+  padding-block: var(--s2);
+  border-block-end: 1px solid var(--rule);
+}
+
+.columns dt {
+  padding-inline-end: var(--s4);
+}
+
+.columns dd > p + p {
+  margin-block-start: var(--s2);
+}
+
+.help code {
+  font-family: ui-monospace, "Cascadia Mono", Consolas, monospace;
+  font-size: 15px;
+}
+
+.columns dt code {
+  font-weight: 600;
+}
+
+.template {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0 var(--s3);
+  margin-block-start: var(--s5);
+  padding-block-start: var(--s4);
+  border-block-start: 1px solid var(--rule);
+}
+
+.download {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  font-weight: 500;
+}
+
+@media (max-width: 400px) {
+  .columns {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .columns dt {
+    padding-block-end: 0;
+    border-block-end: 0;
+  }
+}

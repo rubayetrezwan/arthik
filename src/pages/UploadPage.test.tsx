@@ -138,7 +138,7 @@ describe('UploadPage: the page', () => {
       ),
     ).toBeInTheDocument()
     const link = main().getByRole('link', { name: 'Download the template' })
-    expect(link).toHaveAttribute('href', '/arthik/arthik-template.csv')
+    expect(link).toHaveAttribute('href', `${import.meta.env.BASE_URL}arthik-template.csv`)
     expect(link).toHaveAttribute('download')
   })
 
@@ -191,7 +191,7 @@ describe('UploadPage: a file Arthik can read', () => {
     await submit(user)
 
     await waitFor(() => expect(router.state.location.pathname).toBe('/score/mine'))
-    expect(main().getByTestId('score')).toBeInTheDocument()
+    expect(await main().findByTestId('score')).toBeInTheDocument()
     expect(session().upload).toMatchObject({ key: 'mine', emergencySavings: null })
     expect(session().upload?.transactions).toHaveLength(TEMPLATE_ROWS)
   })
@@ -477,7 +477,7 @@ describe('UploadPage: rows with problems', () => {
       csv(lines('date,description,amount', '2026-10-01,Salary,55000', '2026-10-02,Rent,abc')),
     )
     await submit(user)
-    await main().findByRole('alert')
+    await main().findByRole('alert', { name: /^Arthik couldn’t read/ })
     await user.selectOptions(screen.getByLabelText('Currency'), 'GBP')
     await user.click(main().getByRole('button', { name: 'Continue with 1 valid row' }))
 
@@ -504,7 +504,7 @@ describe('UploadPage: rows with problems', () => {
     await choose(user, csv(lines('date,amount', '2026-10-01,-500')))
     await submit(user)
 
-    expect(await main().findByRole('alert')).toBeInTheDocument()
+    expect(await main().findByRole('alert', { name: /^Arthik couldn’t read/ })).toBeInTheDocument()
     expect(listed()).toEqual([
       'The file has no description column. Its first row should name the columns, as in the template.',
     ])
@@ -515,7 +515,7 @@ describe('UploadPage: rows with problems', () => {
 
     await choose(user, csv(templateWithTwoBadRows()))
     await submit(user)
-    await main().findByRole('alert')
+    await main().findByRole('alert', { name: /^Arthik couldn’t read/ })
     await choose(user, csv(template))
 
     expect(main().queryByRole('alert', { name: /^Arthik couldn’t read/ })).not.toBeInTheDocument()
@@ -538,7 +538,7 @@ describe('UploadPage: rows with problems', () => {
     )
     await submit(user)
 
-    await main().findByRole('alert')
+    await main().findByRole('alert', { name: /^Arthik couldn’t read/ })
     const items = listed()
     expect(items).toHaveLength(21)
     expect(items[0]).toMatch(/^Row 3: “someday”/)
@@ -685,7 +685,8 @@ describe('UploadPage: Review Focus 5', () => {
 
     await choose(user, csv(template))
     await submit(user)
-    await waitFor(() => expect(router.state.location.pathname).toBe('/score/mine'))
+    await main().findByTestId('score')
+    await waitFor(() => expect(session().activeKey).toBe('mine'))
     const upload = session().upload
     const rent = upload?.transactions.find((t) => t.category === 'rent')
     if (!rent) throw new Error('The template has a rent payment')

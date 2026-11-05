@@ -1,0 +1,77 @@
+/* Boxed and ruled in red down its start edge, like the notice that takes a score's place. */
+.summary {
+  margin-block-start: var(--s5);
+  padding: var(--s5);
+  border: 1px solid var(--rule);
+  border-inline-start: 3px solid var(--red);
+  border-radius: var(--radius);
+  background: var(--surface);
+}
+
+.summary:focus {
+  outline: none;
+}
+
+.summary:focus-visible {
+  outline: 3px solid var(--primary);
+  outline-offset: 2px;
+}
+
+.summary > * + * {
+  margin-block-start: var(--s3);
+}
+
+.title {
+  font-size: 22px;
+}
+
+.list {
+  margin-block-end: 0;
+  padding: 0;
+  list-style: none;
+  border-block-start: 1px solid var(--ink);
+}
+
+.list li {
+  padding-block: var(--s2);
+  border-block-end: 1px solid var(--rule);
+}
+
+.row {
+  font-weight: 600;
+  font-variant-numeric: tabular-nums lining-nums;
+  white-space: nowrap;
+}
+
+.list code,
+.more code {
+  font-family: ui-monospace, "Cascadia Mono", Consolas, monospace;
+  font-size: 15px;
+}
+
+.list bdi {
+  overflow-wrap: anywhere;
+}
+
+.more {
+  color: var(--ink-2);
+  font-size: 15px;
+}
+
+.continue {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding-inline: var(--s4);
+  border: 1px solid var(--primary);
+  border-radius: var(--radius);
+  background: var(--primary);
+  color: var(--primary-ink);
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.continue:hover {
+  background: var(--ink);
+  border-color: var(--ink);
+}
