@@ -259,6 +259,63 @@ describe('parseTransactionsCsv: debit and credit columns', () => {
     expect(errors).toEqual<CsvError[]>([{ row: 2, code: 'bad_amount', column: 'debit', value: '' }])
   })
 
+  describe('a dash in a debit or credit cell (R51)', () => {
+    // Some banks print a dash in the column a payment does not use.
+    it.each(['-', '–', '—', ' - '])('reads %j as an empty cell', (dash) => {
+      const { transactions, errors } = parseTransactionsCsv(
+        file(
+          'date,description,debit,credit',
+          `2026-10-01,Bazar,640,${dash}`,
+          `2026-10-02,Salary credit,${dash},4000`,
+        ),
+        'BDT',
+      )
+      expect(errors).toEqual([])
+      expect(transactions.map((t) => t.amount)).toEqual([-640, 4000])
+    })
+
+    it('reports a row with a dash in both columns as having no amount', () => {
+      const { transactions, errors } = parseTransactionsCsv(
+        file('date,description,withdrawal,deposit', '2026-10-01,Opening balance,-,—'),
+        'BDT',
+      )
+      expect(transactions).toEqual([])
+      expect(errors).toEqual<CsvError[]>([
+        { row: 2, code: 'bad_amount', column: 'withdrawal', value: '' },
+      ])
+    })
+
+    it('does not count a dash as filled when a trailing delimiter ends every row', () => {
+      const { transactions, errors } = parseTransactionsCsv(
+        file(
+          'date,description,debit,credit',
+          '2026-10-01,Bazar,640,-,',
+          '2026-10-02,Salary credit,–,4000,',
+        ),
+        'BDT',
+      )
+      expect(errors).toEqual([])
+      expect(transactions.map((t) => t.amount)).toEqual([-640, 4000])
+    })
+
+    it('still reports a dash with anything else in the cell', () => {
+      const { errors } = parseTransactionsCsv(
+        file('date,description,debit,credit', '2026-10-01,Bazar,--,4000', '2026-10-02,Pay,,-5'),
+        'BDT',
+      )
+      expect(errors).toEqual<CsvError[]>([
+        { row: 2, code: 'bad_amount', column: 'debit', value: '--' },
+        { row: 3, code: 'bad_amount', column: 'credit', value: '-5' },
+      ])
+    })
+
+    it('still reports a lone dash in a signed amount column', () => {
+      expect(parseRow('2026-10-01,Bazar,-,,').errors).toEqual<CsvError[]>([
+        { row: 2, code: 'bad_amount', column: 'amount', value: '-' },
+      ])
+    })
+  })
+
   it('prefers a signed amount column when the file also has debit and credit', () => {
     const { transactions } = parseTransactionsCsv(
       file('date,description,amount,debit,credit', '2026-10-01,Bazar,-640,640,'),

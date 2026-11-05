@@ -246,6 +246,15 @@ function cellText(cells: readonly string[], column: Column): string {
   return (cells[column.index] ?? '').trim()
 }
 
+// Some banks print a dash in the column of a debit and credit pair that a payment does not use.
+const DASH_ONLY = /^[-\u{2013}\u{2014}]$/u
+
+/** A debit or credit cell, trimmed, with a lone dash (-, – or —) read as empty (R51). */
+function moneyCellText(cells: readonly string[], column: Column): string {
+  const text = cellText(cells, column)
+  return DASH_ONLY.test(text) ? '' : text
+}
+
 function cellError(row: number, code: CsvErrorCode, column: Column, text: string): CsvError {
   const value = text.length > MAX_SHOWN_LENGTH ? `${text.slice(0, MAX_SHOWN_LENGTH)}…` : text
   return { row, code, column: column.name, value }
@@ -283,8 +292,8 @@ function readAmount(
     return parseAmount(text) ?? cellError(row, 'bad_amount', columns.amount, text)
   }
 
-  const debitText = cellText(cells, columns.debit)
-  const creditText = cellText(cells, columns.credit)
+  const debitText = moneyCellText(cells, columns.debit)
+  const creditText = moneyCellText(cells, columns.credit)
   // A row with neither is not a payment we can read, and not one we can call zero.
   if (debitText === '' && creditText === '') {
     return cellError(row, 'bad_amount', columns.debit, '')
@@ -378,8 +387,9 @@ type RowOutcome =
  * Even then, in a debit and credit file the empty credit cell is what gets pushed off the end,
  * so 18,000 in the debit column makes a row with a debit of 18, a credit of 000 and nothing
  * extra. A row that runs past the named columns and fills both money columns is therefore not
- * trusted either. A cell that writes a zero (`0`, `0.00`) is not filled for this: banks fill the
- * column a payment does not use with 0.00, and a row that does so is not a split amount. The 000
+ * trusted either. A cell that writes a zero (`0`, `0.00`) or holds a lone dash is not filled for
+ * this: banks fill the column a payment does not use with 0.00 or -, and a row that does so is not
+ * a split amount. The 000
  * of a split 18,000 is not a written zero (see `isWrittenZero`), so that row is still caught.
  */
 function hasExtraCells(
@@ -392,7 +402,7 @@ function hasExtraCells(
   if (cells.length > columns.width && !trailingCellsOk) return true
   if (extra.length === 0 || columns.amount.kind !== 'split') return false
   const isFilled = (column: Column): boolean => {
-    const text = cellText(cells, column)
+    const text = moneyCellText(cells, column)
     return text !== '' && !isWrittenZero(text)
   }
   return isFilled(columns.amount.debit) && isFilled(columns.amount.credit)
