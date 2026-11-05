@@ -279,6 +279,25 @@ describe('UploadPage: a file Arthik can read', () => {
   })
 })
 
+describe('UploadPage: privacy', () => {
+  it('writes nothing about the file or the savings to localStorage or sessionStorage', async () => {
+    const writes = vi.spyOn(Storage.prototype, 'setItem')
+    const { router, user } = renderUpload()
+
+    await user.selectOptions(screen.getByLabelText('Currency'), 'GBP')
+    await user.type(main().getByLabelText('Emergency savings (optional)'), '12345')
+    await choose(user, csv(templateWithTwoBadRows()))
+    await submit(user)
+    await user.click(await main().findByRole('button', { name: /^Continue with/ }))
+    await waitFor(() => expect(router.state.location.pathname).toBe('/score/mine'))
+
+    // The one thing kept is the currency the visitor chose, which is a preference.
+    expect(writes.mock.calls).toEqual([['arthik.currency', 'GBP']])
+    expect(Object.keys(localStorage)).toEqual(['arthik.currency'])
+    expect(sessionStorage).toHaveLength(0)
+  })
+})
+
 describe('UploadPage: savings it cannot read', () => {
   it.each(['-500', 'abc', '12,50', '1.500', 'NaN', 'Infinity', '1e5', '৳500', '(500)', '.5'])(
     'keeps you on the page and says what to enter for %j',
