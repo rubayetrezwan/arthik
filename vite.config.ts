@@ -115,6 +115,10 @@ export default defineConfig({
   },
   test: {
     environment: 'jsdom',
+    // The whole-app tests (a page, a language change, an upload) take 1 to 3 seconds alone and
+    // several times that when the machine is busy with other test files. 5 seconds is too tight.
+    testTimeout: 30_000,
+    hookTimeout: 30_000,
     setupFiles: ['src/test/setup.ts'],
     include: ['src/**/*.test.{ts,tsx}', 'scripts/**/*.test.ts'],
   },
