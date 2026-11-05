@@ -323,6 +323,61 @@ describe('I18nProvider', () => {
   })
 })
 
+describe('I18nProvider when a language fails to load', () => {
+  it('stays in English, left to right, and does not try again in a loop', async () => {
+    const error = vi.spyOn(console, 'error')
+    vi.mocked(loadMessages).mockRejectedValue(new Error('offline'))
+    const user = userEvent.setup()
+    renderApp()
+
+    await user.click(screen.getByRole('button', { name: 'العربية' }))
+
+    await waitFor(() => expect(loadMessages).toHaveBeenCalledWith('ar'))
+    await act(async () => {
+      await new Promise((resolve) => setTimeout(resolve, 20))
+    })
+    expect(screen.getByText('asked ar, shown en')).toBeInTheDocument()
+    expect(screen.getByRole('heading', { name: 'Arthik' })).toBeInTheDocument()
+    expect(html.lang).toBe('en')
+    expect(html.dir).toBe('ltr')
+    expect(vi.mocked(loadMessages).mock.calls.filter(([l]) => l === 'ar')).toHaveLength(1)
+    expect(error).not.toHaveBeenCalled()
+  })
+
+  it('falls back to English when the fonts fail, even from another language', async () => {
+    const user = userEvent.setup()
+    renderApp()
+    await user.click(screen.getByRole('button', { name: 'বাংলা' }))
+    await waitFor(() => expect(html.lang).toBe('bn-BD'))
+
+    vi.mocked(loadFonts).mockRejectedValue(new Error('blocked'))
+    await user.click(screen.getByRole('button', { name: 'हिन्दी' }))
+
+    expect(await screen.findByText('asked hi, shown en')).toBeInTheDocument()
+    expect(html.lang).toBe('en')
+    expect(html.dir).toBe('ltr')
+  })
+
+  it('loads a language that failed once when the visitor chooses it again later', async () => {
+    vi.mocked(loadMessages).mockImplementation((l) =>
+      l === 'ar' ? Promise.reject(new Error('offline')) : Promise.resolve(en),
+    )
+    const user = userEvent.setup()
+    renderApp()
+    await user.click(screen.getByRole('button', { name: 'العربية' }))
+    expect(await screen.findByText('asked ar, shown en')).toBeInTheDocument()
+
+    vi.mocked(loadMessages).mockResolvedValue({ ...en, 'app.name': 'আর্থিক' })
+    await user.click(screen.getByRole('button', { name: 'বাংলা' }))
+    expect(await screen.findByText('asked bn, shown bn')).toBeInTheDocument()
+
+    vi.mocked(loadMessages).mockResolvedValue({ ...en, 'app.name': 'أرثيك' })
+    await user.click(screen.getByRole('button', { name: 'العربية' }))
+    expect(await screen.findByText('asked ar, shown ar')).toBeInTheDocument()
+    expect(html.dir).toBe('rtl')
+  })
+})
+
 describe('useLocale', () => {
   it('says so when it is used outside the provider', () => {
     function Lonely() {

@@ -14,6 +14,9 @@ export interface PreloadedLanguage {
 
 type Loaded = PreloadedLanguage
 
+/** What stays on screen when the asked-for language cannot be loaded. */
+const ENGLISH: Loaded = { locale: 'en', messages: en }
+
 const DisplayedLocaleContext = createContext<LocaleCode | null>(null)
 
 /**
@@ -59,21 +62,34 @@ export function I18nProvider({
   const [loaded, setLoaded] = useState<Loaded | null>(() =>
     initial?.locale === locale ? initial : null,
   )
+  // The language that could not be loaded, so the effect below does not ask for it again
+  // and again. Chosen again after another one loads, it gets a fresh try.
+  const [failed, setFailed] = useState<LocaleCode | null>(null)
   const shown = loaded?.locale ?? 'en'
 
   useEffect(() => {
     // Already on screen, preloaded or chosen earlier: there is nothing to fetch.
-    if (loaded?.locale === locale) return
+    if (loaded?.locale === locale || failed === locale) return
     let current = true
-    // Neither promise rejects: a missing translation or font falls back, it does not fail.
-    Promise.all([loadMessages(locale), loadFonts(locale)]).then(([messages]) => {
-      // The visitor may have chosen another language while this one was loading.
-      if (current) setLoaded({ locale, messages })
-    })
+    // The loaders catch their own failures today, but a missing translation or font must
+    // never leave the page unable to switch, so a rejection shows English, as at startup.
+    Promise.all([loadMessages(locale), loadFonts(locale)]).then(
+      ([messages]) => {
+        // The visitor may have chosen another language while this one was loading.
+        if (!current) return
+        setFailed(null)
+        setLoaded({ locale, messages })
+      },
+      () => {
+        if (!current) return
+        setFailed(locale)
+        setLoaded(ENGLISH)
+      },
+    )
     return () => {
       current = false
     }
-  }, [locale, loaded])
+  }, [locale, loaded, failed])
 
   // Before paint, so there is no frame of new text in the old direction. It only writes
   // what differs, so a page that already carries the right values is left untouched.
