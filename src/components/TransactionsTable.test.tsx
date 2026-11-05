@@ -63,6 +63,14 @@ describe('TransactionsTable', () => {
     ])
   })
 
+  it('says a category was matched from the description or taken from the file', () => {
+    renderTable(daily(1))
+
+    expect(
+      screen.getByText(/matched from each description, or taken from a category column in your file/),
+    ).toBeInTheDocument()
+  })
+
   it('lists the newest first, 20 at a time, with "Show more" for the rest', async () => {
     const user = userEvent.setup()
     const { table } = renderTable(daily(45))

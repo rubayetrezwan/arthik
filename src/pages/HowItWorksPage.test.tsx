@@ -292,6 +292,14 @@ describe('HowItWorksPage', () => {
     expect(example).not.toHaveTextContent('left out')
   })
 
+  it('says a category comes from the description or from a category column in the file', () => {
+    renderApp('/how-it-works')
+
+    expect(
+      screen.getByText(/^Each transaction gets a category, matched from its description, or taken from a category column in your file./),
+    ).toBeInTheDocument()
+  })
+
   it('sorts every category into its group, in the order of CATEGORIES', () => {
     renderApp('/how-it-works')
 
