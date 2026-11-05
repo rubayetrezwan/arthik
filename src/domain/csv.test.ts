@@ -2503,6 +2503,184 @@ describe('parseTransactionsCsv: whole-file problems', () => {
     })
   })
 
+  describe('an amount column next to a column whose values say debit or credit (R52)', () => {
+    // Whatever such a column is called, 500 beside DR may be money out with the sign in the
+    // other column, or money in with DR as a label. The header list cannot name every one.
+    it('reports the column, named as written, and imports nothing', () => {
+      const { transactions, errors } = parseTransactionsCsv(
+        file(
+          'Date,Description,Amount, Direction ',
+          '2026-10-01,Shwapno,500,DR',
+          '2026-10-02,Salary,55000,CR',
+        ),
+        'BDT',
+      )
+      expect(transactions).toEqual([])
+      expect(errors).toEqual<CsvError[]>([
+        { row: 1, code: 'direction_column', column: 'Direction' },
+      ])
+    })
+
+    it.each([
+      [['DR', 'CR']],
+      [['dr', 'cr']],
+      [['Dr.', 'Cr.']],
+      [['D', 'C']],
+      [['d', 'c']],
+      [['Debit', 'Credit']],
+      [['DEBIT', 'CREDIT']],
+      [['In', 'Out']],
+      [['IN', 'OUT']],
+      [[' out ', 'in']],
+      // A wallet statement of payments alone: every row says the same thing.
+      [['DR', 'DR']],
+      [['Out', 'Out']],
+    ])('recognises the values %j', (values) => {
+      const { transactions, errors } = parseTransactionsCsv(
+        file(
+          'date,description,amount,flag',
+          `2026-10-01,Shwapno,500,${values[0]}`,
+          `2026-10-02,Salary,55000,${values[1]}`,
+        ),
+        'BDT',
+      )
+      expect(transactions).toEqual([])
+      expect(errors).toEqual<CsvError[]>([{ row: 1, code: 'direction_column', column: 'flag' }])
+    })
+
+    it('does not mind empty cells among the values', () => {
+      const { errors } = parseTransactionsCsv(
+        file(
+          'date,description,amount,flag',
+          '2026-10-01,Shwapno,500,DR',
+          '2026-10-02,Balance enquiry,0,',
+          '2026-10-03,Salary,55000,CR',
+        ),
+        'BDT',
+      )
+      expect(errors).toEqual<CsvError[]>([{ row: 1, code: 'direction_column', column: 'flag' }])
+    })
+
+    it('leaves alone a column with no values at all', () => {
+      const { transactions, errors } = parseTransactionsCsv(
+        file('date,description,amount,flag', '2026-10-01,Shwapno,-500,', '2026-10-02,Salary,55000,'),
+        'BDT',
+      )
+      expect(errors).toEqual([])
+      expect(transactions).toHaveLength(2)
+    })
+
+    it.each([
+      [['DR', 'CR', 'Reversal']],
+      [['DR', 'CR', 'x']],
+      [['DRCR', 'DR', 'CR']],
+      [['Credit card', 'Debit card', 'Cash']],
+      [['Dr', 'Cr', 'Dr..']],
+    ])('leaves alone a column whose values are not all of them: %j', (values) => {
+      const { transactions, errors } = parseTransactionsCsv(
+        file(
+          'date,description,amount,channel',
+          ...values.map((value, index) => `2026-10-0${index + 1},Shwapno,-500,${value}`),
+        ),
+        'BDT',
+      )
+      expect(errors).toEqual([])
+      expect(transactions).toHaveLength(values.length)
+    })
+
+    it('never takes the description for such a column', () => {
+      const { transactions, errors } = parseTransactionsCsv(
+        file(
+          'date,description,amount',
+          '2026-10-01,Credit,55000',
+          '2026-10-02,Debit,-500',
+          '2026-10-03,Out,-200',
+        ),
+        'BDT',
+      )
+      expect(errors).toEqual([])
+      expect(transactions.map((t) => t.amount)).toEqual([55000, -500, -200])
+    })
+
+    it('never takes the currency or the category column for one', () => {
+      const { errors } = parseTransactionsCsv(
+        file(
+          'date,description,amount,currency,category',
+          '2026-10-01,Shwapno,-500,CR,in',
+          '2026-10-02,Salary,55000,DR,out',
+        ),
+        'BDT',
+      )
+      expect(errors.map((e) => e.code)).not.toContain('direction_column')
+      expect(errors).toEqual<CsvError[]>([
+        { row: 2, code: 'bad_currency', column: 'currency', value: 'CR' },
+        { row: 2, code: 'bad_category', column: 'category', value: 'in' },
+        { row: 3, code: 'bad_currency', column: 'currency', value: 'DR' },
+        { row: 3, code: 'bad_category', column: 'category', value: 'out' },
+      ])
+    })
+
+    it('leaves alone a debit and credit file with such a column', () => {
+      // The pair already says which way the money went.
+      const { transactions, errors } = parseTransactionsCsv(
+        file('date,description,debit,credit,flag', '2026-10-01,Shwapno,500,,DR', '2026-10-02,Pay,,900,CR'),
+        'BDT',
+      )
+      expect(errors).toEqual([])
+      expect(transactions.map((t) => t.amount)).toEqual([-500, 900])
+    })
+
+    it('reports a column that has no name without naming it', () => {
+      const { transactions, errors } = parseTransactionsCsv(
+        file(
+          'date,description,amount,,balance',
+          '2026-10-01,Shwapno,500,DR,9500',
+          '2026-10-02,Salary,55000,CR,64500',
+        ),
+        'BDT',
+      )
+      expect(transactions).toEqual([])
+      expect(errors).toEqual<CsvError[]>([{ row: 1, code: 'direction_column' }])
+    })
+
+    it('reports each such column, in column order', () => {
+      const { errors } = parseTransactionsCsv(
+        file('date,description,amount,dc,way', '2026-10-01,Shwapno,500,D,out', '2026-10-02,Pay,900,C,in'),
+        'BDT',
+      )
+      expect(errors).toEqual<CsvError[]>([
+        { row: 1, code: 'direction_column', column: 'dc' },
+        { row: 1, code: 'direction_column', column: 'way' },
+      ])
+    })
+
+    it('does not let a shifted row hide the column', () => {
+      // The unquoted 18,000 pushes D past the header, leaving 000 in the column. The row is
+      // reported on its own; the others still show what the column is.
+      const { transactions, errors } = parseTransactionsCsv(
+        file(
+          'date,description,amount,dc',
+          '2026-10-01,Rent,18,000,D',
+          '2026-10-02,Shwapno,500,D',
+          '2026-10-03,Salary,55000,C',
+        ),
+        'BDT',
+      )
+      expect(transactions).toEqual([])
+      expect(errors).toEqual<CsvError[]>([{ row: 1, code: 'direction_column', column: 'dc' }])
+    })
+
+    it('numbers the header row from the top of the file, in a semicolon file too', () => {
+      const { errors } = parseTransactionsCsv(
+        file('', 'date;description;amount;Dr Cr Indicator', '2026-10-01;Shwapno;500;Dr'),
+        'BDT',
+      )
+      expect(errors).toEqual<CsvError[]>([
+        { row: 2, code: 'direction_column', column: 'Dr Cr Indicator' },
+      ])
+    })
+  })
+
   describe('a column name that appears twice', () => {
     it.each([
       'date',

@@ -28,7 +28,10 @@ export type CsvErrorCode =
   | 'extra_cells'
   /** The file writes dates month first (a date such as 10/31/2026), so dates that could be read either way are rejected. */
   | 'month_first_dates'
-  /** The file has an amount column and a column that says debit or credit, so the sign of the amount cannot be told. */
+  /**
+   * The file has an amount column and a column that says debit or credit, by its name or by its
+   * values (DR, CR, In, Out ...), so the sign of the amount cannot be told.
+   */
   | 'direction_column'
   /**
    * A header name the reader uses (date, amount, ...) appears twice, or the header has two names
@@ -46,8 +49,9 @@ export interface CsvError {
   row: number
   code: CsvErrorCode
   /**
-   * The column the problem is in, by its canonical name: `date`, `amount`, `debit`, and so on.
-   * For `direction_column` it is the header as the file wrote it, trimmed (`DR/CR`). So it is for
+   * The column the problem is in, by the name the reader knows it by, in lower case: `date`,
+   * `amount`, `debit` or `withdrawal`, and so on. For `direction_column` it is the header as the
+   * file wrote it, trimmed (`DR/CR`), and absent when that header is blank. So it is for
    * `duplicate_column` when the header has two names for one column: the second name (`Withdrawal`).
    */
   column?: string
@@ -137,6 +141,25 @@ const DIRECTION_COLUMNS: ReadonlySet<string> = new Set([
   'debit credit',
   'credit debit',
 ])
+
+// Cell values that say which way the money went. A column of nothing else, next to a single
+// `amount` column, leaves the sign as open as a header in `DIRECTION_COLUMNS` does, whatever the
+// column is called (R52). Compared trimmed, in lower case and without one full stop at the end,
+// as statements print Dr. and Cr.
+const DIRECTION_VALUES: ReadonlySet<string> = new Set([
+  'dr',
+  'cr',
+  'debit',
+  'credit',
+  'd',
+  'c',
+  'in',
+  'out',
+])
+
+function isDirectionValue(text: string): boolean {
+  return DIRECTION_VALUES.has(text.trim().toLowerCase().replace(/\.$/, ''))
+}
 
 /**
  * A header name for comparing with `DIRECTION_COLUMNS`: lower case, an underscore as a space,
@@ -440,6 +463,49 @@ function hasTrailingCells(
   )
 }
 
+/**
+ * The columns beside a signed amount whose every value says which way the money went (DR, CR,
+ * Debit, In and so on: `DIRECTION_VALUES`), each as a `direction_column` error on the header's
+ * row, named as the header writes it, or not named when the header leaves it blank.
+ *
+ * The columns the reader uses are never taken for one, so a description that reads "Credit"
+ * cannot set it off. A column needs at least one value, and its empty cells do not count. A row
+ * whose cells do not line up with the header is left out, since its cells may belong to other
+ * columns; it is reported on its own when the rows are read.
+ */
+function directionValueColumns(
+  header: readonly string[],
+  row: number,
+  dataRows: readonly { cells: readonly string[] }[],
+  columns: Columns,
+  trailingCellsOk: boolean,
+): CsvError[] {
+  const { amount } = columns
+  if (amount.kind !== 'signed') return []
+  const read = new Set(
+    [columns.date, columns.description, amount.amount, columns.currency, columns.category].map(
+      (column) => column?.index,
+    ),
+  )
+  const aligned = dataRows.filter(({ cells }) => !hasExtraCells(cells, columns, trailingCellsOk))
+
+  const errors: CsvError[] = []
+  for (let index = 0; index < columns.width; index++) {
+    if (read.has(index)) continue
+    const values = aligned
+      .map(({ cells }) => (cells[index] ?? '').trim())
+      .filter((text) => text !== '')
+    if (values.length === 0 || !values.every(isDirectionValue)) continue
+    const name = (header[index] ?? '').trim()
+    errors.push(
+      name === ''
+        ? { row, code: 'direction_column' }
+        : { row, code: 'direction_column', column: name },
+    )
+  }
+  return errors
+}
+
 function readRow(
   cells: readonly string[],
   row: number,
@@ -611,7 +677,8 @@ function swallowsDatedRow(cells: readonly string[], delimiter: string): boolean 
  * (or `withdrawal`/`deposit`) pair; `currency` and `category` are optional. Rows that
  * cannot be read are left out and reported with their spreadsheet row number, and the rest
  * still import. A file that cannot be used at all (empty, no rows, a missing column, over
- * `MAX_ROWS`) gives no transactions and says why.
+ * `MAX_ROWS`, a signed amount beside a column that says debit or credit by its name or by its
+ * values) gives no transactions and says why.
  *
  * A broken quote makes PapaParse merge lines into one record, so the cells of that record
  * may come from different rows and cannot be trusted. Such a record is never imported. It is
@@ -622,9 +689,9 @@ function swallowsDatedRow(cells: readonly string[], delimiter: string): boolean 
  * looks fine to PapaParse, so it is found another way: a line inside a quoted cell that starts
  * with a date and a delimiter is a row that was swallowed. The row numbers after a merged record
  * count it as one row, the way a spreadsheet shows it. Only when the file cannot be used anyway
- * (a missing column, too many rows) is a broken quote not mentioned, as the visitor must fix
- * the file first and will see it then. A broken quote in the header is reported alone, because
- * the header cannot be read.
+ * (a missing column, too many rows, a direction column) is a broken quote not mentioned, as the
+ * visitor must fix the file first and will see it then. A broken quote in the header is reported
+ * alone, because the header cannot be read.
  *
  * A row with more cells than the header is not imported (`extra_cells`), because an unquoted comma
  * in an amount shifts every cell after it. The one exception is a file in which every row has the
@@ -692,14 +759,24 @@ export function parseTransactionsCsv(text: string, defaultCurrency: CurrencyCode
   }
   if (dataRows.length > MAX_ROWS) return rejected({ row: 0, code: 'too_many_rows' })
 
+  const trailingCellsOk = hasTrailingCells(dataRows, columns)
+
+  // A column of DR and CR beside the amount leaves the sign of every row in doubt.
+  const directionErrors = directionValueColumns(
+    header,
+    headerIndex + 1,
+    dataRows,
+    columns,
+    trailingCellsOk,
+  )
+  if (directionErrors.length > 0) return { transactions: [], errors: directionErrors }
+
   // One date that can only be month first (10/31/2026) shows how the whole file writes its
   // dates. Every row counts, even one that is skipped or has another problem, because the date
   // is still what the file wrote.
   const monthFirstFile = dataRows.some(
     ({ cells }) => readDateCell(cellText(cells, columns.date)).monthFirstOnly,
   )
-
-  const trailingCellsOk = hasTrailingCells(dataRows, columns)
 
   const transactions: Transaction[] = []
   const errors: CsvError[] = []
