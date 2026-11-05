@@ -27,7 +27,7 @@ function woff2Only(): Plugin {
  * when a language first needs them and cached then (runtimeCaching below).
  */
 const SHELL_FONT_FILE =
-  /\/((newsreader|ibm-plex-sans)-latin-(400|500|600)-(normal|italic)|(noto-sans-bengali|tiro-bangla)-bengali-(400|500|600)-normal)-[\w-]+\.woff2$/
+  /\/((newsreader|ibm-plex-sans)-latin-(400|500|600)-(normal|italic)|(noto-sans-bengali|tiro-bangla)-(bengali|latin)-(400|500|600)-normal)-[\w-]+\.woff2$/
 const SHELL_FONT_CSS = /\/font-(newsreader|ibm-plex-sans|noto-sans-bengali|tiro-bangla)--[^/]*\.css$/
 const IS_FONT = /\/(font-[^/]*\.css|[^/]*\.woff2)$/
 

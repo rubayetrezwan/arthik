@@ -2,8 +2,19 @@ import { useEffect, useMemo, useState } from 'react'
 import { getLoadedSample, loadSample } from '../data/samples/loadSamples'
 import { summaryValues } from '../data/samples/summaryValues'
 import { computeMeasures } from '../domain/measures'
+import type { Dataset } from '../domain/types'
 import { formatNumber } from '../i18n/format'
 import { useLocale } from '../i18n/I18nProvider'
+
+interface People {
+  farhana: Dataset | undefined
+  rahim: Dataset | undefined
+}
+
+const loadedPeople = (): People => ({
+  farhana: getLoadedSample('farhana'),
+  rahim: getLoadedSample('rahim'),
+})
 
 /**
  * The figures behind "habits, not income", from the sample people's own data and in the
@@ -13,32 +24,29 @@ import { useLocale } from '../i18n/I18nProvider'
  */
 export function useHabitsFigures() {
   const locale = useLocale()
-  const [loaded, setLoaded] = useState(
-    () => getLoadedSample('farhana') !== undefined && getLoadedSample('rahim') !== undefined,
-  )
+  const [people, setPeople] = useState<People>(loadedPeople)
+  const missing = people.farhana === undefined || people.rahim === undefined
 
   useEffect(() => {
-    if (loaded) return
+    if (!missing) return
     let live = true
     Promise.all([loadSample('farhana'), loadSample('rahim')])
-      .then(() => live && setLoaded(true))
+      .then(() => live && setPeople(loadedPeople()))
       .catch(() => undefined)
     return () => {
       live = false
     }
-  }, [loaded])
+  }, [missing])
 
   return useMemo(() => {
-    const farhana = getLoadedSample('farhana')
-    const rahim = getLoadedSample('rahim')
     const dash = formatNumber(NaN, locale)
     return {
-      incomeMultiple: farhana
-        ? summaryValues('farhana', computeMeasures(farhana), locale).incomeMultiple
+      incomeMultiple: people.farhana
+        ? summaryValues('farhana', computeMeasures(people.farhana), locale).incomeMultiple
         : dash,
-      sentHomeShare: rahim
-        ? summaryValues('rahim', computeMeasures(rahim), locale).sentHomeShare
+      sentHomeShare: people.rahim
+        ? summaryValues('rahim', computeMeasures(people.rahim), locale).sentHomeShare
         : dash,
     }
-  }, [locale, loaded]) // `loaded` is what makes the data above appear
+  }, [locale, people])
 }

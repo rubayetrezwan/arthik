@@ -65,14 +65,14 @@ function LedgerRow({ line }: { line: LedgerLine }) {
   const scored = subScore !== null && band !== null
 
   return (
-    <tr className={scored ? undefined : styles.unscored}>
-      <th scope="row" className={styles.measure}>
+    <tr role="row" className={scored ? undefined : styles.unscored}>
+      <th role="rowheader" scope="row" className={styles.measure}>
         <span className={styles.name}>
           <FormattedMessage id={`measure.${id}.name`} />
         </span>
         {value && <span className={styles.value}>{value}</span>}
       </th>
-      <td className={styles.scoreCell}>
+      <td role="cell" className={styles.scoreCell}>
         {scored ? (
           <>
             <span className={styles.scoreLine}>
@@ -113,13 +113,13 @@ function LedgerRow({ line }: { line: LedgerLine }) {
         Re-weighted lines show the weight they count for now, such as 33.3%. On phones the
         column headings are hidden, so the cell names itself from data-label.
       */}
-      <td
+      <td role="cell"
         className={`${styles.end} ${styles.weight}`}
         data-label={intl.formatMessage({ id: 'ledger.weight' })}
       >
         {scored ? formatWeight(weightTenths, locale) : NO_VALUE}
       </td>
-      <td className={`${styles.end} ${styles.points}`}>
+      <td role="cell" className={`${styles.end} ${styles.points}`}>
         {pointsHundredths === null ? NO_VALUE : formatPoints(pointsHundredths, locale)}
       </td>
     </tr>
@@ -152,40 +152,40 @@ export function Ledger({ result, uncategorisedShare }: LedgerProps) {
       </p>
 
       {/* Named by the heading, so the table is announced as "How 66 adds up". */}
-      <table className={styles.table} aria-labelledby={titleId}>
-        <thead>
-          <tr>
-            <th scope="col">
+      <table role="table" className={styles.table} aria-labelledby={titleId}>
+        <thead role="rowgroup">
+          <tr role="row">
+            <th role="columnheader" scope="col">
               <FormattedMessage id="ledger.measure" />
             </th>
-            <th scope="col">
+            <th role="columnheader" scope="col">
               <FormattedMessage id="ledger.score" />
             </th>
-            <th scope="col" className={styles.end}>
+            <th role="columnheader" scope="col" className={styles.end}>
               <FormattedMessage id="ledger.weight" />
             </th>
-            <th scope="col" className={styles.end}>
+            <th role="columnheader" scope="col" className={styles.end}>
               <FormattedMessage id="ledger.points" />
             </th>
           </tr>
         </thead>
-        <tbody>
+        <tbody role="rowgroup">
           {lines.map((line) => (
             <LedgerRow key={line.id} line={line} />
           ))}
         </tbody>
-        <tfoot>
-          <tr className={styles.total}>
-            <th scope="row" colSpan={3}>
+        <tfoot role="rowgroup">
+          <tr role="row" className={styles.total}>
+            <th role="rowheader" scope="row" colSpan={3}>
               <FormattedMessage id="ledger.total" />
             </th>
-            <td className={styles.end}>{formatPoints(totalHundredths, locale)}</td>
+            <td role="cell" className={styles.end}>{formatPoints(totalHundredths, locale)}</td>
           </tr>
-          <tr className={styles.final}>
-            <th scope="row" colSpan={3}>
+          <tr role="row" className={styles.final}>
+            <th role="rowheader" scope="row" colSpan={3}>
               <FormattedMessage id="ledger.rounded" />
             </th>
-            <td className={styles.end}>
+            <td role="cell" className={styles.end}>
               <span className={styles.grand}>{formatNumber(score, locale)}</span>
             </td>
           </tr>

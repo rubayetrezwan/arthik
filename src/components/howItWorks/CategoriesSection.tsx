@@ -50,21 +50,21 @@ export function CategoriesSection() {
           <p className={styles.intro}>
             <FormattedMessage id="howItWorks.categories.intro" />
           </p>
-          <table className={`${styles.table} ${styles.stack}`} aria-labelledby={headingId}>
-            <thead>
-              <tr>
-                <th scope="col">
+          <table role="table" className={`${styles.table} ${styles.stack}`} aria-labelledby={headingId}>
+            <thead role="rowgroup">
+              <tr role="row">
+                <th role="columnheader" scope="col">
                   <FormattedMessage id="howItWorks.categories.group" />
                 </th>
-                <th scope="col">
+                <th role="columnheader" scope="col">
                   <FormattedMessage id="howItWorks.categories.treatment" />
                 </th>
               </tr>
             </thead>
-            <tbody>
+            <tbody role="rowgroup">
               {groupedCategories().map(({ group, ids }) => (
-                <tr key={group}>
-                  <th scope="row">
+                <tr role="row" key={group}>
+                  <th role="rowheader" scope="row">
                     <span className={styles.name}>{groupName(intl, group)}</span>
                     <span className={styles.detail}>
                       {intl.formatList(
@@ -73,7 +73,7 @@ export function CategoriesSection() {
                       )}
                     </span>
                   </th>
-                  <td>
+                  <td role="cell">
                     <FormattedMessage id={`howItWorks.group.${group}.treatment`} />
                   </td>
                 </tr>

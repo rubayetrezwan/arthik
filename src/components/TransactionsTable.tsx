@@ -47,12 +47,12 @@ function TransactionRow({
   const incoming = amount > 0
 
   return (
-    <tr>
-      <td className={styles.date}>
+    <tr role="row">
+      <td role="cell" className={styles.date}>
         <time dateTime={date}>{formatDate(date, locale)}</time>
       </td>
-      <td className={styles.description}>{description}</td>
-      <td className={styles.category}>
+      <td role="cell" className={styles.description}>{description}</td>
+      <td role="cell" className={styles.category}>
         <CategorySelect
           value={category}
           direction={incoming ? 'in' : 'out'}
@@ -66,7 +66,7 @@ function TransactionRow({
           </p>
         )}
       </td>
-      <td className={`${styles.amount} ${incoming ? styles.in : ''}`}>
+      <td role="cell" className={`${styles.amount} ${incoming ? styles.in : ''}`}>
         <bdi>{money(amount, transaction.currency, { signed: true })}</bdi>
         {transaction.currency !== currency && (
           <span className={styles.original}>
@@ -120,24 +120,24 @@ export function TransactionsTable({ transactions, onCategoryChange }: Transactio
         <FormattedMessage id="transactions.note" />
       </p>
 
-      <table className={styles.table} aria-labelledby={titleId}>
-        <thead>
-          <tr>
-            <th scope="col">
+      <table role="table" className={styles.table} aria-labelledby={titleId}>
+        <thead role="rowgroup">
+          <tr role="row">
+            <th role="columnheader" scope="col">
               <FormattedMessage id="transactions.date" />
             </th>
-            <th scope="col">
+            <th role="columnheader" scope="col">
               <FormattedMessage id="transactions.description" />
             </th>
-            <th scope="col">
+            <th role="columnheader" scope="col">
               <FormattedMessage id="transactions.category" />
             </th>
-            <th scope="col" className={styles.end}>
+            <th role="columnheader" scope="col" className={styles.end}>
               <FormattedMessage id="transactions.amount" />
             </th>
           </tr>
         </thead>
-        <tbody ref={body}>
+        <tbody role="rowgroup" ref={body}>
           {visible.map((transaction) => (
             <TransactionRow
               key={transaction.id}
