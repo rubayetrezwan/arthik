@@ -1,0 +1,72 @@
+.title {
+  font-size: 20px;
+}
+
+.legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s1) var(--s4);
+  margin-block: var(--s2) var(--s3);
+  color: var(--ink-2);
+  font-size: 14px;
+}
+
+.key {
+  display: inline-block;
+  inline-size: 14px;
+  block-size: 12px;
+  margin-inline-end: 6px;
+  vertical-align: -1px;
+}
+
+.list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-variant-numeric: tabular-nums lining-nums;
+}
+
+/* Name, bar, amount. The name wraps in its column rather than squeezing the bar away. */
+.row {
+  display: grid;
+  grid-template-columns: minmax(0, 11rem) minmax(0, 1fr) auto;
+  align-items: center;
+  gap: var(--s3);
+  padding-block: 5px;
+  font-size: 15px;
+}
+
+.bar {
+  justify-self: start;
+  block-size: 12px;
+  /* A tiny average still shows a sliver; its amount is in words beside it. */
+  min-inline-size: 2px;
+}
+
+.need {
+  background: var(--ink);
+}
+
+/* The one patterned fill in the design: wants are striped, so they never rely on colour. */
+.want {
+  border: 1px solid var(--ink);
+  background: repeating-linear-gradient(135deg, var(--ink) 0 2px, transparent 2px 5px);
+}
+
+/* Neither a need nor a want: cash, gifts and uncategorised spending, outlined. */
+.other {
+  border: 1px solid var(--ink);
+  background: var(--surface);
+}
+
+.amount {
+  text-align: end;
+  white-space: nowrap;
+}
+
+@media (max-width: 640px) {
+  .row {
+    grid-template-columns: minmax(0, 7.5rem) minmax(0, 1fr) auto;
+    font-size: 14px;
+  }
+}
