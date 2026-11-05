@@ -1,0 +1,49 @@
+.privacy {
+  margin-block-start: var(--s3);
+}
+
+.privacy strong {
+  color: var(--ink);
+  font-weight: 600;
+}
+
+/* The file on one side and what it needs on the other, like facing pages of a ledger. */
+.columns {
+  display: grid;
+  grid-template-columns: minmax(0, 6fr) minmax(0, 5fr);
+  align-items: start;
+  gap: var(--s7);
+  margin-block-start: var(--s5);
+  padding-block-start: var(--s5);
+  border-block-start: 1px solid var(--rule);
+}
+
+.submit {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  margin-block-start: var(--s5);
+  padding-inline: var(--s5);
+  border: 1px solid var(--primary);
+  border-radius: var(--radius);
+  background: var(--primary);
+  color: var(--primary-ink);
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.submit:hover {
+  background: var(--ink);
+  border-color: var(--ink);
+}
+
+.submit[aria-disabled="true"] {
+  cursor: progress;
+}
+
+@media (max-width: 900px) {
+  .columns {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--s6);
+  }
+}

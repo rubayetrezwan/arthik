@@ -1,0 +1,68 @@
+/* A box ruled with a dashed line, the place a file is dropped, like a slip pinned into the ledger. */
+.zone {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--s2) var(--s3);
+  padding: var(--s5);
+  border: 1px dashed var(--control);
+  border-radius: var(--radius);
+  background: var(--surface);
+}
+
+.dragging {
+  border-style: solid;
+  border-color: var(--primary);
+  outline: 2px solid var(--primary);
+  outline-offset: -3px;
+}
+
+/* The label is what is seen and clicked; the input behind it takes the keyboard focus. */
+.button {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding-inline: var(--s4);
+  border: 1px solid var(--primary);
+  border-radius: var(--radius);
+  background: var(--surface);
+  color: var(--primary);
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.button:hover {
+  background: var(--bg);
+}
+
+.input:focus + .button {
+  outline: 3px solid var(--primary);
+  outline-offset: 2px;
+}
+
+.input[aria-invalid="true"] + .button {
+  border-color: var(--red);
+}
+
+.or {
+  color: var(--ink-2);
+}
+
+.hint {
+  flex-basis: 100%;
+  color: var(--ink-2);
+  font-size: 15px;
+}
+
+.chosen:not(:empty) {
+  margin-block-start: var(--s2);
+  font-weight: 500;
+}
+
+.problem {
+  margin-block-start: var(--s2);
+  padding-inline-start: var(--s3);
+  border-inline-start: 3px solid var(--red);
+  color: var(--red);
+  font-weight: 500;
+}
