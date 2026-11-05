@@ -13,7 +13,8 @@
     "lint": "eslint .",
     "typecheck": "tsc -b --pretty false",
     "gen:samples": "tsx scripts/generate-samples.ts",
-    "rates:update": "node scripts/update-rates.mjs"
+    "rates:update": "node scripts/update-rates.mjs",
+    "translations:review": "tsx scripts/translation-review.ts"
   },
   "dependencies": {
     "@fontsource/ibm-plex-sans": "^5.3.0",

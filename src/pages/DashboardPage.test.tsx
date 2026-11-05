@@ -10,11 +10,13 @@ import { computeScore } from '../domain/score'
 import type { CategoryId, Dataset, PersonId } from '../domain/types'
 import { formatNumber } from '../i18n/format'
 import { I18nProvider } from '../i18n/I18nProvider'
+import { GLOSSARY, type TranslatedLocale } from '../i18n/glossary'
 import { LOCALE_CODES, LOCALES, type LocaleCode } from '../i18n/locales'
 import enMessages from '../i18n/messages/en.json'
 import { routes } from '../routes'
 import { PrefsProvider } from '../state/prefs'
 import { SessionProvider, useSession } from '../state/session'
+import { EXISTING, EXISTING_TRANSLATIONS } from '../test/messageFiles'
 import { renderApp } from '../test/renderApp'
 
 vi.mock('../i18n/fonts', () => ({ loadFonts: vi.fn(() => Promise.resolve()) }))
@@ -524,6 +526,21 @@ describe('the sample people’s own words', () => {
     }
   })
 
+  it.each(EXISTING_TRANSLATIONS)(
+    'name emergency savings by the glossary term wherever English does, in %s (R46)',
+    (code, messages) => {
+      // The English wording check cannot run on another language, so every message that names
+      // emergency savings must use the agreed term: months of essentials covered.
+      const en = files['../i18n/messages/en.json'] ?? {}
+      const term = GLOSSARY[code as TranslatedLocale].measures.emergencySavings.toLocaleLowerCase()
+      const wrong = Object.entries(en)
+        .filter(([, text]) => /emergency savings/i.test(text))
+        .filter(([key]) => !(messages[key] ?? '').toLocaleLowerCase().includes(term))
+        .map(([key]) => key)
+      expect(wrong).toEqual([])
+    },
+  )
+
   it.each(Object.keys(files))('carry no typed digit in any script, in %s', (file) => {
     const messages = files[file] ?? {}
     const persona = Object.entries(messages).filter(([key]) =>
@@ -541,15 +558,28 @@ describe('the explore section’s own words', () => {
   const en: Record<string, string> = enMessages
   const EXPLORE_KEYS = /^(explore|reasons?|tip|whatif|chart|transactions|group|category)\./
 
-  it('carries no typed digit: every number comes from a placeholder', () => {
-    const explore = Object.entries(en).filter(([key]) => EXPLORE_KEYS.test(key))
-    expect(explore.length).toBeGreaterThan(100)
-    for (const [key, text] of explore) expect(text, key).not.toMatch(/\p{Nd}/u)
-  })
+  it.each(EXISTING)(
+    'carries no typed digit in %s: every number is a placeholder',
+    (_code, texts) => {
+      const explore = Object.entries(texts).filter(([key]) => EXPLORE_KEYS.test(key))
+      expect(explore.length).toBeGreaterThan(100)
+      for (const [key, text] of explore) expect(text, key).not.toMatch(/\p{Nd}/u)
+    },
+  )
 
   it('spells out the Deposit Pension Scheme wherever it names a DPS', () => {
     for (const [key, text] of Object.entries(en).filter(([key]) => EXPLORE_KEYS.test(key))) {
       if (text.includes('DPS')) expect(text, key).toContain('Deposit Pension Scheme (DPS)')
     }
   })
+
+  it.each(EXISTING_TRANSLATIONS)(
+    'spells out the Deposit Pension Scheme as the glossary does in %s',
+    (code, texts) => {
+      const full = GLOSSARY[code as TranslatedLocale].dps
+      for (const key of Object.keys(en).filter((key) => EXPLORE_KEYS.test(key))) {
+        if (en[key]?.includes('DPS')) expect(texts[key], key).toContain(full)
+      }
+    },
+  )
 })

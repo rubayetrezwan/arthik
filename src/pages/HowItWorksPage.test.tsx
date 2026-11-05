@@ -23,6 +23,7 @@ import {
 } from '../i18n/format'
 import en from '../i18n/messages/en.json'
 import { EXAMPLE_MEASURES } from '../components/howItWorks/workedExample'
+import { EXISTING } from '../test/messageFiles'
 import { renderApp } from '../test/renderApp'
 
 vi.mock('../i18n/fonts', () => ({ loadFonts: vi.fn(() => Promise.resolve()) }))
@@ -403,10 +404,13 @@ describe('HowItWorksPage', () => {
 })
 
 describe('the How the score works copy', () => {
-  it('never types a digit: every number comes from a placeholder or a table', () => {
-    const typed = Object.entries(messages).filter(
-      ([key, text]) => key.startsWith('howItWorks.') && /\p{Nd}/u.test(text),
-    )
-    expect(typed).toEqual([])
-  })
+  it.each(EXISTING)(
+    'never types a digit in %s: every number comes from a placeholder or a table',
+    (_code, texts) => {
+      const typed = Object.entries(texts).filter(
+        ([key, text]) => key.startsWith('howItWorks.') && /\p{Nd}/u.test(text),
+      )
+      expect(typed).toEqual([])
+    },
+  )
 })

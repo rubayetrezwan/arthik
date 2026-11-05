@@ -3,12 +3,10 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { SAMPLES } from '../data/samples'
 import { summaryValues } from '../data/samples/summaryValues'
 import { computeMeasures } from '../domain/measures'
-import en from '../i18n/messages/en.json'
+import { EXISTING } from '../test/messageFiles'
 import { renderApp } from '../test/renderApp'
 
 vi.mock('../i18n/fonts', () => ({ loadFonts: vi.fn(() => Promise.resolve()) }))
-
-const messages: Record<string, string> = en
 
 beforeEach(() => {
   localStorage.clear()
@@ -105,8 +103,8 @@ describe('AboutPage', () => {
 })
 
 describe('the About copy', () => {
-  it('never types a digit', () => {
-    const typed = Object.entries(messages).filter(
+  it.each(EXISTING)('never types a digit, in %s', (_code, texts) => {
+    const typed = Object.entries(texts).filter(
       ([key, text]) => key.startsWith('about.') && /\p{Nd}/u.test(text),
     )
     expect(typed).toEqual([])
