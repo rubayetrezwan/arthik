@@ -1,0 +1,165 @@
+.head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0 var(--s3);
+}
+
+.title {
+  font-size: 20px;
+}
+
+/* A quiet text button, as in the mockup, with a full-size target. */
+.toggle {
+  min-block-size: 44px;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--primary);
+  font-size: 15px;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+
+.toggle:hover {
+  text-decoration-thickness: 2px;
+}
+
+.legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s4);
+  margin-block: var(--s2) var(--s3);
+  color: var(--ink-2);
+  font-size: 14px;
+}
+
+.key {
+  display: inline-block;
+  inline-size: 14px;
+  block-size: 12px;
+  margin-inline-end: 6px;
+  vertical-align: -1px;
+}
+
+/* Income is outlined and spending filled, so the two never rely on colour. */
+.income {
+  border: 2px solid var(--ink);
+  border-block-end: 0;
+}
+
+.spending {
+  background: var(--ink);
+}
+
+/*
+ * The y-axis labels sit in their own column at the start side, each centred on its grid
+ * line: the column is one label taller than the bars and starts half a label higher.
+ */
+.plot {
+  --plot-height: 180px;
+  --label-height: 20px;
+
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  column-gap: var(--s2);
+  font-variant-numeric: tabular-nums lining-nums;
+}
+
+.yAxis {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  block-size: calc(var(--plot-height) + var(--label-height));
+  margin-block-start: calc(var(--label-height) / -2);
+  color: var(--ink-2);
+  font-size: 14px;
+  line-height: var(--label-height);
+  text-align: end;
+  white-space: nowrap;
+}
+
+.bars {
+  position: relative;
+  display: grid;
+  grid-auto-columns: minmax(0, 1fr);
+  grid-auto-flow: column;
+  align-items: end;
+  column-gap: var(--s2);
+  block-size: var(--plot-height);
+  border-block-end: 1px solid var(--ink);
+}
+
+.gridLine {
+  position: absolute;
+  inset-inline: 0;
+  border-block-start: 1px solid var(--rule);
+}
+
+.month {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 3px;
+  block-size: 100%;
+}
+
+.bar {
+  display: block;
+  inline-size: 38%;
+  max-inline-size: 20px;
+}
+
+.none {
+  visibility: hidden;
+}
+
+.xAxis {
+  display: grid;
+  grid-auto-columns: minmax(0, 1fr);
+  grid-auto-flow: column;
+  grid-column: 2;
+  column-gap: var(--s2);
+  padding-block-start: 6px;
+  color: var(--ink-2);
+  font-size: 14px;
+  text-align: center;
+}
+
+/* Many months on a narrow screen: every other month is named, the rest are in the table. */
+@media (max-width: 640px) {
+  .dense .xAxis span:nth-child(even) {
+    visibility: hidden;
+  }
+}
+
+.table {
+  inline-size: 100%;
+  margin-block-start: var(--s3);
+  border-collapse: collapse;
+  font-size: 15px;
+}
+
+.table th,
+.table td {
+  padding: var(--s2);
+  border-block-end: 1px solid var(--rule);
+  text-align: start;
+  font-weight: 400;
+  white-space: nowrap;
+}
+
+.table thead th {
+  border-block-end-color: var(--ink);
+  font-family: var(--display);
+  font-style: var(--label-style);
+  color: var(--ink-2);
+}
+
+.table .end {
+  text-align: end;
+}
