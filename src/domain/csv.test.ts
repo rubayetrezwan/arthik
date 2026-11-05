@@ -2548,6 +2548,43 @@ describe('parseTransactionsCsv: whole-file problems', () => {
       expect(errors).toEqual<CsvError[]>([{ row: 1, code: 'direction_column', column: 'flag' }])
     })
 
+    describe('single letters (R54)', () => {
+      // C alone is as likely to mean "cleared" as "credit", so a lone letter needs company.
+      it.each([[['C', 'C']], [['c', 'C']], [['D', 'D']], [['d', 'd']]])(
+        'leaves alone a column of one letter only: %j',
+        (values) => {
+          const { transactions, errors } = parseTransactionsCsv(
+            file(
+              'date,description,amount,status',
+              `2026-10-01,Shwapno,-500,${values[0]}`,
+              `2026-10-02,Salary,55000,${values[1]}`,
+            ),
+            'BDT',
+          )
+          expect(errors).toEqual([])
+          expect(transactions.map((t) => t.amount)).toEqual([-500, 55000])
+        },
+      )
+
+      it.each([[['C', 'D']], [['C', 'DR']], [['d', 'Credit']], [['D', 'out']], [['C.', 'Dr.']]])(
+        'reports a column that holds a letter with another direction: %j',
+        (values) => {
+          const { transactions, errors } = parseTransactionsCsv(
+            file(
+              'date,description,amount,status',
+              `2026-10-01,Shwapno,500,${values[0]}`,
+              `2026-10-02,Salary,55000,${values[1]}`,
+            ),
+            'BDT',
+          )
+          expect(transactions).toEqual([])
+          expect(errors).toEqual<CsvError[]>([
+            { row: 1, code: 'direction_column', column: 'status' },
+          ])
+        },
+      )
+    })
+
     it('does not mind empty cells among the values', () => {
       const { errors } = parseTransactionsCsv(
         file(

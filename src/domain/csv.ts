@@ -146,19 +146,26 @@ const DIRECTION_COLUMNS: ReadonlySet<string> = new Set([
 // `amount` column, leaves the sign as open as a header in `DIRECTION_COLUMNS` does, whatever the
 // column is called (R52). Compared trimmed, in lower case and without one full stop at the end,
 // as statements print Dr. and Cr.
-const DIRECTION_VALUES: ReadonlySet<string> = new Set([
-  'dr',
-  'cr',
-  'debit',
-  'credit',
-  'd',
-  'c',
-  'in',
-  'out',
-])
+const DIRECTION_WORDS: ReadonlySet<string> = new Set(['dr', 'cr', 'debit', 'credit', 'in', 'out'])
+// A single letter says less: a column of C alone is as likely a "cleared" status (R54).
+const DIRECTION_LETTERS: ReadonlySet<string> = new Set(['d', 'c'])
 
-function isDirectionValue(text: string): boolean {
-  return DIRECTION_VALUES.has(text.trim().toLowerCase().replace(/\.$/, ''))
+function directionKeyOf(text: string): string {
+  return text.trim().toLowerCase().replace(/\.$/, '')
+}
+
+/**
+ * Whether a column's non-empty values say which way the money went: every one is a direction
+ * word or letter, and either a word is among them (one word alone is enough: a wallet's payments
+ * are all DR) or both letters are, D and C (R54).
+ */
+function isDirectionColumn(values: readonly string[]): boolean {
+  const keys = new Set(values.map(directionKeyOf))
+  if (keys.size === 0) return false
+  if (![...keys].every((key) => DIRECTION_WORDS.has(key) || DIRECTION_LETTERS.has(key))) {
+    return false
+  }
+  return [...keys].some((key) => DIRECTION_WORDS.has(key)) || keys.size > 1
 }
 
 /**
@@ -465,7 +472,7 @@ function hasTrailingCells(
 
 /**
  * The columns beside a signed amount whose every value says which way the money went (DR, CR,
- * Debit, In and so on: `DIRECTION_VALUES`), each as a `direction_column` error on the header's
+ * Debit, In and so on: `isDirectionColumn`), each as a `direction_column` error on the header's
  * row, named as the header writes it, or not named when the header leaves it blank.
  *
  * The columns the reader uses are never taken for one, so a description that reads "Credit"
@@ -495,7 +502,7 @@ function directionValueColumns(
     const values = aligned
       .map(({ cells }) => (cells[index] ?? '').trim())
       .filter((text) => text !== '')
-    if (values.length === 0 || !values.every(isDirectionValue)) continue
+    if (!isDirectionColumn(values)) continue
     const name = (header[index] ?? '').trim()
     errors.push(
       name === ''
