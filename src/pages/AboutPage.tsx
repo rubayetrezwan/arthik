@@ -81,10 +81,13 @@ export function AboutPage() {
         </p>
         <ul className={styles.list}>
           <li>
-            <FormattedMessage
-              id="about.ai.score"
-              values={{ link: (chunks) => <Link to="/how-it-works">{chunks}</Link> }}
-            />
+            {/* A paragraph, so the link reads as part of the sentence it sits in. */}
+            <p>
+              <FormattedMessage
+                id="about.ai.score"
+                values={{ link: (chunks) => <Link to="/how-it-works">{chunks}</Link> }}
+              />
+            </p>
           </li>
           <li>
             <FormattedMessage id="about.ai.summaries" />

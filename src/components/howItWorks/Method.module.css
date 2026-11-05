@@ -63,6 +63,37 @@
   margin-block-start: var(--s3);
 }
 
+/*
+ * A worked table, with its lead-in and its conclusion on the facing side. On narrow
+ * screens they read in order: lead-in, table, conclusion.
+ */
+.worked {
+  display: grid;
+  grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+  grid-template-rows: auto 1fr;
+  grid-template-areas:
+    "table before"
+    "table after";
+  align-items: start;
+  gap: var(--s3) var(--s7);
+  margin-block-start: var(--s3);
+}
+
+.worked > table {
+  grid-area: table;
+  margin-block-start: 0;
+}
+
+.before {
+  grid-area: before;
+}
+
+/* Level with the foot of the table, where the total it speaks of is. */
+.after {
+  grid-area: after;
+  align-self: end;
+}
+
 .question {
   color: var(--ink-2);
 }
@@ -264,6 +295,15 @@
 
   .pair .table {
     margin-block-start: var(--s2);
+  }
+
+  .worked {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: none;
+    grid-template-areas:
+      "before"
+      "table"
+      "after";
   }
 }
 

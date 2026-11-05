@@ -149,68 +149,60 @@ export function PointsSection() {
 
       <SubSection titleId="howItWorks.example.title">
         {(headingId) => (
-          <>
-            <p className={styles.intro}>
+          <div className={styles.worked}>
+            <p className={styles.before}>
               <FormattedMessage id="howItWorks.example.intro" />
             </p>
-            <div className={styles.pair}>
-              <ExampleTable headingId={headingId} />
-              <p className={styles.prose}>
-                <FormattedMessage
-                  id="howItWorks.example.result"
-                  values={{
-                    total: formatPoints(totalHundredths, locale),
-                    score: formatNumber(score, locale),
-                    band: <FormattedMessage id={`band.${band}`} />,
-                  }}
-                />
-              </p>
-            </div>
-          </>
+            <ExampleTable headingId={headingId} />
+            <p className={styles.after}>
+              <FormattedMessage
+                id="howItWorks.example.result"
+                values={{
+                  total: formatPoints(totalHundredths, locale),
+                  score: formatNumber(score, locale),
+                  band: <FormattedMessage id={`band.${band}`} />,
+                }}
+              />
+            </p>
+          </div>
         )}
       </SubSection>
 
       <SubSection titleId="howItWorks.reweight.title">
         {(headingId) => (
-          <>
-            <p className={styles.intro}>
+          <div className={styles.worked}>
+            <p className={styles.before}>
               <FormattedMessage id="howItWorks.reweight.text" />
             </p>
-            <div className={styles.pair}>
-              <ReweightTable headingId={headingId} />
-              <p className={`${styles.prose} ${styles.note}`}>
-                <FormattedMessage id="howItWorks.reweight.points" />
-              </p>
-            </div>
-          </>
+            <ReweightTable headingId={headingId} />
+            <p className={`${styles.after} ${styles.note}`}>
+              <FormattedMessage id="howItWorks.reweight.points" />
+            </p>
+          </div>
         )}
       </SubSection>
 
       <SubSection titleId="howItWorks.noScore.title">
-        {() => (
-          <>
-            <p className={styles.intro}>
-              <FormattedMessage id="howItWorks.noScore.intro" />
-            </p>
-            <ul className={styles.list}>
-              <li>
-                <FormattedMessage id="howItWorks.noScore.noMonth" />
-              </li>
-              <li>
-                <FormattedMessage id="howItWorks.noScore.noIncome" />
-              </li>
-              <li>
-                <FormattedMessage
-                  id="howItWorks.noScore.tooFew"
-                  values={{
-                    min: formatNumber(MIN_SCORED_MEASURES, locale),
-                    total: formatNumber(MEASURE_IDS.length, locale),
-                  }}
-                />
-              </li>
-            </ul>
-          </>
-        )}
+        <p className={styles.intro}>
+          <FormattedMessage id="howItWorks.noScore.intro" />
+        </p>
+        <ul className={styles.list}>
+          <li>
+            <FormattedMessage id="howItWorks.noScore.noMonth" />
+          </li>
+          <li>
+            <FormattedMessage id="howItWorks.noScore.noIncome" />
+          </li>
+          <li>
+            <FormattedMessage
+              id="howItWorks.noScore.tooFew"
+              values={{
+                min: formatNumber(MIN_SCORED_MEASURES, locale),
+                total: formatNumber(MEASURE_IDS.length, locale),
+              }}
+            />
+          </li>
+        </ul>
       </SubSection>
     </MethodSection>
   )
