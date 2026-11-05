@@ -1,6 +1,6 @@
 import { useId } from 'react'
 import { FormattedMessage } from 'react-intl'
-import { ANCHORS, interpolate } from '../../domain/anchors'
+import { ANCHORS, CAN_BE_NEGATIVE, interpolate, LOWEST_SCORE } from '../../domain/anchors'
 import { MIN_MONTHS_FOR_CV } from '../../domain/measures'
 import { HIGHEST_SCORE, MEASURE_IDS, WEIGHTS, type MeasureId } from '../../domain/score'
 import { formatNumber, formatPercent, formatWeight } from '../../i18n/format'
@@ -8,11 +8,6 @@ import { useLocale } from '../../i18n/I18nProvider'
 import type { LocaleCode } from '../../i18n/locales'
 import styles from './Method.module.css'
 import { MethodSection } from './MethodSection'
-
-const LOWEST_SCORE = 0
-
-/** Only a savings rate can go below zero; every other measure starts at nothing. */
-const CAN_BE_NEGATIVE: ReadonlySet<MeasureId> = new Set<MeasureId>(['savingsRate'])
 
 /** A measure's own number: months of essentials for emergency savings, else a percentage. */
 function anchorValue(id: MeasureId, x: number, locale: LocaleCode): string {

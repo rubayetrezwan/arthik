@@ -3,12 +3,11 @@ import { FormattedMessage, useIntl } from 'react-intl'
 import { Link } from 'react-router'
 import { PageHead } from '../components/PageHead'
 import { PERSON_IDS } from '../data/samples'
+import { LOWEST_SCORE } from '../domain/anchors'
 import { HIGHEST_SCORE, MEASURE_IDS, WEIGHTS } from '../domain/score'
 import { formatNumber, formatWeight } from '../i18n/format'
 import { useLocale } from '../i18n/I18nProvider'
 import styles from './HomePage.module.css'
-
-const LOWEST_SCORE = 0
 
 /** The opening page: what Arthik is, the five sample people, and the visitor's own file. */
 export function HomePage() {

@@ -41,6 +41,12 @@ export const ANCHORS: Record<MeasureId, readonly Anchor[]> = {
   ],
 }
 
+/** The lowest sub-score (and total score); the highest is HIGHEST_SCORE in score.ts. */
+export const LOWEST_SCORE = 0
+
+/** Only a savings rate can go below zero; every other measure starts at nothing. */
+export const CAN_BE_NEGATIVE: ReadonlySet<MeasureId> = new Set<MeasureId>(['savingsRate'])
+
 /** Float error below this is noise, not a difference in score. */
 const SNAP = 1e9
 

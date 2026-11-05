@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { ANCHORS, interpolate, type Anchor } from './anchors'
+import { ANCHORS, CAN_BE_NEGATIVE, interpolate, LOWEST_SCORE, type Anchor } from './anchors'
 import { MEASURE_IDS } from './score'
 
 describe('interpolate', () => {
@@ -73,5 +73,19 @@ describe('ANCHORS', () => {
   it('scores spending stability: 0.10 and under is 100, 0.25 is 60, 0.50 and up is 0', () => {
     expect(interpolate(0.1, ANCHORS.stability)).toBe(100)
     expect(interpolate(0.375, ANCHORS.stability)).toBe(30)
+  })
+})
+
+describe('LOWEST_SCORE and CAN_BE_NEGATIVE', () => {
+  it('LOWEST_SCORE is the lowest score any anchor gives', () => {
+    const lowest = Math.min(...MEASURE_IDS.flatMap((id) => ANCHORS[id].map(([, score]) => score)))
+    expect(LOWEST_SCORE).toBe(lowest)
+    expect(LOWEST_SCORE).toBe(0)
+  })
+
+  it('CAN_BE_NEGATIVE is exactly the measures whose first anchor is below zero', () => {
+    const negative = MEASURE_IDS.filter((id) => (ANCHORS[id][0]?.[0] ?? 0) < 0)
+    expect([...CAN_BE_NEGATIVE].sort()).toEqual([...negative].sort())
+    expect([...CAN_BE_NEGATIVE]).toEqual(['savingsRate'])
   })
 })
