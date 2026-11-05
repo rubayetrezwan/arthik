@@ -1,0 +1,340 @@
+/*
+ * "How the score works": ruled sections, as on a ledger page, with small ruled tables.
+ * Only the score and the ledger are boxed sheets (spec 9a), so nothing here is boxed.
+ */
+.section {
+  margin-block-start: var(--s6);
+  padding-block-start: var(--s5);
+  border-block-start: 1px solid var(--rule);
+}
+
+.heading {
+  font-size: 24px;
+}
+
+/* Running text keeps a readable line length at every width. */
+.prose {
+  max-width: 64ch;
+}
+
+.prose > * + *,
+.prose + .prose {
+  margin-block-start: var(--s3);
+}
+
+.intro {
+  max-width: 64ch;
+  margin-block-start: var(--s2);
+}
+
+.note {
+  color: var(--ink-2);
+  font-size: 15px;
+}
+
+/* A subsection inside a section, such as one measure or one rule. */
+.sub {
+  margin-block-start: var(--s6);
+}
+
+.subHeading {
+  display: flex;
+  align-items: baseline;
+  gap: var(--s3);
+  font-size: 20px;
+}
+
+/* The measures are numbered in red, like the entries in a ledger. */
+.numeral {
+  min-inline-size: 24px;
+  font-family: var(--display);
+  font-size: 26px;
+  line-height: 1;
+  color: var(--red);
+  font-variant-numeric: lining-nums;
+}
+
+/* Text on the reading side, its table on the facing side. */
+.pair {
+  display: grid;
+  grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+  align-items: start;
+  gap: var(--s4) var(--s7);
+  margin-block-start: var(--s3);
+}
+
+/*
+ * A worked table, with its lead-in and its conclusion on the facing side. On narrow
+ * screens they read in order: lead-in, table, conclusion.
+ */
+.worked {
+  display: grid;
+  grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+  grid-template-rows: auto 1fr;
+  grid-template-areas:
+    "table before"
+    "table after";
+  align-items: start;
+  gap: var(--s3) var(--s7);
+  margin-block-start: var(--s3);
+}
+
+.worked > table {
+  grid-area: table;
+  margin-block-start: 0;
+}
+
+.before {
+  grid-area: before;
+}
+
+/* Level with the foot of the table, where the total it speaks of is. */
+.after {
+  grid-area: after;
+  align-self: end;
+}
+
+.question {
+  color: var(--ink-2);
+}
+
+.label {
+  display: block;
+  font-family: var(--display);
+  font-size: 15px;
+  font-style: var(--label-style);
+  color: var(--ink-2);
+}
+
+.formula {
+  font-family: var(--display);
+  font-size: 19px;
+  line-height: var(--line-heading);
+}
+
+/* Tables: an ink rule under the headings, hairlines between rows, figures in the display face. */
+.table {
+  inline-size: 100%;
+  margin-block-start: var(--s4);
+  border-collapse: collapse;
+}
+
+.pair .table {
+  margin-block-start: 0;
+}
+
+.table th,
+.table td {
+  padding: var(--s2) var(--s2);
+  text-align: start;
+  font-weight: 400;
+  vertical-align: baseline;
+}
+
+.table thead th {
+  border-block-end: 1px solid var(--ink);
+  font-family: var(--display);
+  font-size: 15px;
+  font-style: var(--label-style);
+  color: var(--ink-2);
+}
+
+.table tbody th,
+.table tbody td {
+  padding-block: var(--s3);
+  border-block-end: 1px solid var(--rule);
+}
+
+.table .end {
+  text-align: end;
+}
+
+.table thead .end {
+  white-space: nowrap;
+}
+
+.figure {
+  font-family: var(--display);
+  font-size: 19px;
+  white-space: nowrap;
+}
+
+.name {
+  display: block;
+  font-weight: 600;
+}
+
+.detail {
+  display: block;
+  color: var(--ink-2);
+  font-size: 15px;
+}
+
+/* Totals: a single rule over the sum, and the accounting double underline under the score. */
+.table tfoot th,
+.table tfoot td {
+  padding-block: var(--s3) 0;
+}
+
+.table tfoot th {
+  font-family: var(--display);
+  font-style: var(--label-style);
+  color: var(--ink-2);
+}
+
+.sum {
+  border-block-start: 1px solid var(--ink);
+}
+
+.table tfoot .final th,
+.table tfoot .final td {
+  padding-block-start: var(--s1);
+}
+
+.table tfoot .final th {
+  font-family: var(--body);
+  font-style: normal;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.grand {
+  display: inline-block;
+  padding-block-end: 2px;
+  border-block-end: 4px double var(--ink);
+  font-family: var(--display);
+  font-size: 24px;
+  font-weight: var(--display-bold);
+  line-height: 1.2;
+  white-space: nowrap;
+}
+
+/* Ruled lists: limitations, privacy and the cases with no score. */
+.list {
+  max-width: 64ch;
+  margin: var(--s3) 0 0;
+  padding: 0;
+  list-style: none;
+  border-block-start: 1px solid var(--ink);
+}
+
+.list li {
+  padding-block: var(--s3);
+  border-block-end: 1px solid var(--rule);
+}
+
+.steps {
+  max-width: 64ch;
+  margin: var(--s3) 0 0;
+  padding-inline-start: var(--s5);
+}
+
+.steps li + li {
+  margin-block-start: var(--s2);
+}
+
+.steps li::marker {
+  font-family: var(--display);
+  color: var(--red);
+}
+
+/* The rules for particular payments, two to a row where there is room. */
+.rules {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0 var(--s7);
+}
+
+.rule {
+  margin-block-start: var(--s5);
+  padding-block-start: var(--s4);
+  border-block-start: 1px solid var(--rule);
+}
+
+.rule h3 {
+  font-size: 19px;
+}
+
+.rule p {
+  margin-block-start: var(--s2);
+}
+
+.band {
+  display: block;
+  font-family: var(--display);
+  font-size: 19px;
+  font-weight: var(--display-medium);
+}
+
+.vulnerable {
+  color: var(--vulnerable);
+}
+
+.coping {
+  color: var(--coping);
+}
+
+.healthy {
+  color: var(--healthy);
+}
+
+.citation {
+  max-width: 64ch;
+  margin-block-start: var(--s4);
+  padding-inline-start: var(--s3);
+  border-inline-start: 2px solid var(--rule);
+  color: var(--ink-2);
+  font-size: 15px;
+}
+
+@media (max-width: 900px) {
+  .pair,
+  .rules {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .pair .table {
+    margin-block-start: var(--s2);
+  }
+
+  .worked {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: none;
+    grid-template-areas:
+      "before"
+      "table"
+      "after";
+  }
+}
+
+/*
+ * Phones: a table whose cells are both text stacks into rows, the second cell under the
+ * first. The column headings stay for screen readers.
+ */
+@media (max-width: 640px) {
+  .stack thead {
+    position: absolute;
+    inline-size: 1px;
+    block-size: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
+  .stack tbody tr {
+    display: block;
+    padding-block: var(--s3);
+    border-block-end: 1px solid var(--rule);
+  }
+
+  .stack tbody th,
+  .stack tbody td {
+    display: block;
+    padding: 0;
+    border: 0;
+  }
+
+  .stack tbody td {
+    margin-block-start: var(--s1);
+  }
+}

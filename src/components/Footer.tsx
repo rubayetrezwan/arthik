@@ -5,7 +5,7 @@ import { useLocale } from '../i18n/I18nProvider'
 import { Disclaimer } from './Disclaimer'
 import styles from './Footer.module.css'
 
-const SOURCE_CODE_URL = 'https://github.com/rubayetrezwan/arthik'
+export const SOURCE_CODE_URL = 'https://github.com/rubayetrezwan/arthik'
 
 export function Footer() {
   const locale = useLocale()

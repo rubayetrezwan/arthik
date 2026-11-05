@@ -1,6 +1,9 @@
 /** The first and last months are only partly covered. This many days at the edge decide if they count. */
 export const EDGE_DAYS = 7
 
+/** The score never looks back further than this many complete months. */
+export const MAX_MONTHS = 12
+
 const DATE_PATTERN = /^(\d{4})-(\d{2})-(\d{2})$/
 
 interface DateParts {
@@ -55,7 +58,7 @@ export function monthOf(date: string): string {
  *
  * Dates must be valid `YYYY-MM-DD` strings, in any order.
  */
-export function completeMonths(dates: readonly string[], maxMonths = 12): string[] {
+export function completeMonths(dates: readonly string[], maxMonths = MAX_MONTHS): string[] {
   const [firstDate] = dates
   if (firstDate === undefined) return []
 

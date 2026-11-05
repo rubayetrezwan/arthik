@@ -1,0 +1,42 @@
+/* Ruled sections of plain text, as in "How the score works". */
+.section {
+  margin-block-start: var(--s6);
+  padding-block-start: var(--s5);
+  border-block-start: 1px solid var(--rule);
+}
+
+.heading {
+  font-size: 24px;
+}
+
+.prose {
+  max-width: 64ch;
+  margin-block-start: var(--s2);
+}
+
+.prose > * + * {
+  margin-block-start: var(--s3);
+}
+
+.list {
+  max-width: 64ch;
+  margin: var(--s4) 0 0;
+  padding: 0;
+  list-style: none;
+  border-block-start: 1px solid var(--ink);
+}
+
+.list li {
+  padding-block: var(--s3);
+  border-block-end: 1px solid var(--rule);
+}
+
+/* The source link stands on its own line, so it gets a full-size target. */
+.source {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  margin-block-start: var(--s2);
+  font-weight: 500;
+  overflow-wrap: anywhere;
+}

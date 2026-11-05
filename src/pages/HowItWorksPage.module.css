@@ -1,0 +1,4 @@
+/* The method is read top to bottom; the last section keeps clear of the footer. */
+.page {
+  padding-block-end: var(--s5);
+}
