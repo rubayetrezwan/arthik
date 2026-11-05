@@ -41,6 +41,8 @@ export function UploadPage() {
   const fileInput = useRef<HTMLInputElement>(null)
   const savingsInput = useRef<HTMLInputElement>(null)
   const summary = useRef<HTMLElement>(null)
+  // The file chosen now, for a read that finishes after the visitor has chosen another.
+  const chosenFile = useRef<File | null>(null)
 
   // The list of problems takes the focus each time a file shows some.
   useEffect(() => {
@@ -52,6 +54,7 @@ export function UploadPage() {
     setChecked(null)
     setFileProblem(problem)
     setFile(problem ? null : chosen)
+    chosenFile.current = problem ? null : chosen
   }
 
   /** The savings as typed, or null after pointing the visitor at them when they cannot be read. */
@@ -96,19 +99,24 @@ export function UploadPage() {
       text = await file.text()
     } catch {
       setReading(false)
+      if (chosenFile.current !== file) return
       setFile(null)
+      chosenFile.current = null
       setFileProblem({ kind: 'unreadable', name: file.name })
       fileInput.current?.focus()
       return
     }
-    const result = parseTransactionsCsv(text, currency)
     setReading(false)
+    // Another file was chosen while this one was read: what this one holds no longer counts.
+    if (chosenFile.current !== file) return
+    const result = parseTransactionsCsv(text, currency)
 
     if (result.errors.length > 0) {
       setChecked({ text, currency, result })
     } else if (result.transactions.length === 0) {
       // Every row was skipped for moving no money.
       setFile(null)
+      chosenFile.current = null
       setFileProblem({ kind: 'all_zero', name: file.name })
       fileInput.current?.focus()
     } else {

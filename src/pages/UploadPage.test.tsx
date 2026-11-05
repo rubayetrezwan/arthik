@@ -377,6 +377,32 @@ describe('UploadPage: the file itself', () => {
     expect(fileInput()).toHaveAccessibleDescription(expect.stringContaining('Choose a CSV file first.'))
   })
 
+  it('drops what it read from a file once another one has been chosen', async () => {
+    const { router, user } = renderUpload()
+
+    const first = csv('', 'first.csv')
+    let finishReading: (text: string) => void = () => undefined
+    vi.spyOn(first, 'text').mockReturnValue(
+      new Promise<string>((resolve) => {
+        finishReading = resolve
+      }),
+    )
+    await choose(user, first)
+    await submit(user)
+    await choose(user, csv(template, 'second.csv'))
+    await act(async () => finishReading(lines('date,description,amount', 'someday,x,-5')))
+
+    expect(parseTransactionsCsv).not.toHaveBeenCalled()
+    expect(main().queryByRole('alert', { name: /^Arthik couldn’t read/ })).not.toBeInTheDocument()
+    expect(byText('Chosen: second.csv')).toBeInTheDocument()
+    expect(router.state.location.pathname).toBe('/upload')
+    expect(session().upload).toBeNull()
+
+    await submit(user)
+    await waitFor(() => expect(router.state.location.pathname).toBe('/score/mine'))
+    expect(session().upload?.transactions).toHaveLength(TEMPLATE_ROWS)
+  })
+
   it('says so when the file cannot be opened', async () => {
     const { user } = renderUpload()
 
