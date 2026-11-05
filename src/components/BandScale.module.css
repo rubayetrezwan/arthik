@@ -39,7 +39,8 @@
   display: flex;
   flex-wrap: wrap;
   row-gap: var(--s1);
-  margin: var(--s2) 0 0;
+  margin-block: var(--s2) 0;
+  margin-inline: 0;
   padding: 0;
   list-style: none;
   font-size: 14px;

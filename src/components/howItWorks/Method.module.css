@@ -212,7 +212,8 @@
 /* Ruled lists: limitations, privacy and the cases with no score. */
 .list {
   max-width: 64ch;
-  margin: var(--s3) 0 0;
+  margin-block: var(--s3) 0;
+  margin-inline: 0;
   padding: 0;
   list-style: none;
   border-block-start: 1px solid var(--ink);
@@ -225,7 +226,8 @@
 
 .steps {
   max-width: 64ch;
-  margin: var(--s3) 0 0;
+  margin-block: var(--s3) 0;
+  margin-inline: 0;
   padding-inline-start: var(--s5);
 }
 

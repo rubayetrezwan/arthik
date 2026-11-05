@@ -25,7 +25,8 @@
 .columns {
   display: grid;
   grid-template-columns: max-content minmax(0, 1fr);
-  margin: var(--s2) 0 0;
+  margin-block: var(--s2) 0;
+  margin-inline: 0;
   border-block-start: 1px solid var(--ink);
 }
 

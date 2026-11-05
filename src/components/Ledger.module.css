@@ -103,7 +103,8 @@
 /* The footing: points totalled under a single rule, then the score, double-ruled. */
 .table tfoot th,
 .table tfoot td {
-  padding: var(--s3) var(--s2) 0;
+  padding-block: var(--s3) 0;
+  padding-inline: var(--s2);
 }
 
 .total th {

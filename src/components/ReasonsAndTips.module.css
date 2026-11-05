@@ -13,7 +13,8 @@
  * reason, then what would help, set off by a rule on its start side.
  */
 .reasons {
-  margin: var(--s4) 0 0;
+  margin-block: var(--s4) 0;
+  margin-inline: 0;
   padding: 0;
   list-style: none;
   counter-reset: reason;
@@ -82,7 +83,8 @@
 }
 
 .more ul {
-  margin: var(--s1) 0 0;
+  margin-block: var(--s1) 0;
+  margin-inline: 0;
   padding: 0;
   padding-inline-start: var(--s4);
   border-inline-start: 2px solid var(--rule);

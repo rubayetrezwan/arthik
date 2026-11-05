@@ -29,7 +29,8 @@
 
 /* The sample people, entered as numbered lines. */
 .people {
-  margin: var(--s4) 0 0;
+  margin-block: var(--s4) 0;
+  margin-inline: 0;
   padding: 0;
   list-style: none;
   border-block-start: 1px solid var(--ink);
