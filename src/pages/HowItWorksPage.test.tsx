@@ -288,10 +288,10 @@ describe('HowItWorksPage', () => {
     const rows = bodyRows(main().getByRole('table', { name: 'How your transactions are sorted' }))
     expect(rows).toHaveLength(groups.length)
     groups.forEach((group, index) => {
-      expect(rows[index]?.[0]).toContain(messages[`howItWorks.group.${group}`])
+      expect(rows[index]?.[0]).toContain(messages[`group.${group}`])
       expect(rows[index]?.[1]).toBe(messages[`howItWorks.group.${group}.treatment`])
       for (const category of CATEGORIES.filter((c) => c.group === group)) {
-        expect(rows[index]?.[0], category.id).toContain(messages[`howItWorks.category.${category.id}`])
+        expect(rows[index]?.[0], category.id).toContain(messages[`category.${category.id}`])
       }
     })
   })

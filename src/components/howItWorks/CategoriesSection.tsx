@@ -7,14 +7,14 @@ import { useLocale } from '../../i18n/I18nProvider'
 import styles from './Method.module.css'
 import { MethodSection, SubSection } from './MethodSection'
 
-// Category and group names are read through these two functions only, so they can move to
-// the shared category messages in one place.
+// Category and group names are the shared ones (category.*, group.*), also used by the tables
+// and the category select; they are read through these two functions only.
 function categoryName(intl: IntlShape, id: CategoryId): string {
-  return intl.formatMessage({ id: `howItWorks.category.${id}` })
+  return intl.formatMessage({ id: `category.${id}` })
 }
 
 function groupName(intl: IntlShape, group: Group): string {
-  return intl.formatMessage({ id: `howItWorks.group.${group}` })
+  return intl.formatMessage({ id: `group.${group}` })
 }
 
 /** The groups in the order CATEGORIES first lists them, each with its categories. */
