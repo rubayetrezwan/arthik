@@ -100,7 +100,7 @@ For the architecture, the decisions behind it and common questions, see [docs/ho
 
 ## Built with Claude Code
 
-I built Arthik with Claude Code. The five sample people's written summaries and all the translations beyond English were also written with Claude's help. I review the Bengali myself. Hindi, Arabic, Chinese, Spanish and French were checked by a second AI pass, not yet by native speakers, so corrections are welcome. The score itself is plain, tested arithmetic.
+I built Arthik with Claude Code. The five sample people's written summaries and all the translations beyond English were also written with Claude's help. I reviewed the Bengali myself. Hindi, Arabic, Chinese, Spanish and French were checked by a second AI pass, not yet by native speakers, so corrections are welcome. The score itself is plain, tested arithmetic.
 
 ## Limitations and ideas
 
