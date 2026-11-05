@@ -88,3 +88,25 @@ test('nothing the visitor brings is kept in a cache', async ({ page }) => {
   expect(cached.filter((url) => /mine\.csv|secret/i.test(url))).toEqual([])
   expect(cached.every((url) => new URL(url).origin === new URL(page.url()).origin)).toBe(true)
 })
+
+test('a script font not in the app shell is kept for offline use after first use', async ({
+  page,
+}) => {
+  await page.goto('./')
+  await page.waitForFunction(() => navigator.serviceWorker.controller !== null)
+
+  // Arabic fonts are not precached: the worker must store them the first time they load.
+  await page.locator('select:has(option[value="ar"])').selectOption('ar')
+  await expect(page.locator('html')).toHaveAttribute('dir', 'rtl')
+  await page.evaluate(() => document.fonts.ready.then(() => undefined))
+
+  await expect
+    .poll(async () =>
+      page.evaluate(async () => {
+        const cache = await caches.open('arthik-fonts')
+        const keys = await cache.keys()
+        return keys.filter((request) => /arabic/i.test(request.url)).length
+      }),
+    )
+    .toBeGreaterThan(0)
+})

@@ -74,8 +74,10 @@ export default defineConfig({
         // the browser and never requested, so nothing they make passes through the cache.
         runtimeCaching: [
           {
+            // Written out here, not as IS_FONT: Workbox copies this function into sw.js on its
+            // own, so a constant from this file would not exist there.
             urlPattern: ({ sameOrigin, url }) =>
-              sameOrigin && IS_FONT.test(url.pathname),
+              sameOrigin && /\/(font-[^/]*\.css|[^/]*\.woff2)$/.test(url.pathname),
             handler: 'CacheFirst',
             options: {
               cacheName: 'arthik-fonts',
