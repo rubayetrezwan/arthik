@@ -27,12 +27,12 @@ interface Message {
   values?: Record<string, ReactNode>
 }
 
-/** A column name as the file has to write it: never translated. */
+/** A column name or an example as the file has to write it: never translated. */
 const column = (name: string) => <code>{name}</code>
 /** Something the file wrote, kept apart from the sentence around it in right-to-left text. */
 const quoted = (text: string) => <bdi>{text}</bdi>
 
-const DATE_FORMS = { iso: CSV_EXAMPLES.isoDate, dayFirst: CSV_EXAMPLES.dayFirstDate }
+const DATE_FORMS = { iso: column(CSV_EXAMPLES.isoDate), dayFirst: column(CSV_EXAMPLES.dayFirstDate) }
 const MONEY_COLUMNS = {
   amount: column('amount'),
   debit: column('debit'),
@@ -49,7 +49,7 @@ const MESSAGES: Record<CsvErrorCode, (error: CsvError, locale: LocaleCode) => Me
   }),
   month_first_dates: () => ({
     id: 'upload.error.month_first_dates',
-    values: { monthFirst: CSV_EXAMPLES.monthFirstDate, ...DATE_FORMS },
+    values: { monthFirst: column(CSV_EXAMPLES.monthFirstDate), ...DATE_FORMS },
   }),
   missing_column: ({ column: name = '' }) =>
     name === 'amount'
@@ -86,7 +86,7 @@ const MESSAGES: Record<CsvErrorCode, (error: CsvError, locale: LocaleCode) => Me
       : name === 'amount'
         ? {
             id: 'upload.error.bad_amount',
-            values: { value: quoted(value), example: CSV_EXAMPLES.moneyOut },
+            values: { value: quoted(value), example: column(CSV_EXAMPLES.moneyOut) },
           }
         : {
             id: 'upload.error.bad_amount.pair',

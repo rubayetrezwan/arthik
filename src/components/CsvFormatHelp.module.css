@@ -46,6 +46,7 @@
 
 .help code {
   font-family: ui-monospace, "Cascadia Mono", Consolas, monospace;
+  white-space: nowrap;
   font-size: 15px;
 }
 
