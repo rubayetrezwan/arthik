@@ -15,7 +15,10 @@ export default defineConfig({
     trace: 'on-first-retry',
   },
   webServer: {
-    command: 'npm run build && npm run preview -- --port 4173 --strictPort',
+    // CI has already built dist in an earlier step, so it only serves it.
+    command: process.env.CI
+      ? 'npm run preview -- --port 4173 --strictPort'
+      : 'npm run build && npm run preview -- --port 4173 --strictPort',
     url: 'http://localhost:4173/arthik/',
     reuseExistingServer: !process.env.CI,
     timeout: 120_000,

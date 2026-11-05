@@ -8,7 +8,7 @@ Source: https://github.com/rubayetrezwan/arthik
 
 Arthik reads a list of bank or mobile-wallet transactions and gives a Financial Health Score from 0 to 100. Then it tells you why you got that score and what would raise it. The number comes from documented formulas, never from an AI model, and everything runs in your browser. Your file is not uploaded and nothing is saved.
 
-I'm Rubayet Rezwan. I built this while working toward an MSc in Financial Technology. I wanted a score where every point traces back to a person's own numbers. Arthik is Bengali for "financial". BDT is the default currency, Bengali is a full language, and the sample data uses local patterns: bKash cash-out fees, DESCO bills, Deposit Pension Scheme (DPS) savings.
+I'm Rubayet Rezwan. I built this while applying for an MSc in Financial Technology. I wanted a score where every point traces back to a person's own numbers. Arthik is Bengali for "financial". BDT is the default currency, Bengali is a full language, and the sample data uses local patterns: bKash cash-out fees, DESCO bills, Deposit Pension Scheme (DPS) savings.
 
 Arthik is an educational tool. It is not financial advice and not a credit score.
 
@@ -68,7 +68,7 @@ React 19, TypeScript and Vite. react-intl for translations, react-router, PapaPa
 
 ## Run it
 
-You need Node.js 22 or newer.
+You need Node.js 24 or newer.
 
 ```bash
 npm ci                 # install
@@ -96,11 +96,11 @@ docs/          how-it-works guide, design document, screenshots
 METHODOLOGY.md the full scoring method
 ```
 
-For the architecture, the decisions behind it and likely interview questions, see [docs/how-it-works.md](docs/how-it-works.md).
+For the architecture, the decisions behind it and common questions, see [docs/how-it-works.md](docs/how-it-works.md).
 
 ## Built with Claude Code
 
-I built Arthik with Claude Code. The five sample people's written summaries and all the translations beyond English were also written with Claude's help. I review the Bengali before the site goes public. The score itself is plain, tested arithmetic.
+I built Arthik with Claude Code. The five sample people's written summaries and all the translations beyond English were also written with Claude's help. I review the Bengali myself. Hindi, Arabic, Chinese, Spanish and French were checked by a second AI pass, not yet by native speakers, so corrections are welcome. The score itself is plain, tested arithmetic.
 
 ## Limitations and ideas
 

@@ -1,6 +1,6 @@
-# How Arthik works: a guide for talking about it
+# How Arthik works: design notes and FAQ
 
-This is for me to prepare from. It explains the architecture in plain words, the decisions I made and why, and the questions I expect. For the exact scoring rules, see [METHODOLOGY.md](../METHODOLOGY.md).
+It explains the architecture in plain words, the decisions I made and why, and answers to common questions. For the exact scoring rules, see [METHODOLOGY.md](../METHODOLOGY.md).
 
 ## The one-minute version
 
@@ -48,7 +48,7 @@ Nothing stored, no server. The strongest privacy promise is that the data never 
 
 Anchors are judgement. I picked them from familiar rules of thumb and I list them all. They are not fitted to data, and I don't claim they are.
 
-## Twelve questions I expect
+## Common questions
 
 **1. What does the score actually measure?**
 Five habits you can see in transactions: how much of your income you keep, how many months of essentials your savings cover, how much of your income goes to debt, how much of your spending is wants, and how steady your spending is month to month. It is not a credit score.
