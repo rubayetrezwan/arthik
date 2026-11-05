@@ -1,0 +1,128 @@
+.title {
+  font-size: 22px;
+}
+
+.note {
+  margin-block-start: var(--s1);
+  color: var(--ink-2);
+  font-size: 15px;
+}
+
+/* The sliders, with the result beside them; stacked below 980px. */
+.layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 240px;
+  align-items: center;
+  gap: var(--s5);
+  margin-block-start: var(--s4);
+}
+
+.slider + .slider {
+  margin-block-start: var(--s4);
+}
+
+.head {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 0 var(--s3);
+  font-weight: 500;
+}
+
+.value {
+  font-weight: 600;
+  font-variant-numeric: tabular-nums lining-nums;
+}
+
+/* The whole 44px-tall track takes a tap or a drag, not just the thumb. */
+.range {
+  display: block;
+  inline-size: 100%;
+  block-size: 44px;
+  margin: 0;
+  accent-color: var(--primary);
+  cursor: pointer;
+}
+
+.range:disabled {
+  cursor: not-allowed;
+}
+
+.ends {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--s3);
+  margin-block-start: -6px;
+  color: var(--ink-2);
+  font-size: 14px;
+  font-variant-numeric: tabular-nums lining-nums;
+}
+
+.offNote {
+  margin-block-start: var(--s1);
+  color: var(--ink-2);
+  font-size: 14px;
+}
+
+.result {
+  padding: var(--s5) var(--s4);
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+  background: var(--surface);
+  text-align: center;
+}
+
+.fromTo {
+  font-family: var(--display);
+  font-size: 44px;
+  font-variant-numeric: tabular-nums lining-nums;
+  line-height: 1.1;
+}
+
+.from {
+  color: var(--ink-2);
+  font-size: 30px;
+}
+
+/* The arrow points the way the page reads, so it turns round in right-to-left pages. */
+.arrow {
+  display: inline-block;
+  color: var(--ink-2);
+  font-size: 28px;
+}
+
+:global([dir="rtl"]) .arrow {
+  transform: scaleX(-1);
+}
+
+.delta {
+  display: inline-block;
+  margin-block-start: var(--s2);
+  padding-inline: var(--s2);
+  border: 1.5px solid currentColor;
+  border-radius: 2px;
+  color: var(--ink-2);
+  font-size: 15px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums lining-nums;
+}
+
+.up {
+  color: var(--healthy);
+}
+
+.down {
+  color: var(--vulnerable);
+}
+
+.band {
+  margin-block-start: var(--s3);
+  color: var(--ink-2);
+  font-size: 14px;
+}
+
+@media (max-width: 980px) {
+  .layout {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
