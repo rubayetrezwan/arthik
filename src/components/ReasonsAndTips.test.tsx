@@ -1,11 +1,13 @@
 import { render, screen, within } from '@testing-library/react'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { CATEGORIES } from '../domain/categories'
 import { convert } from '../domain/currency'
 import type { Measures } from '../domain/measures'
 import { computeScore } from '../domain/score'
 import type { Dataset } from '../domain/types'
 import { formatMoney } from '../i18n/format'
 import { I18nProvider } from '../i18n/I18nProvider'
+import en from '../i18n/messages/en.json'
 import { PrefsProvider } from '../state/prefs'
 import { ReasonsAndTips } from './ReasonsAndTips'
 
@@ -114,11 +116,11 @@ describe('ReasonsAndTips: the spec example', () => {
       'Saving an extra ৳1,000 a month, for example in a Deposit Pension Scheme (DPS), would build your emergency savings to 3 months of essentials in about 24 months.',
     )
     expect(savingsRate).toHaveTextContent(
-      'Fees & charges averaged ৳260 a month. Paying shops straight from your mobile wallet or card, instead of cashing out first, avoids cash-out charges.',
+      'Fees and charges averaged ৳260 a month. Paying shops straight from your mobile wallet or card, instead of cashing out first, avoids cash-out charges.',
     )
     // A tip about wants names the whole category its amount is for.
     expect(needsWants).toHaveTextContent(
-      'Eating out & delivery averaged ৳3,850 a month, the biggest of your wants.',
+      'Eating out and delivery averaged ৳3,850 a month, the biggest of your wants.',
     )
     expect(screen.queryByText('Also worth doing')).not.toBeInTheDocument()
   })
@@ -139,6 +141,38 @@ describe('ReasonsAndTips: the spec example', () => {
     renderReasons(specExample())
 
     expect(console.error).not.toHaveBeenCalled()
+  })
+
+  it('writes "and", never "&", in a tip sentence, whichever category it names', () => {
+    const wants = CATEGORIES.filter(({ group }) => group === 'want').map(({ id }) => id)
+    expect(wants.length).toBeGreaterThan(0)
+    for (const id of wants) {
+      const { unmount } = renderReasons(
+        specExample({ categoryMonthlyAvg: { [id]: 3_850, fees: 260 } }),
+      )
+      const text = screen.getByRole('list', { name: /^Why/ }).textContent ?? ''
+      expect(text, id).toContain('averaged')
+      expect(text, id).not.toContain('&')
+      unmount()
+    }
+  })
+})
+
+describe('the prose category names', () => {
+  const messages: Record<string, string> = en
+
+  it('exist for exactly the categories whose label has an ampersand, and have none', () => {
+    for (const { id } of CATEGORIES) {
+      const label = messages[`category.${id}`] ?? ''
+      const prose = messages[`category.${id}.prose`]
+      if (label.includes('&')) {
+        expect(prose, id).toBeTruthy()
+        expect(prose, id).not.toContain('&')
+        expect(prose, id).toContain(' and ')
+      } else {
+        expect(prose, id).toBeUndefined()
+      }
+    }
   })
 })
 

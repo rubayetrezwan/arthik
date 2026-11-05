@@ -117,7 +117,12 @@ function TipText({ tip }: { tip: Tip }) {
   const locale = useLocale()
   const money = useMoney()
   const number = (key: string) => Number(tip.values[key])
-  const category = (id: string) => intl.formatMessage({ id: `category.${id}` })
+  // In a sentence a name reads with "and", not "&": a category whose name has an ampersand
+  // has a prose form beside it. Table and select labels keep the short form.
+  const category = (id: string) => {
+    const prose = `category.${id}.prose`
+    return intl.formatMessage({ id: prose in intl.messages ? prose : `category.${id}` })
+  }
 
   const values: Record<string, ReactNode> = (() => {
     switch (tip.id) {
