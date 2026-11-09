@@ -1,6 +1,7 @@
 import { screen, within } from '@testing-library/react'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { PERSON_IDS } from '../data/samples'
+import { SAMPLE_SCORES } from '../data/samples/people'
 import { renderApp } from '../test/renderApp'
 
 vi.mock('../i18n/fonts', () => ({ loadFonts: vi.fn(() => Promise.resolve()) }))
@@ -39,6 +40,36 @@ describe('HomePage', () => {
     )
     expect(links[0]).toHaveAttribute('href', '#/score/nusrat')
     expect(links[0]).toHaveTextContent('Nusrat, university student in Dhaka')
+  })
+
+  it('shows each person’s score and band word, as plain text and not a pill', () => {
+    renderApp('/')
+
+    const samples = within(main().getByRole('region', { name: 'Try a sample person' }))
+    const links = samples.getAllByRole('link')
+    const bands = ['Coping', 'Coping', 'Vulnerable', 'Coping', 'Healthy']
+    PERSON_IDS.forEach((id, index) => {
+      expect(links[index]).toHaveTextContent(String(SAMPLE_SCORES[id]))
+      expect(links[index]).toHaveTextContent(bands[index]!)
+    })
+  })
+
+  it('says that Farhana earns about three times what Nusrat does and scores lower', async () => {
+    renderApp('/')
+
+    const note = await main().findByText(/earns about 3 times what Nusrat does and scores lower/)
+    expect(note).toHaveTextContent(
+      'Farhana earns about 3 times what Nusrat does and scores lower: the score measures habits, not income.',
+    )
+    expect(SAMPLE_SCORES.farhana).toBeLessThan(SAMPLE_SCORES.nusrat)
+  })
+
+  it('promises it is free, works offline and keeps the file in the browser', () => {
+    renderApp('/')
+
+    expect(
+      main().getByText('Free, no sign-up, works offline. Your file never leaves your browser.'),
+    ).toBeInTheDocument()
   })
 
   it('offers the visitor their own transactions, with the privacy promise beside it', () => {

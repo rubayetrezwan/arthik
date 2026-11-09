@@ -42,7 +42,7 @@
 
 .person {
   display: grid;
-  grid-template-columns: 40px minmax(0, 1fr);
+  grid-template-columns: 40px minmax(0, 1fr) auto;
   align-items: baseline;
   gap: var(--s3);
   min-height: 56px;
@@ -78,6 +78,34 @@
 
 .person:hover .name {
   text-decoration-thickness: 2px;
+}
+
+/* Each person's score and band, right-aligned like a ledger amount. */
+.result {
+  display: grid;
+  justify-items: end;
+  text-align: end;
+  white-space: nowrap;
+}
+
+.points {
+  font-family: var(--display);
+  font-size: 24px;
+  line-height: 1.1;
+  color: var(--ink);
+  font-variant-numeric: lining-nums;
+}
+
+.bandWord {
+  font-size: 15px;
+  color: var(--ink-2);
+}
+
+/* The one-line promise under the pitch. */
+.free {
+  margin-block-start: var(--s2);
+  color: var(--ink-2);
+  font-size: 16px;
 }
 
 /* The visitor's own file, on the facing side. */

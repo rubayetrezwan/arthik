@@ -2,12 +2,13 @@ import { useId } from 'react'
 import { FormattedMessage, useIntl } from 'react-intl'
 import { Link } from 'react-router'
 import { PageHead } from '../components/PageHead'
-import { PERSON_IDS } from '../data/samples/people'
+import { PERSON_IDS, SAMPLE_SCORES } from '../data/samples/people'
 import { LOWEST_SCORE } from '../domain/anchors'
-import { HIGHEST_SCORE, MEASURE_IDS, WEIGHTS } from '../domain/score'
+import { bandOf, HIGHEST_SCORE, MEASURE_IDS, WEIGHTS } from '../domain/score'
 import { formatNumber, formatWeight } from '../i18n/format'
 import { useLocale } from '../i18n/I18nProvider'
 import styles from './HomePage.module.css'
+import { useHabitsFigures } from './useHabitsFigures'
 
 /** The opening page: what Arthik is, the five sample people, and the visitor's own file. */
 export function HomePage() {
@@ -16,6 +17,7 @@ export function HomePage() {
   const samplesId = useId()
   const ownId = useId()
   const methodId = useId()
+  const figures = useHabitsFigures()
 
   // WEIGHTS are whole percents; formatWeight takes tenths of a percent.
   const totalWeight = MEASURE_IDS.reduce((sum, id) => sum + WEIGHTS[id], 0)
@@ -33,6 +35,9 @@ export function HomePage() {
             }}
           />
         </p>
+        <p className={styles.free}>
+          <FormattedMessage id="home.pitch.free" />
+        </p>
       </PageHead>
 
       <div className={styles.columns}>
@@ -41,7 +46,14 @@ export function HomePage() {
             <FormattedMessage id="samples.label" />
           </h2>
           <p className={styles.note}>
-            <FormattedMessage id="home.samples.note" />
+            <FormattedMessage
+              id="home.samples.note"
+              values={{
+                farhana: intl.formatMessage({ id: 'person.farhana.name' }),
+                nusrat: intl.formatMessage({ id: 'person.nusrat.name' }),
+                incomeMultiple: figures.incomeMultiple,
+              }}
+            />
           </p>
           <ol className={styles.people}>
             {PERSON_IDS.map((id, index) => (
@@ -62,6 +74,12 @@ export function HomePage() {
                         role: intl.formatMessage({ id: `person.${id}.role` }),
                       }}
                     />
+                  </span>
+                  <span className={styles.result}>
+                    <span className={styles.points}>{formatNumber(SAMPLE_SCORES[id], locale)}</span>
+                    <span className={styles.bandWord}>
+                      <FormattedMessage id={`band.${bandOf(SAMPLE_SCORES[id])}`} />
+                    </span>
                   </span>
                 </Link>
               </li>

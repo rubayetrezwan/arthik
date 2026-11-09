@@ -14,3 +14,16 @@ export const PERSON_META: Record<PersonId, { homeCurrency: CurrencyCode }> = {
   arif: { homeCurrency: 'GBP' },
   rahim: { homeCurrency: 'SGD' },
 }
+
+/**
+ * Each person's score as the sample dataset gives it, so the home page can list them without
+ * loading the transactions. people.test.ts checks every one against computeScore of the real
+ * data, so a change to the data or the formulas fails there instead of drifting.
+ */
+export const SAMPLE_SCORES: Record<PersonId, number> = {
+  nusrat: 66,
+  tanvir: 75,
+  farhana: 35,
+  arif: 56,
+  rahim: 89,
+}
