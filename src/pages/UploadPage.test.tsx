@@ -134,7 +134,7 @@ describe('UploadPage: the page', () => {
     expect(main().getByText('Your file never leaves this browser.')).toBeInTheDocument()
     expect(
       main().getByText(
-        'Arthik reads it on this device and saves nothing, so refreshing the page clears it.',
+        /Arthik reads it on this device and saves nothing, so refreshing the page clears it\./,
       ),
     ).toBeInTheDocument()
     const link = main().getByRole('link', { name: 'Download the template' })
@@ -175,10 +175,54 @@ describe('UploadPage: the page', () => {
   it('labels the savings field and says which currency it takes', () => {
     renderUpload()
 
-    const savings = main().getByLabelText('Emergency savings (optional)')
+    const savings = main().getByLabelText('Emergency savings')
     expect(savings).toHaveAccessibleDescription(
-      'Money you could use in an emergency, such as savings in a bank account or mobile wallet, in BDT. If you leave it empty, Emergency savings isn’t scored.',
+      'Money you could use in an emergency, such as savings in a bank account or mobile wallet, in BDT. Leave it empty only if you don’t know. Your score will then use 4 of the 5 measures.',
     )
+  })
+})
+
+describe('UploadPage: where to get your file, the example and the privacy check (R57, R60, R62)', () => {
+  it('says where a file comes from and puts the template beside the file button', () => {
+    renderUpload()
+
+    const where = main().getByRole('region', { name: 'Where to get your file' })
+    expect(within(where).getByText(/download your statement as a CSV or Excel file/)).toBeInTheDocument()
+    expect(within(where).getByText(/open it and choose Save As, then CSV/)).toBeInTheDocument()
+    expect(within(where).getByText(/usually come as a PDF, which Arthik can’t read/)).toBeInTheDocument()
+    const link = main().getByRole('link', { name: 'Get the template' })
+    expect(link).toHaveAttribute('href', `${import.meta.env.BASE_URL}arthik-template.csv`)
+  })
+
+  it('adds the offline check to the privacy text', () => {
+    renderUpload()
+    expect(
+      main().getByText(/To check, switch off Wi-Fi or mobile data once this page has loaded\. Arthik still works\./),
+    ).toBeInTheDocument()
+  })
+
+  it('the example file is read like a chosen one and shows the score', async () => {
+    const fetchMock = vi.fn(() => Promise.resolve(new Response(template)))
+    vi.stubGlobal('fetch', fetchMock)
+    const { router, user } = renderUpload()
+
+    await user.click(main().getByRole('button', { name: 'Try it with our example file' }))
+
+    await waitFor(() => expect(router.state.location.pathname).toBe('/score/mine'))
+    expect(fetchMock).toHaveBeenCalledWith(`${import.meta.env.BASE_URL}arthik-template.csv`)
+    expect(session().upload?.transactions).toHaveLength(TEMPLATE_ROWS)
+    vi.unstubAllGlobals()
+  })
+
+  it('says so when the example cannot be loaded', async () => {
+    vi.stubGlobal('fetch', vi.fn(() => Promise.reject(new Error('offline'))))
+    const { router, user } = renderUpload()
+
+    await user.click(main().getByRole('button', { name: 'Try it with our example file' }))
+
+    expect(await main().findByText('The example file couldn’t be loaded. Try again.')).toBeInTheDocument()
+    expect(router.state.location.pathname).toBe('/upload')
+    vi.unstubAllGlobals()
   })
 })
 
@@ -236,10 +280,10 @@ describe('UploadPage: a file Arthik can read', () => {
     const { router, user } = renderUpload()
 
     await user.selectOptions(screen.getByLabelText('Currency'), 'USD')
-    expect(main().getByLabelText('Emergency savings (optional)')).toHaveAccessibleDescription(
+    expect(main().getByLabelText('Emergency savings')).toHaveAccessibleDescription(
       /, in USD\./,
     )
-    await user.type(main().getByLabelText('Emergency savings (optional)'), '1,500.50')
+    await user.type(main().getByLabelText('Emergency savings'), '1,500.50')
     await choose(user, csv(template))
     await submit(user)
 
@@ -255,7 +299,7 @@ describe('UploadPage: a file Arthik can read', () => {
   ])('reads savings written as %j', async (typed, amount) => {
     const { router, user } = renderUpload()
 
-    await user.type(main().getByLabelText('Emergency savings (optional)'), typed)
+    await user.type(main().getByLabelText('Emergency savings'), typed)
     await choose(user, csv(template))
     await submit(user)
 
@@ -285,7 +329,7 @@ describe('UploadPage: privacy', () => {
     const { router, user } = renderUpload()
 
     await user.selectOptions(screen.getByLabelText('Currency'), 'GBP')
-    await user.type(main().getByLabelText('Emergency savings (optional)'), '12345')
+    await user.type(main().getByLabelText('Emergency savings'), '12345')
     await choose(user, csv(templateWithTwoBadRows()))
     await submit(user)
     await user.click(await main().findByRole('button', { name: /^Continue with/ }))
@@ -304,7 +348,7 @@ describe('UploadPage: savings it cannot read', () => {
     async (typed) => {
       const { router, user } = renderUpload()
 
-      const savings = main().getByLabelText('Emergency savings (optional)')
+      const savings = main().getByLabelText('Emergency savings')
       await user.type(savings, typed)
       await choose(user, csv(template))
       await submit(user)
@@ -325,7 +369,7 @@ describe('UploadPage: savings it cannot read', () => {
   it('clears the message once the amount is changed', async () => {
     const { user } = renderUpload()
 
-    const savings = main().getByLabelText('Emergency savings (optional)')
+    const savings = main().getByLabelText('Emergency savings')
     await user.type(savings, '-5')
     await submit(user)
     await user.clear(savings)
@@ -444,7 +488,9 @@ describe('UploadPage: the file itself', () => {
     expect(fileInput()).toHaveAttribute('type', 'file')
     expect(fileInput()).toHaveAttribute('accept', '.csv,text/csv')
     await user.keyboard('{Tab}')
-    expect(main().getByLabelText('Emergency savings (optional)')).toHaveFocus()
+    expect(main().getByRole('link', { name: 'Get the template' })).toHaveFocus()
+    await user.keyboard('{Tab}')
+    expect(main().getByLabelText('Emergency savings')).toHaveFocus()
   })
 })
 
@@ -473,7 +519,7 @@ describe('UploadPage: rows with problems', () => {
   it('continuing uploads only the valid rows, with the savings', async () => {
     const { router, user } = renderUpload()
 
-    await user.type(main().getByLabelText('Emergency savings (optional)'), '30000')
+    await user.type(main().getByLabelText('Emergency savings'), '30000')
     await choose(user, csv(templateWithTwoBadRows()))
     await submit(user)
     await user.click(await main().findByRole('button', { name: /^Continue with/ }))
@@ -505,7 +551,7 @@ describe('UploadPage: rows with problems', () => {
 
     await choose(user, csv(templateWithTwoBadRows()))
     await submit(user)
-    const savings = main().getByLabelText('Emergency savings (optional)')
+    const savings = main().getByLabelText('Emergency savings')
     await user.type(savings, '-1')
     await user.click(main().getByRole('button', { name: /^Continue with/ }))
 
@@ -649,8 +695,8 @@ describe('UploadPage: a message for every problem the reader can find', () => {
     ],
     bad_date: [
       [
-        lines(H, '31 Oct 2026,x,-5'),
-        'Row 2: “31 Oct 2026” isn’t a date Arthik can read. Write it as 2026-10-31, or day first, as 31/10/2026.',
+        lines(H, 'Oct 31 2026,x,-5'),
+        'Row 2: “Oct 31 2026” isn’t a date Arthik can read. Write it as 2026-10-31, or day first, as 31/10/2026.',
       ],
       [lines(H, ',x,-5'), 'Row 2: The date is missing.'],
     ],

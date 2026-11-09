@@ -3,6 +3,7 @@ import { FormattedMessage } from 'react-intl'
 import { useNavigate } from 'react-router'
 import { CsvErrors } from '../components/CsvErrors'
 import { CsvFormatHelp } from '../components/CsvFormatHelp'
+import { GetYourFile } from '../components/GetYourFile'
 import { checkFile, FileDrop, type FileProblem } from '../components/FileDrop'
 import { PageHead } from '../components/PageHead'
 import { readSavings, SavingsField, type SavingsReading } from '../components/SavingsField'
@@ -11,6 +12,8 @@ import type { CurrencyCode, Transaction } from '../domain/types'
 import { usePrefs } from '../state/prefs'
 import { useSession } from '../state/session'
 import styles from './UploadPage.module.css'
+
+const TEMPLATE_URL = `${import.meta.env.BASE_URL}arthik-template.csv`
 
 /** A file that was read and has problems, kept until the visitor fixes it or goes on. */
 interface Checked {
@@ -37,6 +40,7 @@ export function UploadPage() {
   const [savingsInvalid, setSavingsInvalid] = useState(false)
   const [checked, setChecked] = useState<Checked | null>(null)
   const [reading, setReading] = useState(false)
+  const [exampleFailed, setExampleFailed] = useState(false)
 
   const fileInput = useRef<HTMLInputElement>(null)
   const savingsInput = useRef<HTMLInputElement>(null)
@@ -124,6 +128,30 @@ export function UploadPage() {
     }
   }
 
+  /** The example file: the template, fetched from this site and read like a file the visitor chose. */
+  async function tryExample() {
+    if (reading) return
+    setReading(true)
+    setExampleFailed(false)
+    let text: string
+    try {
+      const response = await fetch(TEMPLATE_URL)
+      if (!response.ok) throw new Error(String(response.status))
+      text = await response.text()
+    } catch {
+      setReading(false)
+      setExampleFailed(true)
+      return
+    }
+    setReading(false)
+    const result = parseTransactionsCsv(text, currency)
+    if (result.errors.length > 0 || result.transactions.length === 0) {
+      setExampleFailed(true)
+      return
+    }
+    finish(result.transactions, { kind: 'empty' })
+  }
+
   function continueWithValidRows() {
     if (!checked) return
     const savings = savingsOrStop()
@@ -145,13 +173,20 @@ export function UploadPage() {
           <strong>
             <FormattedMessage id="upload.privacy.lead" />
           </strong>{' '}
-          <FormattedMessage id="upload.privacy.text" />
+          <FormattedMessage id="upload.privacy.text" />{' '}
+          <FormattedMessage id="upload.privacy.check" />
         </p>
       </PageHead>
 
       <div className={styles.columns}>
         <form className={styles.form} noValidate onSubmit={submit}>
+          <GetYourFile />
           <FileDrop file={file} problem={fileProblem} onChoose={choose} inputRef={fileInput} />
+          <p className={styles.fileTools}>
+            <a href={TEMPLATE_URL} download className={styles.templateLink}>
+              <FormattedMessage id="upload.where.template" />
+            </a>
+          </p>
           <SavingsField
             value={savingsText}
             onChange={(text) => {
@@ -165,6 +200,20 @@ export function UploadPage() {
           <button type="submit" className={styles.submit} aria-disabled={reading || undefined}>
             <FormattedMessage id={reading ? 'upload.reading' : 'upload.submit'} />
           </button>
+
+          <button
+            type="button"
+            className={styles.example}
+            aria-disabled={reading || undefined}
+            onClick={tryExample}
+          >
+            <FormattedMessage id="upload.where.example" />
+          </button>
+          {exampleFailed && (
+            <p role="alert" className={styles.exampleFailed}>
+              <FormattedMessage id="upload.where.exampleFailed" />
+            </p>
+          )}
 
           {checked && (
             <CsvErrors

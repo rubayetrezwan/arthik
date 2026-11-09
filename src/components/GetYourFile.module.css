@@ -1,0 +1,17 @@
+.where {
+  margin-block-end: var(--s5);
+}
+
+.title {
+  margin-block: 0 var(--s2);
+  font-size: 1.125rem;
+}
+
+.list {
+  margin: 0;
+  padding-inline-start: var(--s5);
+}
+
+.list li + li {
+  margin-block-start: var(--s2);
+}

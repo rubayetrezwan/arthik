@@ -18,6 +18,45 @@
   border-block-start: 1px solid var(--rule);
 }
 
+.fileTools {
+  margin-block: var(--s2) 0;
+}
+
+.templateLink {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  font-weight: 500;
+}
+
+.example {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  margin-block-start: var(--s3);
+  margin-inline-end: var(--s3);
+  padding-inline: var(--s5);
+  border: 1px solid var(--primary);
+  border-radius: var(--radius);
+  background: transparent;
+  color: var(--primary);
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.example:hover {
+  border-color: var(--ink);
+  color: var(--ink);
+}
+
+.example[aria-disabled="true"] {
+  cursor: progress;
+}
+
+.exampleFailed {
+  margin-block: var(--s3) 0;
+}
+
 .submit {
   display: inline-flex;
   align-items: center;
