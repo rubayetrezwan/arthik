@@ -83,6 +83,12 @@ npm run rates:update   # refresh the exchange-rate snapshot (needs network)
 
 Other scripts: `npm run lint`, `npm run typecheck` and `npm run translations:review`, which builds a review page for the translations.
 
+## Deploy it
+
+GitHub Actions builds and tests every change and publishes the site to GitHub Pages under `/arthik/`.
+
+It also runs on Render as a free static site. `render.yaml` is a Render Blueprint: in Render, choose New → Blueprint, pick this repository, and it builds with `BASE_PATH=/` so the app is served from the root of its onrender.com address. Any other static host works the same way: run `BASE_PATH=/ npm run build` and serve the `dist` folder.
+
 ## Project structure
 
 ```

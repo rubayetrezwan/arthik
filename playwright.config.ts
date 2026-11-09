@@ -1,6 +1,8 @@
 import { defineConfig, devices } from '@playwright/test'
 
 const FLOWS = /flows\.spec\.ts$/
+// The same base path the build used (see vite.config.ts): /arthik/ unless BASE_PATH says otherwise.
+const BASE = `/${(process.env.BASE_PATH ?? '/arthik/').trim().replace(/^\/+|\/+$/g, '')}/`.replace('//', '/')
 
 export default defineConfig({
   testDir: 'e2e',
@@ -11,7 +13,7 @@ export default defineConfig({
   retries: process.env.CI ? 2 : 0,
   reporter: process.env.CI ? [['github'], ['html', { open: 'never' }]] : 'list',
   use: {
-    baseURL: 'http://localhost:4173/arthik/',
+    baseURL: `http://localhost:4173${BASE}`,
     trace: 'on-first-retry',
   },
   webServer: {
@@ -19,7 +21,7 @@ export default defineConfig({
     command: process.env.CI
       ? 'npm run preview -- --port 4173 --strictPort'
       : 'npm run build && npm run preview -- --port 4173 --strictPort',
-    url: 'http://localhost:4173/arthik/',
+    url: `http://localhost:4173${BASE}`,
     reuseExistingServer: !process.env.CI,
     timeout: 120_000,
   },

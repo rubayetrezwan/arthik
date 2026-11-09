@@ -1,5 +1,8 @@
 import { expect, test } from './fixtures'
 
+// The base path the site was built for (vite.config.ts): /arthik/ unless BASE_PATH says otherwise.
+const BASE = `/${(process.env.BASE_PATH ?? '/arthik/').trim().replace(/^\/+|\/+$/g, '')}/`.replace('//', '/')
+
 test('the manifest is linked and a service worker registers', async ({ page, request }) => {
   await page.goto('./')
 
@@ -9,8 +12,8 @@ test('the manifest is linked and a service worker registers', async ({ page, req
   expect(manifest).toMatchObject({
     name: 'Arthik',
     short_name: 'Arthik',
-    start_url: '/arthik/',
-    scope: '/arthik/',
+    start_url: BASE,
+    scope: BASE,
     display: 'standalone',
     background_color: '#F4EFE4',
     theme_color: '#F4EFE4',
@@ -20,7 +23,7 @@ test('the manifest is linked and a service worker registers', async ({ page, req
   await expect(page.locator('meta[name="theme-color"]')).toHaveAttribute('content', '#F4EFE4')
 
   const scope = await page.evaluate(async () => (await navigator.serviceWorker.ready).scope)
-  expect(scope).toMatch(/\/arthik\/$/)
+  expect(new URL(scope).pathname).toBe(BASE)
 })
 
 test('after one visit, the home page and a sample score load with no network', async ({

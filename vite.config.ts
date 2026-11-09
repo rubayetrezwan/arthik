@@ -32,8 +32,17 @@ const SHELL_FONT_CSS = /\/font-(newsreader|ibm-plex-sans|noto-sans-bengali|tiro-
 // Keep in step with the pattern written out in runtimeCaching.urlPattern below.
 const IS_FONT = /\/(font-[^/]*\.css|[^/]*\.woff2)$/
 
+// Where the site lives: /arthik/ on GitHub Pages (the default), / on a host that serves it at
+// the root, such as Render. Set BASE_PATH at build time to change it.
+const BASE = normaliseBase(process.env.BASE_PATH ?? '/arthik/')
+
+function normaliseBase(path: string): string {
+  const trimmed = path.trim().replace(/^\/+|\/+$/g, '')
+  return trimmed === '' ? '/' : `/${trimmed}/`
+}
+
 export default defineConfig({
-  base: '/arthik/',
+  base: BASE,
   plugins: [
     react(),
     woff2Only(),
@@ -43,8 +52,8 @@ export default defineConfig({
         name: 'Arthik',
         short_name: 'Arthik',
         description: 'See how your money habits add up. Your data stays in your browser.',
-        start_url: '/arthik/',
-        scope: '/arthik/',
+        start_url: BASE,
+        scope: BASE,
         display: 'standalone',
         background_color: PAPER,
         theme_color: PAPER,
