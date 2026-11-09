@@ -27,7 +27,7 @@ function header() {
 
 function scoreLink() {
   const nav = header().getByRole('navigation', { name: 'Main' })
-  return within(nav).getByRole('link', { name: 'Your score' })
+  return within(nav).getByRole('link', { name: 'Score' })
 }
 
 const ownFile: Dataset = { key: 'mine', transactions: [], emergencySavings: null }
@@ -69,7 +69,7 @@ describe('Header', () => {
     const nav = header().getByRole('navigation', { name: 'Main' })
     const links = within(nav).getAllByRole('link')
     expect(links.map((link) => link.textContent)).toEqual([
-      'Your score',
+      'Score',
       'How the score works',
       'About',
     ])
@@ -122,7 +122,7 @@ describe('Header', () => {
     expect(localStorage.getItem('arthik.currency')).toBe('GBP')
   })
 
-  it('marks "Your score" as the page when it is the sample on screen', () => {
+  it('marks "Score" as the page when it is the sample on screen', () => {
     renderApp('/score/tanvir')
 
     expect(scoreLink()).toHaveAttribute('href', '#/score/tanvir')
@@ -131,7 +131,7 @@ describe('Header', () => {
     expect(within(nav).getByRole('link', { name: 'About' })).not.toHaveAttribute('aria-current')
   })
 
-  it('does not mark "Your score" on the page for a person who does not exist', () => {
+  it('does not mark "Score" on the page for a person who does not exist', () => {
     renderApp('/score/nobody')
 
     expect(scoreLink()).not.toHaveAttribute('aria-current')
@@ -148,14 +148,14 @@ describe('Header', () => {
     await waitFor(() => expect(scoreLink()).toHaveAttribute('aria-current', 'page'))
   })
 
-  it('takes "Your score" back to the person looked at last', async () => {
+  it('takes "Score" back to the person looked at last', async () => {
     const user = userEvent.setup()
     renderApp('/score/arif')
     const nav = header().getByRole('navigation', { name: 'Main' })
 
     await user.click(within(nav).getByRole('link', { name: 'About' }))
 
-    expect(within(nav).getByRole('link', { name: 'Your score' })).toHaveAttribute(
+    expect(within(nav).getByRole('link', { name: 'Score' })).toHaveAttribute(
       'href',
       '#/score/arif',
     )
