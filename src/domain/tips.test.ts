@@ -170,6 +170,29 @@ describe('avoid_cash_fees', () => {
   })
 })
 
+describe('save_on_payday', () => {
+  it('gives Nusrat the gap between her savings rate and the 20% that earns full points', () => {
+    // Income averages 23,000 and she saves 60 of every 100 of... see the ledger: rate x income.
+    const measures = computeMeasures(nusratLike)
+    const tip = tipOf(tipsFor(nusratLike), 'save_on_payday')
+    expect(tip?.values.target).toBe(0.2)
+    const expected = (measures.income / 3) * (0.2 - measures.savingsRate!)
+    expect(tip?.values.amount).toBeCloseTo(expected, 2)
+    expect(Number(tip?.values.amount)).toBeGreaterThan(0)
+  })
+
+  it('is not offered once the savings rate scores full points', () => {
+    expect(idsOf(tipsFor(nusratLike, { savingsRate: 0.2 }))).not.toContain('save_on_payday')
+    expect(idsOf(tipsFor(healthy))).not.toContain('save_on_payday')
+  })
+
+  it('is offered when only the savings rate needs work, beside keep_going if alone', () => {
+    const ids = idsOf(tipsFor(salaried(23_000, 20_000, 100_000)))
+    expect(ids).toContain('save_on_payday')
+    expect(ids.length).toBeGreaterThanOrEqual(2)
+  })
+})
+
 describe('cut_biggest_want', () => {
   it('names the want category with the largest monthly average', () => {
     // Eating out is 6,000 a month and shopping 2,000. Rent, at 7,000, is bigger
@@ -268,6 +291,7 @@ describe('pickTips', () => {
     expect(idsOf(tipsFor(nusratLike))).toEqual([
       'start_dps',
       'avoid_cash_fees',
+      'save_on_payday',
       'cut_biggest_want',
     ])
     expect(idsOf(tipsFor(fixtureA))).toEqual(['start_dps', 'check_unrecognised'])
@@ -283,8 +307,8 @@ describe('pickTips', () => {
     expect(idsOf(tips)).toEqual([
       'start_dps',
       'avoid_cash_fees',
+      'save_on_payday',
       'cut_biggest_want',
-      'sort_uncategorised',
     ])
   })
 
@@ -329,8 +353,9 @@ describe('pickTips', () => {
 })
 
 describe('TIP_MEASURE', () => {
-  it('names one tip for each measure, and none for the data checks or keep_going', () => {
-    expect(Object.values(TIP_MEASURE).sort()).toEqual([...MEASURE_IDS].sort())
+  it('names a tip for each measure, and none for the data checks or keep_going', () => {
+    // Two tips answer the savings rate: the fees tip and the pay-day habit.
+    expect([...new Set(Object.values(TIP_MEASURE))].sort()).toEqual([...MEASURE_IDS].sort())
     for (const id of ['sort_uncategorised', 'check_unrecognised', 'keep_going'] as const) {
       expect(TIP_MEASURE[id]).toBeUndefined()
     }
@@ -341,9 +366,11 @@ describe('TIP_MEASURE', () => {
     for (const overrides of [{}, { debtRatio: 0.3, spendingCV: 0.4 }, { debtRatio: 0.45 }]) {
       const measures = { ...computeMeasures(nusratLike, fixtureRates), ...overrides }
       const result = computeScore(measures)
-      const answered = pickTips(nusratLike, measures, result).flatMap(
-        (tip) => TIP_MEASURE[tip.id] ?? [],
-      )
+      const answered = [
+        ...new Set(
+          pickTips(nusratLike, measures, result).flatMap((tip) => TIP_MEASURE[tip.id] ?? []),
+        ),
+      ]
       const reasons = topReasons(result).map((reason) => reason.measure)
 
       expect(answered.length).toBeGreaterThanOrEqual(2)

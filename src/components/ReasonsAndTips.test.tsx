@@ -176,18 +176,37 @@ describe('the prose category names', () => {
   })
 })
 
+describe('ReasonsAndTips: save on payday', () => {
+  it('sits beside the savings rate with the amount and the rate it would bring', () => {
+    renderReasons(specExample())
+
+    const savingsRate = reasons().find(
+      (item) => within(item).queryByRole('heading', { name: 'Savings rate' }) !== null,
+    )
+    // Income averages 23,000 a month and 7% is saved: 13% of 23,000 is 2,990.
+    expect(savingsRate).toHaveTextContent(
+      'Move ৳2,990 into savings on the day your income arrives, before you spend. That would bring your savings rate to 20%.',
+    )
+  })
+})
+
 describe('ReasonsAndTips: reasons without a tip, and tips without a reason', () => {
   it('leaves a reason with no tip on its own', () => {
-    // Fees are under 1% of income, so the savings rate has no tip.
-    renderReasons(specExample({ categoryMonthlyAvg: { eating_out: 3_850, fees: 100 } }))
+    // Saving 20% earns full points, so the savings rate is no reason. Spending stability is
+    // fine (no tip below 60), so it is named as a reason with nothing to help it.
+    renderReasons(specExample({ savingsRate: 0.2, categoryMonthlyAvg: { eating_out: 3_850, fees: 100 } }))
 
-    const [, savingsRate] = reasons()
-    expect(within(savingsRate!).queryByText('What would help')).not.toBeInTheDocument()
+    const stability = reasons().find(
+      (item) => within(item).queryByRole('heading', { name: 'Spending stability' }) !== null,
+    )
+    expect(stability).toBeDefined()
+    expect(within(stability!).queryByText('What would help')).not.toBeInTheDocument()
   })
 
   it('lists the data checks after the reasons, as also worth doing', () => {
     renderReasons(
       specExample({
+        savingsRate: 0.2,
         categoryMonthlyAvg: { eating_out: 3_850, fees: 100 },
         uncategorisedShare: 0.2,
         unrecognisedIncomeCount: 1,
@@ -202,7 +221,7 @@ describe('ReasonsAndTips: reasons without a tip, and tips without a reason', () 
   })
 
   it('counts unrecognised payments in the plural', () => {
-    renderReasons(specExample({ unrecognisedIncomeCount: 3 }))
+    renderReasons(specExample({ savingsRate: 0.2, unrecognisedIncomeCount: 3 }))
 
     expect(
       screen.getByText(/^3 payments into your account weren’t recognised, so they’re counted as income\./),
@@ -212,7 +231,7 @@ describe('ReasonsAndTips: reasons without a tip, and tips without a reason', () 
   it('ends with keep_going after a single tip, which reads well on its own line', () => {
     // Only the emergency-savings tip applies.
     renderReasons(
-      specExample({ categoryMonthlyAvg: { fees: 100 }, wantsShare: 0.25, spendingCV: 0.05 }),
+      specExample({ savingsRate: 0.2, categoryMonthlyAvg: { fees: 100 }, wantsShare: 0.25, spendingCV: 0.05 }),
     )
 
     const more = within(screen.getByRole('list', { name: 'Also worth doing' }))
@@ -222,7 +241,7 @@ describe('ReasonsAndTips: reasons without a tip, and tips without a reason', () 
   })
 
   it('says "What would help" over the tips when no reason has a tip of its own', () => {
-    renderReasons(specExample({ bufferMonths: 3.4, categoryMonthlyAvg: {}, wantsShare: 0.25 }))
+    renderReasons(specExample({ savingsRate: 0.2, bufferMonths: 3.4, categoryMonthlyAvg: {}, wantsShare: 0.25 }))
 
     expect(screen.getByRole('list', { name: 'What would help' })).toHaveTextContent(
       'Keep up the habits that already score well',

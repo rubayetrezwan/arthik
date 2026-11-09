@@ -3,7 +3,7 @@
 // number is ever typed into prose. Money is in BDT; the screen converts it.
 // Pure: no React, no DOM.
 
-import { snapNoise } from './anchors'
+import { ANCHORS, snapNoise } from './anchors'
 import { CATEGORIES } from './categories'
 import type { Measures } from './measures'
 import { topReasons } from './reasons'
@@ -14,6 +14,7 @@ export type TipId =
   | 'start_dps'
   | 'cut_biggest_want'
   | 'avoid_cash_fees'
+  | 'save_on_payday'
   | 'debt_highest_interest'
   | 'steady_spending'
   | 'sort_uncategorised'
@@ -87,6 +88,23 @@ function avoidCashFees(m: Measures, subScore: number): Tip | null {
   return { id: 'avoid_cash_fees', values: { amount: fees } }
 }
 
+/** The savings rate that earns full points, from the anchors (20%). */
+const FULL_POINTS_SAVINGS_RATE = (ANCHORS.savingsRate.find(([, score]) => score === 100) ?? [0.2])[0]
+
+/**
+ * Pay yourself first: the monthly amount that would lift the savings rate to the one that
+ * earns full points. `target` is that rate, a ratio.
+ */
+function saveOnPayday(m: Measures, subScore: number): Tip | null {
+  if (subScore >= 100 || m.savingsRate === null || m.savingsRate >= FULL_POINTS_SAVINGS_RATE) {
+    return null
+  }
+  const averageIncome = m.income / m.months.length
+  const amount = toPaisa(averageIncome * (FULL_POINTS_SAVINGS_RATE - m.savingsRate))
+  if (!(amount > 0)) return null
+  return { id: 'save_on_payday', values: { amount, target: FULL_POINTS_SAVINGS_RATE } }
+}
+
 function cutBiggestWant(m: Measures, subScore: number): Tip | null {
   if (subScore >= CUT_BIGGEST_WANT_BELOW) return null
 
@@ -121,6 +139,7 @@ function steadySpending(m: Measures, subScore: number): Tip | null {
  */
 export const TIP_MEASURE: Readonly<Partial<Record<TipId, MeasureId>>> = {
   avoid_cash_fees: 'savingsRate',
+  save_on_payday: 'savingsRate',
   start_dps: 'emergencySavings',
   debt_highest_interest: 'debtPayments',
   cut_biggest_want: 'needsWants',
@@ -128,12 +147,12 @@ export const TIP_MEASURE: Readonly<Partial<Record<TipId, MeasureId>>> = {
 }
 
 /** The tip each measure can lead to, given its sub-score. */
-const TIP_FOR_MEASURE: Record<MeasureId, (m: Measures, subScore: number) => Tip | null> = {
-  savingsRate: avoidCashFees,
-  emergencySavings: startDps,
-  debtPayments: debtHighestInterest,
-  needsWants: cutBiggestWant,
-  stability: steadySpending,
+const TIP_FOR_MEASURE: Record<MeasureId, ((m: Measures, subScore: number) => Tip | null)[]> = {
+  savingsRate: [avoidCashFees, saveOnPayday],
+  emergencySavings: [startDps],
+  debtPayments: [debtHighestInterest],
+  needsWants: [cutBiggestWant],
+  stability: [steadySpending],
 }
 
 function keepGoing(): Tip {
@@ -159,8 +178,10 @@ export function pickTips(_ds: Dataset, m: Measures, r: ScoreResult): Tip[] {
   for (const reason of topReasons(r)) {
     const subScore = subScores.get(reason.measure) ?? null
     if (reason.kind !== 'improve' || subScore === null) continue
-    const tip = TIP_FOR_MEASURE[reason.measure](m, subScore)
-    if (tip) tips.push(tip)
+    for (const rule of TIP_FOR_MEASURE[reason.measure]) {
+      const tip = rule(m, subScore)
+      if (tip) tips.push(tip)
+    }
   }
 
   if (m.uncategorisedShare >= UNCATEGORISED_FROM) {

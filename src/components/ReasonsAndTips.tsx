@@ -134,6 +134,8 @@ function TipText({ tip }: { tip: Tip }) {
         }
       case 'cut_biggest_want':
         return { category: category(String(tip.values.category)), amount: money(number('amount')) }
+      case 'save_on_payday':
+        return { amount: money(number('amount')), target: formatPercent(number('target'), locale) }
       case 'avoid_cash_fees':
         return { category: category('fees'), amount: money(number('amount')) }
       case 'steady_spending':
@@ -155,13 +157,13 @@ function TipText({ tip }: { tip: Tip }) {
 function ReasonItem({
   reason,
   score,
-  tip,
+  tips,
   dataset,
   measures,
 }: {
   reason: Reason
   score: number | null
-  tip: Tip | undefined
+  tips: Tip[]
   dataset: Dataset
   measures: Measures
 }) {
@@ -193,14 +195,16 @@ function ReasonItem({
           )}
         </p>
       </div>
-      {tip && (
+      {tips.length > 0 && (
         <div className={styles.help}>
           <p className={styles.label}>
             <FormattedMessage id="reasons.help" />
           </p>
-          <p>
-            <TipText tip={tip} />
-          </p>
+          {tips.map((tip) => (
+            <p key={tip.id}>
+              <TipText tip={tip} />
+            </p>
+          ))}
         </div>
       )}
     </li>
@@ -222,7 +226,7 @@ export function ReasonsAndTips({ dataset, measures, result }: ReasonsAndTipsProp
   if (result.status !== 'scored' || result.score === null) return null
 
   const strengths = reasons.every((reason) => reason.kind === 'strength')
-  const tipFor = (measure: MeasureId) => tips.find((tip) => TIP_MEASURE[tip.id] === measure)
+  const tipsFor = (measure: MeasureId) => tips.filter((tip) => TIP_MEASURE[tip.id] === measure)
   const others = tips.filter(
     (tip) => !reasons.some((reason) => TIP_MEASURE[tip.id] === reason.measure),
   )
@@ -252,7 +256,7 @@ export function ReasonsAndTips({ dataset, measures, result }: ReasonsAndTipsProp
             key={reason.measure}
             reason={reason}
             score={result.lines.find((line) => line.id === reason.measure)?.subScore ?? null}
-            tip={tipFor(reason.measure)}
+            tips={tipsFor(reason.measure)}
             dataset={dataset}
             measures={measures}
           />

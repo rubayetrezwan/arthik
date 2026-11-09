@@ -138,6 +138,7 @@
   "reason.stability": "Your monthly spending varies by about {share}. Varying by {target} or less scores {max}.",
   "reason.stability.under": "Your monthly spending varies by under {share}. Varying by {target} or less scores {max}.",
   "tip.start_dps": "Saving an extra {amount} a month, for example in a Deposit Pension Scheme (DPS), would build your emergency savings to {target} months of essentials in about {months, plural, one {# month} other {# months}}.",
+  "tip.save_on_payday": "Move {amount} into savings on the day your income arrives, before you spend. That would bring your savings rate to {target}.",
   "tip.cut_biggest_want": "{category} averaged {amount} a month, the biggest of your wants. The first slider below shows what cutting back would do.",
   "tip.avoid_cash_fees": "{category} averaged {amount} a month. Paying shops straight from your mobile wallet or card, instead of cashing out first, avoids cash-out charges.",
   "tip.debt_highest_interest": "If you can pay more than the minimum on any of your debts, putting the extra toward the one with the highest interest rate saves you the most.",
