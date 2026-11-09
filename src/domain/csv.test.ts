@@ -325,6 +325,67 @@ describe('parseTransactionsCsv: debit and credit columns', () => {
   })
 })
 
+describe('parseTransactionsCsv: month names and header aliases (R55)', () => {
+  it.each([
+    ['05-Oct-2026', '2026-10-05'],
+    ['5 oct 2026', '2026-10-05'],
+    ['05/OCT/2026', '2026-10-05'],
+    ['31 October 2026', '2026-10-31'],
+    ['1-sep-2026', '2026-09-01'],
+    ['29-Feb-2028', '2028-02-29'],
+  ])('reads %s as %s', (cell, expected) => {
+    const { transactions, errors } = parseRow(`${cell},Test,-10,,`)
+    expect(errors).toEqual([])
+    expect(transactions[0]?.date).toBe(expected)
+  })
+
+  it.each(['31-Feb-2026', '32-Oct-2026', '05-Foo-2026', '05-Oct/2026'])('rejects %s', (cell) => {
+    const { transactions, errors } = parseRow(`${cell},Test,-10,,`)
+    expect(transactions).toEqual([])
+    expect(errors[0]?.code).toBe('bad_date')
+  })
+
+  it('reads a bank export with Transaction Date, Particulars, Withdrawal, Deposit', () => {
+    const { transactions, errors } = parseTransactionsCsv(
+      file(
+        'Transaction Date,Particulars,Withdrawal,Deposit,Balance',
+        '05-Oct-2026,Salary October,,"45,000.00","50,000.00"',
+        '07-Oct-2026,bKash Cash Out,"2,000.00",,"48,000.00"',
+        '10/10/2026,DESCO Bill,"1,250.50",,"46,749.50"',
+      ),
+      'BDT',
+    )
+    expect(errors.filter((e) => e.code !== 'month_first_dates')).toEqual([])
+    expect(transactions.map((t) => [t.date, t.amount])).toEqual([
+      ['2026-10-05', 45000],
+      ['2026-10-07', -2000],
+      ['2026-10-10', -1250.5],
+    ])
+  })
+
+  it.each([
+    ['Txn Date,Narration,Debit Amount,Credit Amount'],
+    ['Value Date,Remarks,Withdrawal Amount,Deposit Amount'],
+    ['Posting Date,Transaction Details,Debit,Credit'],
+    ['Date,Details,Debit,Credit'],
+  ])('accepts the header %s', (header) => {
+    const { transactions, errors } = parseTransactionsCsv(
+      file(header, '2026-10-05,Salary,,1000', '2026-10-06,Rent,400,'),
+      'BDT',
+    )
+    expect(errors).toEqual([])
+    expect(transactions.map((t) => t.amount)).toEqual([1000, -400])
+  })
+
+  it('still treats bare DR/CR as a direction column', () => {
+    const { errors } = parseTransactionsCsv(
+      file('date,description,amount,dr/cr', '2026-10-05,x,10,DR'),
+      'BDT',
+    )
+    expect(errors[0]?.code).toBe('direction_column')
+  })
+})
+
 describe('parseTransactionsCsv: dates', () => {
   it.each([
     ['31/10/2026', '2026-10-31'],
@@ -2979,9 +3040,11 @@ describe('the downloadable template', () => {
     ])
   })
 
-  it('has every row recognised, so the first score has nothing to ask the visitor to sort', () => {
+  it('has every payment recognised, and a little money in the categoriser leaves unrecognised (R60)', () => {
     expect(transactions.filter((t) => t.category === 'uncategorised_out')).toEqual([])
-    expect(transactions.filter((t) => t.unrecognisedIncome)).toEqual([])
+    const unrecognised = transactions.filter((t) => t.unrecognisedIncome)
+    expect(unrecognised.length).toBeGreaterThanOrEqual(1)
+    expect(unrecognised.length).toBeLessThanOrEqual(2)
   })
 
   it('is a salaried person in BDT, with some categories given and most left blank', () => {
