@@ -127,6 +127,7 @@ const COGNATES: Partial<Record<LocaleCode, string[]>> = {
     'transactions.date',
     'transactions.description',
     'howItWorks.bands.scores',
+    'nav.score',
   ],
 }
 

@@ -209,6 +209,28 @@ const READ_COLUMNS: ReadonlyMap<string, string> = new Map([
   ['category', 'category'],
 ])
 
+// How readily a name is taken for its column (R55). The names the reader first knew are 0; the
+// bank-export names added since are 1, and Value Date is 2. A real export often has both
+// "Date" and "Value Date", or "Description" and "Remarks", and the lower-priority name must
+// not turn a file that always parsed into a duplicate-column error: a name is only used, and
+// only counted as a duplicate, when no name of a better rank stands for the same column.
+const NAME_RANK: ReadonlyMap<string, number> = new Map([
+  ['transaction date', 1],
+  ['txn date', 1],
+  ['posting date', 1],
+  ['value date', 2],
+  ['particulars', 1],
+  ['narration', 1],
+  ['details', 1],
+  ['remarks', 1],
+  ['transaction details', 1],
+  ['withdrawal amount', 1],
+  ['debit amount', 1],
+  ['deposit amount', 1],
+  ['credit amount', 1],
+])
+const rankOf = (name: string): number => NAME_RANK.get(name) ?? 0
+
 function readHeader(
   cells: readonly string[],
   row: number,
@@ -223,7 +245,10 @@ function readHeader(
   }
 
   const aliases = (column: string): string[] =>
-    [...READ_COLUMNS].filter(([, id]) => id === column).map(([name]) => name)
+    [...READ_COLUMNS]
+      .filter(([, id]) => id === column)
+      .map(([name]) => name)
+      .sort((a, b) => rankOf(a) - rankOf(b))
   const date = find(...aliases('date'))
   const description = find(...aliases('description'))
   const signed = find('amount')
@@ -248,6 +273,11 @@ function readHeader(
   names.forEach((name, index) => {
     const column = READ_COLUMNS.get(name)
     if (column === undefined) return
+    // A name a better one for the same column outranks is not read, so it is not a duplicate.
+    const best = Math.min(
+      ...names.filter((other) => READ_COLUMNS.get(other) === column).map(rankOf),
+    )
+    if (rankOf(name) > best) return
     const first = firstNameOf.get(column)
     if (first === undefined) {
       firstNameOf.set(column, name)

@@ -131,6 +131,8 @@ export function UploadPage() {
   /** The example file: the template, fetched from this site and read like a file the visitor chose. */
   async function tryExample() {
     if (reading) return
+    const savings = savingsOrStop()
+    if (!savings) return
     setReading(true)
     setExampleFailed(false)
     let text: string
@@ -149,7 +151,7 @@ export function UploadPage() {
       setExampleFailed(true)
       return
     }
-    finish(result.transactions, { kind: 'empty' })
+    finish(result.transactions, savings)
   }
 
   function continueWithValidRows() {

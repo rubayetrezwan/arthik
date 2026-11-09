@@ -377,6 +377,17 @@ describe('parseTransactionsCsv: month names and header aliases (R55)', () => {
     expect(transactions.map((t) => t.amount)).toEqual([1000, -400])
   })
 
+  it.each([
+    ['Date,Value Date,Description,Amount', '2026-10-05,2026-10-06,Salary,1000'],
+    ['Txn Date,Value Date,Narration,Amount', '2026-10-05,2026-10-06,Salary,1000'],
+    ['Date,Description,Remarks,Amount', '2026-10-05,Salary,note,1000'],
+    ['Date,Description,Details,Amount', '2026-10-05,Salary,note,1000'],
+  ])('does not turn an extra name into a duplicate column: %s', (header, row) => {
+    const { transactions, errors } = parseTransactionsCsv(file(header, row), 'BDT')
+    expect(errors).toEqual([])
+    expect(transactions.map((t) => [t.date, t.amount])).toEqual([['2026-10-05', 1000]])
+  })
+
   it('still treats bare DR/CR as a direction column', () => {
     const { errors } = parseTransactionsCsv(
       file('date,description,amount,dr/cr', '2026-10-05,x,10,DR'),

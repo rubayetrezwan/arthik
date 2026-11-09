@@ -1,6 +1,8 @@
 import { useId, type Ref } from 'react'
 import { FormattedMessage } from 'react-intl'
 import { MEASURE_IDS } from '../domain/score'
+import { formatNumber } from '../i18n/format'
+import { useLocale } from '../i18n/I18nProvider'
 import { parseAmount } from '../domain/csvCells'
 import type { CurrencyCode } from '../domain/types'
 import styles from './SavingsField.module.css'
@@ -42,6 +44,7 @@ interface SavingsFieldProps {
 
 /** The emergency savings, in the display currency. */
 export function SavingsField({ value, onChange, invalid, currency, inputRef }: SavingsFieldProps) {
+  const locale = useLocale()
   const id = useId()
   const hintId = useId()
   const errorId = useId()
@@ -52,11 +55,14 @@ export function SavingsField({ value, onChange, invalid, currency, inputRef }: S
         <FormattedMessage id="upload.savings.label" />
       </label>
       <p id={hintId} className={styles.hint}>
-        <FormattedMessage id="upload.savings.hint" values={{
+        <FormattedMessage
+          id="upload.savings.hint"
+          values={{
             currency,
-            scored: MEASURE_IDS.length - 1,
-            total: MEASURE_IDS.length,
-          }} />
+            scored: formatNumber(MEASURE_IDS.length - 1, locale),
+            total: formatNumber(MEASURE_IDS.length, locale),
+          }}
+        />
       </p>
       <div className={styles.row}>
         <span className={styles.unit} aria-hidden="true">

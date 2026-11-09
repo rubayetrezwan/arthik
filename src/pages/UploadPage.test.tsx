@@ -214,6 +214,33 @@ describe('UploadPage: where to get your file, the example and the privacy check 
     vi.unstubAllGlobals()
   })
 
+  it('the example uses the savings already typed', async () => {
+    vi.stubGlobal('fetch', vi.fn(() => Promise.resolve(new Response(template))))
+    const { router, user } = renderUpload()
+
+    await user.type(main().getByLabelText('Emergency savings'), '25,000')
+    await user.click(main().getByRole('button', { name: 'Try it with our example file' }))
+
+    await waitFor(() => expect(router.state.location.pathname).toBe('/score/mine'))
+    expect(session().upload?.emergencySavings).toEqual({ amount: 25000, currency: 'BDT' })
+    vi.unstubAllGlobals()
+  })
+
+  it('the example stops on savings it cannot read, like Continue', async () => {
+    vi.stubGlobal('fetch', vi.fn(() => Promise.resolve(new Response(template))))
+    const { router, user } = renderUpload()
+
+    const savings = main().getByLabelText('Emergency savings')
+    await user.type(savings, 'abc')
+    await user.click(main().getByRole('button', { name: 'Try it with our example file' }))
+
+    expect(savings).toHaveAttribute('aria-invalid', 'true')
+    expect(savings).toHaveFocus()
+    expect(router.state.location.pathname).toBe('/upload')
+    expect(session().upload).toBeNull()
+    vi.unstubAllGlobals()
+  })
+
   it('says so when the example cannot be loaded', async () => {
     vi.stubGlobal('fetch', vi.fn(() => Promise.reject(new Error('offline'))))
     const { router, user } = renderUpload()
