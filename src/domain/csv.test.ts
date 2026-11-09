@@ -3040,9 +3040,11 @@ describe('the downloadable template', () => {
     ])
   })
 
-  it('has every row recognised, so the first score has nothing to ask the visitor to sort', () => {
+  it('has every payment recognised, and a little money in the categoriser leaves unrecognised (R60)', () => {
     expect(transactions.filter((t) => t.category === 'uncategorised_out')).toEqual([])
-    expect(transactions.filter((t) => t.unrecognisedIncome)).toEqual([])
+    const unrecognised = transactions.filter((t) => t.unrecognisedIncome)
+    expect(unrecognised.length).toBeGreaterThanOrEqual(1)
+    expect(unrecognised.length).toBeLessThanOrEqual(2)
   })
 
   it('is a salaried person in BDT, with some categories given and most left blank', () => {
