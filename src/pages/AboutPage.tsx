@@ -6,6 +6,9 @@ import { PageHead } from '../components/PageHead'
 import styles from './AboutPage.module.css'
 import { useHabitsFigures } from './useHabitsFigures'
 
+export const METHODOLOGY_URL = `${SOURCE_CODE_URL}/blob/main/METHODOLOGY.md`
+export const HOW_IT_WORKS_DOC_URL = `${SOURCE_CODE_URL}/blob/main/docs/how-it-works.md`
+
 /** A ruled section named by its h2. */
 function AboutSection({ titleId, children }: { titleId: string; children: ReactNode }) {
   const headingId = useId()
@@ -77,6 +80,25 @@ export function AboutPage() {
             <FormattedMessage id="about.ai.translations" />
           </li>
         </ul>
+      </AboutSection>
+
+      <AboutSection titleId="about.choices.title">
+        <ul className={styles.list}>
+          {(['family', 'cash', 'unrecognised', 'credit'] as const).map((id) => (
+            <li key={id}>
+              <FormattedMessage id={`about.choices.${id}`} />
+            </li>
+          ))}
+        </ul>
+        <p className={styles.prose}>
+          <FormattedMessage
+            id="about.choices.more"
+            values={{
+              methodology: (chunks) => <a href={METHODOLOGY_URL}>{chunks}</a>,
+              howItWorks: (chunks) => <a href={HOW_IT_WORKS_DOC_URL}>{chunks}</a>,
+            }}
+          />
+        </p>
       </AboutSection>
 
       <AboutSection titleId="about.not.title">

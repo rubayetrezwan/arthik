@@ -31,6 +31,33 @@ function section(name: string): HTMLElement {
 }
 
 describe('AboutPage', () => {
+  it('lists four choices made for real users, with links to the written methodology', () => {
+    renderApp('/about')
+
+    const choices = section('Choices made for real users')
+    expect(within(choices).getAllByRole('listitem')).toHaveLength(4)
+    expect(choices).toHaveTextContent('Money sent to family counts as an essential, not a want.')
+    expect(choices).toHaveTextContent('never a credit score or a lending signal')
+    expect(within(choices).getByRole('link', { name: 'methodology' })).toHaveAttribute(
+      'href',
+      'https://github.com/rubayetrezwan/arthik/blob/main/METHODOLOGY.md',
+    )
+    expect(within(choices).getByRole('link', { name: 'how it works' })).toHaveAttribute(
+      'href',
+      'https://github.com/rubayetrezwan/arthik/blob/main/docs/how-it-works.md',
+    )
+  })
+
+  it('says who reviewed which translations', () => {
+    renderApp('/about')
+
+    expect(
+      section('Who made it'),
+    ).toHaveTextContent(
+      'Bengali was reviewed by the author. The other languages were checked by a second AI pass, not yet by native speakers.',
+    )
+  })
+
   it('has exactly one h1, and headings that never skip a level', () => {
     renderApp('/about')
 
@@ -48,7 +75,13 @@ describe('AboutPage', () => {
       main()
         .getAllByRole('heading', { level: 2 })
         .map((heading) => heading.textContent),
-    ).toEqual(['Why it was made', 'Who made it', 'What Arthik is not', 'Source code'])
+    ).toEqual([
+      'Why it was made',
+      'Who made it',
+      'Choices made for real users',
+      'What Arthik is not',
+      'Source code',
+    ])
   })
 
   it('says why it was made: financial inclusion, and habits rather than income', () => {
@@ -77,7 +110,7 @@ describe('AboutPage', () => {
     expect(who).toHaveTextContent('It was built with Claude Code.')
     expect(who).toHaveTextContent('The score never comes from AI.')
     expect(who).toHaveTextContent('summaries of the sample people were written with Claude')
-    expect(who).toHaveTextContent('The translations are AI-assisted.')
+    expect(who).toHaveTextContent('Bengali was reviewed by the author.')
     expect(within(who).getByRole('link', { name: 'How the score works' })).toHaveAttribute(
       'href',
       '#/how-it-works',
