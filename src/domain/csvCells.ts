@@ -62,6 +62,37 @@ export interface DateReading {
   monthFirstOnly: boolean
 }
 
+const MONTH_NAMES = [
+  'january',
+  'february',
+  'march',
+  'april',
+  'may',
+  'june',
+  'july',
+  'august',
+  'september',
+  'october',
+  'november',
+  'december',
+]
+
+// DD-MMM-YYYY, DD MMM YYYY, DD/MMM/YYYY with an English month, abbreviated or in full.
+const NAMED_MONTH_DATE = new RegExp(
+  String.raw`^(\d{1,2})([/\s-])([A-Za-z]{3,9})\2(\d{4})(?:\s+(?:${TIME_OF_DAY}))?$`,
+)
+
+function monthNumber(name: string): number | null {
+  const lower = name.toLowerCase()
+  const index = MONTH_NAMES.findIndex(
+    (full) =>
+      full === lower ||
+      (lower.length === 3 && full.startsWith(lower)) ||
+      (lower === 'sept' && full === 'september'),
+  )
+  return index === -1 ? null : index + 1
+}
+
 const NOT_A_DATE: DateReading = { date: null, ambiguous: false, monthFirstOnly: false }
 
 /**
@@ -96,6 +127,17 @@ export function readDateCell(text: string): DateReading {
       date,
       ambiguous: date !== null && monthFirst !== null && first !== second,
       monthFirstOnly: date === null && monthFirst !== null,
+    }
+  }
+  const named = NAMED_MONTH_DATE.exec(digits.trim())
+  if (named) {
+    const month = monthNumber(named[3] ?? '')
+    if (month !== null) {
+      return {
+        date: buildDate(Number(named[4]), month, Number(named[1])),
+        ambiguous: false,
+        monthFirstOnly: false,
+      }
     }
   }
   return NOT_A_DATE

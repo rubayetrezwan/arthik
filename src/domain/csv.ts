@@ -186,12 +186,25 @@ function directionKey(text: string): string {
 // in the second.
 const READ_COLUMNS: ReadonlyMap<string, string> = new Map([
   ['date', 'date'],
+  ['transaction date', 'date'],
+  ['txn date', 'date'],
+  ['value date', 'date'],
+  ['posting date', 'date'],
   ['description', 'description'],
+  ['particulars', 'description'],
+  ['narration', 'description'],
+  ['details', 'description'],
+  ['remarks', 'description'],
+  ['transaction details', 'description'],
   ['amount', 'amount'],
   ['debit', 'debit'],
   ['withdrawal', 'debit'],
+  ['withdrawal amount', 'debit'],
+  ['debit amount', 'debit'],
   ['credit', 'credit'],
   ['deposit', 'credit'],
+  ['deposit amount', 'credit'],
+  ['credit amount', 'credit'],
   ['currency', 'currency'],
   ['category', 'category'],
 ])
@@ -209,11 +222,13 @@ function readHeader(
     return null
   }
 
-  const date = find('date')
-  const description = find('description')
+  const aliases = (column: string): string[] =>
+    [...READ_COLUMNS].filter(([, id]) => id === column).map(([name]) => name)
+  const date = find(...aliases('date'))
+  const description = find(...aliases('description'))
   const signed = find('amount')
-  const debit = find('debit', 'withdrawal')
-  const credit = find('credit', 'deposit')
+  const debit = find(...aliases('debit'))
+  const credit = find(...aliases('credit'))
   // One half of a pair is not enough to tell money in from money out.
   const amount: AmountColumns | null = signed
     ? { kind: 'signed', amount: signed }
