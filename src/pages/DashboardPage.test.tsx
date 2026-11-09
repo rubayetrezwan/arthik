@@ -360,6 +360,80 @@ describe('DashboardPage: your own transactions', () => {
   })
 })
 
+const NO_SAVINGS_GIVEN: Dataset = {
+  key: 'mine',
+  emergencySavings: null,
+  transactions: threeMonths((m) => [
+    tx(`${m}-01`, 'salary', 40_000),
+    tx(`${m}-02`, 'rent', -12_000),
+    tx(`${m}-10`, 'groceries', -6_000),
+    tx(`${m}-28`, 'eating_out', -2_500),
+  ]),
+}
+
+describe('DashboardPage: adding emergency savings to a file without them (R56)', () => {
+  it('says the score rests on four of five measures, and what would make it five', () => {
+    renderScore(NO_SAVINGS_GIVEN)
+
+    expect(screen.getByTestId('score-basis')).toHaveTextContent(
+      'Based on 4 of 5 measures. Add your emergency savings below for the full score.',
+    )
+  })
+
+  it('says only how many measures when something else is missing', () => {
+    renderScore(EDGE_DATASETS['one complete month']!)
+
+    expect(screen.getByTestId('score-basis')).toHaveTextContent(/^Based on 4 of 5 measures\.$/)
+  })
+
+  it('says nothing about it when all five measures are scored, as for every sample', () => {
+    renderScore('nusrat')
+
+    expect(screen.queryByTestId('score-basis')).not.toBeInTheDocument()
+    expect(screen.queryByLabelText(/^Add your emergency savings/)).not.toBeInTheDocument()
+  })
+
+  it('offers a labelled field in the Emergency savings row, and re-scores with what is entered', async () => {
+    const user = userEvent.setup()
+    renderScore(NO_SAVINGS_GIVEN)
+    const before = computeScore(computeMeasures(NO_SAVINGS_GIVEN)).score
+
+    const row = screen.getByRole('rowheader', { name: /Emergency savings/ }).closest('tr')!
+    await user.type(within(row).getByLabelText('Add your emergency savings (BDT)'), '20000')
+    await user.click(within(row).getByRole('button', { name: 'Update score' }))
+
+    const after = computeScore(
+      computeMeasures({ ...NO_SAVINGS_GIVEN, emergencySavings: { amount: 20_000, currency: 'BDT' } }),
+    ).score
+    expect(after).not.toBe(before)
+    expect(screen.getByTestId('score')).toHaveTextContent(String(after))
+    expect(screen.queryByTestId('score-basis')).not.toBeInTheDocument()
+    expect(screen.queryByLabelText(/^Add your emergency savings/)).not.toBeInTheDocument()
+    // Nothing about it is kept.
+    expect(localStorage.getItem('arthik.savings')).toBeNull()
+    expect(Object.keys(localStorage).sort()).toEqual(['arthik.locale'])
+  })
+
+  it.each(['-5', 'abc', '1e9999', 'NaN', 'Infinity', ''])(
+    'rejects %j and leaves the score as it was',
+    async (typed) => {
+      const user = userEvent.setup()
+      renderScore(NO_SAVINGS_GIVEN)
+      const before = screen.getByTestId('score').textContent
+
+      const field = screen.getByLabelText('Add your emergency savings (BDT)')
+      if (typed) await user.type(field, typed)
+      await user.click(screen.getByRole('button', { name: 'Update score' }))
+
+      expect(
+        screen.getByText('Enter the amount in digits, with a point before any decimals.'),
+      ).toBeInTheDocument()
+      expect(field).toHaveAttribute('aria-invalid', 'true')
+      expect(screen.getByTestId('score')).toHaveTextContent(before!)
+    },
+  )
+})
+
 describe('DashboardPage: explore your money', () => {
   /** The headings of the sections under "Explore your money", in order. */
   function sections() {

@@ -1,0 +1,74 @@
+.form {
+  margin-block-start: var(--s2);
+}
+
+.label {
+  display: block;
+  font-size: 15px;
+  font-weight: 600;
+}
+
+/* The currency stands in front of the box, as on a cheque. */
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: stretch;
+  gap: var(--s2);
+  margin-block-start: var(--s1);
+}
+
+.unit {
+  display: inline-flex;
+  align-items: center;
+  padding-inline: var(--s3);
+  border: 1px solid var(--control);
+  border-inline-end: 0;
+  border-start-start-radius: var(--radius);
+  border-end-start-radius: var(--radius);
+  background: var(--bg);
+  color: var(--ink-2);
+  font-size: 15px;
+  /* Joins the box beside it; the gap is only for the button. */
+  margin-inline-end: calc(var(--s2) * -1);
+}
+
+.input {
+  flex: 1 1 8em;
+  min-inline-size: 0;
+  max-inline-size: 14em;
+  min-block-size: 44px;
+  padding-inline: var(--s3);
+  border: 1px solid var(--control);
+  border-start-end-radius: var(--radius);
+  border-end-end-radius: var(--radius);
+  background: var(--surface);
+  font-variant-numeric: tabular-nums lining-nums;
+}
+
+.input[aria-invalid="true"] {
+  border-color: var(--red);
+  border-width: 2px;
+}
+
+.button {
+  min-block-size: 44px;
+  padding-inline: var(--s4);
+  border: 1px solid var(--primary);
+  border-radius: var(--radius);
+  background: transparent;
+  color: var(--primary);
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.button:hover {
+  background: var(--surface);
+}
+
+.problem {
+  margin-block-start: var(--s2);
+  padding-inline-start: var(--s3);
+  border-inline-start: 3px solid var(--red);
+  color: var(--red);
+  font-weight: 500;
+}

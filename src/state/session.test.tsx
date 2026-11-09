@@ -100,6 +100,29 @@ describe('useActiveDataset', () => {
   })
 })
 
+describe('setUploadSavings', () => {
+  it('sets the savings of the visitor’s file and keeps the category changes made to it', () => {
+    renderAt('/score/mine')
+    act(() => seen.session.setUpload(upload))
+    act(() => seen.session.overrideCategory('row-3', 'gifts'))
+
+    act(() => seen.session.setUploadSavings({ amount: 9000, currency: 'BDT' }))
+
+    expect(seen.dataset?.emergencySavings).toEqual({ amount: 9000, currency: 'BDT' })
+    expect(seen.dataset?.transactions[1]?.category).toBe('gifts')
+    // Nothing about it reaches storage.
+    expect(localStorage.length).toBe(0)
+  })
+
+  it('does nothing before there is a file', () => {
+    renderAt('/score/mine')
+
+    act(() => seen.session.setUploadSavings({ amount: 9000, currency: 'BDT' }))
+
+    expect(seen.session.upload).toBeNull()
+  })
+})
+
 describe('category changes', () => {
   it('change the one transaction and leave the rest alone', () => {
     renderAt('/score/nusrat')

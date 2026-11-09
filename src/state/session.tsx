@@ -32,6 +32,7 @@ interface Active {
 interface SessionState {
   upload: Dataset | null
   setUpload(d: Dataset | null): void
+  setUploadSavings(savings: Dataset['emergencySavings']): void
   active: Active | null
   show(key: DatasetKey): void
   edit(key: DatasetKey, txId: string, c: CategoryId): void
@@ -40,6 +41,8 @@ interface SessionState {
 export interface Session {
   upload: Dataset | null
   setUpload(d: Dataset | null): void
+  /** Sets the emergency savings of the visitor's file, keeping their category changes. */
+  setUploadSavings(savings: Dataset['emergencySavings']): void
   /** The category changes made to the dataset on screen. */
   overrides: Overrides
   /** Changes one transaction's category in the dataset on screen. */
@@ -66,6 +69,11 @@ export function SessionProvider({ children }: { children: ReactNode }) {
     setActive((current) => (current?.key === 'mine' ? null : current))
   }, [])
 
+  // Unlike setUpload, the file is the same, so the category changes made to it stay.
+  const setUploadSavings = useCallback((savings: Dataset['emergencySavings']) => {
+    setUploadState((current) => (current ? { ...current, emergencySavings: savings } : current))
+  }, [])
+
   const show = useCallback((key: DatasetKey) => {
     setActive((current) => (current?.key === key ? current : { key, overrides: {} }))
   }, [])
@@ -78,8 +86,8 @@ export function SessionProvider({ children }: { children: ReactNode }) {
   }, [])
 
   const state = useMemo(
-    () => ({ upload, setUpload, active, show, edit }),
-    [upload, setUpload, active, show, edit],
+    () => ({ upload, setUpload, setUploadSavings, active, show, edit }),
+    [upload, setUpload, setUploadSavings, active, show, edit],
   )
 
   return <SessionContext value={state}>{children}</SessionContext>
@@ -98,7 +106,7 @@ export function useRouteDatasetKey(): DatasetKey | null {
 }
 
 export function useSession(): Session {
-  const { upload, setUpload, active, edit } = useSessionState()
+  const { upload, setUpload, setUploadSavings, active, edit } = useSessionState()
   const key = useRouteDatasetKey()
 
   const overrideCategory = useCallback(
@@ -111,6 +119,7 @@ export function useSession(): Session {
   return {
     upload,
     setUpload,
+    setUploadSavings,
     overrides: key !== null && active?.key === key ? active.overrides : NO_OVERRIDES,
     overrideCategory,
     activeKey: active?.key ?? null,

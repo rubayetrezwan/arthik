@@ -1,5 +1,6 @@
 import { useId, useMemo } from 'react'
 import { FormattedMessage } from 'react-intl'
+import { AddSavings } from '../components/AddSavings'
 import { CategoryChart } from '../components/CategoryChart'
 import { Ledger } from '../components/Ledger'
 import { MonthlyChart } from '../components/MonthlyChart'
@@ -11,6 +12,7 @@ import { TransactionsTable } from '../components/TransactionsTable'
 import { WhatIf } from '../components/WhatIf'
 import { getLoadedSample } from '../data/samples/loadSamples'
 import { summaryValues } from '../data/samples/summaryValues'
+import { MEASURE_IDS } from '../domain/score'
 import type { Dataset, PersonId } from '../domain/types'
 import { useScoreStatus, type Scored } from '../hooks/useScore'
 import { formatMonthRange } from '../i18n/format'
@@ -84,6 +86,18 @@ export function DashboardPage() {
   const { dataset, result } = scored
   const person = dataset.key === 'mine' ? null : dataset.key
   const [first, last] = [result.months[0], result.months.at(-1)]
+  // Whenever a measure is left out the score rests on fewer than all of them, and says so.
+  const left = result.lines.filter((line) => line.subScore === null)
+  const basis =
+    left.length > 0
+      ? {
+          scored: result.lines.length - left.length,
+          total: MEASURE_IDS.length,
+          missingSavings: left.some(
+            (line) => line.id === 'emergencySavings' && line.notScoredReason === 'no_savings_given',
+          ),
+        }
+      : undefined
 
   return (
     <>
@@ -118,8 +132,13 @@ export function DashboardPage() {
               summary && <FormattedMessage id={`sample.${writtenFor}.summary`} values={summary} />
             }
             summaryHidden={person !== null && !writtenFor}
+            basis={basis}
           />
-          <Ledger result={result} uncategorisedShare={scored.measures.uncategorisedShare} />
+          <Ledger
+            result={result}
+            uncategorisedShare={scored.measures.uncategorisedShare}
+            savingsEntry={dataset.key === 'mine' ? <AddSavings /> : undefined}
+          />
         </div>
       ) : (
         <NotScoredNotice result={result} dataset={dataset} />

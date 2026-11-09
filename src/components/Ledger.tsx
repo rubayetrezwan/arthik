@@ -20,6 +20,8 @@ interface LedgerProps {
   result: ScoreResult
   /** Uncategorised money out as a share of spending (spec 5.3). */
   uncategorisedShare: number
+  /** A way to add the emergency savings, shown in that measure's row when they were not given. */
+  savingsEntry?: ReactNode
 }
 
 /** A measure's own number, in plain words. Null when it could not be worked out. */
@@ -57,7 +59,7 @@ function plainValue({ id, raw }: LedgerLine, locale: LocaleCode): ReactNode {
   }
 }
 
-function LedgerRow({ line }: { line: LedgerLine }) {
+function LedgerRow({ line, entry }: { line: LedgerLine; entry?: ReactNode }) {
   const intl = useIntl()
   const locale = useLocale()
   const { id, subScore, band, weightTenths, pointsHundredths, notScoredReason } = line
@@ -71,6 +73,7 @@ function LedgerRow({ line }: { line: LedgerLine }) {
           <FormattedMessage id={`measure.${id}.name`} />
         </span>
         {value && <span className={styles.value}>{value}</span>}
+        {entry}
       </th>
       <td role="cell" className={styles.scoreCell}>
         {scored ? (
@@ -131,7 +134,7 @@ function LedgerRow({ line }: { line: LedgerLine }) {
  * total, and the score it rounds to, double-ruled. The total is of points only. Weights
  * are never totalled, because shared-out weights are rounded and need not make 100%.
  */
-export function Ledger({ result, uncategorisedShare }: LedgerProps) {
+export function Ledger({ result, uncategorisedShare, savingsEntry }: LedgerProps) {
   const locale = useLocale()
   const titleId = useId()
   const { status, score, totalHundredths, lines } = result
@@ -171,7 +174,15 @@ export function Ledger({ result, uncategorisedShare }: LedgerProps) {
         </thead>
         <tbody role="rowgroup">
           {lines.map((line) => (
-            <LedgerRow key={line.id} line={line} />
+            <LedgerRow
+              key={line.id}
+              line={line}
+              entry={
+                line.id === 'emergencySavings' && line.notScoredReason === 'no_savings_given'
+                  ? savingsEntry
+                  : undefined
+              }
+            />
           ))}
         </tbody>
         <tfoot role="rowgroup">

@@ -34,6 +34,12 @@
   font-size: 18px;
 }
 
+.basis {
+  margin-block-start: var(--s1);
+  color: var(--ink-2);
+  font-size: 15px;
+}
+
 .band {
   color: var(--ink-2);
   font-size: 15px;

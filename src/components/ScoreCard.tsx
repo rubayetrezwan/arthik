@@ -14,10 +14,12 @@ interface ScoreCardProps {
   summary?: ReactNode
   /** The sample's categories were changed, so its summary no longer fits and is held back. */
   summaryHidden?: boolean
+  /** Set when some measure is not scored: how many were, of how many, and what is missing. */
+  basis?: { scored: number; total: number; missingSavings: boolean }
 }
 
 /** The score itself: the figure, its band as a stamp, the band scale and, for samples, the summary. */
-export function ScoreCard({ score, band, summary, summaryHidden = false }: ScoreCardProps) {
+export function ScoreCard({ score, band, summary, summaryHidden = false, basis }: ScoreCardProps) {
   const locale = useLocale()
   const titleId = useId()
 
@@ -36,6 +38,24 @@ export function ScoreCard({ score, band, summary, summaryHidden = false }: Score
           <FormattedMessage id="score.outOf" values={{ max: formatNumber(HIGHEST_SCORE, locale) }} />
         </span>
       </p>
+
+      {basis && (
+        <p className={styles.basis} data-testid="score-basis">
+          <FormattedMessage
+            id="score.basis"
+            values={{
+              scored: formatNumber(basis.scored, locale),
+              total: formatNumber(basis.total, locale),
+            }}
+          />
+          {basis.missingSavings && (
+            <>
+              {' '}
+              <FormattedMessage id="score.basis.addSavings" />
+            </>
+          )}
+        </p>
+      )}
 
       <p className={styles.band}>
         <span className={`${styles.stamp} ${styles[band]}`}>
