@@ -6,6 +6,7 @@
 export const CSV_EXAMPLES = {
   isoDate: '2026-10-31',
   dayFirstDate: '31/10/2026',
+  namedMonthDate: '31-Oct-2026',
   monthFirstDate: '10/31/2026',
   moneyIn: '55000',
   moneyOut: '-1250.50',

@@ -112,7 +112,7 @@ export function TransactionsTable({ transactions, onCategoryChange }: Transactio
   const visible = rows.slice(0, shown)
 
   return (
-    <section className={styles.section} aria-labelledby={titleId}>
+    <section className={styles.section} aria-labelledby={titleId} data-print="hide">
       <h3 id={titleId} className={styles.title}>
         <FormattedMessage id="transactions.title" />
       </h3>

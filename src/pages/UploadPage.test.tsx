@@ -137,9 +137,10 @@ describe('UploadPage: the page', () => {
         /Arthik reads it on this device and saves nothing, so refreshing the page clears it\./,
       ),
     ).toBeInTheDocument()
-    const link = main().getByRole('link', { name: 'Download the template' })
+    const link = main().getByRole('link', { name: 'Get the template' })
     expect(link).toHaveAttribute('href', `${import.meta.env.BASE_URL}arthik-template.csv`)
     expect(link).toHaveAttribute('download')
+    expect(main().getAllByRole('link', { name: /template/ })).toHaveLength(1)
   })
 
   it('explains the columns, the date formats and the credit card rule', () => {
@@ -150,7 +151,7 @@ describe('UploadPage: the page', () => {
       expect(help.getByText(column, { selector: 'dt code' })).toBeInTheDocument()
     }
     expect(help.getByText(/^The day of the transaction/)).toHaveTextContent(
-      'The day of the transaction, as 2026-10-31 or day first, as 31/10/2026. A time after the date is ignored.',
+      'The day of the transaction, as 2026-10-31, day first as 31/10/2026, or with the month written out, as 31-Oct-2026. A time after the date is ignored.',
     )
     expect(help.getByText(/^In place of/)).toHaveTextContent(
       'In place of amount, the file can have a debit column for money out and a credit column for money in, or withdrawal and deposit.',
@@ -166,6 +167,7 @@ describe('UploadPage: the page', () => {
   it('gives examples that the reader takes as it says', () => {
     expect(readDateCell(CSV_EXAMPLES.isoDate).date).toBe('2026-10-31')
     expect(readDateCell(CSV_EXAMPLES.dayFirstDate).date).toBe('2026-10-31')
+    expect(readDateCell(CSV_EXAMPLES.namedMonthDate).date).toBe('2026-10-31')
     expect(readDateCell(CSV_EXAMPLES.monthFirstDate).monthFirstOnly).toBe(true)
     expect(parseAmount(CSV_EXAMPLES.moneyIn)).toBeGreaterThan(0)
     expect(parseAmount(CSV_EXAMPLES.moneyOut)).toBeLessThan(0)
@@ -177,7 +179,7 @@ describe('UploadPage: the page', () => {
 
     const savings = main().getByLabelText('Emergency savings')
     expect(savings).toHaveAccessibleDescription(
-      'Money you could use in an emergency, such as savings in a bank account or mobile wallet, in BDT. Leave it empty only if you don’t know. Your score will then use 4 of the 5 measures.',
+      'Money you could use in an emergency, such as savings in a bank account or mobile wallet, in BDT. Leave it empty only if you don’t know. Emergency savings then isn’t scored, and your score is based on the other measures.',
     )
   })
 })
@@ -189,7 +191,7 @@ describe('UploadPage: where to get your file, the example and the privacy check 
     const where = main().getByRole('region', { name: 'Where to get your file' })
     expect(within(where).getByText(/download your statement as a CSV or Excel file/)).toBeInTheDocument()
     expect(within(where).getByText(/open it and choose Save As, then CSV/)).toBeInTheDocument()
-    expect(within(where).getByText(/usually come as a PDF, which Arthik can’t read/)).toBeInTheDocument()
+    expect(within(where).getByText(/often come as a PDF, which Arthik can’t read/)).toBeInTheDocument()
     const link = main().getByRole('link', { name: 'Get the template' })
     expect(link).toHaveAttribute('href', `${import.meta.env.BASE_URL}arthik-template.csv`)
   })
@@ -383,7 +385,7 @@ describe('UploadPage: savings it cannot read', () => {
       expect(savings).toHaveAttribute('aria-invalid', 'true')
       expect(savings).toHaveAccessibleDescription(
         expect.stringContaining(
-          'Enter the amount in digits, with a point before any decimals, or leave it empty.',
+          'Enter the amount as a number, using a point for decimals, or leave it empty.',
         ),
       )
       expect(savings).toHaveFocus()
@@ -403,7 +405,7 @@ describe('UploadPage: savings it cannot read', () => {
 
     expect(savings).not.toHaveAttribute('aria-invalid')
     expect(
-      main().queryByText(/^Enter the amount in digits/),
+      main().queryByText(/^Enter the amount as a number/),
     ).not.toBeInTheDocument()
   })
 })
@@ -531,7 +533,7 @@ describe('UploadPage: rows with problems', () => {
     const summary = await main().findByRole('alert', { name: 'Arthik couldn’t read all of this file' })
     expect(summary).toHaveFocus()
     expect(listed()).toEqual([
-      'Row 5: “2026-08-32” isn’t a date Arthik can read. Write it as 2026-10-31, or day first, as 31/10/2026.',
+      'Row 5: “2026-08-32” isn’t a date Arthik can read. Write it as 2026-10-31, day first as 31/10/2026, or with the month written out, as 31-Oct-2026.',
       'Row 9: “12;50” isn’t an amount Arthik can read. Write it in digits, with a point only before decimals, as in -1250.50.',
     ])
     expect(
@@ -690,12 +692,30 @@ describe('UploadPage: a message for every problem the reader can find', () => {
         'The file has more than one date column, so Arthik can’t tell which to read. Keep one of them.',
       ],
       [
+        lines('Date,description,DATE,amount', '2026-10-01,x,2026-10-01,-5'),
+        'The file has more than one Date column, so Arthik can’t tell which to read. Keep one of them.',
+      ],
+      [
         lines('date,description,debit,withdrawal,credit', '2026-10-01,x,5,,'),
-        'The file has more than one column for money going out (debit or withdrawal), so Arthik can’t tell which to read. Keep one of them.',
+        'The “debit” and “withdrawal” columns are two names for the same thing, so Arthik can’t tell which to read. Keep one of them.',
+      ],
+      [
+        lines('Date,Description,Debit,Debit Amount,Credit', '2026-10-05,Rent,,100,50'),
+        'The “Debit” and “Debit Amount” columns are two names for the same thing, so Arthik can’t tell which to read. Keep one of them.',
       ],
       [
         lines('date,description,debit,Deposit,credit', '2026-10-01,x,5,,'),
-        'The file has more than one column for money coming in (credit or deposit), so Arthik can’t tell which to read. Keep one of them.',
+        'The “Deposit” and “credit” columns are two names for the same thing, so Arthik can’t tell which to read. Keep one of them.',
+      ],
+      [
+        lines('Date,Details,Remarks,amount', '2026-10-01,x,y,-5'),
+        'The “Details” and “Remarks” columns are two names for the same thing, so Arthik can’t tell which to read. Keep one of them.',
+      ],
+    ],
+    unsigned_amount: [
+      [
+        lines('Date,Description,Amount,Withdrawal,Deposit', '2026-10-01,Rent,500,500,'),
+        'No amount in the “Amount” column is negative, but the “Withdrawal” column holds money going out, so Arthik can’t tell which way each amount went. Make money going out negative in the “Amount” column and delete the “Withdrawal” column, or delete the “Amount” column.',
       ],
     ],
     direction_column: [
@@ -723,7 +743,7 @@ describe('UploadPage: a message for every problem the reader can find', () => {
     bad_date: [
       [
         lines(H, 'Oct 31 2026,x,-5'),
-        'Row 2: “Oct 31 2026” isn’t a date Arthik can read. Write it as 2026-10-31, or day first, as 31/10/2026.',
+        'Row 2: “Oct 31 2026” isn’t a date Arthik can read. Write it as 2026-10-31, day first as 31/10/2026, or with the month written out, as 31-Oct-2026.',
       ],
       [lines(H, ',x,-5'), 'Row 2: The date is missing.'],
     ],

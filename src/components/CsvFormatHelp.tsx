@@ -6,8 +6,6 @@ import styles from './CsvFormatHelp.module.css'
 /** A column name or an example as the file has to write it: never translated. */
 const code = (text: string) => <code>{text}</code>
 
-const TEMPLATE_URL = `${import.meta.env.BASE_URL}arthik-template.csv`
-
 /**
  * What a CSV file needs: the columns, the date and amount forms the reader takes, the credit
  * card rule that keeps spending from being counted twice (spec 5.3), and the template.
@@ -32,7 +30,11 @@ export function CsvFormatHelp() {
         <dd>
           <FormattedMessage
             id="upload.help.date"
-            values={{ iso: code(CSV_EXAMPLES.isoDate), dayFirst: code(CSV_EXAMPLES.dayFirstDate) }}
+            values={{
+              iso: code(CSV_EXAMPLES.isoDate),
+              dayFirst: code(CSV_EXAMPLES.dayFirstDate),
+              named: code(CSV_EXAMPLES.namedMonthDate),
+            }}
           />
         </dd>
         <dt>{code('description')}</dt>
@@ -75,6 +77,19 @@ export function CsvFormatHelp() {
           <FormattedMessage id="upload.help.category" />
         </dd>
       </dl>
+      <p className={styles.after}>
+        <FormattedMessage
+          id="upload.help.aliases"
+          values={{
+            transactionDate: code('Transaction Date'),
+            valueDate: code('Value Date'),
+            narration: code('Narration'),
+            particulars: code('Particulars'),
+            withdrawalAmount: code('Withdrawal Amount'),
+            depositAmount: code('Deposit Amount'),
+          }}
+        />
+      </p>
 
       <h3 className={styles.subtitle}>
         <FormattedMessage id="upload.help.creditCard.title" />
@@ -86,13 +101,8 @@ export function CsvFormatHelp() {
         <FormattedMessage id="upload.help.accounts" />
       </p>
 
-      <p className={styles.template}>
-        <a href={TEMPLATE_URL} download className={styles.download}>
-          <FormattedMessage id="upload.help.template" />
-        </a>
-        <span className={styles.note}>
-          <FormattedMessage id="upload.help.template.note" />
-        </span>
+      <p className={styles.note}>
+        <FormattedMessage id="upload.help.template.note" />
       </p>
     </section>
   )

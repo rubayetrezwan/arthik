@@ -185,7 +185,7 @@ describe('ReasonsAndTips: save on payday', () => {
     )
     // Income averages 23,000 a month and 7% is saved: 13% of 23,000 is 2,990.
     expect(savingsRate).toHaveTextContent(
-      'Move ৳2,990 into savings on the day your income arrives, before you spend. That would bring your savings rate to 20%.',
+      'Each month, put ৳2,990 aside on the day your income arrives, then spend only what is left. Spending that much less would bring your savings rate to 20%.',
     )
   })
 })

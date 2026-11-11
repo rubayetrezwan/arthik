@@ -37,12 +37,12 @@ describe('AboutPage', () => {
     const choices = section('Choices made for real users')
     expect(within(choices).getAllByRole('listitem')).toHaveLength(4)
     expect(choices).toHaveTextContent('Money sent to family counts as an essential, not a want.')
-    expect(choices).toHaveTextContent('never a credit score or a lending signal')
+    expect(choices).toHaveTextContent('The score is not a credit score and is never meant for lending decisions.')
     expect(within(choices).getByRole('link', { name: 'methodology' })).toHaveAttribute(
       'href',
       'https://github.com/rubayetrezwan/arthik/blob/main/METHODOLOGY.md',
     )
-    expect(within(choices).getByRole('link', { name: 'how it works' })).toHaveAttribute(
+    expect(within(choices).getByRole('link', { name: 'design notes' })).toHaveAttribute(
       'href',
       'https://github.com/rubayetrezwan/arthik/blob/main/docs/how-it-works.md',
     )

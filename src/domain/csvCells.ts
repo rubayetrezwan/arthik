@@ -80,6 +80,8 @@ const MONTH_NAMES = [
 // DD-MMM-YYYY, DD MMM YYYY, DD/MMM/YYYY with an English month, abbreviated or in full.
 const NAMED_MONTH_DATE = new RegExp(
   String.raw`^(\d{1,2})([/\s-])([A-Za-z]{3,9})\2(\d{4})(?:\s+(?:${TIME_OF_DAY}))?$`,
+  // Case-insensitive for the AM or PM of a time; the month is matched in any case anyway.
+  'i',
 )
 
 function monthNumber(name: string): number | null {

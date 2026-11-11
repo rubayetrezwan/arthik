@@ -1,7 +1,8 @@
+import { basePath } from '../basePath.ts'
 import { expect, test } from './fixtures'
 
-// The base path the site was built for (vite.config.ts): /arthik/ unless BASE_PATH says otherwise.
-const BASE = `/${(process.env.BASE_PATH ?? '/arthik/').trim().replace(/^\/+|\/+$/g, '')}/`.replace('//', '/')
+// The base path the site was built for: /arthik/ unless BASE_PATH says otherwise.
+const BASE = basePath()
 
 test('the manifest is linked and a service worker registers', async ({ page, request }) => {
   await page.goto('./')

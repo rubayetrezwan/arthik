@@ -1,0 +1,29 @@
+/*
+ * A small half-shaded disc before the choice, so the select reads as the theme at a glance
+ * (its spoken name is "Colour theme"). It is drawn with a border and an inset fill, no image.
+ */
+.field::before {
+  content: "";
+  position: absolute;
+  inset-inline-start: var(--s3);
+  inset-block-start: 50%;
+  width: 14px;
+  height: 14px;
+  border: 1.5px solid var(--ink-2);
+  border-radius: 50%;
+  box-shadow: inset 5px 0 0 var(--ink-2);
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+
+.field select {
+  padding-inline-start: 34px;
+}
+
+@media (forced-colors: active) {
+  .field::before {
+    border-color: CanvasText;
+    box-shadow: inset 5px 0 0 CanvasText;
+    forced-color-adjust: none;
+  }
+}

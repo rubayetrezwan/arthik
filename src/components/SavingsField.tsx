@@ -8,9 +8,7 @@ import type { CurrencyCode } from '../domain/types'
 import styles from './SavingsField.module.css'
 
 export type SavingsReading =
-  | { kind: 'empty' }
-  | { kind: 'amount'; amount: number }
-  | { kind: 'invalid' }
+  { kind: 'empty' } | { kind: 'amount'; amount: number } | { kind: 'invalid' }
 
 // Digits (Western or Bengali), commas or spaces between thousands, and a point before decimals.
 // A sign, a bracket or a currency sign is not taken: the amount is in the currency on screen, so

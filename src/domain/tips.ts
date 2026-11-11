@@ -93,10 +93,16 @@ const FULL_POINTS_SAVINGS_RATE = (ANCHORS.savingsRate.find(([, score]) => score 
 
 /**
  * Pay yourself first: the monthly amount that would lift the savings rate to the one that
- * earns full points. `target` is that rate, a ratio.
+ * earns full points. `target` is that rate, a ratio. Not offered when spending is above
+ * income: with nothing left over, "put this aside first, then spend the rest" cannot be done.
  */
 function saveOnPayday(m: Measures, subScore: number): Tip | null {
-  if (subScore >= 100 || m.savingsRate === null || m.savingsRate >= FULL_POINTS_SAVINGS_RATE) {
+  if (
+    subScore >= 100 ||
+    m.savingsRate === null ||
+    m.savingsRate < 0 ||
+    m.savingsRate >= FULL_POINTS_SAVINGS_RATE
+  ) {
     return null
   }
   const averageIncome = m.income / m.months.length
@@ -161,8 +167,9 @@ function keepGoing(): Tip {
 
 /**
  * Two to four tips. First come the tips for the measures with the most to gain,
- * in the order of the reasons, then the two data checks, cut off at four. A lone
- * tip is followed by `keep_going` to make two.
+ * in the order of the reasons, then the two data checks. The checks keep their places:
+ * when there are more than four, it is the last of the advice that is left out, never a
+ * check on the data the advice rests on. A lone tip is followed by `keep_going` to make two.
  *
  * The one exception is when no rule applies: the result is `keep_going` alone. A
  * person with nothing to fix has nothing to be told, and one encouraging line is
@@ -174,25 +181,28 @@ function keepGoing(): Tip {
 export function pickTips(_ds: Dataset, m: Measures, r: ScoreResult): Tip[] {
   const subScores = new Map(r.lines.map((line) => [line.id, line.subScore]))
 
-  const tips: Tip[] = []
+  const advice: Tip[] = []
   for (const reason of topReasons(r)) {
     const subScore = subScores.get(reason.measure) ?? null
     if (reason.kind !== 'improve' || subScore === null) continue
     for (const rule of TIP_FOR_MEASURE[reason.measure]) {
       const tip = rule(m, subScore)
-      if (tip) tips.push(tip)
+      if (tip) advice.push(tip)
     }
   }
 
+  const checks: Tip[] = []
   if (m.uncategorisedShare >= UNCATEGORISED_FROM) {
-    tips.push({ id: 'sort_uncategorised', values: { pct: m.uncategorisedShare } })
+    checks.push({ id: 'sort_uncategorised', values: { pct: m.uncategorisedShare } })
   }
   if (m.unrecognisedIncomeCount > 0) {
-    tips.push({ id: 'check_unrecognised', values: { count: m.unrecognisedIncomeCount } })
+    checks.push({ id: 'check_unrecognised', values: { count: m.unrecognisedIncomeCount } })
   }
 
+  // There are at most two checks, so at least two places are left for advice.
+  const tips = [...advice.slice(0, MAX_TIPS - checks.length), ...checks]
   // keep_going is never a rule's own tip, so it cannot appear twice.
   if (tips.length === 0) return [keepGoing()]
   if (tips.length === 1) tips.push(keepGoing())
-  return tips.slice(0, MAX_TIPS)
+  return tips
 }

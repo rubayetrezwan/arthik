@@ -4,7 +4,7 @@ import { useLocation } from 'react-router'
 import { isDatasetKey } from '../state/session'
 
 /** The id of the message that names the page at `pathname`. */
-function pageKey(pathname: string): string {
+export function pageKey(pathname: string): string {
   const path = pathname.replace(/\/+$/, '') || '/'
   if (path === '/') return 'nav.home'
   if (path === '/upload') return 'upload.title'
@@ -12,7 +12,7 @@ function pageKey(pathname: string): string {
   if (path === '/about') return 'nav.about'
   const person = /^\/score\/([^/]+)$/.exec(path)?.[1]
   if (person !== undefined && isDatasetKey(person)) {
-    return person === 'mine' ? 'nav.score' : `person.${person}.name`
+    return person === 'mine' ? 'score.title' : `person.${person}.name`
   }
   return 'notFound.title'
 }

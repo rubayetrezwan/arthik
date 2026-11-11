@@ -1,8 +1,9 @@
 import { defineConfig, devices } from '@playwright/test'
+import { basePath } from './basePath.ts'
 
 const FLOWS = /flows\.spec\.ts$/
-// The same base path the build used (see vite.config.ts): /arthik/ unless BASE_PATH says otherwise.
-const BASE = `/${(process.env.BASE_PATH ?? '/arthik/').trim().replace(/^\/+|\/+$/g, '')}/`.replace('//', '/')
+// The same base path the build used: /arthik/ unless BASE_PATH says otherwise.
+const BASE = basePath()
 
 export default defineConfig({
   testDir: 'e2e',

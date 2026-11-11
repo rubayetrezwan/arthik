@@ -4,9 +4,10 @@ services:
   - type: web
     name: arthik
     runtime: static
-    buildCommand: npm ci && npm run build
+    # --include=dev: the build needs tsc and vite, which are dev dependencies, even if Render
+    # sets NODE_ENV=production.
+    buildCommand: npm ci --include=dev && npm run build
     staticPublishPath: ./dist
-    pullRequestPreviewsEnabled: false
     envVars:
       - key: BASE_PATH
         value: /

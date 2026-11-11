@@ -254,7 +254,7 @@ export function WhatIf({ dataset, measures, result }: WhatIfProps) {
   const next = BAND_RANGES[BAND_RANGES.findIndex((range) => range.band === toBand) + 1]
 
   return (
-    <section aria-labelledby={titleId}>
+    <section aria-labelledby={titleId} data-print="hide">
       <h3 id={titleId} className={styles.title}>
         <FormattedMessage id="whatif.title" />
       </h3>

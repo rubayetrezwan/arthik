@@ -38,6 +38,12 @@ export type CsvErrorCode =
    * for one column (debit and withdrawal, credit and deposit), so it cannot tell which column is meant.
    */
   | 'duplicate_column'
+  /**
+   * The file has an `amount` column and a debit column (debit, withdrawal ...), no amount in it is
+   * negative and a debit cell holds money: the amount is only the size of each payment, and read
+   * as signed it would turn every payment into money in.
+   */
+  | 'unsigned_amount'
 
 export interface CsvError {
   /**
@@ -51,10 +57,17 @@ export interface CsvError {
   /**
    * The column the problem is in, by the name the reader knows it by, in lower case: `date`,
    * `amount`, `debit` or `withdrawal`, and so on. For `direction_column` it is the header as the
-   * file wrote it, trimmed (`DR/CR`), and absent when that header is blank. So it is for
-   * `duplicate_column` when the header has two names for one column: the second name (`Withdrawal`).
+   * file wrote it, trimmed (`DR/CR`), and absent when that header is blank. For `duplicate_column`
+   * it is the first of the clashing headers as the file wrote it, trimmed (`Debit`), and for
+   * `unsigned_amount` the amount header as written.
    */
   column?: string
+  /**
+   * The other header, as the file wrote it, trimmed. For `duplicate_column`, the second of two
+   * different names for one column (`Debit Amount`); absent when one name is written twice. For
+   * `unsigned_amount`, the debit column (`Withdrawal`).
+   */
+  secondColumn?: string
   /** What the cell held, trimmed and cut short, so the message can quote it. */
   value?: string
   /**
@@ -114,6 +127,11 @@ interface Columns {
   amount: AmountColumns
   currency: Column | null
   category: Column | null
+  /**
+   * A debit column beside a signed `amount`. It is not read, but it shows whether the amount is
+   * really signed (`unsignedAmountError`).
+   */
+  unreadDebit: Column | null
   /**
    * How many cells the header has: up to the last header with a name. Spreadsheets pad every
    * line with empty cells to the widest one, so a header can end in empty cells that are
@@ -180,80 +198,63 @@ function directionKey(text: string): string {
     .trim()
 }
 
-// The header names the reader looks for, each with the column it stands for. If one column is
-// named twice (or debit and withdrawal are both there, two names for the same column), the
-// reader cannot tell which is meant, and reading the first would ignore numbers the file put
-// in the second.
-const READ_COLUMNS: ReadonlyMap<string, string> = new Map([
-  ['date', 'date'],
-  ['transaction date', 'date'],
-  ['txn date', 'date'],
-  ['value date', 'date'],
-  ['posting date', 'date'],
-  ['description', 'description'],
-  ['particulars', 'description'],
-  ['narration', 'description'],
-  ['details', 'description'],
-  ['remarks', 'description'],
-  ['transaction details', 'description'],
-  ['amount', 'amount'],
-  ['debit', 'debit'],
-  ['withdrawal', 'debit'],
-  ['withdrawal amount', 'debit'],
-  ['debit amount', 'debit'],
-  ['credit', 'credit'],
-  ['deposit', 'credit'],
-  ['deposit amount', 'credit'],
-  ['credit amount', 'credit'],
-  ['currency', 'currency'],
-  ['category', 'category'],
-])
+type ReadColumnId = 'date' | 'description' | 'amount' | 'debit' | 'credit' | 'currency' | 'category'
 
-// How readily a name is taken for its column (R55). The names the reader first knew are 0; the
-// bank-export names added since are 1, and Value Date is 2. A real export often has both
-// "Date" and "Value Date", or "Description" and "Remarks", and the lower-priority name must
-// not turn a file that always parsed into a duplicate-column error: a name is only used, and
-// only counted as a duplicate, when no name of a better rank stands for the same column.
-const NAME_RANK: ReadonlyMap<string, number> = new Map([
-  ['transaction date', 1],
-  ['txn date', 1],
-  ['posting date', 1],
-  ['value date', 2],
-  ['particulars', 1],
-  ['narration', 1],
-  ['details', 1],
-  ['remarks', 1],
-  ['transaction details', 1],
-  ['withdrawal amount', 1],
-  ['debit amount', 1],
-  ['deposit amount', 1],
-  ['credit amount', 1],
-])
-const rankOf = (name: string): number => NAME_RANK.get(name) ?? 0
+// The header names the reader looks for, by the column they stand for, best first (R55). A real
+// export often has both "Date" and "Value Date", or "Description" and "Remarks": the best-ranked
+// name present is read, and a lower-ranked one is left as an ordinary column, which the other
+// checks still look at (R52). Two names of the same rank, or one name written twice, are a
+// duplicate: the reader cannot tell which is meant. The money columns have one rank only, so
+// two names for money going out (debit and withdrawal) are always a duplicate: reading one would
+// ignore the amounts the file put in the other.
+const COLUMN_NAMES: Readonly<Record<ReadColumnId, readonly (readonly string[])[]>> = {
+  date: [['date'], ['transaction date', 'txn date'], ['value date', 'posting date']],
+  description: [
+    ['description'],
+    ['particulars', 'narration', 'transaction details'],
+    ['details', 'remarks'],
+  ],
+  amount: [['amount']],
+  debit: [['debit', 'withdrawal', 'debit amount', 'withdrawal amount']],
+  credit: [['credit', 'deposit', 'deposit amount', 'credit amount']],
+  currency: [['currency']],
+  category: [['category']],
+}
+
+const READ_COLUMNS: ReadonlyMap<string, { column: ReadColumnId; rank: number }> = new Map(
+  (Object.entries(COLUMN_NAMES) as [ReadColumnId, readonly (readonly string[])[]][]).flatMap(
+    ([column, ranks]) =>
+      ranks.flatMap((names, rank) => names.map((name) => [name, { column, rank }] as const)),
+  ),
+)
 
 function readHeader(
   cells: readonly string[],
   row: number,
 ): { ok: true; columns: Columns } | { ok: false; errors: CsvError[] } {
   const names = cells.map(nameKey)
-  const find = (...candidates: string[]): Column | null => {
-    for (const name of candidates) {
-      const index = names.indexOf(name)
-      if (index !== -1) return { index, name }
-    }
-    return null
+  // For each column, the best rank among the names the header has for it.
+  const bestRank = new Map<ReadColumnId, number>()
+  for (const name of names) {
+    const read = READ_COLUMNS.get(name)
+    if (read) bestRank.set(read.column, Math.min(read.rank, bestRank.get(read.column) ?? read.rank))
+  }
+  // The column a header name is read for: none when it is not a name the reader knows, or when
+  // a better-ranked name for the same column is in the header.
+  const readAs = (name: string): ReadColumnId | null => {
+    const read = READ_COLUMNS.get(name)
+    return read !== undefined && read.rank === bestRank.get(read.column) ? read.column : null
+  }
+  const find = (column: ReadColumnId): Column | null => {
+    const index = names.findIndex((name) => readAs(name) === column)
+    return index === -1 ? null : { index, name: names[index] ?? '' }
   }
 
-  const aliases = (column: string): string[] =>
-    [...READ_COLUMNS]
-      .filter(([, id]) => id === column)
-      .map(([name]) => name)
-      .sort((a, b) => rankOf(a) - rankOf(b))
-  const date = find(...aliases('date'))
-  const description = find(...aliases('description'))
+  const date = find('date')
+  const description = find('description')
   const signed = find('amount')
-  const debit = find(...aliases('debit'))
-  const credit = find(...aliases('credit'))
+  const debit = find('debit')
+  const credit = find('credit')
   // One half of a pair is not enough to tell money in from money out.
   const amount: AmountColumns | null = signed
     ? { kind: 'signed', amount: signed }
@@ -265,29 +266,26 @@ function readHeader(
   if (!date) errors.push({ row, code: 'missing_column', column: 'date' })
   if (!description) errors.push({ row, code: 'missing_column', column: 'description' })
   if (!amount) errors.push({ row, code: 'missing_column', column: 'amount' })
-  // The name each column was first given, to tell a name written twice (reported by that name)
-  // from a second name for the same column (reported as the file wrote it). Each name is
-  // reported once, at its second appearance.
-  const firstNameOf = new Map<string, string>()
+  // The header each column was first given, as written, to name it beside a clashing one: a name
+  // written twice is reported by itself, and a second name for the column together with the
+  // first. Each name is reported once, at its second appearance. A name outranked by a better
+  // one for the same column is not read, so it is not a duplicate.
+  const firstOf = new Map<ReadColumnId, { name: string; written: string }>()
   const reported = new Set<string>()
   names.forEach((name, index) => {
-    const column = READ_COLUMNS.get(name)
-    if (column === undefined) return
-    // A name a better one for the same column outranks is not read, so it is not a duplicate.
-    const best = Math.min(
-      ...names.filter((other) => READ_COLUMNS.get(other) === column).map(rankOf),
-    )
-    if (rankOf(name) > best) return
-    const first = firstNameOf.get(column)
+    const column = readAs(name)
+    if (column === null) return
+    const written = (cells[index] ?? '').trim()
+    const first = firstOf.get(column)
     if (first === undefined) {
-      firstNameOf.set(column, name)
+      firstOf.set(column, { name, written })
     } else if (!reported.has(name)) {
       reported.add(name)
-      errors.push({
-        row,
-        code: 'duplicate_column',
-        column: first === name ? name : (cells[index] ?? '').trim(),
-      })
+      errors.push(
+        first.name === name
+          ? { row, code: 'duplicate_column', column: first.written }
+          : { row, code: 'duplicate_column', column: first.written, secondColumn: written },
+      )
     }
   })
   if (signed) {
@@ -308,6 +306,7 @@ function readHeader(
       amount,
       currency: find('currency'),
       category: find('category'),
+      unreadDebit: signed ? debit : null,
       width: lastNamed + 1,
     },
   }
@@ -558,6 +557,41 @@ function directionValueColumns(
   return errors
 }
 
+/**
+ * A signed `amount` beside a debit column that is not read, when no amount in the file is negative
+ * and a debit cell holds money (not empty, a dash or a written zero): the amount is the size of
+ * each payment, and its direction is only in the debit and credit columns. Read as signed it
+ * would turn every payment into money in, so the file is rejected with an `unsigned_amount` error
+ * on the header's row. One negative amount shows that the amount is signed, and it is read as it
+ * always was. Rows whose cells do not line up with the header are left out, as in
+ * `directionValueColumns`.
+ */
+function unsignedAmountError(
+  header: readonly string[],
+  row: number,
+  dataRows: readonly { cells: readonly string[] }[],
+  columns: Columns,
+  trailingCellsOk: boolean,
+): CsvError | null {
+  const { amount, unreadDebit } = columns
+  if (amount.kind !== 'signed' || unreadDebit === null) return null
+  const aligned = dataRows.filter(({ cells }) => !hasExtraCells(cells, columns, trailingCellsOk))
+  const anyNegative = aligned.some(
+    ({ cells }) => (parseAmount(cellText(cells, amount.amount)) ?? 0) < 0,
+  )
+  const debitFilled = aligned.some(({ cells }) => {
+    const text = moneyCellText(cells, unreadDebit)
+    return text !== '' && !isWrittenZero(text)
+  })
+  if (anyNegative || !debitFilled) return null
+  return {
+    row,
+    code: 'unsigned_amount',
+    column: (header[amount.amount.index] ?? '').trim(),
+    secondColumn: (header[unreadDebit.index] ?? '').trim(),
+  }
+}
+
 function readRow(
   cells: readonly string[],
   row: number,
@@ -730,7 +764,8 @@ function swallowsDatedRow(cells: readonly string[], delimiter: string): boolean 
  * cannot be read are left out and reported with their spreadsheet row number, and the rest
  * still import. A file that cannot be used at all (empty, no rows, a missing column, over
  * `MAX_ROWS`, a signed amount beside a column that says debit or credit by its name or by its
- * values) gives no transactions and says why.
+ * values, an amount with no negatives beside a debit column that holds money) gives no
+ * transactions and says why.
  *
  * A broken quote makes PapaParse merge lines into one record, so the cells of that record
  * may come from different rows and cannot be trusted. Such a record is never imported. It is
@@ -822,6 +857,14 @@ export function parseTransactionsCsv(text: string, defaultCurrency: CurrencyCode
     trailingCellsOk,
   )
   if (directionErrors.length > 0) return { transactions: [], errors: directionErrors }
+  const unsignedAmount = unsignedAmountError(
+    header,
+    headerIndex + 1,
+    dataRows,
+    columns,
+    trailingCellsOk,
+  )
+  if (unsignedAmount) return rejected(unsignedAmount)
 
   // One date that can only be month first (10/31/2026) shows how the whole file writes its
   // dates. Every row counts, even one that is skipped or has another problem, because the date

@@ -1,4 +1,5 @@
 import { screen, waitFor, within } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { ANCHORS } from '../domain/anchors'
 import { CATEGORIES } from '../domain/categories'
@@ -379,7 +380,7 @@ describe('HowItWorksPage', () => {
     const section = screen.getByRole('heading', { level: 2, name: 'Your privacy' }).closest('section')
     expect(section).toHaveTextContent('It’s never uploaded.')
     expect(section).toHaveTextContent('Nothing about your money is saved')
-    expect(section).toHaveTextContent('the language and the currency you chose')
+    expect(section).toHaveTextContent('the language, the currency and the colour theme you chose')
   })
 
   it('never shows a raw key or a broken number', () => {
@@ -413,4 +414,32 @@ describe('the How the score works copy', () => {
       expect(typed).toEqual([])
     },
   )
+})
+
+describe('HowItWorksPage: contents', () => {
+  function contents() {
+    return within(screen.getByRole('navigation', { name: 'On this page' }))
+  }
+
+  it('lists every section, in order, by its heading', () => {
+    renderApp('/how-it-works')
+
+    const headings = screen.getAllByRole('heading', { level: 2 }).map((heading) => heading.textContent)
+    expect(contents().getAllByRole('link').map((link) => link.textContent)).toEqual(headings)
+  })
+
+  it('moves to the section and focuses its heading, keeping the page in the router', async () => {
+    const scroll = vi.fn()
+    Element.prototype.scrollIntoView = scroll
+    renderApp('/how-it-works')
+    const user = userEvent.setup()
+
+    await user.click(contents().getByRole('link', { name: 'Your privacy' }))
+
+    const heading = screen.getByRole('heading', { level: 2, name: 'Your privacy' })
+    await waitFor(() => expect(heading).toHaveFocus())
+    expect(scroll).toHaveBeenCalled()
+    expect(window.location.hash).toBe('#/how-it-works#privacy')
+    expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent('How the score works')
+  })
 })

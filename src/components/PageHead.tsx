@@ -14,7 +14,10 @@ export function PageHead({ kicker, title, children }: PageHeadProps) {
   return (
     <div className={styles.head}>
       {kicker && <p className={styles.kicker}>{kicker}</p>}
-      <h1 className={styles.title}>{title}</h1>
+      {/* Focusable so a move to this page can put focus here (useFocusOnPageChange). */}
+      <h1 className={styles.title} tabIndex={-1}>
+        {title}
+      </h1>
       {children && <div className={styles.lead}>{children}</div>}
     </div>
   )

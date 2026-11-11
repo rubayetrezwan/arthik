@@ -1,0 +1,4 @@
+# One line ending everywhere, whatever the editor or operating system.
+* text=auto eol=lf
+*.png binary
+*.woff2 binary

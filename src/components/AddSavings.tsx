@@ -9,9 +9,10 @@ import { readSavings } from './SavingsField'
  * A small form in the Emergency savings row of the ledger, for a file whose savings were not
  * entered. The amount is in the display currency. Valid input goes to the session's file and
  * the score is worked out again; nothing is stored. The form is replaced by the scored row
- * once it works, so it is submitted, not applied key by key.
+ * once it works, so it is submitted, not applied key by key. `onAdded` is told when it has
+ * worked, so the page can move focus and announce the new score.
  */
-export function AddSavings() {
+export function AddSavings({ onAdded }: { onAdded?: () => void }) {
   const intl = useIntl()
   const { currency } = usePrefs()
   const { setUploadSavings } = useSession()
@@ -30,10 +31,11 @@ export function AddSavings() {
     }
     setInvalid(false)
     setUploadSavings({ amount: savings.amount, currency })
+    onAdded?.()
   }
 
   return (
-    <form className={styles.form} onSubmit={submit} noValidate>
+    <form className={styles.form} onSubmit={submit} noValidate data-print="hide">
       <label htmlFor={inputId} className={styles.label}>
         <FormattedMessage id="score.savings.label" />
       </label>
@@ -59,7 +61,7 @@ export function AddSavings() {
         </button>
       </div>
       {invalid && (
-        <p id={errorId} className={styles.problem}>
+        <p id={errorId} className={styles.problem} role="alert">
           <FormattedMessage id="score.savings.invalid" />
         </p>
       )}

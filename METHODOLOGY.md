@@ -1,12 +1,12 @@
 # How the Arthik score works
 
-This is the full method. Every number below is a constant in the code: the anchors are in `src/domain/anchors.ts`, the weights, bands and rounding are in `src/domain/score.ts`, the complete-month rule is in `src/domain/period.ts`, the measures are in `src/domain/measures.ts` and the categories are in `src/domain/categories.ts`. The "How the score works" page in the app is generated from the same constants, so the page and this file cannot drift apart.
+This is the full method. Every number below is a constant in the code: the anchors are in `src/domain/anchors.ts`, the weights, bands and rounding are in `src/domain/score.ts`, the complete-month rule is in `src/domain/period.ts`, the measures are in `src/domain/measures.ts` and the categories are in `src/domain/categories.ts`. The "How the score works" page in the app is generated from the same constants. This file is written by hand, so if the two ever differ, the code is right.
 
 Arthik is an educational tool. It is not financial advice and not a credit score. Your data stays in your browser and is never uploaded.
 
 ## 1. Where the idea comes from
 
-The score is inspired by the Financial Health Network's FinHealth Score. That framework has four pillars (Spend, Save, Borrow, Plan) and three bands: Financially Vulnerable (0 to 39), Coping (40 to 79) and Healthy (80 to 100). The FinHealth Score is survey-based. Arthik uses measures you can calculate from transactions, which cover Spend, Save and Borrow. **Plan** (insurance, retirement, goals, confidence about the future) cannot be read from a list of transactions, so Arthik does not measure it. It uses the same three bands.
+The score is inspired by the Financial Health Network's FinHealth Score. That framework has four pillars (Spend, Save, Borrow, Plan) and three bands: Financially Vulnerable (0 to 39; Arthik calls its band Vulnerable), Coping (40 to 79) and Healthy (80 to 100). The FinHealth Score is survey-based. Arthik uses measures you can calculate from transactions, which cover Spend, Save and Borrow. **Plan** (insurance, retirement, goals, confidence about the future) cannot be read from a list of transactions, so Arthik does not measure it. It uses the same three bands.
 
 References: Financial Health Network, *FinHealth Score Toolkit* (2021), and "Eight Ways to Measure Financial Health".
 
@@ -14,7 +14,7 @@ The score is always calculated by the formulas on this page. No AI model produce
 
 ## 2. What goes in
 
-Each transaction has a date, a description, an amount (positive for money in, negative for money out), a currency and a category. The category is assigned automatically from a built-in list of merchants and keywords, and you can change it in the review table.
+Each transaction has a date, a description, an amount (positive for money in, negative for money out), a currency and a category. A file can give the amount as one signed column, or as separate debit and credit (or withdrawal and deposit) columns. The category is assigned automatically from a built-in list of merchants and keywords, and you can change it in the transactions table. The template file includes two money-in rows that Arthik can't recognise, so you can see how they are flagged.
 
 All amounts are converted to BDT using a bundled snapshot of exchange rates (ExchangeRate-API, dated 3 November 2026; refresh it with `npm run rates:update`). Every measure below is a ratio, so the score does not change with the currency you display.
 
@@ -26,13 +26,13 @@ All amounts are converted to BDT using a bundled snapshot of exchange rates (Exc
 | Essentials (needs) | Rent and housing, Utilities, Groceries, Transport, Education, Healthcare, Mobile and internet, Family support sent, Fees and charges | Spending (needs) |
 | Wants | Eating out and delivery, Shopping, Entertainment and subscriptions, Travel and holidays, Personal care | Spending (wants) |
 | Other spending | Gifts and donations | Spending, neither a need nor a want |
-| Debt payments | Loan EMI, Credit card payment, Buy-now-pay-later instalment | Counts toward debt payments. Not spending. |
-| Savings and investments | Savings deposit (for example a Deposit Pension Scheme, DPS), Sanchayapatra and investments | Not spending. Money kept. |
+| Debt payments | Loan instalment (EMI), Credit card payment, Buy-now-pay-later instalment | Counts toward debt payments. Not spending. |
+| Savings and investments | Savings deposit or Deposit Pension Scheme (DPS), Sanchayapatra and investments | Not spending. Money kept. |
 | Cash | Cash withdrawal | Spending, because cash is assumed spent. Left out of needs vs. wants. The cash-out charge goes to Fees and charges. |
 | Refunds | Refund or reversal | Reduces total spending. Not income. |
 | Not counted | Own-account transfer, Cash deposit, Savings withdrawal, Loan received | Ignored entirely, so moved or borrowed money never looks like income and nothing is counted twice |
 | Uncategorised money out | Any outgoing payment not recognised | Spending, left out of needs vs. wants. The app shows how much of your spending is uncategorised. |
-| Unrecognised money in | Any incoming payment not recognised | Counted as Other income by default and flagged in the review table so you can change it |
+| Unrecognised money in | Any incoming payment not recognised | Counted as Other income by default and flagged in the transactions table so you can change it |
 
 Money sent to family counts as an essential, not a want. Supporting family is a core obligation for many Bangladeshi households and migrant workers, and the score should not penalise it.
 
@@ -91,11 +91,11 @@ The band is shown by name in text and by tick marks at 40 and 80 on the scale. C
 
 ## 6. Missing or too little data
 
-A measure that cannot be calculated shows "Not scored" with the reason, and its weight is shared among the measures that can be scored, in proportion to their weights.
+A measure that cannot be calculated shows "Not scored" with the reason, and its weight is shared among the measures that can be scored, in proportion to their weights. The score page then says "Based on N of M measures", and for an uploaded file with no emergency savings it offers a field to add them there.
 
 | Situation | What happens |
 |---|---|
-| You did not enter emergency savings | Emergency savings is Not scored |
+| You did not enter emergency savings | Emergency savings is Not scored until you add it, either with your file or on the score page |
 | No essentials spending in the period | Emergency savings is Not scored |
 | Fewer than 3 complete months | Spending stability is Not scored |
 | No spending at all | Needs vs. wants is Not scored |
@@ -108,7 +108,7 @@ A measure that cannot be calculated shows "Not scored" with the reason, and its 
 ## 7. Reasons and tips
 
 - Top 3 reasons: the three measures with the most points to gain, calculated as weight x (100 - sub-score). Each reason gives your own number and the benchmark. If every scored measure is 80 or above, the reasons become strengths instead.
-- Tips: two to four tips chosen by rules from your own data, for example a tip about delivery spending with your actual monthly amount.
+- Tips: two to four tips chosen by rules from your own data, for example a tip about delivery spending with your actual monthly amount. The checks on your data (uncategorised spending, unrecognised income) always keep their place. The save-on-payday tip is offered only when your savings rate is zero or above and below the 20% that earns full points. Its amount is what you would need to not spend each month to reach that rate. The savings rate rises by spending less, not by moving money.
 - Every number in every explanation is filled in from the calculation through placeholders in the translation text. Hand-written text never contains typed numbers, so the text and the charts cannot disagree.
 
 Uploaded files get these rule-based reasons and tips. The five sample people also have a short written summary (see section 9).
@@ -147,4 +147,4 @@ The set shows that the score measures habits, not income. Farhana has nearly thr
 - Emergency savings is self-reported. It is not read from your transactions.
 - Exchange rates are a dated snapshot, not live.
 - It is not a credit score and is not used for lending decisions.
-- Translations were produced with AI assistance. The Bengali translation is reviewed by the owner before publishing.
+- Translations were produced with AI assistance. I reviewed the Bengali myself. The other languages were checked by a second AI pass, not by native speakers.

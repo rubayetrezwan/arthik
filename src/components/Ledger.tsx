@@ -143,7 +143,7 @@ export function Ledger({ result, uncategorisedShare, savingsEntry }: LedgerProps
   const reweighted = lines.some((line) => line.subScore === null)
 
   return (
-    <section className={styles.sheet} aria-labelledby={titleId}>
+    <section className={styles.sheet} aria-labelledby={titleId} data-print="keep">
       <h2 id={titleId} className={styles.title}>
         <FormattedMessage id="ledger.title" values={{ score: formatNumber(score, locale) }} />
       </h2>

@@ -205,7 +205,7 @@ describe('WhatIf: the sliders', () => {
 
     expect(savings()).toBeDisabled()
     expect(savings()).toHaveAccessibleDescription(
-      'This one needs your emergency savings, which you can enter with your file.',
+      'This one needs your emergency savings. Add them in the ledger above.',
     )
     expect(wants()).toBeEnabled()
     expect(income()).toBeEnabled()

@@ -2,3 +2,42 @@
 .page {
   padding-block-end: var(--s5);
 }
+
+/* The contents: a short ruled list under the lead, numbered in red like the ledger's entries. */
+.contents {
+  margin-block-start: var(--s4);
+  padding-block: var(--s4);
+  border-block: 1px solid var(--rule);
+}
+
+.contentsTitle {
+  font-size: 17px;
+  font-style: var(--label-style);
+  color: var(--ink-2);
+}
+
+.contentsList {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 16rem), 1fr));
+  gap: 0 var(--s5);
+  margin-block: var(--s2) 0;
+  margin-inline: 0;
+  padding-inline-start: var(--s5);
+}
+
+.contentsList li::marker {
+  color: var(--red);
+  font-family: var(--display);
+}
+
+.contentsLink {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+}
+
+@media print {
+  .contents {
+    display: none;
+  }
+}

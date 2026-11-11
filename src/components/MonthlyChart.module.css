@@ -182,3 +182,15 @@
 .table .end {
   text-align: end;
 }
+
+/* High-contrast modes drop background colours; spending stays filled, income outlined. */
+@media (forced-colors: active) {
+  .income {
+    border-color: CanvasText;
+  }
+
+  .spending {
+    forced-color-adjust: none;
+    background: CanvasText;
+  }
+}

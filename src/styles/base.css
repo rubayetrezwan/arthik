@@ -43,6 +43,20 @@ p {
   margin: 0;
 }
 
+/* No heading ends on a lone word, and running text avoids one where the browser can. */
+h1,
+h2,
+h3 {
+  text-wrap: balance;
+}
+
+p,
+li,
+dd,
+figcaption {
+  text-wrap: pretty;
+}
+
 a {
   color: var(--primary);
   text-decoration-thickness: 1px;
@@ -64,6 +78,15 @@ textarea {
 :focus-visible {
   outline: 3px solid var(--primary);
   outline-offset: 2px;
+}
+
+/*
+ * A heading takes focus only when the page changes or a contents link is followed, so a
+ * screen reader announces it. It is not a control, so it gets no ring.
+ */
+h1[tabindex="-1"]:focus,
+h2[tabindex="-1"]:focus {
+  outline: none;
 }
 
 ::selection {
@@ -122,5 +145,57 @@ time,
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
+  }
+}
+
+/*
+ * The score page printed, or saved as a PDF: a clean light sheet (tokens.css keeps the light
+ * colours in print) with the score, the ledger, the reasons and the disclaimer, and none of
+ * the controls, which do nothing on paper.
+ */
+@media print {
+  html,
+  body {
+    background: var(--surface);
+  }
+
+  /* Bars, zones and fills are backgrounds, which browsers leave out of a print by default. */
+  * {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  [data-print="hide"],
+  button,
+  select,
+  input,
+  textarea,
+  a[href="#main"] {
+    display: none !important;
+  }
+
+  .wrap {
+    max-width: none;
+    padding-inline: 0;
+  }
+
+  /* No row, entry or sheet is cut in two across pages. */
+  tr,
+  li,
+  figure,
+  section > h2,
+  section > h3,
+  [data-print="keep"] {
+    break-inside: avoid;
+  }
+
+  h1,
+  h2,
+  h3 {
+    break-after: avoid;
+  }
+
+  a {
+    color: inherit;
   }
 }

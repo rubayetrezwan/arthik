@@ -25,7 +25,7 @@ describe('HomePage', () => {
     )
     expect(
       main().getByText(
-        'Arthik reads your bank or mobile-wallet transactions and gives you a financial health score from 0 to 100, with every point explained.',
+        'Arthik reads a CSV of your bank or mobile-wallet transactions and gives you a financial health score from 0 to 100, with every point explained.',
       ),
     ).toBeInTheDocument()
   })
@@ -68,7 +68,7 @@ describe('HomePage', () => {
     renderApp('/')
 
     expect(
-      main().getByText('Free, no sign-up, works offline. Your file never leaves your browser.'),
+      main().getByText('Free, no sign-up, and it works offline after your first visit. Your file never leaves your browser.'),
     ).toBeInTheDocument()
   })
 

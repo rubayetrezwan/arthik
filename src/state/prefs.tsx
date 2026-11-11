@@ -1,9 +1,18 @@
-import { createContext, useCallback, useContext, useMemo, useState, type ReactNode } from 'react'
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+  type ReactNode,
+} from 'react'
 import { isCurrencyCode, type CurrencyCode } from '../domain/types'
 import { isLocaleCode, type LocaleCode } from '../i18n/locales'
 import { safeGet, safeSet } from './storage'
+import { followTheme, readStoredTheme, THEME_KEY, type ThemeChoice } from './theme'
 
-// The visitor's language and display currency, remembered on this device. They are never
+// The visitor's language, display currency and colour theme, remembered on this device. They are never
 // guessed from the browser: Arthik opens in English and taka until the visitor chooses.
 
 const LOCALE_KEY = 'arthik.locale'
@@ -17,6 +26,8 @@ export interface Prefs {
   setLocale(l: LocaleCode): void
   currency: CurrencyCode
   setCurrency(c: CurrencyCode): void
+  theme: ThemeChoice
+  setTheme(t: ThemeChoice): void
 }
 
 const PrefsContext = createContext<Prefs | null>(null)
@@ -38,6 +49,10 @@ function storedCurrency(): CurrencyCode {
 export function PrefsProvider({ children }: { children: ReactNode }) {
   const [locale, setLocaleState] = useState(readStoredLocale)
   const [currency, setCurrencyState] = useState(storedCurrency)
+  const [theme, setThemeState] = useState(readStoredTheme)
+
+  // public/theme.js set the theme before the first paint; this keeps it in step from then on.
+  useEffect(() => followTheme(theme), [theme])
 
   const setLocale = useCallback((l: LocaleCode) => {
     setLocaleState(l)
@@ -49,9 +64,14 @@ export function PrefsProvider({ children }: { children: ReactNode }) {
     safeSet(CURRENCY_KEY, c)
   }, [])
 
+  const setTheme = useCallback((t: ThemeChoice) => {
+    setThemeState(t)
+    safeSet(THEME_KEY, t)
+  }, [])
+
   const prefs = useMemo(
-    () => ({ locale, setLocale, currency, setCurrency }),
-    [locale, setLocale, currency, setCurrency],
+    () => ({ locale, setLocale, currency, setCurrency, theme, setTheme }),
+    [locale, setLocale, currency, setCurrency, theme, setTheme],
   )
 
   return <PrefsContext value={prefs}>{children}</PrefsContext>

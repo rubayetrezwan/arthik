@@ -9,13 +9,22 @@ interface MethodSectionProps {
   children: ReactNode | ((headingId: string) => ReactNode)
 }
 
+/**
+ * The section's place on the page, from its heading's message id: howItWorks.points.title is
+ * "points", so #/how-it-works#points leads to it.
+ */
+export function sectionAnchor(titleId: string): string {
+  return titleId.replace(/^howItWorks\./, '').replace(/\.title$/, '')
+}
+
 /** One ruled section of "How the score works", named by its h2. */
 export function MethodSection({ titleId, children }: MethodSectionProps) {
   const headingId = useId()
 
   return (
-    <section className={styles.section} aria-labelledby={headingId}>
-      <h2 id={headingId} className={styles.heading}>
+    <section className={styles.section} aria-labelledby={headingId} id={sectionAnchor(titleId)}>
+      {/* Focusable so the contents list can move focus here. */}
+      <h2 id={headingId} className={styles.heading} tabIndex={-1}>
         <FormattedMessage id={titleId} />
       </h2>
       {typeof children === 'function' ? children(headingId) : children}

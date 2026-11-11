@@ -70,3 +70,25 @@
     font-size: 14px;
   }
 }
+
+/* High-contrast modes drop background colours; the bars keep their fill, stripes and outline. */
+@media (forced-colors: active) {
+  .need,
+  .want,
+  .other {
+    forced-color-adjust: none;
+    border: 1px solid CanvasText;
+  }
+
+  .need {
+    background: CanvasText;
+  }
+
+  .want {
+    background: repeating-linear-gradient(135deg, CanvasText 0 2px, Canvas 2px 5px);
+  }
+
+  .other {
+    background: Canvas;
+  }
+}

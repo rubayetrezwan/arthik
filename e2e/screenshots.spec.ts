@@ -40,6 +40,13 @@ test.describe('@screenshots', () => {
     await page.locator('input[type="file"]').waitFor({ state: 'attached' })
     await page.evaluate(() => document.fonts.ready.then(() => undefined))
     await page.screenshot({ path: `${OUT}/upload.png` })
+
+    await page.setViewportSize({ width: 1280, height: 900 })
+    await page.evaluate(() => localStorage.setItem('arthik.theme', 'dark'))
+    await page.goto('./#/score/nusrat')
+    await page.reload()
+    await settle(page)
+    await page.screenshot({ path: `${OUT}/dashboard-dark.png` })
   })
 
   test('mobile dashboard in Bengali', async ({ page }, info) => {

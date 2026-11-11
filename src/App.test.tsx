@@ -52,6 +52,36 @@ describe('skip link', () => {
   })
 })
 
+describe('moving between pages', () => {
+  it('leaves focus alone on the first page drawn', () => {
+    renderApp('/about')
+
+    expect(screen.getByRole('heading', { level: 1 })).not.toHaveFocus()
+  })
+
+  it("moves focus to the new page's main heading, so a screen reader announces it", async () => {
+    const user = userEvent.setup()
+    renderApp('/')
+
+    const nav = screen.getByRole('navigation', { name: 'Main' })
+    await user.click(within(nav).getByRole('link', { name: 'About' }))
+
+    const heading = await screen.findByRole('heading', { level: 1, name: 'About Arthik' })
+    await vi.waitFor(() => expect(heading).toHaveFocus())
+    expect(heading).toHaveAttribute('tabindex', '-1')
+  })
+
+  it('waits for a page whose heading comes later, such as a sample still loading', async () => {
+    const user = userEvent.setup()
+    renderApp('/about')
+
+    const nav = screen.getByRole('navigation', { name: 'Main' })
+    await user.click(within(nav).getByRole('link', { name: 'Score' }))
+
+    await vi.waitFor(() => expect(screen.getByRole('heading', { level: 1 })).toHaveFocus())
+  })
+})
+
 describe('footer', () => {
   function footer() {
     return within(screen.getByRole('contentinfo'))

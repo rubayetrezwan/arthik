@@ -323,6 +323,60 @@ describe('parseTransactionsCsv: debit and credit columns', () => {
     )
     expect(transactions.map((t) => t.amount)).toEqual([-640])
   })
+
+  describe('an amount column that is only a size, beside debit and credit', () => {
+    it('is not read: with no negative amount, every payment would count as money in', () => {
+      const { transactions, errors } = parseTransactionsCsv(
+        file(
+          'Date,Description,Amount,Debit,Credit',
+          '2026-10-01,Bazar,640,640,',
+          '2026-10-02,Salary,5000,,5000',
+        ),
+        'BDT',
+      )
+      expect(transactions).toEqual([])
+      expect(errors).toEqual<CsvError[]>([
+        { row: 1, code: 'unsigned_amount', column: 'Amount', secondColumn: 'Debit' },
+      ])
+    })
+
+    it('names the columns as the file wrote them, on the header row', () => {
+      const { errors } = parseTransactionsCsv(
+        file('', 'date,description, Amount ,Withdrawal Amount,Deposit Amount', '2026-10-01,x,5,5,'),
+        'BDT',
+      )
+      expect(errors).toEqual<CsvError[]>([
+        { row: 2, code: 'unsigned_amount', column: 'Amount', secondColumn: 'Withdrawal Amount' },
+      ])
+    })
+
+    it('does not count a debit cell that is empty, a dash or a written zero', () => {
+      const { transactions, errors } = parseTransactionsCsv(
+        file(
+          'date,description,amount,debit,credit',
+          '2026-10-01,Salary,5000,,5000',
+          '2026-10-02,Refund,40,-,40',
+          '2026-10-03,Gift,60,0.00,60',
+        ),
+        'BDT',
+      )
+      expect(errors).toEqual([])
+      expect(transactions.map((t) => t.amount)).toEqual([5000, 40, 60])
+    })
+
+    it('reads the amount as signed once one of its amounts is negative', () => {
+      const { transactions, errors } = parseTransactionsCsv(
+        file(
+          'date,description,amount,debit,credit',
+          '2026-10-01,Bazar,-640,640,',
+          '2026-10-02,Salary,5000,,5000',
+        ),
+        'BDT',
+      )
+      expect(errors).toEqual([])
+      expect(transactions.map((t) => t.amount)).toEqual([-640, 5000])
+    })
+  })
 })
 
 describe('parseTransactionsCsv: month names and header aliases (R55)', () => {
@@ -333,6 +387,9 @@ describe('parseTransactionsCsv: month names and header aliases (R55)', () => {
     ['31 October 2026', '2026-10-31'],
     ['1-sep-2026', '2026-09-01'],
     ['29-Feb-2028', '2028-02-29'],
+    ['05-Oct-2026 2:03 PM', '2026-10-05'],
+    ['05-Oct-2026 2:03 pm', '2026-10-05'],
+    ['5 Oct 2026 14:03', '2026-10-05'],
   ])('reads %s as %s', (cell, expected) => {
     const { transactions, errors } = parseRow(`${cell},Test,-10,,`)
     expect(errors).toEqual([])
@@ -382,10 +439,60 @@ describe('parseTransactionsCsv: month names and header aliases (R55)', () => {
     ['Txn Date,Value Date,Narration,Amount', '2026-10-05,2026-10-06,Salary,1000'],
     ['Date,Description,Remarks,Amount', '2026-10-05,Salary,note,1000'],
     ['Date,Description,Details,Amount', '2026-10-05,Salary,note,1000'],
+    ['Transaction Date,Posting Date,Description,Amount', '2026-10-05,2026-10-06,Salary,1000'],
+    ['Date,Description,Particulars,Amount', '2026-10-05,Salary,note,1000'],
+    ['Date,Particulars,Remarks,Amount', '2026-10-05,Salary,note,1000'],
+    ['Date,Transaction Details,Details,Amount', '2026-10-05,Salary,note,1000'],
   ])('does not turn an extra name into a duplicate column: %s', (header, row) => {
     const { transactions, errors } = parseTransactionsCsv(file(header, row), 'BDT')
     expect(errors).toEqual([])
-    expect(transactions.map((t) => [t.date, t.amount])).toEqual([['2026-10-05', 1000]])
+    expect(transactions.map((t) => [t.date, t.description, t.amount])).toEqual([
+      ['2026-10-05', 'Salary', 1000],
+    ])
+  })
+
+  it('reads a bank export with Txn Date, Particulars, Remarks and amount columns', () => {
+    const { transactions, errors } = parseTransactionsCsv(
+      file(
+        'Txn Date,Particulars,Remarks,Withdrawal Amount,Deposit Amount,Balance',
+        '05-Oct-2026,Salary October,NEFT,,"45,000.00","50,000.00"',
+        '07-Oct-2026,bKash Cash Out,ATM,"2,000.00",,"48,000.00"',
+      ),
+      'BDT',
+    )
+    expect(errors).toEqual([])
+    expect(transactions.map((t) => [t.date, t.description, t.amount])).toEqual([
+      ['2026-10-05', 'Salary October', 45000],
+      ['2026-10-07', 'bKash Cash Out', -2000],
+    ])
+  })
+
+  it.each([
+    ['Transaction Date', 'Txn Date', 'Description'],
+    ['Value Date', 'Posting Date', 'Description'],
+    ['Date', 'Particulars', 'Narration'],
+    ['Date', 'Narration', 'Transaction Details'],
+    ['Date', 'Details', 'Remarks'],
+  ])('reports two names of the same rank: %s, %s, %s', (a, b, c) => {
+    // The first two are the ones that collide in the date cases, the last two otherwise.
+    const [first, second] = a === 'Date' ? [b, c] : [a, b]
+    const { transactions, errors } = parseTransactionsCsv(
+      file(`${a},${b},${c},Amount`, '2026-10-05,2026-10-06,Salary,1000'),
+      'BDT',
+    )
+    expect(transactions).toEqual([])
+    expect(errors).toEqual<CsvError[]>([
+      { row: 1, code: 'duplicate_column', column: first, secondColumn: second },
+    ])
+  })
+
+  it('checks a lower-ranked name that is not read like any other column (R52)', () => {
+    const { transactions, errors } = parseTransactionsCsv(
+      file('Date,Description,Remarks,Amount', '2026-10-05,Salary,CR,1000', '2026-10-06,Rent,DR,400'),
+      'BDT',
+    )
+    expect(transactions).toEqual([])
+    expect(errors).toEqual<CsvError[]>([{ row: 1, code: 'direction_column', column: 'Remarks' }])
   })
 
   it('still treats bare DR/CR as a direction column', () => {
@@ -2810,12 +2917,12 @@ describe('parseTransactionsCsv: whole-file problems', () => {
       expect(errors).toEqual<CsvError[]>([{ row: 1, code: 'duplicate_column', column: name }])
     })
 
-    it('matches names regardless of case and spaces, and names the column in lower case', () => {
+    it('matches names regardless of case and spaces, and names the column as first written', () => {
       const { errors } = parseTransactionsCsv(
         file('Date, Amount ,description,AMOUNT', '2026-10-01,-500,Shwapno,-9'),
         'BDT',
       )
-      expect(errors).toEqual<CsvError[]>([{ row: 1, code: 'duplicate_column', column: 'amount' }])
+      expect(errors).toEqual<CsvError[]>([{ row: 1, code: 'duplicate_column', column: 'Amount' }])
     })
 
     it('reports a name once however many times it appears, and each repeated name', () => {
@@ -2860,24 +2967,57 @@ describe('parseTransactionsCsv: whole-file problems', () => {
         ['withdrawal', 'debit'],
         ['credit', 'deposit'],
         ['deposit', 'credit'],
-      ])('reports %s together with %s, naming the second', (first, second) => {
+      ])('reports %s together with %s, naming both', (first, second) => {
         const { transactions, errors } = parseTransactionsCsv(
           file(`date,description,amount,${first},${second}`, '2026-10-01,Shwapno,-500,1,2'),
           'BDT',
         )
         expect(transactions).toEqual([])
-        expect(errors).toEqual<CsvError[]>([{ row: 1, code: 'duplicate_column', column: second }])
+        expect(errors).toEqual<CsvError[]>([
+          { row: 1, code: 'duplicate_column', column: first, secondColumn: second },
+        ])
       })
 
-      it('names the second one as the file wrote it, trimmed', () => {
+      it('names both as the file wrote them, trimmed', () => {
         expect(
           parseTransactionsCsv(file('date,description,Debit, Withdrawal ,Credit', '2026-10-01,x,5,,'), 'BDT')
             .errors,
-        ).toEqual<CsvError[]>([{ row: 1, code: 'duplicate_column', column: 'Withdrawal' }])
+        ).toEqual<CsvError[]>([
+          { row: 1, code: 'duplicate_column', column: 'Debit', secondColumn: 'Withdrawal' },
+        ])
         expect(
           parseTransactionsCsv(file('date,description,WITHDRAWAL,DEBIT,Credit', '2026-10-01,x,5,,'), 'BDT')
             .errors,
-        ).toEqual<CsvError[]>([{ row: 1, code: 'duplicate_column', column: 'DEBIT' }])
+        ).toEqual<CsvError[]>([
+          { row: 1, code: 'duplicate_column', column: 'WITHDRAWAL', secondColumn: 'DEBIT' },
+        ])
+      })
+
+      it.each([
+        ['Debit', 'Debit Amount'],
+        ['Withdrawal', 'Withdrawal Amount'],
+        ['Debit Amount', 'Withdrawal Amount'],
+      ])('has no favourite between %s and %s: both are reported', (first, second) => {
+        // Reading one and ignoring the other would drop money the file wrote in the other.
+        const { transactions, errors } = parseTransactionsCsv(
+          file(`Date,Description,${first},${second},Credit`, '2026-10-05,Rent,,100,50'),
+          'BDT',
+        )
+        expect(transactions).toEqual([])
+        expect(errors).toEqual<CsvError[]>([
+          { row: 1, code: 'duplicate_column', column: first, secondColumn: second },
+        ])
+      })
+
+      it('has no favourite among the names for money coming in either', () => {
+        const { transactions, errors } = parseTransactionsCsv(
+          file('Date,Description,Debit,Credit Amount,Deposit', '2026-10-05,Pay,,100,50'),
+          'BDT',
+        )
+        expect(transactions).toEqual([])
+        expect(errors).toEqual<CsvError[]>([
+          { row: 1, code: 'duplicate_column', column: 'Credit Amount', secondColumn: 'Deposit' },
+        ])
       })
 
       it('reports it when the rest of the pair is there too, and imports nothing', () => {
@@ -2886,7 +3026,9 @@ describe('parseTransactionsCsv: whole-file problems', () => {
           'BDT',
         )
         expect(transactions).toEqual([])
-        expect(errors).toEqual<CsvError[]>([{ row: 1, code: 'duplicate_column', column: 'withdrawal' }])
+        expect(errors).toEqual<CsvError[]>([
+          { row: 1, code: 'duplicate_column', column: 'debit', secondColumn: 'withdrawal' },
+        ])
       })
 
       it('reports both pairs in the order the second names appear', () => {
@@ -2895,8 +3037,8 @@ describe('parseTransactionsCsv: whole-file problems', () => {
           'BDT',
         )
         expect(errors).toEqual<CsvError[]>([
-          { row: 1, code: 'duplicate_column', column: 'Deposit' },
-          { row: 1, code: 'duplicate_column', column: 'withdrawal' },
+          { row: 1, code: 'duplicate_column', column: 'credit', secondColumn: 'Deposit' },
+          { row: 1, code: 'duplicate_column', column: 'debit', secondColumn: 'withdrawal' },
         ])
       })
 
@@ -2905,7 +3047,9 @@ describe('parseTransactionsCsv: whole-file problems', () => {
           file('date,description,amount,debit,withdrawal,withdrawal', '2026-10-01,x,-5,1,2,3'),
           'BDT',
         )
-        expect(errors).toEqual<CsvError[]>([{ row: 1, code: 'duplicate_column', column: 'withdrawal' }])
+        expect(errors).toEqual<CsvError[]>([
+          { row: 1, code: 'duplicate_column', column: 'debit', secondColumn: 'withdrawal' },
+        ])
       })
 
       it('reports it alongside a repeated name, each in the order of its second appearance', () => {
@@ -2915,7 +3059,7 @@ describe('parseTransactionsCsv: whole-file problems', () => {
         )
         expect(errors).toEqual<CsvError[]>([
           { row: 1, code: 'duplicate_column', column: 'amount' },
-          { row: 1, code: 'duplicate_column', column: 'withdrawal' },
+          { row: 1, code: 'duplicate_column', column: 'debit', secondColumn: 'withdrawal' },
           { row: 1, code: 'duplicate_column', column: 'debit' },
         ])
       })
@@ -2928,7 +3072,7 @@ describe('parseTransactionsCsv: whole-file problems', () => {
         expect(errors).toEqual<CsvError[]>([
           { row: 2, code: 'missing_column', column: 'description' },
           { row: 2, code: 'missing_column', column: 'amount' },
-          { row: 2, code: 'duplicate_column', column: 'Withdrawal' },
+          { row: 2, code: 'duplicate_column', column: 'Debit', secondColumn: 'Withdrawal' },
         ])
       })
 

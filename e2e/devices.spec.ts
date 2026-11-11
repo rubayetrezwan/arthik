@@ -1,8 +1,10 @@
 import type { Page } from '@playwright/test'
 import { expect, LOCALES, open, test, uploadFile, type Locale } from './fixtures'
 
-const WIDTHS = [320, 375, 768, 1024, 1280, 1920]
-const DEVICE_LOCALES: Locale[] = ['en', 'bn', 'ar']
+// 280px is a folded phone; 2560px a large monitor.
+const WIDTHS = [280, 320, 375, 768, 1024, 1280, 1920, 2560]
+// Every language: a long word in one of them (a Spanish table heading) once pushed a page wide.
+const DEVICE_LOCALES: readonly Locale[] = LOCALES
 const ROUTES = ['/', '/score/nusrat', '/score/mine', '/upload', '/how-it-works', '/about']
 
 /** Puts a file of the visitor's own in the session, so /score/mine has a score to show. */
@@ -135,3 +137,31 @@ test.describe('table meaning at 375px', () => {
     await expect(page.getByTestId('score')).toBeVisible()
   })
 })
+
+// A large monitor keeps the content column at a readable width, centred (spec 9b).
+test('at 2560px the content keeps its width, centred', async ({ page }) => {
+  await page.setViewportSize({ width: 2560, height: 1200 })
+  await open(page, '/score/nusrat')
+  await page.getByTestId('score').waitFor()
+
+  const box = await page.locator('main').boundingBox()
+  expect(box!.width).toBeLessThanOrEqual(1160)
+  expect(Math.abs(box!.x - (2560 - box!.x - box!.width))).toBeLessThanOrEqual(2)
+})
+
+// Landscape phones: nothing sideways, and the header leaves most of the short screen to the page.
+for (const [width, height] of [
+  [667, 375],
+  [844, 390],
+]) {
+  test(`landscape ${width}x${height}: no horizontal scroll and a compact header`, async ({ page }) => {
+    await page.setViewportSize({ width: width!, height: height! })
+    for (const locale of ['en', 'ar'] as Locale[]) {
+      await goTo(page, '/score/nusrat', locale)
+      const { scrollWidth, clientWidth } = await overflow(page)
+      expect(scrollWidth, `${locale} ${width}x${height}`).toBeLessThanOrEqual(clientWidth)
+      const header = await page.locator('header').boundingBox()
+      expect(header!.height, `${locale} header`).toBeLessThan(height! / 2)
+    }
+  })
+}

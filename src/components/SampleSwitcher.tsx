@@ -9,7 +9,7 @@ export function SampleSwitcher() {
   const labelId = useId()
 
   return (
-    <div className={styles.bar}>
+    <div className={styles.bar} data-print="hide">
       <nav className={`wrap ${styles.inner}`} aria-labelledby={labelId}>
         <span className={styles.label} id={labelId}>
           <FormattedMessage id="samples.label" />

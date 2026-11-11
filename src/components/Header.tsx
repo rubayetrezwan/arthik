@@ -5,6 +5,7 @@ import { useRouteDatasetKey, useSession, type DatasetKey } from '../state/sessio
 import { CurrencySelect } from './CurrencySelect'
 import styles from './Header.module.css'
 import { LanguageSelect } from './LanguageSelect'
+import { ThemeSelect } from './ThemeSelect'
 
 /** Where "Your score" leads a visitor who has not looked at anyone yet: the first sample. */
 const FIRST_PERSON: PersonId = 'nusrat'
@@ -37,7 +38,7 @@ export function Header() {
           </span>
         </Link>
 
-        <nav className={styles.nav} aria-label={intl.formatMessage({ id: 'nav.label' })}>
+        <nav className={styles.nav} data-print="hide" aria-label={intl.formatMessage({ id: 'nav.label' })}>
           <Link
             to={`/score/${scoreKey}`}
             className={styles.link}
@@ -53,9 +54,10 @@ export function Header() {
           </NavLink>
         </nav>
 
-        <div className={styles.prefs}>
+        <div className={styles.prefs} data-print="hide">
           <LanguageSelect />
           <CurrencySelect />
+          <ThemeSelect />
         </div>
       </div>
     </header>

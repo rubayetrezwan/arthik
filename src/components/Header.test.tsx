@@ -122,6 +122,27 @@ describe('Header', () => {
     expect(localStorage.getItem('arthik.currency')).toBe('GBP')
   })
 
+  it('offers the colour theme beside the language and currency, following the device at first', () => {
+    renderApp('/')
+    const select = header().getByRole('combobox', { name: 'Colour theme' })
+
+    const options = within(select).getAllByRole<HTMLOptionElement>('option')
+    expect(options.map((option) => option.textContent)).toEqual(['Auto', 'Light', 'Dark'])
+    expect(select).toHaveValue('system')
+  })
+
+  it('switches to the dark theme and remembers it', async () => {
+    const user = userEvent.setup()
+    renderApp('/')
+    const select = header().getByRole('combobox', { name: 'Colour theme' })
+
+    await user.selectOptions(select, 'Dark')
+
+    expect(select).toHaveValue('dark')
+    expect(localStorage.getItem('arthik.theme')).toBe('dark')
+    expect(html.dataset.theme).toBe('dark')
+  })
+
   it('marks "Score" as the page when it is the sample on screen', () => {
     renderApp('/score/tanvir')
 

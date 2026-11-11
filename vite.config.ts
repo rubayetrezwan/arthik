@@ -2,6 +2,7 @@ import react from '@vitejs/plugin-react'
 import { VitePWA } from 'vite-plugin-pwa'
 import type { Plugin } from 'vite'
 import { defineConfig } from 'vitest/config'
+import { basePath } from './basePath.ts'
 
 const PAPER = '#F4EFE4'
 
@@ -33,12 +34,45 @@ const SHELL_FONT_CSS = /\/font-(newsreader|ibm-plex-sans|noto-sans-bengali|tiro-
 const IS_FONT = /\/(font-[^/]*\.css|[^/]*\.woff2)$/
 
 // Where the site lives: /arthik/ on GitHub Pages (the default), / on a host that serves it at
-// the root, such as Render. Set BASE_PATH at build time to change it.
-const BASE = normaliseBase(process.env.BASE_PATH ?? '/arthik/')
+// the root, such as Render (basePath.ts).
+const BASE = basePath()
 
-function normaliseBase(path: string): string {
-  const trimmed = path.trim().replace(/^\/+|\/+$/g, '')
-  return trimmed === '' ? '/' : `/${trimmed}/`
+/**
+ * The page may load and talk to nothing but its own origin, and the browser enforces it on
+ * every host (GitHub Pages cannot send headers, so it is a meta tag). Styles allow inline
+ * because React writes style attributes; scripts never do. Fonts are self-hosted, and the
+ * service worker's script and registerSW.js are same-origin files.
+ */
+const CONTENT_SECURITY_POLICY = [
+  "default-src 'self'",
+  "script-src 'self'",
+  "style-src 'self' 'unsafe-inline'",
+  "img-src 'self' data:",
+  "font-src 'self'",
+  "connect-src 'self'",
+  "worker-src 'self'",
+  "manifest-src 'self'",
+  "base-uri 'self'",
+  "form-action 'self'",
+  "object-src 'none'",
+].join('; ')
+
+/**
+ * Puts the policy into the built page. Only the build: the dev server injects inline scripts
+ * of its own (React Fast Refresh), which the policy would block.
+ */
+function contentSecurityPolicy(): Plugin {
+  return {
+    name: 'arthik:content-security-policy',
+    apply: 'build',
+    transformIndexHtml: () => [
+      {
+        tag: 'meta',
+        attrs: { 'http-equiv': 'Content-Security-Policy', content: CONTENT_SECURITY_POLICY },
+        injectTo: 'head-prepend',
+      },
+    ],
+  }
 }
 
 export default defineConfig({
@@ -46,8 +80,12 @@ export default defineConfig({
   plugins: [
     react(),
     woff2Only(),
+    contentSecurityPolicy(),
     VitePWA({
       registerType: 'autoUpdate',
+      // The default registration is the external registerSW.js, which the policy allows: no
+      // inline script. ('script' would say the same but drops clientsClaim, so the first visit
+      // would not be controlled.)
       manifest: {
         name: 'Arthik',
         short_name: 'Arthik',
@@ -101,6 +139,9 @@ export default defineConfig({
     }),
   ],
   build: {
+    // Fonts are always files, never data: URLs written into the stylesheet, which the policy's
+    // font-src 'self' would block.
+    assetsInlineLimit: (file) => (/\.woff2?$/.test(file) ? false : undefined),
     rolldownOptions: {
       output: {
         // Each font stylesheet keeps the name of its family, so the service worker can tell

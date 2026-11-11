@@ -99,16 +99,39 @@
     width: 100%;
   }
 
+  /* A link that wraps onto two lines keeps its first line level with the others. */
+  .nav {
+    align-items: baseline;
+  }
+
   .link {
+    min-inline-size: 44px;
     line-height: 1.3;
   }
 
   .prefs {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     width: 100%;
     margin-inline-start: 0;
   }
+}
 
-  .prefs > * {
-    flex: 1;
+/* Folding phones: language and currency side by side, the theme on a row of its own. */
+@media (max-width: 359px) {
+  .prefs {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .prefs > :last-child {
+    grid-column: 1 / -1;
+  }
+}
+
+/* Landscape phones: a short screen, so the header keeps to as few rows as it can (spec 9b). */
+@media (max-height: 480px) and (orientation: landscape) {
+  .bar {
+    min-height: 0;
+    padding-block: var(--s1) var(--s2);
   }
 }

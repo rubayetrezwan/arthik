@@ -414,6 +414,27 @@ describe('DashboardPage: adding emergency savings to a file without them (R56)',
     expect(Object.keys(localStorage).sort()).toEqual(['arthik.locale'])
   })
 
+  it('moves focus to the score and announces the new one once the savings are added', async () => {
+    const user = userEvent.setup()
+    renderScore(NO_SAVINGS_GIVEN)
+    const status = screen.getByTestId('score-announcement')
+    expect(status).toHaveAttribute('role', 'status')
+    expect(status).toBeEmptyDOMElement()
+
+    const row = screen.getByRole('rowheader', { name: /Emergency savings/ }).closest('tr')!
+    await user.type(within(row).getByLabelText('Add your emergency savings (BDT)'), '20000')
+    await user.click(within(row).getByRole('button', { name: 'Update score' }))
+
+    const after = computeScore(
+      computeMeasures({ ...NO_SAVINGS_GIVEN, emergencySavings: { amount: 20_000, currency: 'BDT' } }),
+    )
+    const band = { vulnerable: 'Vulnerable', coping: 'Coping', healthy: 'Healthy' }[after.band!]
+    await waitFor(() =>
+      expect(screen.getByRole('heading', { level: 2, name: 'Financial health score' })).toHaveFocus(),
+    )
+    expect(status).toHaveTextContent(`Score updated: ${after.score} out of 100, ${band}.`)
+  })
+
   it.each(['-5', 'abc', '1e9999', 'NaN', 'Infinity', ''])(
     'rejects %j and leaves the score as it was',
     async (typed) => {
@@ -425,9 +446,10 @@ describe('DashboardPage: adding emergency savings to a file without them (R56)',
       if (typed) await user.type(field, typed)
       await user.click(screen.getByRole('button', { name: 'Update score' }))
 
-      expect(
-        screen.getByText('Enter the amount in digits, with a point before any decimals.'),
-      ).toBeInTheDocument()
+      // Announced as soon as it appears.
+      expect(screen.getByRole('alert')).toHaveTextContent(
+        'Enter the amount as a number, using a point for decimals.',
+      )
       expect(field).toHaveAttribute('aria-invalid', 'true')
       expect(screen.getByTestId('score')).toHaveTextContent(before!)
     },

@@ -2,6 +2,25 @@
   font-variant-numeric: tabular-nums lining-nums;
 }
 
+/* A quiet button under the period: the page prints as a clean sheet (base.css, @media print). */
+.print {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  margin-block-start: var(--s3);
+  padding-inline: var(--s4);
+  border: 1px solid var(--control);
+  border-radius: var(--radius);
+  background: var(--surface);
+  color: var(--ink);
+  font-size: 15px;
+  cursor: pointer;
+}
+
+.print:hover {
+  border-color: var(--ink);
+}
+
 /*
  * The score card and the ledger, side by side from 1024px (spec 9b) and stacked below it.
  * The ledger takes the rest of the width; its column headings never wrap.

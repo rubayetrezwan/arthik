@@ -340,3 +340,20 @@
     margin-block-start: var(--s1);
   }
 }
+
+/* Folding phones: the worked example's three columns fit in 280px with tighter cells. */
+@media (max-width: 359px) {
+  .table th,
+  .table td {
+    padding-inline: var(--s1);
+  }
+
+  .figure {
+    font-size: 17px;
+  }
+
+  /* A long heading (Spanish "Puntuación × peso") may take two lines here, not push the page wide. */
+  .table thead .end {
+    white-space: normal;
+  }
+}

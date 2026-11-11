@@ -172,7 +172,7 @@ describe('avoid_cash_fees', () => {
 
 describe('save_on_payday', () => {
   it('gives Nusrat the gap between her savings rate and the 20% that earns full points', () => {
-    // Income averages 23,000 and she saves 60 of every 100 of... see the ledger: rate x income.
+    // The amount is average income (23,000) times the gap between 20% and her savings rate.
     const measures = computeMeasures(nusratLike)
     const tip = tipOf(tipsFor(nusratLike), 'save_on_payday')
     expect(tip?.values.target).toBe(0.2)
@@ -187,9 +187,25 @@ describe('save_on_payday', () => {
   })
 
   it('is offered when only the savings rate needs work, beside keep_going if alone', () => {
-    const ids = idsOf(tipsFor(salaried(23_000, 20_000, 100_000)))
-    expect(ids).toContain('save_on_payday')
-    expect(ids.length).toBeGreaterThanOrEqual(2)
+    // 3,000 of 23,000 saved is about 13%. Lifting it to 20% takes 4,600 - 3,000 = 1,600.
+    expect(tipsFor(salaried(23_000, 20_000, 100_000))).toEqual([
+      { id: 'save_on_payday', values: { amount: 1_600, target: 0.2 } },
+      { id: 'keep_going', values: {} },
+    ])
+  })
+
+  it('is not offered when spending is above income', () => {
+    // Rent of 25,000 on 20,000 of income: there is nothing left over to put aside first.
+    const ids = idsOf(tipsFor(salaried(20_000, 25_000, 100_000)))
+    expect(ids).not.toContain('save_on_payday')
+    expect(idsOf(tipsFor(nusratLike, { savingsRate: -0.01 }))).not.toContain('save_on_payday')
+  })
+
+  it('is offered at a savings rate of exactly zero', () => {
+    expect(tipOf(tipsFor(nusratLike, { savingsRate: 0 }), 'save_on_payday')?.values).toEqual({
+      amount: 4_600,
+      target: 0.2,
+    })
   })
 })
 
@@ -302,13 +318,20 @@ describe('pickTips', () => {
     expect(tipOf(tipsFor(fixtureA), 'start_dps')?.values).toEqual({ monthly: 2_500, months: 10 })
   })
 
-  it('keeps at most four, dropping the last', () => {
+  it('keeps at most four, keeping the data checks and dropping the last advice', () => {
     const tips = tipsFor(nusratLike, { uncategorisedShare: 0.2, unrecognisedIncomeCount: 2 })
     expect(idsOf(tips)).toEqual([
       'start_dps',
       'avoid_cash_fees',
+      'sort_uncategorised',
+      'check_unrecognised',
+    ])
+    const oneCheck = tipsFor(nusratLike, { uncategorisedShare: 0.2 })
+    expect(idsOf(oneCheck)).toEqual([
+      'start_dps',
+      'avoid_cash_fees',
       'save_on_payday',
-      'cut_biggest_want',
+      'sort_uncategorised',
     ])
   })
 

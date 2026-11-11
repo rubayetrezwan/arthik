@@ -1,5 +1,5 @@
-import { useId, useMemo } from 'react'
-import { FormattedMessage } from 'react-intl'
+import { useEffect, useId, useMemo, useRef, useState } from 'react'
+import { FormattedMessage, useIntl } from 'react-intl'
 import { AddSavings } from '../components/AddSavings'
 import { CategoryChart } from '../components/CategoryChart'
 import { Ledger } from '../components/Ledger'
@@ -12,12 +12,12 @@ import { TransactionsTable } from '../components/TransactionsTable'
 import { WhatIf } from '../components/WhatIf'
 import { getLoadedSample } from '../data/samples/loadSamples'
 import { summaryValues } from '../data/samples/summaryValues'
-import { MEASURE_IDS } from '../domain/score'
+import { HIGHEST_SCORE, MEASURE_IDS } from '../domain/score'
 import type { Dataset, PersonId } from '../domain/types'
 import { useScoreStatus, type Scored } from '../hooks/useScore'
-import { formatMonthRange } from '../i18n/format'
+import { formatMonthRange, formatNumber } from '../i18n/format'
 import { useLocale } from '../i18n/I18nProvider'
-import { useSession } from '../state/session'
+import { useSession, type DatasetKey } from '../state/session'
 import styles from './DashboardPage.module.css'
 
 /**
@@ -64,8 +64,18 @@ function Explore({ scored: { dataset, measures, result } }: { scored: Scored }) 
 
 /** A sample person's score, or the visitor's own: the page head, the score sheet, then the rest. */
 export function DashboardPage() {
+  const intl = useIntl()
   const locale = useLocale()
   const { scored, status } = useScoreStatus()
+  // The file whose savings were just added in the ledger: focus goes to the score, and the
+  // new score is announced, once it has been worked out again.
+  const [savingsAddedFor, setSavingsAddedFor] = useState<DatasetKey | null>(null)
+  const scoreHeading = useRef<HTMLHeadingElement>(null)
+  const savingsAdded = savingsAddedFor !== null && savingsAddedFor === scored?.dataset.key
+
+  useEffect(() => {
+    if (savingsAdded) scoreHeading.current?.focus()
+  }, [savingsAdded])
 
   const writtenFor = asWritten(scored?.dataset)
   const measures = scored?.measures
@@ -99,8 +109,29 @@ export function DashboardPage() {
         }
       : undefined
 
+  const announcement =
+    savingsAdded && result.score !== null && result.band !== null
+      ? intl.formatMessage(
+          { id: 'score.savings.updated' },
+          {
+            score: formatNumber(result.score, locale),
+            max: formatNumber(HIGHEST_SCORE, locale),
+            band: intl.formatMessage({ id: `band.${result.band}` }),
+          },
+        )
+      : ''
+
   return (
     <>
+      {/*
+        The visitor's own file can take savings in the ledger. The region is there from the
+        start, so a screen reader hears the new score when it arrives.
+      */}
+      {dataset.key === 'mine' && (
+        <p className="visually-hidden" role="status" data-testid="score-announcement">
+          {announcement}
+        </p>
+      )}
       <PageHead
         kicker={
           <FormattedMessage id={person ? `sample.${person}.kicker` : 'score.kicker.mine'} />
@@ -120,6 +151,13 @@ export function DashboardPage() {
             />
           </p>
         )}
+        {result.status === 'scored' && (
+          <p data-print="hide">
+            <button type="button" className={styles.print} onClick={() => window.print()}>
+              <FormattedMessage id="score.print" />
+            </button>
+          </p>
+        )}
       </PageHead>
 
       {result.status === 'scored' && result.score !== null && result.band !== null ? (
@@ -133,11 +171,16 @@ export function DashboardPage() {
             }
             summaryHidden={person !== null && !writtenFor}
             basis={basis}
+            headingRef={scoreHeading}
           />
           <Ledger
             result={result}
             uncategorisedShare={scored.measures.uncategorisedShare}
-            savingsEntry={dataset.key === 'mine' ? <AddSavings /> : undefined}
+            savingsEntry={
+              dataset.key === 'mine' ? (
+                <AddSavings onAdded={() => setSavingsAddedFor(dataset.key)} />
+              ) : undefined
+            }
           />
         </div>
       ) : (

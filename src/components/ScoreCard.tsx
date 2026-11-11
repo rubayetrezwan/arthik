@@ -1,4 +1,4 @@
-import { useId, type ReactNode } from 'react'
+import { useId, type ReactNode, type Ref } from 'react'
 import { FormattedMessage } from 'react-intl'
 import { Link } from 'react-router'
 import { HIGHEST_SCORE, type Band } from '../domain/score'
@@ -16,16 +16,25 @@ interface ScoreCardProps {
   summaryHidden?: boolean
   /** Set when some measure is not scored: how many were, of how many, and what is missing. */
   basis?: { scored: number; total: number; missingSavings: boolean }
+  /** The sheet's heading, for the page to move focus to when the score changes. */
+  headingRef?: Ref<HTMLHeadingElement>
 }
 
 /** The score itself: the figure, its band as a stamp, the band scale and, for samples, the summary. */
-export function ScoreCard({ score, band, summary, summaryHidden = false, basis }: ScoreCardProps) {
+export function ScoreCard({
+  score,
+  band,
+  summary,
+  summaryHidden = false,
+  basis,
+  headingRef,
+}: ScoreCardProps) {
   const locale = useLocale()
   const titleId = useId()
 
   return (
-    <section className={styles.sheet} aria-labelledby={titleId}>
-      <h2 id={titleId} className={styles.title}>
+    <section className={styles.sheet} aria-labelledby={titleId} data-print="keep">
+      <h2 id={titleId} className={styles.title} ref={headingRef} tabIndex={-1}>
         <FormattedMessage id="score.sheet" />
       </h2>
 

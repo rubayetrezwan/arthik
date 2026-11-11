@@ -2,6 +2,7 @@ import { screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { renderApp } from '../test/renderApp'
+import { pageKey } from './DocumentTitle'
 
 vi.mock('../i18n/fonts', () => ({ loadFonts: vi.fn(() => Promise.resolve()) }))
 
@@ -36,5 +37,9 @@ describe('the page title (WCAG 2.4.2)', () => {
 
     await user.selectOptions(screen.getByLabelText('Language'), 'es')
     await waitFor(() => expect(document.title).toBe('Inicio · Arthik'))
+  })
+
+  it("names the visitor's own score \"Your score\", as its heading does", () => {
+    expect(pageKey('/score/mine')).toBe('score.title')
   })
 })

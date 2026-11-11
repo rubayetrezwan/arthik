@@ -6,6 +6,9 @@
  * text on a sheet. `rule` is for decoration only, never for anything that must be seen.
  */
 :root {
+  /* Native controls, scrollbars and the select's own list follow the theme too. */
+  color-scheme: light;
+
   --bg: #f4efe4;
   --surface: #fbf8f1;
   --ink: #1e1b16;
@@ -54,6 +57,60 @@
   --line-body: 1.55;
   --line-heading: 1.25;
   --line-title: 1.15;
+}
+
+/*
+ * The same ledger at night: warm dark paper, never pure black or blue-grey, with off-white
+ * ink. The bottle green and the ledger red are lightened so they keep their character and
+ * their contrast. Every pair is checked in src/styles/tokens.test.ts against WCAG AA, as the
+ * light ones are. public/theme.js sets data-theme before the first paint.
+ */
+:root[data-theme="dark"] {
+  color-scheme: dark;
+
+  --bg: #191612;
+  --surface: #221e19;
+  --ink: #ece4d6;
+  --ink-2: #b8ad9b;
+  --rule: #3a342c;
+  --control: #8c806d;
+  --primary: #7cc4a0;
+  --primary-ink: #191612;
+  --red: #e5806f;
+
+  --vulnerable: #f0937f;
+  --coping: #ddb15e;
+  --healthy: #80c99d;
+  --zone-v: #5c3129;
+  --zone-c: #56441d;
+  --zone-h: #294832;
+}
+
+/*
+ * Paper is paper: a printed or saved sheet is always the light ledger, whatever the theme on
+ * screen. These must stay the light values above (checked in tokens.test.ts).
+ */
+@media print {
+  :root,
+  :root[data-theme="dark"] {
+    color-scheme: light;
+
+    --bg: #f4efe4;
+    --surface: #fbf8f1;
+    --ink: #1e1b16;
+    --ink-2: #5a5347;
+    --rule: #ddd3c0;
+    --control: #8a7d69;
+    --primary: #0e5a43;
+    --primary-ink: #ffffff;
+    --red: #9c2a22;
+    --vulnerable: #9a3324;
+    --coping: #7a5209;
+    --healthy: #1f6b45;
+    --zone-v: #e8c4b8;
+    --zone-c: #ead39c;
+    --zone-h: #c3dcc8;
+  }
 }
 
 /*
